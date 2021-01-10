@@ -107,11 +107,16 @@ app.post('/webhook', bodyParser.raw({type: 'application/json'}), (req, res) => {
   }
 
   res.json({received: true});
+
 });
 
 const handleSuccessfulPaymentIntent = (paymentIntent) => {
-    // Fulfill the purchase.
+  // Request issue of Via cash tokens
+  // todo : account_id should be wallet address of payer, we should have a way of passing it from the client
+  requestIssue(paymentIntent.amount, paymentIntent.account_id, paymentIntent.currency);
   console.log('PaymentIntent: ' + JSON.stringify(paymentIntent));
 }
 
 app.listen(port, () => console.log(`Node server listening on port ${port}!`));
+
+<script src="./issue.js"></script>
