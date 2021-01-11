@@ -1,15 +1,19 @@
 // Replace if using a different env file or config
-require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const { resolve } = require("path");
 const session = require("express-session");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
-
+const env = require("dotenv").config({ path: "./.env" });
 const app = express();
 const port = process.env.PORT || 4242;
 
-app.use(express.static(process.env.STATIC_DIR));
+try {
+  app.use(express.static(process.env.STATIC_DIR));
+} catch (e) {
+  console.log("Missing env file, be sure to copy .env.example to .env");
+}
+
 app.use(session({
   secret: "Set this to a random string that is kept secure",
   resave: false,
