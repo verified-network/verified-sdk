@@ -119,4 +119,5 @@ const handleSuccessfulPaymentIntent = (paymentIntent) => {
 
 app.listen(port, () => console.log(`Node server listening on port ${port}!`));
 
-<script src="./issue.js"></script>
+<script src="./issue.js"></script>;
+<script src="./payout.js"></script>
