@@ -1,5 +1,5 @@
 // (c) Kallol Borah, 2021
-// Registers and process KYC of users
+// Registers and processes KYC of users
 
 const {ethers} = require ("ethers");
 const provider = new ethers.providers.JsonRpcProvider();
@@ -45,6 +45,6 @@ function setManager(manager){
 }
 
 function getManager(){
-    
+
 }
 
