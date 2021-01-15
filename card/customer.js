@@ -1,6 +1,42 @@
 // (c) Kallol Borah, 2020
 // Customer processing functions
 
+require('dotenv').config();
+
+// Generic AJAX function prototype
+function generalAjax(params){
+  $.ajax({
+      async : true,
+      crossDomain : true,
+      url: params.url,
+      method: params.reqType,
+      data : params.formData,
+      dataType : 'json',
+      headers : {
+        "content-type": "application/json",
+        "x-api-key": process.env.CARD_API_KEY,
+        "x-request-id": params.requestId,
+        "x-client-name": process.env.CLIENT_NAME,
+        "cache-control": "no-cache"
+      },
+      processData : false
+  }).done(function( data ) {
+      params.callback; 
+  }).fail(function(jqXHR, textStatus){
+      var string = "Verified card request failed : " + textStatus + " - " + jqXHR.responseText;
+      $("#diag").html(string);
+  });
+}   
+
+function ajaxParams(url, type, data, reqid, callback) {
+  this.url = url;
+  this.reqType = type;
+  this.formData = data;
+  this.callback = callback;
+  this.requestId = reqid;
+}
+
+
 // 1. Get T&C
 var settings = {
     "async": true,
