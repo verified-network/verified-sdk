@@ -85,8 +85,8 @@ function addCustomer(reqId, callback, firstName, middleName, lastName, preferred
 }
 
 // 3. Accept T&C 
-function acceptTermsConditions(reqId, callback, success, name, versionId){
-  var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/termsAndConditions';
+function acceptTermsConditions(customerHashId, reqId, callback, success, name, versionId){
+  var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/termsAndConditions';
   var type = "POST";
   var formData = '{' + '"success":' + success +
                  ',' + '"name":' + name + 
