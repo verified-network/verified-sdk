@@ -4,6 +4,7 @@
 const {ethers, Signer} = require ("ethers");
 const provider = ethers.getDefaultProvider();
 const signer = provider.getSigner();
+const wallet = new ethers.Wallet(signer.address, provider);
 
 const vclient = artifacts.require('VerifiedClient');
 const vkyc = artifacts.require('VerifiedKYC');
@@ -65,11 +66,14 @@ async function getAccess(callback, _client){
     callback(await Client.getAccess(ethers.utils.getAddress(client)));
 }
 
-async function setManager(_client, _manager){
+async function setManager(_address, _requestor){
     const Client = new ethers.Contract(ClientAddress, vclient, signer);
-    client = $("#_client").val();
-    manager = $("#_manager").val();
-    await Client.setManager(ethers.utils.getAddress(client), ethers.utils.getAddress(manager));
+    address = $("#_address").val();
+    requestor = $("#_requestor").val();
+    if(requestor=="manager")
+        await Client.setManager(ethers.utils.getAddress(address), signer.address);
+    else if(requestor=="client")
+        await Client.setManager(signer.address, ethers.utils.getAddress(address));
 }
 
 async function getManager(callback, _client, _requestor){
@@ -81,11 +85,15 @@ async function getManager(callback, _client, _requestor){
 
 // create wallet
 function register(callback){
-    const wallet = ethers.Wallet.createRandom();
+    wallet = ethers.Wallet.createRandom();
     callback(wallet.mnemonic);
 }
 
 // create wallet from stored mnemomic
 function createWallet(seed){
-    const wallet = ethers.Wallet.createWallet(seed);
+    wallet = ethers.Wallet.createWallet(seed);
+}
+
+function getAccount(callback){
+    callback(wallet.address);
 }
