@@ -40,8 +40,8 @@ export async function requestIssue(_amount, _currencyToIssue, _currencyToDebit){
 // requests custody of via cash of _amount in _currencyToStore with _custodian
 export async function requestCustody(_amount, _custodian, _currencyToStore){
     tokens = $("#_amount").val();
-    custodian = $("#_custodian").value();
-    viaCashToStore = $("#currencyToStore").value();
+    custodian = $("#_custodian").value(); //todo : fetch custodian's address from server side given custodian's name
+    viaCashToStore = $("#_currencyToStore").value();
     const viaCashEns = viaCashToStore+'.via-cash.eth';
 
     if(provider.resolveName(viaCashEns)!=''){
@@ -54,8 +54,24 @@ export async function requestCustody(_amount, _custodian, _currencyToStore){
 }
 
 // request withdrawal of _amount in _currencyInStore from _custodian
-export async function requestWithdrawal(_amount, _currencyInStore){
+export async function requestWithdrawal(_amount, _custodian, _currencyInStore){
+    tokens = $("#_amount").val();
+    custodian = $("#_custodian").value(); //todo : fetch custodian's address from server side given custodian's name
+    viaCashInStore = $("#_currencyInStore").value();
+    const viaCashEns = viaCashToStore+'.via-cash.eth';
 
+    if(provider.resolveName(viaCashEns)!=''){
+        const ViaCash = new ethers.Contract(provider.resolveName(viaCashEns), cashAbi, signer);
+        await ViaCash.transferFrom(
+            ethers.utils.getAddress(custodian),
+            wallet.address,
+            ethers.utils.formatUnits(tokens));
+    }
+}
+
+// get balances of various assets in custody for the caller (user)
+async function getBalancesInCustody(callback){
+    //to do : use custodian API to get balances for wallet.address
 }
 
 // request redemption of via cash of _currency and _amount
