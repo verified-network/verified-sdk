@@ -37,10 +37,10 @@ function ajaxParams(url, type, data, reqid, callback) {
 }
 
 // 1. Fund a customer wallet using 'prefund' funding channel
-function fundWallet(customerHashId, walletHashId, reqId, callback, channel, amount, pocketName, sourceCurrency, destinationCurrency){
+export function fundWallet(customerHashId, walletHashId, reqId, callback, amount, pocketName, sourceCurrency, destinationCurrency){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/fund';
   var type = "POST";
-  var formData = '{' + '"fundingChannel":' + channel +
+  var formData = '{' + '"fundingChannel":' + 'prefund' +
                  ',' + '"amount":' + amount + 
                  ',' + '"pocketName":' + pocketName + 
                  ',' + '"sourceCurrencyCode":' + sourceCurrency + 
@@ -51,7 +51,7 @@ function fundWallet(customerHashId, walletHashId, reqId, callback, channel, amou
 }
 
 // 2. Get customer wallet balance
-function getCustomerWalletBalance(customerHashId, walletHashId, reqId, callback){
+export function getCustomerWalletBalance(customerHashId, walletHashId, reqId, callback){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId;
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -59,7 +59,7 @@ function getCustomerWalletBalance(customerHashId, walletHashId, reqId, callback)
 }
 
 // 3. Get all transactions for customer wallet
-function getCustomerTransactions(customerHashId, walletHashId, reqId, callback, page, size, startDate, endDate){
+export function getCustomerTransactions(customerHashId, walletHashId, reqId, callback, page, size, startDate, endDate){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/transactions?page='+page+'&size='+size+'&startDate='+startDate+'&endDate='+endDate;
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -67,7 +67,7 @@ function getCustomerTransactions(customerHashId, walletHashId, reqId, callback, 
 }
 
 // 4. Convert one currency to another in the same wallet
-function convertCurrency(customerHashId, walletHashId, reqId, callback, amount, sourceCurrency, destinationCurrency){
+export function convertCurrency(customerHashId, walletHashId, reqId, callback, amount, sourceCurrency, destinationCurrency){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/transfer';
   var type = "POST";
   var formData = '{' + '"amount":' + amount + 
@@ -79,7 +79,7 @@ function convertCurrency(customerHashId, walletHashId, reqId, callback, amount, 
 }
 
 // 5. Transfers money from one wallet to another wallet within customers of the same client
-function p2pTransfer(customerHashId, walletHashId, reqId, callback, amount, currencyCode, destinationWalletHashId){
+export function p2pTransfer(customerHashId, walletHashId, reqId, callback, amount, currencyCode, destinationWalletHashId){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/p2pTransfer';
   var type = "POST";
   var formData = '{' + '"amount":' + amount + 
@@ -91,7 +91,7 @@ function p2pTransfer(customerHashId, walletHashId, reqId, callback, amount, curr
 }
 
 // 6. Get card limits on customer wallet
-function getCustomerCardLimits(customerHashId, walletHashId, reqId, callback, page, size, startDate, endDate){
+export function getCustomerCardLimits(customerHashId, walletHashId, reqId, callback){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/limits';
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -99,7 +99,7 @@ function getCustomerCardLimits(customerHashId, walletHashId, reqId, callback, pa
 } 
   
 // 7. Withdraw funds from customer wallet
-function withdrawFunds(customerHashId, walletHashId, reqId, callback, comments, amount, pocketName, currencyCode, refundMode){
+export function withdrawFunds(customerHashId, walletHashId, reqId, callback, comments, amount, pocketName, currencyCode, refundMode){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/wallet/'+walletHashId+'/refund';
   var type = "POST";
   var formData = '{' + '"comments":' + comments +
@@ -113,7 +113,7 @@ function withdrawFunds(customerHashId, walletHashId, reqId, callback, comments, 
 }
 
 // 8. Delete customer wallet
-function getCustomerWallet(customerHashId, reqId, callback, fundingInstrumentId){
+export function closeCustomerWallet(customerHashId, reqId, callback, fundingInstrumentId){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/fundingInstruments/'+fundingInstrumentId;
   var type = "DELETE";
   var params = new ajaxParams(url, type, '', reqId, callback);

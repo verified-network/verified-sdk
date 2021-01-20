@@ -37,7 +37,7 @@ function ajaxParams(url, type, data, reqid, callback) {
 }
 
 // 1. Get T&C
-function getTermsConditions(reqId, callback){
+export function getTermsConditions(reqId, callback){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/termsAndConditions';
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -45,7 +45,7 @@ function getTermsConditions(reqId, callback){
 }
 
 // 2. onboard customer
-function addCustomer(reqId, callback, firstName, middleName, lastName, preferredName, dateOfBirth, gender, designation, employeeId, nationality, email, countryCode, mobile, deliveryAddress1, deliveryAddress2, deliveryCity, deliveryLandmark, deliveryState, deliveryZipCode, billingAddress1, billingAddress2, billingCity, billingLandmark, billingState, billingZipCode, correspondenceAddress1, correspondenceAddress2, correspondenceCity, correspondenceLandmark, correspondenceState, correspondenceZipCode){
+export function addCustomer(reqId, callback, firstName, middleName, lastName, preferredName, dateOfBirth, gender, designation, employeeId, nationality, email, countryCode, mobile, deliveryAddress1, deliveryAddress2, deliveryCity, deliveryLandmark, deliveryState, deliveryZipCode, billingAddress1, billingAddress2, billingCity, billingLandmark, billingState, billingZipCode, correspondenceAddress1, correspondenceAddress2, correspondenceCity, correspondenceLandmark, correspondenceState, correspondenceZipCode){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer';
   var type = "POST";
   var formData = JSON.stringify({
@@ -85,7 +85,7 @@ function addCustomer(reqId, callback, firstName, middleName, lastName, preferred
 }
 
 // 3. Accept T&C 
-function acceptTermsConditions(customerHashId, reqId, callback, success, name, versionId){
+export function acceptTermsConditions(customerHashId, reqId, callback, success, name, versionId){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/termsAndConditions';
   var type = "POST";
   var formData = '{' + '"success":' + success +
@@ -97,7 +97,7 @@ function acceptTermsConditions(customerHashId, reqId, callback, success, name, v
 }
 
 // 4. Upload KYC documents
-function uploadKyc(customerHashId, reqId, callback, identificationType, identificationValue, identificationIssuingAuthority, identificationIssuingDate, identificationDocExpiry, identificationDocHolderName, identificationDocIssuanceCountry, identificationDocReferenceNumber, fileName, fileType, document){
+export function uploadKyc(customerHashId, reqId, callback, identificationType, identificationValue, identificationIssuingAuthority, identificationIssuingDate, identificationDocExpiry, identificationDocHolderName, identificationDocIssuanceCountry, identificationDocReferenceNumber, fileName, fileType, document){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/uploadDocuments';
   var type = "POST";
   var formData = JSON.stringify({
@@ -118,7 +118,7 @@ function uploadKyc(customerHashId, reqId, callback, identificationType, identifi
 }
 
 // 5. Check compliance  
-function checkCompliance(customerHashId, reqId, callback){
+export function checkCompliance(customerHashId, reqId, callback){
   var url = process.env.CARD_URL+'/callback/compliance?customerHashId='+customerHashId;
   var type = "POST";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -126,7 +126,7 @@ function checkCompliance(customerHashId, reqId, callback){
 } 
 
 // 6. Get compliance status for customer
-function getComplianceStatus(customerHashId, reqId, callback){
+export function getComplianceStatus(customerHashId, reqId, callback){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId;
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -134,7 +134,7 @@ function getComplianceStatus(customerHashId, reqId, callback){
 }
 
 // 7. Upload RFI if compliance status is still 'in process'
-function uploadRfiDocs(customerHashId, reqId, callback, identificationType, identificationValue, identificationIssuingAuthority, identificationIssuingDate, identificationDocExpiry, identificationDocHolderName, identificationDocIssuanceCountry, identificationDocReferenceNumber, fileName, fileType, document){
+export function uploadRfiDocs(customerHashId, reqId, callback, identificationType, identificationValue, identificationIssuingAuthority, identificationIssuingDate, identificationDocExpiry, identificationDocHolderName, identificationDocIssuanceCountry, identificationDocReferenceNumber, fileName, fileType, document){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/uploadRfiDocument';
   var type = "POST";
   var formData = JSON.stringify({
@@ -155,7 +155,7 @@ function uploadRfiDocs(customerHashId, reqId, callback, identificationType, iden
 }
 
 // 8. Get customer details
-function getCustomerDetails(customerHashId, reqId, callback){
+export function getCustomerDetails(customerHashId, reqId, callback){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId;
   var type = "POST";
   var params = new ajaxParams(url, type, '', reqId, callback);
@@ -163,7 +163,7 @@ function getCustomerDetails(customerHashId, reqId, callback){
 }
 
 // 9. Update customer record
-function updateCustomer(customerHashId, reqId, callback, employeeId, email, mobile, deliveryAddress1, deliveryAddress2, deliveryCity, deliveryLandmark, deliveryState, deliveryZipCode, billingAddress1, billingAddress2, billingCity, billingLandmark, billingState, billingZipCode, correspondenceAddress1, correspondenceAddress2, correspondenceCity, correspondenceLandmark, correspondenceState, correspondenceZipCode){
+export function updateCustomer(customerHashId, reqId, callback, employeeId, email, mobile, deliveryAddress1, deliveryAddress2, deliveryCity, deliveryLandmark, deliveryState, deliveryZipCode, billingAddress1, billingAddress2, billingCity, billingLandmark, billingState, billingZipCode, correspondenceAddress1, correspondenceAddress2, correspondenceCity, correspondenceLandmark, correspondenceState, correspondenceZipCode){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customer/'+customerHashId+'/updateCustomer';
   var type = "POST";
   var formData = JSON.stringify({
@@ -194,7 +194,7 @@ function updateCustomer(customerHashId, reqId, callback, employeeId, email, mobi
 }  
 
 // 10. List all customers
-function listCustomers(reqId, callback, order, page, size){
+export function listCustomers(reqId, callback, order, page, size){
   var url = process.env.CARD_URL+'/client/'+process.env.CLIENT_HASH_ID+'/customers?order='+order+'&page='+page+'&size='+size;
   var type = "GET";
   var params = new ajaxParams(url, type, '', reqId, callback);

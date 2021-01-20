@@ -11,20 +11,23 @@ const vkyc = artifacts.require('VerifiedKYC');
 const ClientAddress = process.env.CLIENT;
 const KYCAddress = process.env.KYC;
 
-async function setKycStatus(_client, _status){
+// sets kyc for _client with _status
+export async function setKycStatus(_client, _status){
     const KYC = new ethers.Contract(KYCAddress, vkyc, signer);
     client = $("#_client").val();
     status = $("#_status").val();
     await KYC.setStatus(ethers.utils.getAddress(client), ethers.utils.formatBytes32String(status));
 }
 
-async function getKycStatus(callback, _client){
+// gets kyc for _client in callback
+export async function getKycStatus(callback, _client){
     const KYC = new ethers.Contract(KYCAddress, vkyc, provider);
     client = $("#_client").val();
     callback(await KYC.getStatus(ethers.utils.getAddress(client)));
 }
 
-async function updateKycRecord(_client, _file, _address, _photoId, _videoId, _fatca, _crs){
+// updates kyc record for _client
+export async function updateKycRecord(_client, _file, _address, _photoId, _videoId, _fatca, _crs){
     const KYC = new ethers.Contract(KYCAddress, vkyc, signer);
     client = $("#_client").val();
     file = $("#_file").val();
@@ -41,32 +44,37 @@ async function updateKycRecord(_client, _file, _address, _photoId, _videoId, _fa
     await KYC.setCRS(ethers.utils.getAddress(client), ethers.utils.formatBytes32String(crs));
 }
 
-async function setCustodian(_client, _custodian){
+// sets _custodian for _client
+export async function setCustodian(_client, _custodian){
     const Client = new ethers.Contract(ClientAddress, vclient, signer);
     client = $("#_client").val();
     custodian = $("#_custodian").val();
     await Client.setCustody(ethers.utils.getAddress(client), ethers.utils.getAddress(custodian));
 }
 
-async function getCustodian(callback, _client){
+// gets custodian for _client in callback
+export async function getCustodian(callback, _client){
     const Client = new ethers.Contract(ClientAddress, vclient, provider);
     client = $("#_client").val();
     callback(await Client.getCustody(ethers.utils.getAddress(client)));
 }
 
-async function setAccess(_login){
+// records _login for client
+export async function setAccess(_login){
     const Client = new ethers.Contract(ClientAddress, vclient, signer);
     login = $("#_login").val();
     await Client.setAccess(ethers.utils.formatBytes32String(login));
 }
 
-async function getAccess(callback, _client){
+// gets login records for _client in callback
+export async function getAccess(callback, _client){
     const Client = new ethers.Contract(ClientAddress, vclient, provider);
     client = $("#_client").val();
     callback(await Client.getAccess(ethers.utils.getAddress(client)));
 }
 
-async function setManager(_address, _requestor){
+// sets manager in _address by _requestor
+export async function setManager(_address, _requestor){
     const Client = new ethers.Contract(ClientAddress, vclient, signer);
     address = $("#_address").val();
     requestor = $("#_requestor").val();
@@ -76,7 +84,8 @@ async function setManager(_address, _requestor){
         await Client.setManager(signer.address, ethers.utils.getAddress(address));
 }
 
-async function getManager(callback, _client, _requestor){
+// gets manager for _client in callback to _requestor
+export async function getManager(callback, _client, _requestor){
     const Client = new ethers.Contract(ClientAddress, vclient, provider);
     client = $("#_client").val();
     requestor = $("#_requestor").val();
@@ -84,16 +93,17 @@ async function getManager(callback, _client, _requestor){
 }
 
 // create wallet
-function register(callback){
+export function register(callback){
     wallet = ethers.Wallet.createRandom();
     callback(wallet.mnemonic);
 }
 
 // create wallet from stored mnemomic
-function createWallet(seed){
+export function createWallet(seed){
     wallet = ethers.Wallet.createWallet(seed);
 }
 
-function getAccount(callback){
+// returns address of verified account
+export function getAccount(callback){
     callback(wallet.address);
 }
