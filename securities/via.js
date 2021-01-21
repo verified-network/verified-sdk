@@ -53,6 +53,11 @@ export async function requestTransfer(_amount, _recipient, _bondToTransfer){
 }
 
 // request redemption of via _bondToRedeem for _amount
-export async function requestRedemption(_amount, _bondToRedeem){
+export async function redemptionByInvestor(_amount, _bondToRedeem){
     requestTransfer(_amount, _bondToRedeem, _bondToRedeem);
+}
+
+// request redemption of via _bondToRedeem for _amount of _currencyToRedeemBond
+export async function redemptionByIssuer(_amount, _bondToRedeem, _currencyToRedeemBond){
+    requestIssueForViaCash(_amount, _bondToRedeem, _currencyToRedeemBond);
 }
