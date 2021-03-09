@@ -1,5 +1,5 @@
 // (c) Kallol Borah, 2021
-// Records and reports transactions
+// Records accounts and reports transactions
 
 const wallet = require('../index');
 
