@@ -1,25 +1,16 @@
 # The Verified SDK
-The Verified SDK provides access to the payments, issuing and trading of tokenized securities on the Verified Network. 
+The Verified SDK provides access to the payments, issuing and trading of tokenized securities on the Verified Network.
 
-## Installing the Verified SDK
-From your project's working directory, install the SDK
+# installing using npm
+npm install verified_sdk --save
 
-```shell
-$> npm install @verified-network/verified-sdk
-$>
-```
+# creating new wallet
+const {createWallet} = require('verified_sdk');
+let wallet = await new createWallet(private_key, provider_key)
 
-## Using the Verified SDK
-Use the SDK in your project
+# random wallet 
+let wallet = await new createWallet();
 
-    ```shell
-    verified = require('verified-sdk') 
-    verified.APIfunction
-    ```
 
-Please check the API functions at [Verified SDK documentation].
 
-[Verified SDK documentation]: https://docs.verified.network
-
-*NOTE:* Currently this reference implementation is under development and NOT FOR PRODUCTION.
 
