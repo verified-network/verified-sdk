@@ -1,5 +1,5 @@
-import { VerifiedWallet } from './wallet/wallet';
-import { Provider } from './utils/provider';
+import { VerifiedWallet } from './wallet';
+import { Provider } from './utils';
 
 export {
     VerifiedWallet,
