@@ -40,6 +40,7 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETCUSTODY, params)
     }
 
+    // function mentioned in the document to be integrated
     public setAccess(params: SetAccess): any {
         return this.callContract(FUNCTIONS.SETACCESS, params)
     }
@@ -48,10 +49,12 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETACCESS, params)
     }
 
+    // function mentioned in the document to be integrated
     public setManager(params: SetManager): any {
         return this.callContract(FUNCTIONS.SETMANAGER, params)
     }
 
+    // function mentioned in the document to be integrated
     public getManager(params: GetManager): any {
         return this.callContract(FUNCTIONS.GETMANAGER, params)
     }
@@ -68,6 +71,7 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETAMLSTATUS, params)
     }
 
+    //
     public getClients(params: GetClients): any {
         return this.callContract(FUNCTIONS.GETCLIENTS, params)
     }
