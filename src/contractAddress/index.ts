@@ -1,0 +1,18 @@
+const contractAddress = {
+    rinkeby: {
+        'Client': '0x6353753f0f7Bb7Dd652028C7D4648E7334B6C9d0',
+        'KYC': '0xE6Dc3758B151178E8f89c65dF223Ea22B1cC0bD7',
+        'System': '0x41bB86106CC5156d915052c3a3EFb4be70Ec544E',
+        'Holder': '0xd1A94033E4FD60710e5C07E271EC43623F6345a6',
+        'Ledger': '0x6dB45248266022FDC298a1723Dc4aD2bFd1Df9E8',
+        'Account': '0xC24703f780f3Cca59319Df50649C4AEC61824218',
+        'Via_USD cash': '0x840afd95EF3918aeFde7E8623eD84b9eA2A1Be63',
+        'Via_EUR cash': '0x8db5Bb08bB716c1489d6F642C29D5Fda1886e435',
+        'Via_INR cash': '0x86c578dF29ee75d6121d2eD675133260B67782E0',
+        'Via_ USD bond': '0x8aA01796fAc8d485ffDA150D89d380a60914443D',
+        'Via_EUR bond': '0xf17361d44D87175431f5fE64E6542f843399EB8b',
+        'Via_INR bond': '0xeBdBB741E23c192901eE85aB3644563C00cBf5b8'
+    }
+}
+
+export { contractAddress }

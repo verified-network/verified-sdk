@@ -9,22 +9,22 @@ enum STATUS {
 }
 
 interface SCResponse {
-    data:any;
+    data: any;
     status: STATUS;
     message: string;
 }
 
 export class VerifiedContract {
 
-    private signer:VerifiedWallet;
+    private signer: VerifiedWallet;
     private contract: ethers.Contract;
 
-    constructor(address:string, abi:string, signer:VerifiedWallet) {
+    constructor(address: string, abi: string, signer: VerifiedWallet) {
         this.signer = signer;
         this.contract = new ethers.Contract(address, abi, signer);
     }
 
-    private async validateInput(params:any) {
+    private async validateInput(fname: string, params: any) {
         return params;
     }
 
@@ -36,11 +36,11 @@ export class VerifiedContract {
         return response;
     }
 
-    private async callContract(functionName: string, params:any, ...args:any) {
+    async callContract(functionName: string, params?: any, ...args: any) {
         let res = <SCResponse>{};
         try {
             // Validate Input params
-            let validatedParams = this.validateInput(params);
+            let validatedParams = this.validateInput(functionName, params);
             // Sanitise params (like converting string to bytes before passing to smart contract)
             let sanitisedParams = this.sanitiseInput(validatedParams);
             // Actual Function call using Ethers.js
