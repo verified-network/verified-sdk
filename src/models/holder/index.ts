@@ -1,6 +1,14 @@
 interface GetAccountStatement {
-    _accountName:number
+    //uint256 statementIndex
+    _statementIndex: number
 }
 
 
-export { GetAccountStatement }
+interface CreateLedger {
+    //uint256 statementIndex
+    _ledgerName: string
+    _ledgerGroup: string
+}
+
+
+export { GetAccountStatement, CreateLedger }
