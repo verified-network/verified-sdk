@@ -1,5 +1,5 @@
 const contractAddress = {
-    rinkeby: {
+    ropsten: {
         'Client': '0x6353753f0f7Bb7Dd652028C7D4648E7334B6C9d0',
         'KYC': '0xE6Dc3758B151178E8f89c65dF223Ea22B1cC0bD7',
         'System': '0x41bB86106CC5156d915052c3a3EFb4be70Ec544E',
