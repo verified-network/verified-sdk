@@ -1,3 +1,8 @@
+interface CreateHolder {
+    _holderName: string
+    _accountHolder: string
+}
+
 interface GetAccountHolder {
     _accountCreatorAddress: string
 }
@@ -11,4 +16,4 @@ interface GetLedgerAccount {
     _accountLedgerAddress: string
 }
 
-export { GetAccountHolder, GetAccountLedger, GetLedgerAccount }
+export { CreateHolder, GetAccountHolder, GetAccountLedger, GetLedgerAccount }
