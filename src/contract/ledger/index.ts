@@ -15,7 +15,7 @@ export default class LedgerContract extends VerifiedContract {
     constructor(signer: VerifiedWallet) {
 
         const network: string = signer.provider._network.name
-        super(contractAddress[network].KYC, JSON.stringify(abi), signer)
+        super(contractAddress[network].Ledger, JSON.stringify(abi), signer)
     }
 
     /**
