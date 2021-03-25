@@ -4,7 +4,8 @@ import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/accounts/Client.json';
 import { contractAddress } from '../../contractAddress/index';
-import { Initialize,SetCustody,GetCustody,SetAccess,GetAccess,SetManager,GetManager ,IsRegistered,SetAMLStatus,GetAMLStatus,GetClients} from '../../models/client';
+import { DATATYPES } from "../index";
+import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients } from '../../models/client';
 
 enum FUNCTIONS {
     INITIALIZE = 'initialize',
@@ -25,10 +26,10 @@ export default class ClientContract extends VerifiedContract {
     constructor(signer: VerifiedWallet) {
 
         const network: string = signer.provider._network.name
-        super(contractAddress[network].KYC, JSON.stringify(abi), signer)
+        super(contractAddress[network].Client, JSON.stringify(abi), signer)
     }
 
-    public initialize(params: Initialize): any {
+    public initialize(_address: string): any {
         return this.callContract(FUNCTIONS.INITIALIZE, params)
     }
 
@@ -45,11 +46,11 @@ export default class ClientContract extends VerifiedContract {
      * We host our infra on Azure, so that might be preferable. This will enable google / facebook / twitter / Microsoft users to log in to our application. 
      * The SSO system will provide us with a token. Once logged in, the Verified Dapp should call the following solidity function. 
      * This should only be called after the user’s KYC is complete.
-     * @param {bool login} 
+     * @params (bool login) 
      * @returns 
      */
-    public setAccess(params: SetAccess): any {
-        return this.callContract(FUNCTIONS.SETACCESS, params)
+    public setAccess(_login: boolean, options?: { gasPrice, gasLimit }): any {
+        return this.callContract(FUNCTIONS.SETACCESS, _login, options)
     }
 
     public getAccess(params: GetAccess): any {
@@ -60,31 +61,31 @@ export default class ClientContract extends VerifiedContract {
      * Once a user’s wallet is set up, the Dapp should register the user for KYC (know your customer) process
      *  with the issuer. By default, Verified itself is the issuer. In the future, we may have country specific
      *  issuers. This is done by calling the following solidity contract function
-     * @param {address _client, address _manager} 
+     * @params (address _client, address _manager) 
      * @returns 
      */
-    public setManager(params: SetManager): any {
-        return this.callContract(FUNCTIONS.SETMANAGER, params)
+    public setManager(_clientAddress: string, _managerAddress: string, options?: { gasLimit, gasPrice }): any {
+        this.validateInput(DATATYPES.ADDRESS,_clientAddress)
+        return this.callContract(FUNCTIONS.SETMANAGER, _clientAddress, _managerAddress, options)
     }
 
     // function mentioned in the document to be integrated
-    public getManager(params: GetManager): any {
-        return this.callContract(FUNCTIONS.GETMANAGER, params)
+    public getManager(_clientAddress: string): any {
+        return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
     }
 
     public isRegistered(params: IsRegistered): any {
         return this.callContract(FUNCTIONS.ISREGISTERED, params)
     }
 
-
     /**
      * We are going to use Coinfirm’s anti-money laundering score (cscore in the json response) to decide whether to block a user or not.
      * Any cscore below 33 needs to be flagged to status equal to false in the following solidity function call.
-     * @param {(address _client, bool status} 
+     * @params (address _client, bool status) 
      * @returns 
      */
-    public setAMLStatus(params: SetAMLStatus): any {
-        return this.callContract(FUNCTIONS.SETAMLSTATUS, params)
+    public async setAMLStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
+        return this.callContract(FUNCTIONS.SETAMLSTATUS, _clientAddress, _status, options)
     }
 
     public getAMLStatus(params: GetAMLStatus): any {
@@ -94,11 +95,11 @@ export default class ClientContract extends VerifiedContract {
     /**
      * The following solidity function should be called passing the issuer’s address as parameter where,
      *  _status equal to false will fetch all investors whose KYC is not yet complete.
-     * @param {address _manager,bool _status} 
+     * @params (address _manager,bool _status) 
      * @returns {address[] memory}
      */
-    public getClients(params: GetClients): any {
-        return this.callContract(FUNCTIONS.GETCLIENTS, params)
+    public getClients(_managerAddress: string, _status: boolean, options?: { gasPrice, gasLimit }): any {
+        return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, _status, options)
     }
 
 }
