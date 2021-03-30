@@ -4,6 +4,7 @@ import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/accounts/Kyc.json';
 import { contractAddress } from '../../contractAddress/index';
+import { DATATYPES } from "../index";
 import { SetStatus, GetStatus, KycUpdate, SetFile, SetFATCA, SetCRS, SetPhotoID, SetVideoID, SetAddress } from '../../models/kyc';
 
 enum FUNCTIONS {
@@ -16,7 +17,13 @@ enum FUNCTIONS {
     SETPHOTOID = 'setPhotoID',
     SETVIDEOID = 'setVideoID',
     SETADDRESS = 'setAddress',
-    UPDATEKYCRECORD = 'updateKycRecord'
+    UPDATEKYCRECORD = 'updateKycRecord',
+    GETFILE = 'getFile',
+    GETFATCA = 'getFATCA',
+    GETCRS = 'getCRS',
+    GETPHOTOID = 'getPhotoID',
+    GETVIDEOID = 'getVideoID',
+    GETADDRESS = 'getAddress',
 }
 
 export default class KYCContract extends VerifiedContract {
@@ -43,7 +50,7 @@ export default class KYCContract extends VerifiedContract {
      * Note : KYC status needs to be ‘true’ for the investor to carry out any further operations in the Dapp.
      */
     public getStatus(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
-        return this.callContract(FUNCTIONS.GETSTATUS, params, options)
+        return this.callContract(FUNCTIONS.GETSTATUS, _clientAddress, options)
     }
 
     /**
@@ -53,8 +60,8 @@ export default class KYCContract extends VerifiedContract {
      * @returns bool
      * The investor facing Dapp should filter the event with the investor’s address mapped to ‘client’ in the event below.
      */
-    public kycUpdate(params: KycUpdate, options?: { gasPrice, gasLimit }): any {
-        return this.callContract(FUNCTIONS.KYCUPDATE, params, options)
+    public kycUpdate(_clientAddress, _status, options?: { gasPrice, gasLimit }): any {
+        return this.callContract(FUNCTIONS.KYCUPDATE, _clientAddress, _status, options)
     }
 
     /**
@@ -75,27 +82,51 @@ export default class KYCContract extends VerifiedContract {
         return response
     }
 
-    private async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
     }
 
-    private async setFATCA(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setFATCA(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
     }
 
-    private async setCRS(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setCRS(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
     }
 
-    private async setPhotoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setPhotoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
     }
 
-    private async setVideoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setVideoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
     }
 
-    private async setAddress(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, this.sanitiseInput('Byte32', _file), options)
+    public async setAddress(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    public async getFile(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETFILE, _clientAddress, options)
+    }
+
+    public async getFATCA(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETFATCA, _clientAddress, options)
+    }
+
+    public async getCRS(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETCRS, _clientAddress, options)
+    }
+
+    public async getPhotoID(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETPHOTOID, _clientAddress, options)
+    }
+
+    public async getVideoID(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETVIDEOID, _clientAddress, options)
+    }
+
+    public async getAddress(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETADDRESS, _clientAddress, options)
     }
 }
