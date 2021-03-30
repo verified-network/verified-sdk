@@ -28,8 +28,10 @@ let abi = [
     "function getAccess(address value)"
 ];
 
-const ClientAddress = '0x3e333E0009768E00C77984133D4f469CEC40407c';//process.env.CLIENT;
-const KYCAddress = '0xdB42E18CFd0a40A5CA5dcD3ACd92eF7dbC12053a';//process.env.KYC;
+//const ClientAddress = '0x2C437D88B749F304804d9E9441DA0884c96D8299';//put contract address on test net
+//const KYCAddress = '0x018899911E4D6fA1D7c289c51ba19754f4F5ed75';//put contract address on test net
+const ClientAddress = '0x9eDc1d7e795ECa4814aeBd6D2a6EdF0a14Ff6eD0'; //put contract address on ganache
+const KYCAddress = '0x0dd834AEAc6bBb9B057a5b547577446Fd41f0F50'; //put contract address on ganache
 
 module.exports = {
     // sets kyc for _client with _status
