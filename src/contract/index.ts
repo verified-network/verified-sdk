@@ -155,14 +155,16 @@ export class VerifiedContract {
     async callContract(functionName: string, ...args: any) {
         let res = <SCResponse>{};
         try {
+            let options = []
             // Sanitise params (like converting string to bytes before passing to smart contract)
             // let sanitisedParams = this.sanitiseInput(params);
-            // console.log('*************',sanitisedParams)
+            // console.log('*************', args)
+            const totalArguments = args.length
 
-            let options = args.splice(-1)
+            if (totalArguments > 1) options = args.splice(-1)
             console.log('options before', options);
 
-            if (options[0] === undefined) options = { options }
+            if (options == 0) options[0] = {}
             console.log('*********', ...args)
             console.log('options after', options);
             // let params = [...args];
@@ -176,8 +178,8 @@ export class VerifiedContract {
              * Actual Function call using Ethers.js
              */
 
+            console.log(...args, ...options)
             let fn = this.contract[functionName];
-            // console.log(params)
             let _res = await fn(...args, ...options);
             // if (_res.transactionHash !== undefined) res['response']['transactionHash'] = _res.transactionHash
 
@@ -196,9 +198,8 @@ export class VerifiedContract {
             console.error(error);
 
             res.status = STATUS.ERROR;
-            res.message = error.reason !== undefined ? error.reason : error.code;
+            res.message = (error.reason == undefined) || (error.reason == null) ? error.code : error.reason
             return res;
         }
     }
-
 }
