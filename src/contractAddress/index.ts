@@ -1,5 +1,5 @@
 const contractAddress = {
-    rinkeby: {
+    'ropsten': {
         'Client': '0x6353753f0f7Bb7Dd652028C7D4648E7334B6C9d0',
         'KYC': '0xE6Dc3758B151178E8f89c65dF223Ea22B1cC0bD7',
         'System': '0x41bB86106CC5156d915052c3a3EFb4be70Ec544E',
@@ -12,6 +12,20 @@ const contractAddress = {
         'Via_ USD bond': '0x8aA01796fAc8d485ffDA150D89d380a60914443D',
         'Via_EUR bond': '0xf17361d44D87175431f5fE64E6542f843399EB8b',
         'Via_INR bond': '0xeBdBB741E23c192901eE85aB3644563C00cBf5b8'
+    },
+    'rinkeby': {
+        'Client': '0x2C437D88B749F304804d9E9441DA0884c96D8299',
+        'KYC': '0x018899911E4D6fA1D7c289c51ba19754f4F5ed75',
+        'System': '0x4f1578c1F52401A600Cf000DD0aD3B19826baf5c',
+        'Holder': '0x781eFdf885B0fd8A6e0B0DA285cB0B4C4700f9A0',
+        'Ledger': '0x192FDC338C6994a61F98F933E885d323728db365',
+        'Account': '0xf5629A8Cd272CF10f8C299bCa0DfBD0Bb67D2C8d',
+        'Via_USD cash': '0x2643ea32A3c231327556739C2a88C1eA943A90A9',
+        'Via_EUR cash': '0x8D7365d51D6e2fF6BffEa00FDacdd96f86d147A0',
+        'Via_INR cash': '0x515bC2e51B0824759B3A64fD3659CCC5c8E35D96',
+        'Via_ USD bond': '0x1b2f81171300f3DCF70F2A3BC90fc307588212fC',
+        'Via_EUR bond': '0x55E7F13020F85bA8855c0639fD384e2CF319E30A',
+        'Via_INR bond': '0x00A4eF03Dd625F5778e2a17407952444B3A97008'
     }
 }
 
