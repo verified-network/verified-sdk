@@ -4,6 +4,7 @@ import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/accounts/System.json';
 import { contractAddress } from '../../contractAddress/index';
+import { DATATYPES } from "../index";
 import { CreateHolder, GetAccountHolder, GetAccountLedger, GetLedgerAccount } from '../../models/system';
 
 enum FUNCTIONS {
@@ -23,37 +24,37 @@ export default class SystemContract extends VerifiedContract {
 
     /**
      * When an investor or issuer account is set up, the Verified Dapp needs to set up its account. Where, the _holderName is the name or ID of the issuer or investor, and _accountHolder is the address of the issuer or investor. The accoun.older’s address can be obtained by calling on the Account system the following solidity function
-     * @param {bytes32 _holderName, address _accountHolder} 
+     * @param (bytes32 _holderName, address _accountHolder)
      * @returns {address}
      */
-    public createHolder(params: CreateHolder): any {
-        return this.callContract(FUNCTIONS.CREATEHOLDER, params)
+    public createHolder(_holderName: string, _accountHolder: string, options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.CREATEHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _holderName), _accountHolder, options)
     }
 
     /**
      * The account holder’s address can be obtained by calling on the Account system the following solidity function.
-     * @param {address accountCreator} 
+     * @param (address accountCreator)
      * @returns {address}
      */
-    public getAccountHolder(params: GetAccountHolder): any {
-        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, params)
+    public getAccountHolder(_accountCreatorAddress: string): any {
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _accountCreatorAddress)
     }
 
     /**
      * The account ledger address can be obtained by calling the following function on the Account system contract
-     * @param {address accountHolder} 
-     * @returns {address}
+     * @param (address accountHolder)
+     * @returns 
      */
-    public getAccountLedger(params: GetAccountLedger): any {
-        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, params)
+    public getAccountLedger(_accountHolderAddress: string): any {
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress)
     }
 
     /**
      * The created account address can be obtained by calling the following function on the Account system contract.
-     * @param {address accountLedger} 
-     * @returns {address}
+     * @param (address accountLedger) 
+     * @returns 
      */
-    public getLedgerAccount(params: GetLedgerAccount): any {
-        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, params)
+    public getLedgerAccount(_accountLedgerAddress: string): any {
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress)
     }
 }
