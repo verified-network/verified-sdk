@@ -27,7 +27,9 @@ export default class SystemContract extends VerifiedContract {
      * @param (bytes32 _holderName, address _accountHolder)
      * @returns {address}
      */
-    public createHolder(_holderName: string, _accountHolder: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async createHolder(_holderName: string, _accountHolder: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _holderName)
+        await this.validateInput(DATATYPES.STRING, _accountHolder)
         return this.callContract(FUNCTIONS.CREATEHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _holderName), _accountHolder, options)
     }
 
@@ -36,7 +38,8 @@ export default class SystemContract extends VerifiedContract {
      * @param (address accountCreator)
      * @returns {address}
      */
-    public getAccountHolder(_accountCreatorAddress: string): any {
+    public async getAccountHolder(_accountCreatorAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountCreatorAddress)
         return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _accountCreatorAddress)
     }
 
@@ -45,7 +48,8 @@ export default class SystemContract extends VerifiedContract {
      * @param (address accountHolder)
      * @returns 
      */
-    public getAccountLedger(_accountHolderAddress: string): any {
+    public async getAccountLedger(_accountHolderAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
         return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress)
     }
 
@@ -54,7 +58,8 @@ export default class SystemContract extends VerifiedContract {
      * @param (address accountLedger) 
      * @returns 
      */
-    public getLedgerAccount(_accountLedgerAddress: string): any {
+    public async getLedgerAccount(_accountLedgerAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
         return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress)
     }
 }
