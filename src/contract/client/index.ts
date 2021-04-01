@@ -49,7 +49,8 @@ export default class ClientContract extends VerifiedContract {
      * @params (bool login) 
      * @returns 
      */
-    public setAccess(_login: boolean, options?: { gasPrice, gasLimit }): any {
+    public async setAccess(_login: boolean, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.BOOLEAN, _login)
         return this.callContract(FUNCTIONS.SETACCESS, _login, options)
     }
 
@@ -64,8 +65,9 @@ export default class ClientContract extends VerifiedContract {
      * @params (address _client, address _manager) 
      * @returns 
      */
-    public setManager(_clientAddress: string, _managerAddress: string, options?: { gasLimit, gasPrice }): any {
-        this.validateInput(DATATYPES.ADDRESS,_clientAddress)
+    public async setManager(_clientAddress: string, _managerAddress: string, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _managerAddress)
         return this.callContract(FUNCTIONS.SETMANAGER, _clientAddress, _managerAddress, options)
     }
 
@@ -85,6 +87,8 @@ export default class ClientContract extends VerifiedContract {
      * @returns 
      */
     public async setAMLStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.BOOLEAN, _status)
         return this.callContract(FUNCTIONS.SETAMLSTATUS, _clientAddress, _status, options)
     }
 
@@ -98,7 +102,9 @@ export default class ClientContract extends VerifiedContract {
      * @params (address _manager,bool _status) 
      * @returns {address[] memory}
      */
-    public getClients(_managerAddress: string, _status: boolean, options?: { gasPrice, gasLimit }): any {
+    public async getClients(_managerAddress: string, _status: boolean, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _managerAddress)
+        await this.validateInput(DATATYPES.BOOLEAN, _status)
         return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, _status, options)
     }
 
