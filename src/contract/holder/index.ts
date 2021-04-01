@@ -45,8 +45,9 @@ export default class HolderContract extends VerifiedContract {
      * @param (uint256 statementIndex)
      * @returns [bytes32, bytes32, bytes16]
      */
-    public getAccountStatement(params: GetAccountStatement): any {
-        return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, params)
+    public async getAccountStatement(_statementIndex: GetAccountStatement): any {
+        await this.validateInput(DATATYPES.NUMBER, _statementIndex)
+        return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, _statementIndex)
     }
 
 
@@ -56,7 +57,9 @@ export default class HolderContract extends VerifiedContract {
      * @param (bytes32 _ledgerName, bytes32 _ledgerGroup)
      * @returns [address]
      */
-    public createLedger(_ledgerName: string, _ledgerGroup: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async createLedger(_ledgerName: string, _ledgerGroup: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _ledgerName)
+        await this.validateInput(DATATYPES.STRING, _ledgerGroup)
         return this.callContract(FUNCTIONS.CREATELEDGER, this.sanitiseInput(DATATYPES.BYTE32, _ledgerName), this.sanitiseInput(DATATYPES.BYTE32, _ledgerGroup), options)
     }
 }
