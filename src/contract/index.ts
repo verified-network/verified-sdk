@@ -1,5 +1,5 @@
 "use strict"
-import { ethers, utils, ContractInterface, BigNumber } from "ethers";
+import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 
 enum STATUS {
@@ -10,7 +10,10 @@ interface SCResponse {
     response: object;
     status: STATUS;
     message: string;
+    reason: string;
+    code: number
 }
+
 export enum DATATYPES {
     NUMBER = 'number',
     STRING = 'string',
@@ -19,66 +22,55 @@ export enum DATATYPES {
     BYTE32 = 'byte32',
     BIGNUMBER = 'bignumber'
 }
-
-// const options = { gasLimit: 250000, gasPrice: 900000 }
 export class VerifiedContract {
 
-    private signer: VerifiedWallet;
+    private signer: VerifiedWallet | Signer;
     private contract: ethers.Contract;
     private abiInterface: ContractInterface;
-    private dataEncoder: any;
-    private dataDecoder: any;
-    private fragments: any
-    private functionFragments: any
-    protected abiCoder: any
 
-    constructor(address: string, abi: string, signer: VerifiedWallet) {
+    constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
         this.signer = signer;
         this.abiInterface = new utils.Interface(abi)
-        this.fragments = this.abiInterface.fragments
-        this.functionFragments = this.abiInterface.fragments
         this.contract = new ethers.Contract(address, this.abiInterface, signer);
-        this.abiCoder = new utils.AbiCoder
-        this.dataEncoder = this.abiInterface.encodeFunctionData
-        this.dataDecoder = this.abiInterface.decodeFunctionData
     }
 
-    protected createEncoder(functionName: string, ...args: any) {
-        return this.dataEncoder(...args)
-    }
-
-    protected createDecoder(functionName: string, ...args: any) {
-        console.log('createDecoder', functionName, ...args)
-        return this.dataDecoder(functionName, args)
-    }
     /* ethers.utils.computeAddress( publicOrPrivateKey ) ⇒ string< Address >source
     Returns the address for publicOrPrivateKey. A public key may be compressed or uncompressed, and a private key will be converted automatically to a public key for the derivation. */
-    public validateInputParams(functionName: string, _params: any) {
-        console.log(_params);
-        console.log("****************");
-        // let inputLength = 2;
-        // let params = _params.splice(0, inputLength);
-        let overrideOptions = _params.splice(- 1);
-        return { _params, overrideOptions };
-    }
+    // public validateInputParams(functionName: string, _params: any) {
+    //     console.log(_params);
+    //     console.log("****************");
+    //     // let inputLength = 2;
+    //     // let params = _params.splice(0, inputLength);
+    //     let overrideOptions = _params.splice(- 1);
+    //     return { _params, overrideOptions };
+    // }
+
     protected async validateInput(type: DATATYPES, data: any) {
-        // try {
+        let error: string = '';
+        let status: boolean = true;
+
         switch (type) {
             case DATATYPES.ADDRESS:
-                return utils.isAddress(data) ? true : new Error("Invalid Address is this");
+                if (utils.isAddress(data)) error = "Invalid address value"
+                else status = false
+                break;
             case DATATYPES.NUMBER:
-            // return !Number.isNaN(parseInt(data))
+                if (data !== Number(data)) error = 'Invalid numerical value'
+                else status = false
+                break;
             case DATATYPES.BOOLEAN:
                 // const arr = [true, false, "true", "false"]
-                return typeof data === "boolean" ? true : new Error("Invalid Boolean value");
-            default:
-                return data
+                if (typeof data === "boolean") error = "Invalid boolean value"
+                else status = false
+                break;
+            case DATATYPES.STRING:
+                if ((typeof data === 'string' || data instanceof String)) error = 'Invalid string value'
+                else status = false
+                break;
         }
-        // } catch (error) {
-        //     console.error(error);
-        // }
+        if (!status) throw TypeError(error);
+        return status
     }
-
 
 
     protected sanitiseInput(type: DATATYPES, data: any) {
@@ -112,16 +104,18 @@ export class VerifiedContract {
         }
     }
 
-    protected async sanitiseOutput(type: DATATYPES, data: any) {
+    protected sanitiseOutput(type: DATATYPES, data: any) {
         switch (type) {
             case DATATYPES.BYTE32:
+                const len = data.length
+                let finalData = data
+                if (len == 34) finalData = `${data}00000000000000000000000000000000`
                 /**
                  * Returns the decoded string represented by the Bytes32 encoded data.
                  * @params (aBytesLike)
                  * @returns  string
                  */
-                return utils.parseBytes32String(data)
-
+                return utils.parseBytes32String(finalData)
             case DATATYPES.NUMBER:
                 /**
                  * Returns a string representation of value formatted with unit 
@@ -134,31 +128,40 @@ export class VerifiedContract {
             case DATATYPES.BIGNUMBER:
 
                 return data.toString()
+            case DATATYPES.STRING:
+                return utils.toUtf8String(data)
 
             default:
                 return data
-
         }
     }
 
+    /**
+     * Parses output to standard response
+     * @param data 
+     * @returns 
+     */
     private tempOutput(data: any): object {
-        console.log('tempOutput', data);
-
-        const response: any = {}
-        if (data.hash) response['hash'] = data.hash
-        if (data._isBigNumber) response['result'] = [data.toString()]
-        if (typeof data === 'boolean') response['result'] = [data]
-
+        const response: { hash: string, result: Array<any> } = { hash: '', result: [] }
+        data.forEach((element: any) => {
+            if (element.hash !== undefined || element.transactionHash) return response.hash = element.hash || element.transactionHash
+            if (element._isBigNumber) return response.result.push(element.toString())
+            if (utils.isAddress(element)) return response.result.push(element)
+            if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
+            if (typeof element === 'boolean' || (this.validateInput(DATATYPES.ADDRESS, element))) return response.result.push(element)
+        });
         return response
+    }
+    /** Converts any datatype to array */
+    private convertToArray(data: any) {
+        if (Array.isArray(data)) return data
+        else return [data]
     }
 
     async callContract(functionName: string, ...args: any) {
         let res = <SCResponse>{};
         try {
             let options = []
-            // Sanitise params (like converting string to bytes before passing to smart contract)
-            // let sanitisedParams = this.sanitiseInput(params);
-            // console.log('*************', args)
             const totalArguments = args.length
 
             if (totalArguments > 1) options = args.splice(-1)
@@ -167,9 +170,6 @@ export class VerifiedContract {
             if (options == 0) options[0] = {}
             console.log('*********', ...args)
             console.log('options after', options);
-            // let params = [...args];
-            // let options = params[params.length - 1];
-            // console.log(typeof options);
             // options = typeof options === 'object' || typeof options === 'undefined' ? params.pop() : undefined;
             // let {params, overrideOptions} = this.validateInputParams(functionName, _params);
             // console.log("Params:: ", params, " Options:: ", options);
@@ -177,28 +177,22 @@ export class VerifiedContract {
             /**
              * Actual Function call using Ethers.js
              */
-
-            console.log(...args, ...options)
             let fn = this.contract[functionName];
             let _res = await fn(...args, ...options);
-            // if (_res.transactionHash !== undefined) res['response']['transactionHash'] = _res.transactionHash
-
-            // console.log('_res', _res.toString())
-            // let _resp = this.createDecoder(functionName, _res)
-            // let _resp = _res.wait !== undefined ? await _res.wait(_res) : res;
-            // let _resp = await _res.wait(_res);
-            // console.log('_resp', _resp)
-            // let { hash, nonce, to, chainId, result = [] } = await this.sanitiseOutput(_res);
-
-            res.response = this.tempOutput(utils.deepCopy(_res))
+            console.log('_res', _res)
+            console.log('_res.value.toString()',_res.value.toString())
+            let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
+            console.log('_resp', _resp)
+            res.response = this.tempOutput(this.convertToArray(utils.deepCopy(_resp)))
             res.status = STATUS.SUCCESS;
             res.message = '';
             return res;
         } catch (error) {
             console.error(error);
-
             res.status = STATUS.ERROR;
-            res.message = (error.reason == undefined) || (error.reason == null) ? error.code : error.reason
+            res.reason = error.reason
+            res.message = error.message
+            res.code = error.code
             return res;
         }
     }
