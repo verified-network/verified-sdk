@@ -27,7 +27,7 @@ export default class LedgerContract extends VerifiedContract {
      * @returns 
      */
 
-    public createAccount(_accountName: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async createAccount(_accountName: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _accountName)
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.CREATEACCOUNT, this.sanitiseInput(DATATYPES.BYTE32, _accountName), this.sanitiseInput(DATATYPES.BYTE32, _currency), options)

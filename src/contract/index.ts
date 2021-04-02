@@ -184,9 +184,9 @@ export class VerifiedContract {
             let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
             console.log('_resp', _resp)
             res.response = this.tempOutput(this.convertToArray(utils.deepCopy(_resp)))
-            res.status = STATUS.SUCCESS;
-            res.message = '';
-            return res;
+            res.status = STATUS.SUCCESS
+            res.message = ''
+            return res
         } catch (error) {
             console.error(error);
             res.status = STATUS.ERROR;
@@ -195,5 +195,16 @@ export class VerifiedContract {
             res.code = error.code
             return res;
         }
+    }
+
+    protected getEvent(eventName: string, callback: any) {
+        let res = <SCResponse>{};
+        this.contract.on(eventName, (...data) => {
+            const dataToBeFormatted = data.splice(0, data.length - 1)
+            res.response = this.tempOutput(utils.deepCopy(dataToBeFormatted))
+            res.status = STATUS.SUCCESS;
+            res.message = '';
+            callback(res)
+        })
     }
 }

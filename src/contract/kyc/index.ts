@@ -25,7 +25,7 @@ enum FUNCTIONS {
     GETADDRESS = 'getAddress',
 }
 
-export default class KYCContract extends VerifiedContract  {
+export default class KYCContract extends VerifiedContract {
 
     constructor(signer: VerifiedWallet) {
 
@@ -62,8 +62,8 @@ export default class KYCContract extends VerifiedContract  {
      * @returns bool
      * The investor facing Dapp should filter the event with the investor’s address mapped to ‘client’ in the event below.
      */
-    public kycUpdate(_clientAddress, _status, options?: { gasPrice, gasLimit }): any {
-        return this.callContract(FUNCTIONS.KYCUPDATE, _clientAddress, _status, options)
+    public kycUpdate(callback: any): object {
+        this.getEvent(FUNCTIONS.KYCUPDATE, callback)
     }
 
     /**
