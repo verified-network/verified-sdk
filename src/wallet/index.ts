@@ -38,7 +38,7 @@ export class VerifiedWallet extends EtherWallet {
      * @returns signer object
      */
     static async web3Provider(object: any) {
-        if(!object.window.ethereum.isMetaMask) return new Error('Invalid object')
+        if(!object.isMetaMask) return new Error('Invalid object')
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(object)
         const signer = provider.getSigner()
