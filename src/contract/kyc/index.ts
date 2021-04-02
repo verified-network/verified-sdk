@@ -5,7 +5,6 @@ import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/accounts/Kyc.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
-import { SetStatus, GetStatus, KycUpdate, SetFile, SetFATCA, SetCRS, SetPhotoID, SetVideoID, SetAddress } from '../../models/kyc';
 
 enum FUNCTIONS {
     GETSTATUS = 'getStatus',
@@ -26,7 +25,7 @@ enum FUNCTIONS {
     GETADDRESS = 'getAddress',
 }
 
-export default class KYCContract extends VerifiedContract {
+export default class KYCContract extends VerifiedContract  {
 
     constructor(signer: VerifiedWallet) {
 
@@ -39,7 +38,9 @@ export default class KYCContract extends VerifiedContract {
      * @param (address _client, bool _status) 
      * @returns 
      */
-    public setStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
+    public async setStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.BOOLEAN, _status)
         return this.callContract(FUNCTIONS.SETSTATUS, _clientAddress, _status, options)
     }
 
@@ -49,7 +50,8 @@ export default class KYCContract extends VerifiedContract {
      * @returns bool
      * Note : KYC status needs to be ‘true’ for the investor to carry out any further operations in the Dapp.
      */
-    public getStatus(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
+    public async getStatus(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETSTATUS, _clientAddress, options)
     }
 
@@ -71,13 +73,21 @@ export default class KYCContract extends VerifiedContract {
      * @param (client: string, file: string, address: string, photoId: string, videoId: string, fatca: string, crs: string) 
      * @returns 
      */
-    public async updateKycRecord(client: string, file: string, address: string, photoId: string, videoId: string, fatca: string, crs: string, options?: { gasPrice, gasLimit }): void {
-        const setFile = this.setFile(client, file,)
-        const setAddress = this.setAddress(client, address)
-        const setPhotoID = this.setPhotoID(client, photoId)
-        const setVideoID = this.setVideoID(client, videoId)
-        const setFATCA = this.setFATCA(client, fatca)
-        const setCR = this.setCRS(client, crs)
+    public async updateKycRecord(_clientAddress: string, _file: string, address: string, photoId: string, videoId: string, fatca: string, crs: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        await this.validateInput(DATATYPES.STRING, address)
+        await this.validateInput(DATATYPES.STRING, photoId)
+        await this.validateInput(DATATYPES.STRING, videoId)
+        await this.validateInput(DATATYPES.STRING, fatca)
+        await this.validateInput(DATATYPES.STRING, crs)
+
+        const setFile = this.setFile(_clientAddress, _file,)
+        const setAddress = this.setAddress(_clientAddress, address)
+        const setPhotoID = this.setPhotoID(_clientAddress, photoId)
+        const setVideoID = this.setVideoID(_clientAddress, videoId)
+        const setFATCA = this.setFATCA(_clientAddress, fatca)
+        const setCR = this.setCRS(_clientAddress, crs)
         const response = await Promise.allSettled([setFile, setAddress, setPhotoID, setVideoID, setFATCA, setCR])
         return response
     }
