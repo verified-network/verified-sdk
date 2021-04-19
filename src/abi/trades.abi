@@ -1,0 +1,88 @@
+function createPool(address _security, address _cash, bytes32 _currency, bytes32 _settlementType) external;
+
+function registerSecurities(bytes32 _currencyCode, 
+                                bytes32 _dematAccountNo,
+                                SecurityType _stype, 
+                                bytes32 _isin, 
+                                bytes32 _company, 
+                                InstrumentType _itype,
+                                bytes32 _folio,
+                                bytes32 _fromCertificateNo,
+                                bytes32 _toCertificateNo,
+                                bytes32 _fromDistinctiveNo,
+                                bytes32 _toDistinctiveNo,
+                                uint _noOfCertificates,
+                                uint _faceValue,
+                                bytes32 _lockInReason,
+                                uint _lockInReleaseDate) external returns(bytes32);
+
+    function getRegistrationRequests(uint entries, bytes32 _currencyCode) external view returns(bytes32[] memory);
+
+    function getRegistrationRequest(bytes32 _ref) external view returns(bytes32 _dematAccountNo,
+                                                                        SecurityType _stype, 
+                                                                        bytes32 _isin, 
+                                                                        bytes32 _company, 
+                                                                        InstrumentType _itype,
+                                                                        //bytes32 _folio,
+                                                                        //bytes32 _fromCertificateNo,
+                                                                        //bytes32 _toCertificateNo,
+                                                                        //bytes32 _fromDistinctiveNo,
+                                                                        //bytes32 _toDistinctiveNo,
+                                                                        //uint _noOfCertificates,
+                                                                        //uint _faceValue,
+                                                                        bytes32 _lockInReason,
+                                                                        uint _lockInReleaseDate
+                                                                        //uint _registrationRequestDate
+                                                                        );
+
+    function setRegistrationStatus(bytes32 _ref, bytes32 _DPID, RegistrationStatus _status) external;
+
+    function getRegistrationStatus(bytes32 _ref) external view returns(bytes32 _DPID, RegistrationStatus _status);
+
+    function getRegistration(bytes32 _pregRef) external view returns(bytes32, bytes32, address);
+
+    function getDP(bytes32 _cpregRef) external view returns(bytes32);
+
+    function newOrder(  bytes32 _regRef,
+                        address _security, 
+                        address _cash, 
+                        uint256 _price,
+                        uint256 _trigger, 
+                        uint256 _qty, 
+                        OrderType _otype, 
+                        Order _order) external returns(bytes32);
+
+    function getOrders(uint entries) external returns(bytes32[] memory);
+
+    function getOrder(bytes32 ref) external view returns(uint256, uint256, uint256, OrderType, Order, uint, OrderStatus);
+
+    function cancelOrder(bytes32 ref) external returns(bool);
+
+    function editOrder( bytes32 ref,
+                        uint256 _price,
+                        uint256 _trigger, 
+                        uint256 _qty, 
+                        OrderType _otype, 
+                        Order _order) external returns(bool);
+
+    function getSecurityStatus() external view returns(Status);
+
+    function setSecurityStatus(Status _status) external;
+
+    function getOrderStatus(bytes32 _orderRef) external returns(OrderStatus);
+
+    function getSettlementRequests(uint entries, bytes32 dpid) external view returns(bytes32[] memory);
+
+    function getSettlementRequest(bytes32 ref) external view returns(   address _transferor,
+                                                                        address _transferee,
+                                                                        bytes32 _isin,
+                                                                        bytes32 _company,
+                                                                        bytes16 _consideration,
+                                                                        //uint256 _unitsToTransfer,
+                                                                        //uint _executionDate,
+                                                                        bytes32 _transferorDPID,
+                                                                        bytes32 _transfereeDPID);
+
+    function setSettlementStatus(bytes32 ref, bytes32 DPID, SettlementStatus status) external;
+
+    function getSettlementStatus(bytes32 ref) external view returns(SettlementStatus _status);
