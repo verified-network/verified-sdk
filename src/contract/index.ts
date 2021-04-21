@@ -180,7 +180,7 @@ export class VerifiedContract {
             let fn = this.contract[functionName];
             let _res = await fn(...args, ...options);
             console.log('_res', _res)
-            console.log('_res.value.toString()',_res.value.toString())
+            // console.log('_res.value.toString()',_res.value.toString())
             let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
             console.log('_resp', _resp)
             res.response = this.tempOutput(this.convertToArray(utils.deepCopy(_resp)))

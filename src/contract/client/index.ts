@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/Client.json';
+import { abi, networks } from '../../abi/accounts/Client.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients } from '../../models/client';
@@ -25,8 +25,8 @@ export default class ClientContract extends VerifiedContract {
 
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].Client, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        super(networks[chainId].address, JSON.stringify(abi), signer)
     }
 
     public initialize(_address: string): any {

@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/System.json';
+import { abi,networks } from '../../abi/accounts/System.json';
 import { contractAddress } from '../../contractAddress/index';
 import { TransferFrom } from '../../models/cash';
 
@@ -14,8 +14,8 @@ export default class CashContract extends VerifiedContract {
 
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].CashContract, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        super(networks[chainId].address, JSON.stringify(abi), signer)
     }
 
     /**

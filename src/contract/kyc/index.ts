@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/Kyc.json';
+import { abi, networks } from '../../abi/accounts/Kyc.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 
@@ -29,8 +29,8 @@ export default class KYCContract extends VerifiedContract {
 
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].KYC, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        super(networks[chainId].address, JSON.stringify(abi), signer)
     }
 
     /**

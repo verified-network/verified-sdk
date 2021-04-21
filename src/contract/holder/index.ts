@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/Holder.json';
+import { abi ,networks} from '../../abi/accounts/Holder.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { GetAccountStatement, CreateLedger } from '../../models/holder';
@@ -18,8 +18,8 @@ export default class HolderContract extends VerifiedContract {
 
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].Holder, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        super(networks[chainId].address, JSON.stringify(abi), signer)
     }
 
     /**
