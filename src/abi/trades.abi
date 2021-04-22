@@ -12,10 +12,10 @@
     function setRegistrationStatus(bytes32 _ref, bytes32 _DPID, bytes32 _dematAccountNo) external;
 
     function confirmSecurities( bytes32 _currencyCode, 
-                                SecurityType _stype, 
+                                bytes32 _stype, 
                                 bytes32 _isin, 
                                 bytes32 _company, 
-                                InstrumentType _itype,
+                                bytes32 _itype,
                                 uint _noOfCertificates,
                                 uint _faceValue,
                                 bytes32 _lockInReason,
@@ -23,9 +23,9 @@
 
     function getConfirmationRequests(uint entries, bytes32 _countryCode) external view returns(bytes32[] memory);
 
-    function getConfirmationRequest(bytes32 _ref) external view returns (bytes32[] memory, uint[] memory, address, SecurityType, InstrumentType);
+    function getConfirmationRequest(bytes32 _ref) external view returns (bytes32[] memory, uint[] memory, address);
 
-    function confirmSecurities(address _user, bytes32 _ref, Status _status) external;
+    function confirmSecurities(address _user, bytes32 _ref, bool _status) external;
 
     //PoolFactory.sol
 
@@ -42,8 +42,8 @@
                         uint256 _price,
                         uint256 _trigger, 
                         uint256 _qty, 
-                        OrderType _otype, 
-                        Order _order) external returns(bytes32);
+                        bytes32 _otype, 
+                        bytes32 _order) external returns(bytes32);
 
     function cancelOrder(bytes32 ref) external returns(bool);
 
@@ -51,14 +51,16 @@
                         uint256 _price,
                         uint256 _trigger, 
                         uint256 _qty, 
-                        OrderType _otype, 
-                        Order _order) external returns(bool);
+                        bytes32 _otype, 
+                        bytes32 _order) external returns(bool);
 
     //Trade.sol
 
     function getOrders(uint entries) external returns(bytes32[] memory);
 
     function getOrder(bytes32 ref) external view returns(uint256, uint256, uint256, bytes32, uint, bytes32);
+
+    function getTrade(bytes32 ref) external view returns(uint256, uint256, uint256);
 
     //PostTrade.sol
 
@@ -69,7 +71,7 @@
                                                                         uint256[] memory,
                                                                         bytes16 );
 
-    function setSettlementStatus(bytes32 ref, bytes32 _countryCode, SettlementStatus status) external;
+    function setSettlementStatus(bytes32 ref, bytes32 _countryCode, bool status) external;
 
 
 
