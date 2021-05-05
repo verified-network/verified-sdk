@@ -1,10 +1,6 @@
-// accounts system functions to be called on system contract
+    // accounts system functions to be called on system contract
 
     function createHolder(bytes32 _holderName, address _accountCreator) external;
-
-    function createLedger(bytes32 _ledgerName, bytes32 _ledgerGroup, address _accountCreator, address _accountHolder) external;
-
-    function createAccount(bytes32 _accountName, bytes32 _currency, address _accountCreator, address _accountHolder) external;
 
     //note : the three functions below only fetches the last created holders, ledgers, accounts respectively
 
@@ -14,11 +10,15 @@
 
     function getLedgerAccount(address accountLedger) external view returns(address);
 
+    //below three functions get list 
+
     function getAccountHolders(address accountCreator) external view returns(address[] memory);
 
     function getAccountLedgers(address accountHolder) external view returns(address[] memory);
 
     function getLedgerAccounts(address accountLedgerAddress) external view returns(address[] memory);
+
+    //below three functions get details
 
     function getHolderDetails(address holder) external view returns(bytes32);
 
@@ -26,7 +26,7 @@
 
     function getAccountDetails(address account) external view returns(bytes32, bytes32);
 
-// account holder functions to be called on holder address returned by system contract by calling createHolder()
+    // account holder functions to be called on holder address returned by system contract by calling createHolder()
 
     function updateAccountStatement() external;
 
@@ -36,15 +36,15 @@
 
     function createLedger(bytes32 _ledgerName, bytes32 _ledgerGroup) external;
 
-// account ledger functions to be called on ledger address returned by system contract by calling createLedger()
+    // account ledger functions to be called on ledger address returned by system contract by calling createLedger()
 
     function createAccount(bytes32 _accountName, bytes32 _currency) external;
 
-// account functions to be called on account address returned by system contract by calling createAccount()
+    // account functions to be called on account address returned by system contract by calling createAccount()
 
     function postEntry(address _counterParty, bytes32 _accountNumber, int256 _txAmount, bytes32 _txType, bytes32 _txDate, bytes32 _txDescription, bytes32 _vchType) external;
 
-    function getEntry(bytes32 _accountNumber, bytes32 _txDate) external view returns(address, address, bytes16, bytes32, bytes32, bytes32);
+    function getEntry(bytes32 _accountNumber, bytes32 _txDate) external view returns(address, address, bytes16, bytes32, bytes32, bytes32); 
 
     
     
