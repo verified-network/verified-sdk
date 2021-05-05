@@ -12,6 +12,14 @@ export class VerifiedWallet extends EtherWallet {
     }
 
     /**
+     *  Static method to generate mnemonic.
+     */
+    static generateMnemonic(): string {
+        return EtherWallet.createRandom()._mnemonic().phrase;
+        // return newWallet.mnemonic.phrase;
+    }
+
+    /**
      *  Static methods to create a new Wallet instance.
      */
     static createWallet(): VerifiedWallet {
@@ -27,7 +35,7 @@ export class VerifiedWallet extends EtherWallet {
         return new VerifiedWallet(this.parseMnemonics(newWallet.mnemonic.phrase, newWallet.mnemonic.path));
     }
 
-    setProvider(provider: Provider) {
+    public setProvider(provider: Provider) {
         return new VerifiedWallet(this.privateKey, provider);
     }
     /**
@@ -38,7 +46,7 @@ export class VerifiedWallet extends EtherWallet {
      * @returns signer object
      */
     static async web3Provider(object: any) {
-        if(!object.isMetaMask) return new Error('Invalid object')
+        if (!object.isMetaMask) return new Error('Invalid object')
         await window.ethereum.enable()
         const provider = new ethers.providers.Web3Provider(object)
         const signer = provider.getSigner()
