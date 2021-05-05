@@ -15,7 +15,7 @@ enum FUNCTIONS {
   GETCONFIRMATIONREQUESTS = 'getConfirmationRequests',
 }
 
-export default class IpreTradeContract extends VerifiedContract {
+export default class PreTradeContract extends VerifiedContract {
 
   constructor(signer: VerifiedWallet) {
 
