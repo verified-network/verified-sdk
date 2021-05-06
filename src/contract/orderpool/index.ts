@@ -35,7 +35,7 @@ export default class OrderPoolContract extends VerifiedContract {
    * @param ( bytes32 _ref, uint256 _price, uint256 _trigger, uint256 _qty, OrderType _otype, Order _order)
    * @returns (bool)
    */
-  public editOrder(_ref: string, _price: number, _trigger: number, _qty: number, _otype: string, _order: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async editOrder(_ref: string, _price: number, _trigger: number, _qty: number, _otype: string, _order: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.NUMBER, _price)
     await this.validateInput(DATATYPES.NUMBER, _trigger)
@@ -51,7 +51,7 @@ export default class OrderPoolContract extends VerifiedContract {
    * @param (bytes32 ref)
    * @returns (bool)
    */
-  public cancelOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async cancelOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, ref)
     return this.callContract(FUNCTIONS.CANCELORDER, ref, options)
   }

@@ -28,7 +28,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (bytes32 _countryCode)
    * @returns Returns nothing. Ensure _countryCode maps to http://country.io/names.json 
    */
-  public registerDematAccount(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async registerDematAccount(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
     return this.callContract(FUNCTIONS.REGISTERDEMATACCOUNT, _countryCode, options)
   }
@@ -39,7 +39,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (bytes32 _countryCode, uint entries) 
    * @returns (bytes32[] memory) array of registration request references
    */
-  public getRegistrationRequests(_countryCode: string, entries: number, options?: { gasPrice: number, gasLimit: number }): any {
+  public async getRegistrationRequests(_countryCode: string, entries: number, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _senderAddress)
     await this.validateInput(DATATYPES.NUMBER, entries)
     return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, _senderAddress, entries, options)
@@ -51,7 +51,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (bytes32 _ref)
    * @returns ( address user, bytes32 countryCode,bytes32 dematAccountNo, bytes32 DPID, uint registrationDate) Return variables are quite clear from function signature. DPID means depositary participant ID.
    */
-  public getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
     return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, _ref, options)
   }
@@ -61,7 +61,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (bytes32 _ref, bytes32 _DPID, bytes32 _dematAccountNo)
    * @returns
    */
-  public setRegistrationStatus(_ref: string, _DPID: string, _dematAccountNo: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async setRegistrationStatus(_ref: string, _DPID: string, _dematAccountNo: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _DPID)
     await this.validateInput(DATATYPES.STRING, _dematAccountNo)
@@ -73,7 +73,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param ( bytes32 _currencyCode,bytes32 _stype,bytes32 _isin,bytes32 _company,bytes32 _itype, uint _noOfCertificates,  uint _faceValue,bytes32 _lockInReason,uint _lockInReleaseDate)
    * @returns
    */
-  public confirmSecurities(_currencyCode: string, _stype: string, _isin: string, _company: string, _itype: string, _noOfCertificates: number, _faceValue: number, _lockInReason: string, _lockInReleaseDate: number, options?: { gasPrice: number, gasLimit: number }): any {
+  public async confirmSecurities(_currencyCode: string, _stype: string, _isin: string, _company: string, _itype: string, _noOfCertificates: number, _faceValue: number, _lockInReason: string, _lockInReleaseDate: number, options?: { gasPrice: number, gasLimit: number }): any {
 
     await this.validateInput(DATATYPES.STRING, _currencyCode)
     await this.validateInput(DATATYPES.STRING, _stype)
@@ -93,7 +93,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (uint entries, bytes32 _countryCode) 
    * @returns
    */
-  public getConfirmationRequests(entries: number, _countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async getConfirmationRequests(entries: number, _countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.NUMBER, entries)
     await this.validateInput(DATATYPES.STRING, _countryCode)
     return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _senderAddress, _countryCode, options)
@@ -105,7 +105,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (address _user, bytes32 _ref, bool _status) 
    * @returns
    */
-  public confirmSecurities(_user: string, _ref: string, _status: number, options?: { gasPrice: number, gasLimit: number }): any {
+  public async confirmSecurities(_user: string, _ref: string, _status: number, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _user)
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.NUMBER, _status)

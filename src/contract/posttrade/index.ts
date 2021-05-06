@@ -25,7 +25,7 @@ export default class PostTradeContract extends VerifiedContract {
      * @param (uint entries, bytes32 _countryCode, bytes32 dpid)
      * @returns (bytes32[] memory)
      */
-    public getSettlementRequests(_entries: number, _countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getSettlementRequests(_entries: number, _countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _entries)
         await this.validateInput(DATATYPES.STRING, _countryCode)
         await this.validateInput(DATATYPES.STRING, _dpid)
@@ -37,7 +37,7 @@ export default class PostTradeContract extends VerifiedContract {
      * @param (bytes32 ref)
      * @returns (address[memory, bytes32[] memory, uint256[] memory, bytes16 )
      */
-    public getSettlementRequest(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getSettlementRequest(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
         return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, ref, options)
     }
@@ -47,7 +47,7 @@ export default class PostTradeContract extends VerifiedContract {
      * @param (bytes32 ref, bytes32 _countryCode, SettlementStatus status)
      * @returns 
      */
-    public setSettlementStatus(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async setSettlementStatus(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
         return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, ref, options)
     }

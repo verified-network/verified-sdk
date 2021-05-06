@@ -23,7 +23,7 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
    * @param (bytes32 _currency, bytes32 _company, bytes32 _isin)
    * @returns Returns nothing. Ensure _countryCode maps to http://country.io/names.json 
    */
-  public getToken(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async getToken(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
     return this.callContract(FUNCTIONS.GETTOKEN, _countryCode, options)
   }

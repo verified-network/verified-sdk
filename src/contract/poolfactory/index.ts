@@ -23,7 +23,7 @@ export default class PoolFactoryContract extends VerifiedContract {
    * @param (address _security, address _cash)
    * @returns (address)
    */
-  public getPool(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async getPool(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
     return this.callContract(FUNCTIONS.GETPOOL, _countryCode, options)
   }

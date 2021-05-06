@@ -25,7 +25,7 @@ export default class BondContract extends VerifiedContract {
      * @param (bytes16 amount, address payer, bytes32 currency, address cashContract)
      * @returns boolean
      */
-    public requestIssue(_amount: number, _payerAddress: string, _currency: string, _cashContractAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async requestIssue(_amount: number, _payerAddress: string, _currency: string, _cashContractAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.STRING, _payerAddress)
         await this.validateInput(DATATYPES.STRING, _currency)
@@ -39,7 +39,7 @@ export default class BondContract extends VerifiedContract {
      * @param options 
      * @returns 
      */
-    public transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _senderAddress)
         await this.validateInput(DATATYPES.STRING, _recieverAddress)
         await this.validateInput(DATATYPES.NUMBER, _tokens)
