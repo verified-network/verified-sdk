@@ -24,7 +24,7 @@ export default class TradeContract extends VerifiedContract {
      * @param (uint entries)
      * @returns (bytes32[] memory)
      */
-    public getOrders(entries: number, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getOrders(entries: number, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, entries)
         return this.callContract(FUNCTIONS.GETORDERS, entries, options)
     }
@@ -34,7 +34,7 @@ export default class TradeContract extends VerifiedContract {
      * @param (bytes32 ref)
      * @returns (uint256, uint256, uint256, bytes32, uint, bytes32)
      */
-       public getOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+       public async getOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
         return this.callContract(FUNCTIONS.GETORDER, ref, options)
     }
