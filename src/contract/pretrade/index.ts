@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/trades/PreTrade.json  ';
+import { abi, networks } from '../../abi/trades/PreTrade.json';
 import { DATATYPES } from "../index";
 
 
