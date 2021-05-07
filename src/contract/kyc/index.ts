@@ -23,6 +23,7 @@ enum FUNCTIONS {
     GETPHOTOID = 'getPhotoID',
     GETVIDEOID = 'getVideoID',
     GETADDRESS = 'getAddress',
+    GETKYC = 'getKyc'
 }
 
 export default class KYCContract extends VerifiedContract {
@@ -139,4 +140,15 @@ export default class KYCContract extends VerifiedContract {
     public async getAddress(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         return this.callContract(FUNCTIONS.GETADDRESS, _clientAddress, options)
     }
+
+    /**
+      * Get KYC details [callable by client or its manager or KYCAML submanager
+      * @param (address _client) 
+      * @returns (bytes32, bytes32, bytes32, bytes32, bytes32, bytes32)Returns KYC_file, fatca_declaration, crs_declaration, photo_id, video_id, address_proof
+      */
+    public async getKyc(_client: string, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETKYC, _client, options)
+    }
+
 }

@@ -2,12 +2,13 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi,networks } from '../../abi/accounts/System.json';
+import { abi, networks } from '../../abi/accounts/System.json';
 import { contractAddress } from '../../contractAddress/index';
 import { TransferFrom } from '../../models/cash';
 
 enum FUNCTIONS {
     TRANSFERFROM = 'transferFrom',
+    PAYIN = 'payIn'
 }
 
 export default class CashContract extends VerifiedContract {
@@ -26,10 +27,23 @@ export default class CashContract extends VerifiedContract {
      * @param (address sender, address receiver, uint256 tokens)
      * @returns boolean
      */
-     public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _senderAddress)
         await this.validateInput(DATATYPES.STRING, _recieverAddress)
         await this.validateInput(DATATYPES.NUMBER, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
+    }
+
+    /**
+     * Request pay out [callable by manager]
+     * @param (uint256 _tokens, address _payer, bytes32 _currency, address _sender)
+     * @returns boolean
+     */
+    public async payIn(_tokens: number, _payer: string, _currency: string, _sender: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        await this.validateInput(DATATYPES.STRING, _recieverAddress)
+        await this.validateInput(DATATYPES.STRING, _currency)
+        await this.validateInput(DATATYPES.STRING, _sender)
+        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, _currency, _sender, options)
     }
 }

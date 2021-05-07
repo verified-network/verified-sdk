@@ -18,7 +18,10 @@ enum FUNCTIONS {
     ISREGISTERED = 'isRegistered',
     SETAMLSTATUS = 'setAMLStatus',
     GETAMLSTATUS = 'getAMLStatus',
-    GETCLIENTS = 'getClients'
+    GETCLIENTS = 'getClients',
+    GETROLE = 'getRole',
+    REMOVEROLE = 'removeRole',
+    ADDROLE = 'addRole'
 }
 
 export default class ClientContract extends VerifiedContract {
@@ -71,7 +74,12 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETMANAGER, _clientAddress, _managerAddress, options)
     }
 
-    // function mentioned in the document to be integrated
+    /**
+     * Get manager [callable by both client and manager
+     * @param _clientAddress 
+     * @returns address
+     */
+
     public getManager(_clientAddress: string): any {
         return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
     }
@@ -108,4 +116,39 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, _status, options)
     }
 
+    /**
+    * Get sub-managers for role [callable only by manager]
+    * @params (bytes32 _role, bytes32 _country, uint _entries)
+    * @returns {address[] memory}
+    */
+    public async getRole(_role: string, _country: string, _entries: number, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, _role)
+        await this.validateInput(DATATYPES.STRING, _country)
+        await this.validateInput(DATATYPES.NUMBER, _entries)
+        return this.callContract(FUNCTIONS.GETROLE, _role, _country, _entries, options)
+    }
+
+    /**
+   * Remove sub-manager from role [callable only by manager]
+   * @params (address _submanager, bytes32 _country, bytes32 _role)
+   * @returns 
+   */
+    public async removeRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _submanager)
+        await this.validateInput(DATATYPES.STRING, _country)
+        await this.validateInput(DATATYPES.NUMBER, _role)
+        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, _country, _role, options)
+    }
+
+    /**
+     * Create role for sub-manager [callable only by manager
+     * @params (address _submanager, bytes32 _country, bytes32 _role)
+     * @returns 
+     */
+    public async addRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _submanager)
+        await this.validateInput(DATATYPES.STRING, _country)
+        await this.validateInput(DATATYPES.NUMBER, _role)
+        return this.callContract(FUNCTIONS.ADDROLE, _submanager, _country, _role, options)
+    }
 }
