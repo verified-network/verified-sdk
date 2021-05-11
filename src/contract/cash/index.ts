@@ -2,9 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/accounts/System.json';
-import { contractAddress } from '../../contractAddress/index';
-import { TransferFrom } from '../../models/cash';
+import { abi, networks } from '../../abi/payments/Cash.json';
 
 enum FUNCTIONS {
     TRANSFERFROM = 'transferFrom',
@@ -12,11 +10,14 @@ enum FUNCTIONS {
 }
 
 export default class CashContract extends VerifiedContract {
-
+    private contractAddr: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddr = address
     }
 
     /**
@@ -24,11 +25,41 @@ export default class CashContract extends VerifiedContract {
      * For example, an investor can request a USD cash token by paying in a EUR cash token.
      * where, the sender is the address of cash token paid in, the receiver is the address of the cash token converted to
      * and the tokens parameter is a numeric specifying number of cash tokens paid in.
-     * @param (address sender, address receiver, uint256 tokens)
+     * @param (address sender, address _recieverAddress, uint256 tokens)
      * @returns boolean
      */
-    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _senderAddress)
+    public async transferFromUserToCash(_senderAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
+        // await this.validateInput(DATATYPES.STRING, _recieverAddress)
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, this.contractAddr, _tokens, options)
+    }
+
+    /**
+    * An investor can also request cash tokens from Verified by paying in another cash token. 
+    * For example, an investor can request a USD cash token by paying in a EUR cash token.
+    * where, the sender is the address of cash token paid in, the receiver is the address of the cash token converted to
+    * and the tokens parameter is a numeric specifying number of cash tokens paid in.
+    * @param (address _senderAddress, address receiver, uint256 tokens)
+    * @returns boolean
+    */
+    public async transferFromCashToUser(_recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+        // await this.validateInput(DATATYPES.STRING, _senderAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        return this.callContract(FUNCTIONS.TRANSFERFROM, this.contractAddr, _recieverAddress, _tokens, options)
+    }
+
+    /**
+    * An investor can also request cash tokens from Verified by paying in another cash token. 
+    * For example, an investor can request a USD cash token by paying in a EUR cash token.
+    * where, the sender is the address of cash token paid in, the receiver is the address of the cash token converted to
+    * and the tokens parameter is a numeric specifying number of cash tokens paid in.
+    * @param (address sender, address receiver, uint256 tokens)
+    * @returns boolean
+    */
+    public async transferFromUserToUser(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.STRING, _recieverAddress)
         await this.validateInput(DATATYPES.NUMBER, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
@@ -41,9 +72,9 @@ export default class CashContract extends VerifiedContract {
      */
     public async payIn(_tokens: number, _payer: string, _currency: string, _sender: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _tokens)
-        await this.validateInput(DATATYPES.STRING, _recieverAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
         await this.validateInput(DATATYPES.STRING, _currency)
-        await this.validateInput(DATATYPES.STRING, _sender)
-        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, _currency, _sender, options)
+        await this.validateInput(DATATYPES.ADDRESS, _sender)
+        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), _sender, options)
     }
 }

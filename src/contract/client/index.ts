@@ -81,6 +81,7 @@ export default class ClientContract extends VerifiedContract {
      */
 
     public getManager(_clientAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
     }
 
@@ -100,8 +101,14 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETAMLSTATUS, _clientAddress, _status, options)
     }
 
-    public getAMLStatus(params: GetAMLStatus): any {
-        return this.callContract(FUNCTIONS.GETAMLSTATUS, params)
+    /**
+    * Get KYC status [callable by client or its manager or KYCAML submanager 
+    * @params (address _client) 
+    * @returns bool
+    */
+    public async getAMLStatus(_client: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETAMLSTATUS, _client)
     }
 
     /**
@@ -125,7 +132,7 @@ export default class ClientContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _role)
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.NUMBER, _entries)
-        return this.callContract(FUNCTIONS.GETROLE, _role, _country, _entries, options)
+        return this.callContract(FUNCTIONS.GETROLE, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), _entries, options)
     }
 
     /**

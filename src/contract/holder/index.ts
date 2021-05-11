@@ -25,6 +25,7 @@ export default class HolderContract extends VerifiedContract {
     /**
      * The number of entries in the statement can be fetched using the following solidity function.
      * @returns [uint256]
+     * Returns number of ledger entries for account holder
      */
     public getEntries(): number {
         return this.callContract(FUNCTIONS.GETENTRIES)
@@ -61,5 +62,16 @@ export default class HolderContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _ledgerName)
         await this.validateInput(DATATYPES.STRING, _ledgerGroup)
         return this.callContract(FUNCTIONS.CREATELEDGER, this.sanitiseInput(DATATYPES.BYTE32, _ledgerName), this.sanitiseInput(DATATYPES.BYTE32, _ledgerGroup), options)
+    }
+
+     /**
+     * Get list of transactions for account holder [callable by KYC passed client
+     * @param (uint256 _txDate)
+     * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
+     * _txDate is unix timestamp for date on and which transactions are returned. 
+     * Arrays returned are for – party, amount, transaction type, transaction date, description
+     */
+      public getEntriesByDate(): number {
+        return this.callContract(FUNCTIONS.GETENTRIES)
     }
 }
