@@ -25,7 +25,7 @@ export default class OrderPoolContract extends VerifiedContract {
    * @param (address _security, address _cash, uint256 _price, uint256 _trigger, uint256 _qty, bytes32 _orderType, bytes32 _order)
    * @returns (bytes32)
    */
-  public newOrder(_security: string, _cash: string, _price: string, _trigger: string, _qty: string, _orderType: string, _order: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async newOrder(_security: string, _cash: string, _price: string, _trigger: string, _qty: string, _orderType: string, _order: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.ADDRESS, _security)
     await this.validateInput(DATATYPES.ADDRESS, _cash)
     await this.validateInput(DATATYPES.STRING, _price)
