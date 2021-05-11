@@ -20,6 +20,7 @@ export enum DATATYPES {
     ADDRESS = 'address',
     BOOLEAN = 'boolean',
     BYTE32 = 'byte32',
+    BYTE16 = 'byte16',
     BIGNUMBER = 'bignumber'
 }
 export class VerifiedContract {
@@ -84,6 +85,14 @@ export class VerifiedContract {
                      * @returns ⇒ string
                      */
                     return utils.formatBytes32String(data)
+                case DATATYPES.BYTE16:
+                    /**
+                     * Returns a bytes16 string representation of text. 
+                     * If the length of text exceeds 31 bytes, it will throw an error.
+                     * @params (text)
+                     * @returns ⇒ string
+                     */
+                    return utils.formatBytes32String(data).slice(16)
                 case DATATYPES.NUMBER:
                     /**
                      * Returns a BigNumber representation of value, parsed with unit digits 
