@@ -27,8 +27,8 @@ export default class TradeContract extends VerifiedContract {
      * Originator be set to ‘false’ if orders to fetch are not created by user, 
      * and to ‘true’ if orders to fetch are created by user
      */
-    public async getOrders(entries: number, originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, entries)
+    public async getOrders(entries: string, originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, entries)
         await this.validateInput(DATATYPES.BOOLEAN, originator)
         return this.callContract(FUNCTIONS.GETORDERS, entries, originator)
     }
@@ -39,15 +39,20 @@ export default class TradeContract extends VerifiedContract {
    * @returns (uint256, uint256, uint256, bytes32, uint, bytes32)
    * Returns array of bytes32[currency,security name, buy/sell order, status], and array of uint[price, trigger, quantity, execution date]
    */
-    public async getOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getOrder(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.GETORDER, ref)
+        return this.callContract(FUNCTIONS.GETORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref))
     }
 
-
-    public async getTrade(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    /**
+     * View trade [callable by user]
+     * @param (bytes32 ref)
+     * @returns (bytes16, bytes16)
+     * Returns last bid price, ask price.
+     */
+    public async getTrade(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.GETTRADE, ref)
+        return this.callContract(FUNCTIONS.GETTRADE, this.sanitiseInput(DATATYPES.BYTE32, _ref))
     }
 
 }

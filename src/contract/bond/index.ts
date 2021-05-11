@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/accounts/System.json';
+import { abi, networks } from '../../abi/payments/Bond.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 
@@ -42,10 +42,10 @@ export default class BondContract extends VerifiedContract {
      * @param (address _sender, address _receiver, uint256 _tokens) 
      * @returns 
      */
-    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
-        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        await this.validateInput(DATATYPES.STRING, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
     }
 
@@ -57,32 +57,32 @@ export default class BondContract extends VerifiedContract {
      * @param (address _sender, address _receiver, uint256 _tokens) 
    * @returns bool
    */
-    public async transferToken(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferToken(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
-        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        await this.validateInput(DATATYPES.STRING, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERTOKEN, _senderAddress, _recieverAddress, _tokens, options)
     }
 
     /**
     * Fetch bonds issued with their balance amounts to redeem [callable by client]
     * entries is count of results to return. Address[] has issued bond addresses, and uint[] has issued amount
-    * @param (uint entries)
+    * @param (uint256 entries)
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondIssues(_entries: number, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _entries)
+    public async getBondIssues(_entries: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _entries)
         return this.callContract(FUNCTIONS.GETBONDISSUES, _entries, options)
     }
 
     /**
     * Fetch bonds purchased with their purchased amounts [callable by client]
     * entries is count of results to return. Address[] has purchased bond addresses, and uint[] has purchased amount
-    * @param (uint entries)
+    * @param (uin256 entries)
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondPurchases(_entries: number, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _entries)
+    public async getBondPurchases(_entries: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _entries)
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _entries, options)
     }
 

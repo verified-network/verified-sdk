@@ -31,7 +31,6 @@ export default class AccountContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _accountAddress)
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
-
         return this.callContract(FUNCTIONS.POSTENTRY, _accountAddress, _accountNumber, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), this.sanitiseInput(DATATYPES.BYTE32, _txDate), this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
     }
 
@@ -45,6 +44,6 @@ export default class AccountContract extends VerifiedContract {
 
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.STRING, _txDate)
-        return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber) , this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
+        return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber), this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
     }
 }

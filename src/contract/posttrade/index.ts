@@ -25,31 +25,33 @@ export default class PostTradeContract extends VerifiedContract {
      * @param (uint entries, bytes32 _countryCode, bytes32 dpid)
      * @returns (bytes32[] memory)
      */
-    public async getSettlementRequests(_entries: number, _countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _entries)
+    public async getSettlementRequests(_entries: string, _countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _entries)
         await this.validateInput(DATATYPES.STRING, _countryCode)
         await this.validateInput(DATATYPES.STRING, _dpid)
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, _entries, _countryCode, _dpid, options)
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, _entries, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), this.sanitiseInput(DATATYPES.BYTE32, _dpid), options)
     }
 
     /**
      * Get settlement request [callable by manager on PostTrade.sol]
-     * @param (bytes32 ref)
+     * @param (bytes32 _ref)
      * @returns (address[memory, bytes32[] memory, uint256[] memory, bytes16 )
      */
-    public async getSettlementRequest(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, ref, options)
+    public async getSettlementRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _ref)
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 
     /**
      * Set settlement status [callable by manager on PostTrade.sol]
-     * @param (bytes32 ref, bytes32 _countryCode, SettlementStatus status)
+     * @param (bytes32 _ref, bytes32 _countryCode, bytes32 SettlementStatus)
      * @returns 
      */
-    public async setSettlementStatus(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, ref, options)
+    public async setSettlementStatus(_ref: string, _countryCode: string, _settlementStatus: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _ref)
+        await this.validateInput(DATATYPES.STRING, _countryCode)
+        await this.validateInput(DATATYPES.STRING, _settlementStatus)
+        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _countryCode), this.sanitiseInput(DATATYPES.BYTE32, _settlementStatus), options)
     }
 
 }

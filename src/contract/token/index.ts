@@ -25,10 +25,10 @@ export default class TokenContract extends VerifiedContract {
      * @param (address _sender, address _receiver, uint256 _tokens) 
    * @returns bool
    */
-    public async transferToken(_senderAddress: string, _recieverAddress: string, _tokens: number, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _senderAddress)
-        await this.validateInput(DATATYPES.STRING, _recieverAddress)
-        await this.validateInput(DATATYPES.NUMBER, _tokens)
+    public async transferToken(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
+        await this.validateInput(DATATYPES.STRING, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERTOKEN, _senderAddress, _recieverAddress, _tokens, options)
     }
 }

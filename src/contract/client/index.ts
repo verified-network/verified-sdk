@@ -57,7 +57,7 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETACCESS, _login, options)
     }
 
-    public getAccess(params: GetAccess): any {
+    public async getAccess(params: GetAccess): any {
         return this.callContract(FUNCTIONS.GETACCESS, params)
     }
 
@@ -80,12 +80,12 @@ export default class ClientContract extends VerifiedContract {
      * @returns address
      */
 
-    public getManager(_clientAddress: string): any {
+    public async getManager(_clientAddress: string): any {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
     }
 
-    public isRegistered(params: IsRegistered): any {
+    public async isRegistered(params: IsRegistered): any {
         return this.callContract(FUNCTIONS.ISREGISTERED, params)
     }
 
@@ -128,10 +128,10 @@ export default class ClientContract extends VerifiedContract {
     * @params (bytes32 _role, bytes32 _country, uint _entries)
     * @returns {address[] memory}
     */
-    public async getRole(_role: string, _country: string, _entries: number, options?: { gasPrice, gasLimit }): any {
+    public async getRole(_role: string, _country: string, _entries: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, _role)
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _entries)
+        await this.validateInput(DATATYPES.STRING, _entries)
         return this.callContract(FUNCTIONS.GETROLE, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), _entries, options)
     }
 

@@ -14,6 +14,8 @@ import PostTradeContract from './contract/posttrade';
 import PreTradeContract from './contract/pretrade';
 import SecuritiesRegistryContract from './contract/securitiesregistry';
 import TradeContract from './contract/trade';
+import FactoryContract from './contract/factory';
+import TokenContract from './contract/token';
 
 
 
@@ -34,4 +36,6 @@ export {
     PreTradeContract,
     SecuritiesRegistryContract,
     TradeContract,
+    FactoryContract,
+    TokenContract
 }

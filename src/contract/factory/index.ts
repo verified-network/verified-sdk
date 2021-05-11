@@ -11,7 +11,7 @@ enum FUNCTIONS {
 }
 
 export default class FactoryContract extends VerifiedContract {
-    private contractAddr: string
+    public contractAddr: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
@@ -35,10 +35,10 @@ export default class FactoryContract extends VerifiedContract {
     * @param (uint256 n)
     * @returns boolean
     */
-    public async getToken(_tokenAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getToken(_n: string, options?: { gasPrice: number, gasLimit: number }): any {
         // await this.validateInput(DATATYPES.STRING, _senderAddress)
-        await this.validateInput(DATATYPES.NUMBER, _tokenAddress)
-        return this.callContract(FUNCTIONS.GETTOKEN, _tokenAddress)
+        await this.validateInput(DATATYPES.STRING, _n)
+        return this.callContract(FUNCTIONS.GETTOKEN, _n)
     }
 
     /**
