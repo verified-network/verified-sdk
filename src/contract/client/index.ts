@@ -136,8 +136,8 @@ export default class ClientContract extends VerifiedContract {
     public async removeRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _role)
-        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, _country, _role, options)
+        await this.validateInput(DATATYPES.STRING, _role)
+        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
     }
 
     /**
@@ -148,7 +148,7 @@ export default class ClientContract extends VerifiedContract {
     public async addRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _role)
-        return this.callContract(FUNCTIONS.ADDROLE, _submanager, _country, _role, options)
+        await this.validateInput(DATATYPES.STRING, _role)
+        return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
     }
 }
