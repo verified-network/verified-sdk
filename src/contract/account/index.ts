@@ -44,6 +44,7 @@ export default class AccountContract extends VerifiedContract {
     public async getEntry(_accountNumber, _txDate, options?: { gasLimit, gasPrice }): any {
 
         await this.validateInput(DATATYPES.STRING, _accountNumber)
-        return this.callContract(FUNCTIONS.GETENTRY, _accountNumber, this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
+        await this.validateInput(DATATYPES.STRING, _txDate)
+        return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber) , this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
     }
 }
