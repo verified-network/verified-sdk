@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi ,networks} from '../../abi/accounts/Holder.json';
+import { abi, networks } from '../../abi/accounts/Holder.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { GetAccountStatement, CreateLedger } from '../../models/holder';
@@ -15,11 +15,14 @@ enum FUNCTIONS {
 }
 
 export default class HolderContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
@@ -64,14 +67,14 @@ export default class HolderContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.CREATELEDGER, this.sanitiseInput(DATATYPES.BYTE32, _ledgerName), this.sanitiseInput(DATATYPES.BYTE32, _ledgerGroup), options)
     }
 
-     /**
-     * Get list of transactions for account holder [callable by KYC passed client
-     * @param (uint256 _txDate)
-     * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
-     * _txDate is unix timestamp for date on and which transactions are returned. 
-     * Arrays returned are for – party, amount, transaction type, transaction date, description
-     */
-      public getEntriesByDate(): number {
+    /**
+    * Get list of transactions for account holder [callable by KYC passed client
+    * @param (uint256 _txDate)
+    * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
+    * _txDate is unix timestamp for date on and which transactions are returned. 
+    * Arrays returned are for – party, amount, transaction type, transaction date, description
+    */
+    public getEntriesByDate(): number {
         return this.callContract(FUNCTIONS.GETENTRIES)
     }
 }

@@ -11,14 +11,14 @@ enum FUNCTIONS {
 }
 
 export default class FactoryContract extends VerifiedContract {
-    public contractAddr: string
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
         const address = networks[chainId].address
         super(address, JSON.stringify(abi), signer)
 
-        this.contractAddr = address
+        this.contractAddress = address
     }
 
     /**

@@ -25,11 +25,14 @@ enum FUNCTIONS {
 }
 
 export default class ClientContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     public initialize(_address: string): any {
@@ -128,11 +131,9 @@ export default class ClientContract extends VerifiedContract {
     * @params (bytes32 _role, bytes32 _country, uint _entries)
     * @returns {address[] memory}
     */
-    public async getRole(_role: string, _country: string, _entries: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, _role)
+    public async getRole(_country: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.STRING, _entries)
-        return this.callContract(FUNCTIONS.GETROLE, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), _entries, options)
+        return this.callContract(FUNCTIONS.GETROLE, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
     }
 
     /**

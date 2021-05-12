@@ -15,11 +15,14 @@ enum FUNCTIONS {
 }
 
 export default class BondContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**

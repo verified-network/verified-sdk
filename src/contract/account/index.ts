@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/accounts/System.json';
+import { abi, networks } from '../../abi/accounts/Account.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { PostEntry } from '../../models/account';
@@ -13,11 +13,14 @@ enum FUNCTIONS {
 }
 
 export default class AccountContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
