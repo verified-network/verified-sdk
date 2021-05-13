@@ -73,8 +73,7 @@ export default class BondContract extends VerifiedContract {
     * @param (uint256 entries)
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondIssues(_entries: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _entries)
+    public async getBondIssues(): any {
         return this.callContract(FUNCTIONS.GETBONDISSUES, _entries, options)
     }
 
@@ -84,8 +83,7 @@ export default class BondContract extends VerifiedContract {
     * @param (uin256 entries)
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondPurchases(_entries: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _entries)
+    public async getBondPurchases(): any {
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _entries, options)
     }
 

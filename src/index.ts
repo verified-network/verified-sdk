@@ -16,6 +16,7 @@ import SecuritiesRegistryContract from './contract/securitiesregistry';
 import TradeContract from './contract/trade';
 import FactoryContract from './contract/factory';
 import TokenContract from './contract/token';
+import { utils } from "ethers";
 
 
 
@@ -37,5 +38,6 @@ export {
     SecuritiesRegistryContract,
     TradeContract,
     FactoryContract,
-    TokenContract
+    TokenContract,
+    utils
 }
