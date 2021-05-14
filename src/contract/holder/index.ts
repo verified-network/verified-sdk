@@ -11,7 +11,8 @@ enum FUNCTIONS {
     GETENTRIES = 'getEntries',
     UPDATEACCOUNTSTATEMENT = 'updateAccountStatement',
     GETACCOUNTSTATEMENT = 'getAccountStatement',
-    CREATELEDGER = 'createLedger'
+    CREATELEDGER = 'createLedger',
+    GETTRANSACTIONS = 'getTransactions'
 }
 
 export default class HolderContract extends VerifiedContract {
@@ -74,7 +75,8 @@ export default class HolderContract extends VerifiedContract {
     * _txDate is unix timestamp for date on and which transactions are returned. 
     * Arrays returned are for – party, amount, transaction type, transaction date, description
     */
-    public getEntriesByDate(): number {
-        return this.callContract(FUNCTIONS.GETENTRIES)
+    public getTransactions(_txDate: string): number {
+        await this.validateInput(DATATYPES.STRING, _txDate)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS)
     }
 }
