@@ -77,6 +77,6 @@ export default class HolderContract extends VerifiedContract {
     */
     public async getTransactions(_txDate: string): number {
         await this.validateInput(DATATYPES.STRING, _txDate)
-        return this.callContract(FUNCTIONS.GETTRANSACTIONS)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate)
     }
 }

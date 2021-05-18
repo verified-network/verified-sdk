@@ -1,25 +1,14 @@
 const contractAddress = {
-    'rinkeby': {
-        'Client': '0x61D52378E70ebDC7D4ea24640f313190E701ba61',
-        'KYC': '0x8fB22E49D8dEDD7f5A118E2306FD00764607c156',
-        'System': '0x67a8A7520bCc99Ea217cBBCCF35655776cB3AC50',
-        'Holder': '0x53391AF852A819d550F84E80F3257a7ff81A5673',
-        'Ledger': '0x3AB49F974e243895346f6f656f3fF45d1f3Ac49c',
-        'Account': '0x6C557434128e98536c7F6487B417D9D74f0Ca9cf',
-        'Factory': '0xCC35110e2D2BeC6E157B7948c48DEE51Ed074D14',
-        'Via_USD cash': '0x3E948688Fa3E85502B42A280ee80d581b6aCfC6e',
-        'Via_EUR cash': '0x5aD6C1029e9Dc3C0849C28a1B06Dea3c8c1c3958',
-        'Via_INR cash': '0x70E044Ebf8dC6Aa1CB582c1996610af6708426f7',
-        'Via_ USD bond': '0x4Daf1DB5046Dfe4b80bcEE7E79A23E57a862193d',
-        'Via_EUR bond': '0xe6D84A9a49FB1dB3a61bCE18eb32A16c1D48cb6c',
-        'Via_INR bond': '0x573d24431B47C9D24b13f3851b88d5F3c4CEA283',
-        'PreTrade' : '0x2A5f9CD763A1cb28f99D43Af816a8eFC0f340880',
-        'Trade' : '0x89C25cf1BbCF795d143d61d24f52D245fF7EDb2A',
-        'PostTrade' : '0x32464AC66668824E6d1261472F085045354B2CBa',
-        'SecuritiesRegistry' : '0xaE539F980dB256AbCCdfC1F30a0F39355B1E1FC8',
-        'OrderPool' : '0x2681dB538b35b38ff7448018a45c660cc9f962D2',
-        'PoolFactory' : '0xDB7452E6A9f2C1cC7d9BCf25622747B5a55Dc090'
+    'CASH': {
+        'Via_USD': '0x3E948688Fa3E85502B42A280ee80d581b6aCfC6e',
+        'Via_EUR': '0x5aD6C1029e9Dc3C0849C28a1B06Dea3c8c1c3958',
+        'Via_INR': '0x70E044Ebf8dC6Aa1CB582c1996610af6708426f7',
+    },
+    'BOND': {
+        'Via_USD': '0x4Daf1DB5046Dfe4b80bcEE7E79A23E57a862193d',
+        'Via_EUR': '0xe6D84A9a49FB1dB3a61bCE18eb32A16c1D48cb6c',
+        'Via_INR': '0x573d24431B47C9D24b13f3851b88d5F3c4CEA283'
     }
 }
 
-export { contractAddress }
+export default contractAddress;

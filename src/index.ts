@@ -17,6 +17,7 @@ import TradeContract from './contract/trade';
 import FactoryContract from './contract/factory';
 import TokenContract from './contract/token';
 import { utils } from "ethers";
+import contractAddress from "./contractAddress";
 
 
 
@@ -39,5 +40,6 @@ export {
     TradeContract,
     FactoryContract,
     TokenContract,
-    utils
+    utils,
+    contractAddress
 }
