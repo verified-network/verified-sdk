@@ -75,8 +75,8 @@ export default class HolderContract extends VerifiedContract {
     * _txDate is unix timestamp for date on and which transactions are returned. 
     * Arrays returned are for – party, amount, transaction type, transaction date, description
     */
-    public async getTransactions(_txDate: string): number {
+    public async getTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): number {
         await this.validateInput(DATATYPES.STRING, _txDate)
-        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, options)
     }
 }

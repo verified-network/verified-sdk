@@ -58,7 +58,7 @@ export default class CashContract extends VerifiedContract {
     * @param (address sender, address receiver, uint256 tokens)
     * @returns boolean
     */
-    public async transferFromUserToUser(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.STRING, _recieverAddress)
         await this.validateInput(DATATYPES.STRING, _tokens)
