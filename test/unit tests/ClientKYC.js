@@ -1,4 +1,4 @@
-// (c) Kallol Borah, 2021
+// (c) Kallol Borah, 2020
 // Test cases for Verified Accounts
 
 const {ethers, Contract} = require ("ethers");
@@ -23,12 +23,15 @@ contract("Client and KYC testing", async(accounts)=> {
 
     it("sets and gets KYC status for client", async()=>{
         var ClientKYC = await Kyc.deployed();
-        await ClientKYC.setStatus(accounts[1], ethers.utils.formatBytes32String("true"))
+        await ClientKYC.getStatus(accounts[1])
         .then(async()=>{
-            console.log("Set KYC status for client as " + "true");
-            await ClientKYC.getStatus(accounts[1])
-            .then(function(KycStatus){
-                console.log("Got KYC status for client as " + KycStatus);
+            await ClientKYC.setStatus(accounts[1], ethers.utils.formatBytes32String("true"))
+            .then(async()=>{
+                console.log("Set KYC status for client as " + "true");
+                await ClientKYC.getStatus(accounts[1])
+                .then(function(KycStatus){
+                    console.log("Got KYC status for client as " + KycStatus);
+                });
             });
         });
     });

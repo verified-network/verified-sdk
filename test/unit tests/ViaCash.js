@@ -64,11 +64,11 @@ contract("Cash contract testing", async (accounts) => {
     console.log("Via-USD cash token contract ether balance after sending ether:", await web3.eth.getBalance(viausdCashAddress));
     console.log("Account ether balance after sending ether:", await web3.eth.getBalance(accounts[0]));  
        
-    try{
-      await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-    }catch(error){
-      console.log(error);
-    }
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
     
     console.log("Via oracle ether balance after query:", await web3.eth.getBalance(oracle.address));
     console.log("Account Via-USD cash token balance after sending ether:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
@@ -104,11 +104,11 @@ contract("Cash contract testing", async (accounts) => {
     console.log("Via-EUR cash token contract ether balance after sending ether:", await web3.eth.getBalance(viaeurCashAddress));
     console.log("Account ether balance after sending ether:", await web3.eth.getBalance(accounts[0]));  
     
-    try{
-      await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-    }catch(error){
-      console.log(error);
-    }
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
     
     console.log("Via oracle ether balance after query:", await web3.eth.getBalance(oracle.address));
     console.log("Account Via-EUR cash token balance after sending ether:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
@@ -146,11 +146,11 @@ contract("Cash contract testing", async (accounts) => {
       
       await viaeurCash.transferFrom(accounts[0], viainrCashAddress, 10);
       
-      try{
-        await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-      }catch(error){
-        console.log(error);
-      }
+      //try{
+      //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+      //}catch(error){
+      //  console.log(error);
+      //}
       
       console.log("Account Via-EUR cash token balance after sending Via-EUR to Via-INR contract :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
       console.log("Account Via-INR cash token balance after sending Via-EUR to Via-INR contract :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viainrCash.balanceOf(accounts[0]))));
@@ -179,13 +179,13 @@ contract("Cash contract testing", async (accounts) => {
     console.log("Account Via-USD cash token balance before redeeming Via-USD :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
     console.log("Via-USD cash token contract ether balance before redeeming Via-USD:", await web3.eth.getBalance(viausdCashAddress));
 
-    await viausdCash.transferFrom(accounts[0], viausdCashAddress, 10);
+    await viausdCash.transferFrom(accounts[0], viausdCashAddress, 10000);
     
-    try{
-      await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-    }catch(error){
-      console.log(error);
-    }
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
     
     console.log("Account ether balance after redeeming Via-USD:", await web3.eth.getBalance(accounts[0]));
     console.log("Account Via-USD cash token balance after redeeming Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
@@ -194,7 +194,7 @@ contract("Cash contract testing", async (accounts) => {
   });
   
   //test 6
-  it("should send Via-EUR tokens to Via-EUR contract and get back ether paid in earlier", async () => {
+  it("should send Via-EUR tokens to Via-EUR contract for which ether and Via-USD was deposited that are both redeemed", async () => {
     var abdkMathQuad = await ABDKMathQuad.deployed();
       await Cash.link(abdkMathQuad);
 
@@ -209,27 +209,124 @@ contract("Cash contract testing", async (accounts) => {
       var viaeurCashType = await web3.utils.hexToUtf8(await factory.getType(viaeurCashAddress));
       var viaeurCash = await Cash.at(viaeurCashAddress);
 
+      var viausdCashAddress = await factory.tokens(0);
+      var viausdCash = await Cash.at(viausdCashAddress);
+
+      console.log("Account Via-USD cash token balance before sending Via-USD to Via-EUR contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+      console.log("Account Via-EUR cash token balance before sending Via-USD to Via-EUR contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+      console.log();
+      
+      await viausdCash.transferFrom(accounts[0], viaeurCashAddress, 10000);
+
+      console.log("Account Via-USD cash token balance after sending Via-USD to Via-EUR contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
       console.log(viaeurCashName, viaeurCashType, "token address:", viaeurCashAddress);
       console.log("Account ether balance before redeeming Via-EUR:", await web3.eth.getBalance(accounts[0]));
       console.log("Via-EUR cash token contract ether balance before redeeming Via-EUR:", await web3.eth.getBalance(viaeurCashAddress));
+      console.log("Via-USD cash token contract ether balance before redeeming Via-USD:", await web3.eth.getBalance(viausdCashAddress));
       console.log("Account Via-EUR cash token balance before sending Via-EUR:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
       console.log();
       
-      await viaeurCash.transferFrom(accounts[0], viaeurCashAddress, 10);
+      await viaeurCash.transferFrom(accounts[0], viaeurCashAddress, 1000000);
       
-      try{
-        await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-      }catch(error){
-        console.log(error);
-      }
+      //try{
+      //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+      //}catch(error){
+      //  console.log(error);
+      //}
       
       console.log("Account ether balance after redeeming Via-EUR:", await web3.eth.getBalance(accounts[0]));
       console.log("Via-EUR cash token contract ether balance after redeeming Via-EUR:", await web3.eth.getBalance(viaeurCashAddress));
-      console.log("Account Via-EUR cash token balance after sending Via-EUR:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+      console.log("Via-USD cash token contract ether balance after redeeming Via-USD:", await web3.eth.getBalance(viausdCashAddress));
+      console.log("Account Via-EUR cash token balance after redeeming Via-EUR:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+      console.log("Account Via-USD cash token balance after redeeming Via-EUR:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+  });  
   
+  //test 7
+  it("should transfer Via-USD to another account", async () => {
+    var abdkMathQuad = await ABDKMathQuad.deployed();
+    await Cash.link(abdkMathQuad);
+
+    var factory = await Factory.deployed();
+    var cash = await Cash.deployed();
+    var oracle = await Oracle.deployed(); 
+    var token = await Token.deployed();  
+    var fee = await Fees.deployed();
+    
+    var viausdCashAddress = await factory.tokens(0);
+    var viausdCashName = await web3.utils.hexToUtf8(await factory.getName(viausdCashAddress));
+    var viausdCashType = await web3.utils.hexToUtf8(await factory.getType(viausdCashAddress));
+    var viausdCash = await Cash.at(viausdCashAddress);
+
+    console.log("Sender address:", accounts[0]);
+    console.log("Sender ether balance before sending Via-USD:", await web3.eth.getBalance(accounts[0]));
+    console.log("Sender Via-USD cash token balance before transferring Via-USD :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+    console.log("Receiver ether balance before Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
+    console.log();
+    
+    await viausdCash.transferFrom(accounts[0], accounts[1], 100);
+    
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
+    
+    console.log("Sender ether balance after sending Via-USD:", await web3.eth.getBalance(accounts[0]));
+    console.log("Sender Via-USD cash token balance after transferring Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+    console.log("Receiver ether balance after Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
+    console.log("Receiver Via-USD cash token balance after receiving Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[1]))));
+    
   });
 
-  //test 7
+  //test 8
+  it("should transfer Via-USD to another account for which both ether and Via-EUR was deposited which are both transferred", async () => {
+    var abdkMathQuad = await ABDKMathQuad.deployed();
+    await Cash.link(abdkMathQuad);
+
+    var factory = await Factory.deployed();
+    var cash = await Cash.deployed();
+    var oracle = await Oracle.deployed(); 
+    var token = await Token.deployed();  
+    var fee = await Fees.deployed();
+    
+    var viausdCashAddress = await factory.tokens(0);
+    var viausdCashName = await web3.utils.hexToUtf8(await factory.getName(viausdCashAddress));
+    var viausdCashType = await web3.utils.hexToUtf8(await factory.getType(viausdCashAddress));
+    var viausdCash = await Cash.at(viausdCashAddress);
+
+    var viaeurCashAddress = await factory.tokens(1);
+    var viaeurCash = await Cash.at(viaeurCashAddress);
+
+    console.log("Account Via-USD cash token balance before sending Via-EUR to Via-USD contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+    console.log("Account Via-EUR cash token balance before sending Via-EUR to Via-USD contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+    console.log();
+    
+    await viaeurCash.transferFrom(accounts[0], viausdCashAddress, 10000);
+
+    console.log("Account Via-EUR cash token balance after sending Via-USD to Via-EUR contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+    console.log("Sender ether balance before sending Via-USD:", await web3.eth.getBalance(accounts[0]));
+    console.log("Sender Via-USD cash token balance before transferring Via-USD :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+    console.log("Receiver ether balance before Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
+    console.log();
+    
+    await viausdCash.transferFrom(accounts[0], accounts[1], 775000);
+    
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
+    
+    console.log("Sender ether balance after sending Via-USD:", await web3.eth.getBalance(accounts[0]));
+    console.log("Sender Via-USD cash token balance after transferring Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
+    console.log("Sender Via-EUR cash token balance after transferring Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
+    console.log("Receiver ether balance after Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
+    console.log("Receiver Via-USD cash token balance after receiving Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[1]))));
+    console.log("Receiver Via-EUR cash token balance after receiving Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[1]))));
+    
+  });
+
+  //test 9
   it("should redeem Via-INR tokens by sending them to Via-EUR contract and get Via-EUR paid in earlier", async () => {
     var abdkMathQuad = await ABDKMathQuad.deployed();
       await Cash.link(abdkMathQuad);
@@ -254,56 +351,19 @@ contract("Cash contract testing", async (accounts) => {
       console.log("Account Via-INR cash token balance before sending Via-INR to Via-EUR contract : ", await web3.utils.hexToNumberString(await web3.utils.toHex(await viainrCash.balanceOf(accounts[0]))));
       console.log();
       
-      await viainrCash.transferFrom(accounts[0], viaeurCashAddress, 100);
+      await viainrCash.transferFrom(accounts[0], viaeurCashAddress, 500);
       
-      try{
-        await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-      }catch(error){
-        console.log(error);
-      }
+      //try{
+      //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+      //}catch(error){
+      //  console.log(error);
+      //}
       
       console.log("Account Via-EUR cash token balance after redeeming Via-INR :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viaeurCash.balanceOf(accounts[0]))));
       console.log("Account Via-INR cash token balance after redeeming Via-INR :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viainrCash.balanceOf(accounts[0]))));
   });
-  
-  //test 8
-  it("should transfer Via-USD to another account", async () => {
-    var abdkMathQuad = await ABDKMathQuad.deployed();
-    await Cash.link(abdkMathQuad);
 
-    var factory = await Factory.deployed();
-    var cash = await Cash.deployed();
-    var oracle = await Oracle.deployed(); 
-    var token = await Token.deployed();  
-    var fee = await Fees.deployed();
-    
-    var viausdCashAddress = await factory.tokens(0);
-    var viausdCashName = await web3.utils.hexToUtf8(await factory.getName(viausdCashAddress));
-    var viausdCashType = await web3.utils.hexToUtf8(await factory.getType(viausdCashAddress));
-    var viausdCash = await Cash.at(viausdCashAddress);
-
-    console.log("Sender address:", accounts[0]);
-    console.log("Sender ether balance before sending Via-USD:", await web3.eth.getBalance(accounts[0]));
-    console.log("Sender Via-USD cash token balance before transferring Via-USD :", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
-    console.log("Receiver ether balance before Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
-    console.log();
-    
-    await viausdCash.transferFrom(accounts[0], accounts[1], 100);
-    
-    try{
-      await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-    }catch(error){
-      console.log(error);
-    }
-    
-    console.log("Sender ether balance after sending Via-USD:", await web3.eth.getBalance(accounts[0]));
-    console.log("Sender Via-USD cash token balance after transferring Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[0]))));
-    console.log("Receiver ether balance after Via-USD is sent by sender:", await web3.eth.getBalance(accounts[1]));
-    console.log("Receiver Via-USD cash token balance after receiving Via-USD:", await web3.utils.hexToNumberString(await web3.utils.toHex(await viausdCash.balanceOf(accounts[1]))));
-  
-  });
-
-  //test 9
+  //test 10
   it("should redeem transferred Via-USD tokens from one user account to get back ether paid in another account", async () => {
     var abdkMathQuad = await ABDKMathQuad.deployed();
     await Cash.link(abdkMathQuad);
@@ -327,12 +387,11 @@ contract("Cash contract testing", async (accounts) => {
     
     await viausdCash.transferFrom(accounts[1], viausdCashAddress, 50);
     
-    try{
-      await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
-      //await getFirstEvent(cash.ViaCashRedeemed({fromBlock:'latest'}));
-    }catch(error){
-      console.log(error);
-    }
+    //try{
+    //  await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+    //}catch(error){
+    //  console.log(error);
+    //}
     
     console.log("Via-USD cash token contract ether balance after redeeming Via-USD:", await web3.eth.getBalance(viausdCashAddress));
     console.log("Redeemer ether balance after redeeming Via-USD:", await web3.eth.getBalance(accounts[1]));
