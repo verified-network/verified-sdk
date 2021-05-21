@@ -7,21 +7,27 @@ import { DATATYPES } from "../index";
 
 enum FUNCTIONS {
     CREATEHOLDER = 'createHolder',
+    GETACCOUNTHOLDER = 'getAccountHolder',
     GETACCOUNTHOLDERS = 'getAccountHolders',
-    GETACCOUNTLEDGERS = 'getAccountLedgers',
-    GETLEDGERACCOUNTS = 'getLedgerAccounts',
+    GETACCOUNTLEDGER = 'getAccountLedger',
+    GETLEDGERACCOUNT = 'getLedgerAccount',
     GETHOLDERDETAILS = 'getHolderDetails',
     GETLEDGERDETAILS = 'getLedgerDetails',
     GETLEDGERACCOUNTS = 'getLedgerAccounts',
-    GETACCOUNTDETAILS = 'getAccountDetails'
+    GETACCOUNTDETAILS = 'getAccountDetails',
+    GETACCOUNTLEDGERS = 'getAccountLedgers',
+
 }
 
 export default class SystemContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
@@ -33,6 +39,17 @@ export default class SystemContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _holderName)
         await this.validateInput(DATATYPES.STRING, _accountHolder)
         return this.callContract(FUNCTIONS.CREATEHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _holderName), _accountHolder, options)
+    }
+
+    /**
+    * The account holder’s address can be obtained by calling on the Account system the following solidity function.
+    * @param (address counterParty))
+    * @returns [address]
+    * _accountCreator is the client that created the account holders. Returns address array of account holders
+    */
+    public async getAccountHolder(_counterPartyAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _counterPartyAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _counterPartyAddress)
     }
 
     /**
@@ -52,11 +69,21 @@ export default class SystemContract extends VerifiedContract {
      * @returns (address[] memory)
      * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
      */
-    public async getAccountLedgers(_accountHolderAddress: string): any {
+    public async getAccountLedger(_accountHolderAddress: string): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTLEDGERS, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress)
     }
 
+    /**
+     * Get list of account ledgers
+     * @param (address _accountLedger)
+     * @returns (address[] memory)
+     * _accountLedger is the ledger in which the accounts were created in createAccount()
+     */
+    public async getLedgerAccount(_accountLedgerAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress)
+    }
     /**
      * Get list of account ledgers
      * @param (address _accountLedger)
@@ -99,5 +126,16 @@ export default class SystemContract extends VerifiedContract {
     public async getAccountDetails(_account: string): any {
         await this.validateInput(DATATYPES.ADDRESS, _account)
         return this.callContract(FUNCTIONS.GETACCOUNTDETAILS, _account)
+    }
+
+    /**
+    * The account ledger address can be obtained by calling the following function on the Account system contract
+    * @param (address accountHolder)
+    * @returns (address[] memory)
+    * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
+    */
+    public async getAccountLedgers(_accountHolderAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGERS, _accountHolderAddress)
     }
 }

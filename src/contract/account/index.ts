@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/accounts/System.json';
+import { abi, networks } from '../../abi/accounts/Account.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { PostEntry } from '../../models/account';
@@ -13,11 +13,14 @@ enum FUNCTIONS {
 }
 
 export default class AccountContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
@@ -31,7 +34,6 @@ export default class AccountContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _accountAddress)
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
-
         return this.callContract(FUNCTIONS.POSTENTRY, _accountAddress, _accountNumber, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), this.sanitiseInput(DATATYPES.BYTE32, _txDate), this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
     }
 
@@ -44,6 +46,7 @@ export default class AccountContract extends VerifiedContract {
     public async getEntry(_accountNumber, _txDate, options?: { gasLimit, gasPrice }): any {
 
         await this.validateInput(DATATYPES.STRING, _accountNumber)
-        return this.callContract(FUNCTIONS.GETENTRY, _accountNumber, this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
+        await this.validateInput(DATATYPES.STRING, _txDate)
+        return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber), this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
     }
 }

@@ -11,11 +11,14 @@ enum FUNCTIONS {
 }
 
 export default class SecuritiesRegistryContract extends VerifiedContract {
-
+  public contractAddress: string
   constructor(signer: VerifiedWallet) {
 
     const chainId: string = signer.provider._network.chainId.toString()
-    super(networks[chainId].address, JSON.stringify(abi), signer)
+    const address = networks[chainId].address
+    super(address, JSON.stringify(abi), signer)
+
+    this.contractAddress = address
   }
 
   /**
@@ -23,9 +26,10 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
    * @param (bytes32 _currency, bytes32 _company, bytes32 _isin)
    * @returns Returns nothing. Ensure _countryCode maps to http://country.io/names.json 
    */
-  public async getToken(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.GETTOKEN, _countryCode, options)
+  public async getToken(_currency: string, _company: string, _isin: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _currency)
+    await this.validateInput(DATATYPES.STRING, _currency)
+    return this.callContract(FUNCTIONS.GETTOKEN, this.sanitiseInput(DATATYPES.BYTE32, _currency), this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), options)
   }
 
 }

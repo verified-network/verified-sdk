@@ -11,11 +11,14 @@ enum FUNCTIONS {
 }
 
 export default class PoolFactoryContract extends VerifiedContract {
-
+  public contractAddress: string
   constructor(signer: VerifiedWallet) {
 
     const chainId: string = signer.provider._network.chainId.toString()
-    super(networks[chainId].address, JSON.stringify(abi), signer)
+    const address = networks[chainId].address
+    super(address, JSON.stringify(abi), signer)
+
+    this.contractAddress = address
   }
 
   /**
@@ -23,9 +26,10 @@ export default class PoolFactoryContract extends VerifiedContract {
    * @param (address _security, address _cash)
    * @returns (address)
    */
-  public async getPool(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.GETPOOL, _countryCode, options)
+  public async getPool(_countryCode: string, _cashTokenAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _countryCode)
+    await this.validateInput(DATATYPES.ADDRESS, _cashTokenAddress)
+    return this.callContract(FUNCTIONS.GETPOOL, _countryCode, _cashTokenAddress, options)
   }
 
 }

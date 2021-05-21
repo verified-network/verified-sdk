@@ -2,7 +2,7 @@
 
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi ,networks} from '../../abi/accounts/Holder.json';
+import { abi, networks } from '../../abi/accounts/Holder.json';
 import { contractAddress } from '../../contractAddress/index';
 import { DATATYPES } from "../index";
 import { GetAccountStatement, CreateLedger } from '../../models/holder';
@@ -11,20 +11,25 @@ enum FUNCTIONS {
     GETENTRIES = 'getEntries',
     UPDATEACCOUNTSTATEMENT = 'updateAccountStatement',
     GETACCOUNTSTATEMENT = 'getAccountStatement',
-    CREATELEDGER = 'createLedger'
+    CREATELEDGER = 'createLedger',
+    GETTRANSACTIONS = 'getTransactions'
 }
 
 export default class HolderContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
      * The number of entries in the statement can be fetched using the following solidity function.
      * @returns [uint256]
+     * Returns number of ledger entries for account holder
      */
     public getEntries(): number {
         return this.callContract(FUNCTIONS.GETENTRIES)
@@ -45,8 +50,8 @@ export default class HolderContract extends VerifiedContract {
      * @param (uint256 statementIndex)
      * @returns [bytes32, bytes32, bytes16]
      */
-    public async getAccountStatement(_statementIndex: GetAccountStatement): any {
-        await this.validateInput(DATATYPES.NUMBER, _statementIndex)
+    public async getAccountStatement(_statementIndex: string): any {
+        await this.validateInput(DATATYPES.STRING, _statementIndex)
         return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, _statementIndex)
     }
 
@@ -61,5 +66,17 @@ export default class HolderContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _ledgerName)
         await this.validateInput(DATATYPES.STRING, _ledgerGroup)
         return this.callContract(FUNCTIONS.CREATELEDGER, this.sanitiseInput(DATATYPES.BYTE32, _ledgerName), this.sanitiseInput(DATATYPES.BYTE32, _ledgerGroup), options)
+    }
+
+    /**
+    * Get list of transactions for account holder [callable by KYC passed client
+    * @param (uint256 _txDate)
+    * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
+    * _txDate is unix timestamp for date on and which transactions are returned. 
+    * Arrays returned are for – party, amount, transaction type, transaction date, description
+    */
+    public async getTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): number {
+        await this.validateInput(DATATYPES.STRING, _txDate)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, options)
     }
 }

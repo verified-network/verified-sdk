@@ -25,11 +25,14 @@ enum FUNCTIONS {
 }
 
 export default class ClientContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        super(networks[chainId].address, JSON.stringify(abi), signer)
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     public initialize(_address: string): any {
@@ -57,7 +60,7 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETACCESS, _login, options)
     }
 
-    public getAccess(params: GetAccess): any {
+    public async getAccess(params: GetAccess): any {
         return this.callContract(FUNCTIONS.GETACCESS, params)
     }
 
@@ -80,11 +83,12 @@ export default class ClientContract extends VerifiedContract {
      * @returns address
      */
 
-    public getManager(_clientAddress: string): any {
+    public async getManager(_clientAddress: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
     }
 
-    public isRegistered(params: IsRegistered): any {
+    public async isRegistered(params: IsRegistered): any {
         return this.callContract(FUNCTIONS.ISREGISTERED, params)
     }
 
@@ -100,8 +104,14 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETAMLSTATUS, _clientAddress, _status, options)
     }
 
-    public getAMLStatus(params: GetAMLStatus): any {
-        return this.callContract(FUNCTIONS.GETAMLSTATUS, params)
+    /**
+    * Get KYC status [callable by client or its manager or KYCAML submanager 
+    * @params (address _client) 
+    * @returns bool
+    */
+    public async getAMLStatus(_client: string): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETAMLSTATUS, _client)
     }
 
     /**
@@ -121,11 +131,9 @@ export default class ClientContract extends VerifiedContract {
     * @params (bytes32 _role, bytes32 _country, uint _entries)
     * @returns {address[] memory}
     */
-    public async getRole(_role: string, _country: string, _entries: number, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, _role)
+    public async getRole(_country: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _entries)
-        return this.callContract(FUNCTIONS.GETROLE, _role, _country, _entries, options)
+        return this.callContract(FUNCTIONS.GETROLE, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
     }
 
     /**
@@ -136,8 +144,8 @@ export default class ClientContract extends VerifiedContract {
     public async removeRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _role)
-        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, _country, _role, options)
+        await this.validateInput(DATATYPES.STRING, _role)
+        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
     }
 
     /**
@@ -148,7 +156,7 @@ export default class ClientContract extends VerifiedContract {
     public async addRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
-        await this.validateInput(DATATYPES.NUMBER, _role)
-        return this.callContract(FUNCTIONS.ADDROLE, _submanager, _country, _role, options)
+        await this.validateInput(DATATYPES.STRING, _role)
+        return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
     }
 }
