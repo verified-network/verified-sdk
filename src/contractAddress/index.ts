@@ -1,24 +1,24 @@
 const contractAddress = {
     'rinkeby': {
-        'Client': '0x61D52378E70ebDC7D4ea24640f313190E701ba61',
-        'KYC': '0x8fB22E49D8dEDD7f5A118E2306FD00764607c156',
-        'System': '0x67a8A7520bCc99Ea217cBBCCF35655776cB3AC50',
-        'Holder': '0x53391AF852A819d550F84E80F3257a7ff81A5673',
-        'Ledger': '0x3AB49F974e243895346f6f656f3fF45d1f3Ac49c',
-        'Account': '0x6C557434128e98536c7F6487B417D9D74f0Ca9cf',
-        'Factory': '0xCC35110e2D2BeC6E157B7948c48DEE51Ed074D14',
-        'Via_USD cash': '0x3E948688Fa3E85502B42A280ee80d581b6aCfC6e',
-        'Via_EUR cash': '0x5aD6C1029e9Dc3C0849C28a1B06Dea3c8c1c3958',
-        'Via_INR cash': '0x70E044Ebf8dC6Aa1CB582c1996610af6708426f7',
-        'Via_ USD bond': '0x4Daf1DB5046Dfe4b80bcEE7E79A23E57a862193d',
-        'Via_EUR bond': '0xe6D84A9a49FB1dB3a61bCE18eb32A16c1D48cb6c',
-        'Via_INR bond': '0x573d24431B47C9D24b13f3851b88d5F3c4CEA283',
-        'PreTrade' : '0x2A5f9CD763A1cb28f99D43Af816a8eFC0f340880',
-        'Trade' : '0x89C25cf1BbCF795d143d61d24f52D245fF7EDb2A',
-        'PostTrade' : '0x32464AC66668824E6d1261472F085045354B2CBa',
-        'SecuritiesRegistry' : '0xaE539F980dB256AbCCdfC1F30a0F39355B1E1FC8',
-        'OrderPool' : '0x2681dB538b35b38ff7448018a45c660cc9f962D2',
-        'PoolFactory' : '0xDB7452E6A9f2C1cC7d9BCf25622747B5a55Dc090'
+        'Client': '0xA28aAe5354c5696330c3a99CF00DE91691D64eeC',
+        'KYC': '0x02bc9b58b9046795CC9A8E5A984456870Dd2Ae23',
+        'System': '0x43c5d6289EDC189f2f5D3088a522b3941F6C800F',
+        'Holder': '0x7895d459803eAc58d7315E2fdaF9855E3aA6e6F3',
+        'Ledger': '0x264cf554dfD31F4E03b7985a42e7b9e7f5203ca6',
+        'Account': '0x4b6e56a60Fa74B7ed58d66f6817D3D2eB1dc808F',
+        'Factory': '0xC38B3E8b6c7e6b9ca208cdb11Fe3Bf287e640C38',
+        'Via_USD cash': '0x42b7685421aF0BeBEB9cA99E2Ff059325BAeA9FC',
+        'Via_EUR cash': '0x57F4862dEA8F1630c5DC902575150F4917A8D6f0',
+        'Via_INR cash': '0x47460efF3df6EbFfCDb29bdA83245A61A9a089e0',
+        'Via_ USD bond': '0xb2B06a0f589b8f29cebb959bBe4c41a7A2E0793D',
+        'Via_EUR bond': '0x3ec51F58C16c7cAeb6bc928c0e9AE7e1D5E96C94',
+        'Via_INR bond': '0xd1b8631735D78123A906066fF0D48705D3BbcdB1',
+        'PreTrade' : '',
+        'Trade' : '',
+        'PostTrade' : '',
+        'SecuritiesRegistry' : '',
+        'OrderPool' : '',
+        'PoolFactory' : ''
     }
 }
 
