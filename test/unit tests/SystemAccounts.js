@@ -11,7 +11,6 @@ const System = artifacts.require('System');
 const Holder = artifacts.require('Holder');
 const Ledger = artifacts.require('Ledger');
 const Account = artifacts.require('Account');
-const ViaFactory = '0xb93af95d3e38b4df4a3dd7e552a4434dc5f8d7ce'; //to do : replace with correct address
 
 contract("Accounts system testing", async(accounts)=> {
     
@@ -21,7 +20,7 @@ contract("Accounts system testing", async(accounts)=> {
         .then(async()=>{
             await KYCedClient.getManager(accounts[1])
             .then(function(result){
-                console.log("Set manager address for client " + accounts[0]);
+                console.log("Set manager address for client " + accounts[1]);
             });
         });
     });
@@ -29,7 +28,7 @@ contract("Accounts system testing", async(accounts)=> {
     beforeEach(async()=>{
         var ClientKYC = await Kyc.deployed();
         var KYCedClient = await Client.deployed();
-
+        /*
         await ClientKYC.setStatus(accounts[1], ethers.utils.formatBytes32String("true"));
         console.log("Set KYC status for client as " + "true");
         await ClientKYC.getStatus(accounts[1])
@@ -39,6 +38,20 @@ contract("Accounts system testing", async(accounts)=> {
 
         await KYCedClient.setAccess(ethers.utils.formatBytes32String("true"));
         console.log("Logged in client as " + "true");
+
+        var ClientKYC = await Kyc.deployed();
+        var KYCedClient = await Client.deployed();*/
+
+        await ClientKYC.setStatus(accounts[1], ethers.utils.formatBytes32String("true"))
+        .then(async()=>{
+            await ClientKYC.getStatus(accounts[1])
+            .then(async(KycStatus)=>{
+                await KYCedClient.setAccess(ethers.utils.formatBytes32String("true"))
+                .then(function(res){
+                    console.log("Logged in client as " + "true");
+                });
+            });
+        });
     });
 
     it("sets up account holder", async()=>{
@@ -85,7 +98,7 @@ contract("Accounts system testing", async(accounts)=> {
                     .then(async(ledgerAddress)=>{
                         console.log("Account ledger address is " + ledgerAddress);
                         LedgerAccount = await Ledger.at(ledgerAddress);
-                        await LedgerAccount.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("USD"))
+                        await LedgerAccount.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("Via_USD"))
                         .then(async()=>{
                             await AccountSystem.getLedgerAccount(ledgerAddress)
                             .then(function(accountAddress){
@@ -117,7 +130,7 @@ contract("Accounts system testing", async(accounts)=> {
                             .then(async(ledgerAddress)=>{
                                 console.log("Account ledger address is " + ledgerAddress);
                                 AccountLedger = await Ledger.at(ledgerAddress);
-                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("USD"))
+                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("Via_USD"))
                                 .then(async()=>{
                                     await AccountSystem.getLedgerAccount(ledgerAddress)
                                     .then(async(accountAddress)=>{
@@ -127,7 +140,7 @@ contract("Accounts system testing", async(accounts)=> {
                                             ethers.utils.formatBytes32String("123456ABCD"),
                                             ethers.utils.parseUnits('100',3),
                                             ethers.utils.formatBytes32String("Credit"),
-                                            ethers.utils.formatBytes32String("2020-12-15"),
+                                            ethers.utils.parseUnits('1620371166',3),
                                             ethers.utils.formatBytes32String("Test transaction"),
                                             ethers.utils.formatBytes32String("Journal"))
                                         .then(function(result){
@@ -162,7 +175,7 @@ contract("Accounts system testing", async(accounts)=> {
                             .then(async(ledgerAddress)=>{
                                 console.log("Account ledger address is " + ledgerAddress);
                                 AccountLedger = await Ledger.at(ledgerAddress);
-                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("USD"))
+                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("Via_USD"))
                                 .then(async()=>{
                                     await AccountSystem.getLedgerAccount(ledgerAddress)
                                     .then(async(accountAddress)=>{
@@ -172,18 +185,18 @@ contract("Accounts system testing", async(accounts)=> {
                                             ethers.utils.formatBytes32String("123456ABCD"),
                                             ethers.utils.parseUnits('100',3),
                                             ethers.utils.formatBytes32String("Credit"),
-                                            ethers.utils.formatBytes32String("2020-12-15"),
+                                            ethers.utils.parseUnits('1620371166',3),
                                             ethers.utils.formatBytes32String("Test transaction"),
                                             ethers.utils.formatBytes32String("Journal"))
                                         .then(async()=>{
-                                            await LedgerAccount.getEntry(ethers.utils.formatBytes32String("123456ABCD"), ethers.utils.formatBytes32String("2020-12-15"))
+                                            await AccountHolder.getTransactions(ethers.utils.parseUnits('1620371166',3))
                                             .then(function(result){
-                                                console.log("Got posted entry with ledger "+result[0]
-                                                            + ", counterparty "+result[1]
+                                                console.log("Got posted entry with ledger "+result[0]);
+                                                            /*+ ", counterparty "+result[1]
                                                             + ", amount "+ethers.utils.formatUnits(result[2])
                                                             + ", transaction type "+ethers.utils.parseBytes32String(result[3])
                                                             + ", description "+ethers.utils.parseBytes32String(result[4])
-                                                            + ", voucher type "+ethers.utils.parseBytes32String(result[5]));
+                                                            + ", voucher type "+ethers.utils.parseBytes32String(result[5]));*/
                                             });
                                         });
                                     });
@@ -215,7 +228,7 @@ contract("Accounts system testing", async(accounts)=> {
                             .then(async(ledgerAddress)=>{
                                 console.log("Account ledger address is " + ledgerAddress);
                                 AccountLedger = await Ledger.at(ledgerAddress);
-                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("USD"))
+                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("Via_USD"))
                                 .then(async()=>{
                                     await AccountSystem.getLedgerAccount(ledgerAddress)
                                     .then(async(accountAddress)=>{
@@ -225,7 +238,7 @@ contract("Accounts system testing", async(accounts)=> {
                                             ethers.utils.formatBytes32String("123456ABCD"),
                                             ethers.utils.parseUnits('100',3),
                                             ethers.utils.formatBytes32String("Credit"),
-                                            ethers.utils.formatBytes32String("2020-12-15"),
+                                            ethers.utils.parseUnits('1620371166',3),
                                             ethers.utils.formatBytes32String("Test transaction"),
                                             ethers.utils.formatBytes32String("Journal"))
                                         .then(async()=>{
@@ -263,7 +276,7 @@ contract("Accounts system testing", async(accounts)=> {
                             .then(async(ledgerAddress)=>{
                                 console.log("Account ledger address is " + ledgerAddress);
                                 AccountLedger = await Ledger.at(ledgerAddress);
-                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("USD"))
+                                await AccountLedger.createAccount(ethers.utils.formatBytes32String("XYZTravels"), ethers.utils.formatBytes32String("Via_USD"))
                                 .then(async()=>{
                                     await AccountSystem.getLedgerAccount(ledgerAddress)
                                     .then(async(accountAddress)=>{
@@ -273,7 +286,7 @@ contract("Accounts system testing", async(accounts)=> {
                                             ethers.utils.formatBytes32String("123456ABCD"),
                                             ethers.utils.parseUnits('100',3),
                                             ethers.utils.formatBytes32String("Credit"),
-                                            ethers.utils.formatBytes32String("2020-12-15"),
+                                            ethers.utils.parseUnits('1620371166',3),
                                             ethers.utils.formatBytes32String("Test transaction"),
                                             ethers.utils.formatBytes32String("Journal"))
                                         .then(async()=>{
