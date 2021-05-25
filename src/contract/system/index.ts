@@ -47,9 +47,9 @@ export default class SystemContract extends VerifiedContract {
     * @returns [address]
     * _accountCreator is the client that created the account holders. Returns address array of account holders
     */
-    public async getAccountHolder(_counterPartyAddress: string): any {
+    public async getAccountHolder(_counterPartyAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _counterPartyAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _counterPartyAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _counterPartyAddress, options)
     }
 
     /**
@@ -58,9 +58,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns [address]
      * _accountCreator is the client that created the account holders. Returns address array of account holders
      */
-    public async getAccountHolders(_accountCreatorAddress: string): any {
+    public async getAccountHolders(_accountCreatorAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountCreatorAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTHOLDERS, _accountCreatorAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDERS, _accountCreatorAddress, options)
     }
 
     /**
@@ -69,9 +69,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns (address[] memory)
      * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
      */
-    public async getAccountLedger(_accountHolderAddress: string): any {
+    public async getAccountLedger(_accountHolderAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress, options)
     }
 
     /**
@@ -80,9 +80,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns (address[] memory)
      * _accountLedger is the ledger in which the accounts were created in createAccount()
      */
-    public async getLedgerAccount(_accountLedgerAddress: string): any {
+    public async getLedgerAccount(_accountLedgerAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
-        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress)
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress, options)
     }
     /**
      * Get list of account ledgers
@@ -90,9 +90,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns (address[] memory)
      * _accountLedger is the ledger in which the accounts were created in createAccount()
      */
-    public async getLedgerAccounts(_accountLedgerAddress: string): any {
+    public async getLedgerAccounts(_accountLedgerAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
-        return this.callContract(FUNCTIONS.GETLEDGERACCOUNTS, _accountLedgerAddress)
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNTS, _accountLedgerAddress, options)
     }
 
     /**
@@ -101,9 +101,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns bytes32
      * _holder is any one of the account holders returned in getAccountHolders()
      */
-    public async getHolderDetails(_holder: string): any {
+    public async getHolderDetails(_holder: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _holder)
-        return this.callContract(FUNCTIONS.GETHOLDERDETAILS, _holder)
+        return this.callContract(FUNCTIONS.GETHOLDERDETAILS, _holder, options)
     }
 
     /**
@@ -112,9 +112,9 @@ export default class SystemContract extends VerifiedContract {
    * @returns bytes32
    * _ledger is the any of the ledgers returned in getAccountLedgers()
    */
-    public async getLedgerDetails(_ledger: string): any {
+    public async getLedgerDetails(_ledger: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _ledger)
-        return this.callContract(FUNCTIONS.GETLEDGERDETAILS, _ledger)
+        return this.callContract(FUNCTIONS.GETLEDGERDETAILS, _ledger, options)
     }
 
     /**
@@ -123,9 +123,9 @@ export default class SystemContract extends VerifiedContract {
      * @returns (bytes32, bytes32)
      * _account is any of the accounts returned in getLedgerAccounts()
      */
-    public async getAccountDetails(_account: string): any {
+    public async getAccountDetails(_account: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _account)
-        return this.callContract(FUNCTIONS.GETACCOUNTDETAILS, _account)
+        return this.callContract(FUNCTIONS.GETACCOUNTDETAILS, _account, options)
     }
 
     /**
@@ -134,8 +134,8 @@ export default class SystemContract extends VerifiedContract {
     * @returns (address[] memory)
     * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
     */
-    public async getAccountLedgers(_accountHolderAddress: string): any {
+    public async getAccountLedgers(_accountHolderAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTLEDGERS, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGERS, _accountHolderAddress, options)
     }
 }

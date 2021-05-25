@@ -28,12 +28,12 @@ export default class CashContract extends VerifiedContract {
      * @param (address sender, address _recieverAddress, uint256 tokens)
      * @returns boolean
      */
-    public async transferFromUserToCash(_senderAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
-        // await this.validateInput(DATATYPES.STRING, _recieverAddress)
-        await this.validateInput(DATATYPES.string, _tokens)
-        return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, this.contractAddr, _tokens, options)
-    }
+    // public async transferFromUserToCash(_senderAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+    //     await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
+    //     // await this.validateInput(DATATYPES.STRING, _recieverAddress)
+    //     await this.validateInput(DATATYPES.string, _tokens)
+    //     return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, this.contractAddr, _tokens, options)
+    // }
 
     /**
     * An investor can also request cash tokens from Verified by paying in another cash token. 
@@ -43,12 +43,12 @@ export default class CashContract extends VerifiedContract {
     * @param (address _senderAddress, address receiver, uint256 tokens)
     * @returns boolean
     */
-    public async transferFromCashToUser(_recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
-        // await this.validateInput(DATATYPES.STRING, _senderAddress)
-        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
-        await this.validateInput(DATATYPES.STRING, _tokens)
-        return this.callContract(FUNCTIONS.TRANSFERFROM, this.contractAddr, _recieverAddress, _tokens, options)
-    }
+    // public async transferFromCashToUser(_recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+    //     // await this.validateInput(DATATYPES.STRING, _senderAddress)
+    //     await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
+    //     await this.validateInput(DATATYPES.STRING, _tokens)
+    //     return this.callContract(FUNCTIONS.TRANSFERFROM, this.contractAddr, _recieverAddress, _tokens, options)
+    // }
 
     /**
     * An investor can also request cash tokens from Verified by paying in another cash token. 
