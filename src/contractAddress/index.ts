@@ -13,12 +13,12 @@ const contractAddress = {
         'Via_ USD bond': '0xb2B06a0f589b8f29cebb959bBe4c41a7A2E0793D',
         'Via_EUR bond': '0x3ec51F58C16c7cAeb6bc928c0e9AE7e1D5E96C94',
         'Via_INR bond': '0xd1b8631735D78123A906066fF0D48705D3BbcdB1',
-        'PreTrade' : '',
-        'Trade' : '',
-        'PostTrade' : '',
-        'SecuritiesRegistry' : '',
-        'OrderPool' : '',
-        'PoolFactory' : '',
+        'PreTrade': '',
+        'Trade': '',
+        'PostTrade': '',
+        'SecuritiesRegistry': '',
+        'OrderPool': '',
+        'PoolFactory': '',
         'CASH': {
             'Via_USD': '0x42b7685421aF0BeBEB9cA99E2Ff059325BAeA9FC',
             'Via_EUR': '0x57F4862dEA8F1630c5DC902575150F4917A8D6f0',
@@ -28,7 +28,8 @@ const contractAddress = {
             'Via_USD': '0xb2B06a0f589b8f29cebb959bBe4c41a7A2E0793D',
             'Via_EUR': '0x3ec51F58C16c7cAeb6bc928c0e9AE7e1D5E96C94',
             'Via_INR': '0xd1b8631735D78123A906066fF0D48705D3BbcdB1'
+        }
     }
 }
 
-export default contractAddress;
+export default contractAddress
