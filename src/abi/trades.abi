@@ -1,16 +1,16 @@
     //PreTrade.sol
     function registerDematAccount(bytes32 _countryCode) external;
-
-    function getRegistrationRequests(bytes32 _countryCode, uint entries) external view returns(bytes32[] memory);
-
+    
+    function getRegistrationRequests(bytes32 _countryCode) external view returns(bytes32[] memory);
+    
     function getRegistrationRequest(bytes32 _ref) external view returns( address user,
                                                                         bytes32 countryCode,
                                                                         bytes32 dematAccountNo,
                                                                         bytes32 DPID,
                                                                         uint registrationDate);
-
+    
     function setRegistrationStatus(bytes32 _ref, bytes32 _DPID, bytes32 _dematAccountNo) external;
-
+    
     function confirmSecurities( bytes32 _currencyCode, 
                                 bytes32 _stype, 
                                 bytes32 _isin, 
@@ -21,20 +21,20 @@
                                 bytes32 _lockInReason,
                                 uint _lockInReleaseDate) external returns(bytes32);
 
-    function getConfirmationRequests(uint entries, bytes32 _countryCode) external view returns(bytes32[] memory);
-
+    function getConfirmationRequests(bytes32 _countryCode) external view returns(bytes32[] memory);
+    
     function getConfirmationRequest(bytes32 _ref) external view returns (bytes32[] memory, uint[] memory, address);
 
-    function confirmSecurities(address _user, bytes32 _ref, bool _status) external;
-
+    function confirmSecurities(address _user, bytes32 _ref, bytes32 _status) external;
+    
     //PoolFactory.sol
 
     function getPool(address _security, address _cash) external view returns(address);
-
+    
     //SecuritiesRegistry.sol
 
     function getToken(bytes32 _currency, bytes32 _company, bytes32 _isin) external view returns(address);
-
+    
     //OrderPool.sol
 
     function newOrder(  address _security, 
@@ -46,32 +46,32 @@
                         bytes32 _order) external returns(bytes32);
 
     function cancelOrder(bytes32 ref) external returns(bool);
-
+    
     function editOrder( bytes32 ref,
                         uint256 _price,
                         uint256 _trigger, 
                         uint256 _qty, 
                         bytes32 _otype, 
                         bytes32 _order) external returns(bool);
-
+    
     //Trade.sol
 
-    function getOrders(uint entries) external returns(bytes32[] memory);
-
+    function getOrders(bool originator) external returns(bytes32[] memory);
+    
     function getOrder(bytes32 ref) external view returns(bytes32[] memory, uint256[] memory);
-
+    
     function getTrade(bytes32 ref) external view returns(bytes16, bytes16);
 
     //PostTrade.sol
-
-    function getSettlementRequests(uint entries, bytes32 _countryCode, bytes32 dpid) external view returns(bytes32[] memory);
+    
+    function getSettlementRequests(bytes32 _countryCode, bytes32 dpid) external view returns(bytes32[] memory);
 
     function getSettlementRequest(bytes32 ref) external view returns(   address[] memory, 
                                                                         bytes32[] memory,
                                                                         uint256[] memory,
                                                                         bytes16 );
 
-    function setSettlementStatus(bytes32 ref, bytes32 _countryCode, bool status) external;
+    function setSettlementStatus(bytes32 ref, bytes32 _countryCode, bytes32 status) external;
 
 
 
