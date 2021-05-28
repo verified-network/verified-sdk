@@ -70,21 +70,21 @@ export default class BondContract extends VerifiedContract {
     /**
     * Fetch bonds issued with their balance amounts to redeem [callable by client]
     * entries is count of results to return. Address[] has issued bond addresses, and uint[] has issued amount
-    * @param (uint256 entries)
+    * @param ()
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondIssues(): any {
-        return this.callContract(FUNCTIONS.GETBONDISSUES, _entries, options)
+    public async getBondIssues(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.GETBONDISSUES, options)
     }
 
     /**
     * Fetch bonds purchased with their purchased amounts [callable by client]
     * entries is count of results to return. Address[] has purchased bond addresses, and uint[] has purchased amount
-    * @param (uin256 entries)
+    * @param ()
     * @returns (address[] memory, uint256[] memory)
     */
-    public async getBondPurchases(): any {
-        return this.callContract(FUNCTIONS.GETBONDPURCHASES, _entries, options)
+    public async getBondPurchases(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.GETBONDPURCHASES, options)
     }
 
 }
