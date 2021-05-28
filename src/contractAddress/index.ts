@@ -1,33 +1,34 @@
-const contractAddress = {
+const contractAddress: Object = {
     'rinkeby': {
-        'Client': '0xA28aAe5354c5696330c3a99CF00DE91691D64eeC',
-        'KYC': '0x02bc9b58b9046795CC9A8E5A984456870Dd2Ae23',
-        'System': '0x43c5d6289EDC189f2f5D3088a522b3941F6C800F',
-        'Holder': '0x7895d459803eAc58d7315E2fdaF9855E3aA6e6F3',
-        'Ledger': '0x264cf554dfD31F4E03b7985a42e7b9e7f5203ca6',
-        'Account': '0x4b6e56a60Fa74B7ed58d66f6817D3D2eB1dc808F',
-        'Factory': '0xC38B3E8b6c7e6b9ca208cdb11Fe3Bf287e640C38',
-        'Via_USD cash': '0x42b7685421aF0BeBEB9cA99E2Ff059325BAeA9FC',
-        'Via_EUR cash': '0x57F4862dEA8F1630c5DC902575150F4917A8D6f0',
-        'Via_INR cash': '0x47460efF3df6EbFfCDb29bdA83245A61A9a089e0',
-        'Via_ USD bond': '0xb2B06a0f589b8f29cebb959bBe4c41a7A2E0793D',
-        'Via_EUR bond': '0x3ec51F58C16c7cAeb6bc928c0e9AE7e1D5E96C94',
-        'Via_INR bond': '0xd1b8631735D78123A906066fF0D48705D3BbcdB1',
-        'PreTrade' : '',
-        'Trade' : '',
-        'PostTrade' : '',
-        'SecuritiesRegistry' : '',
-        'OrderPool' : '',
-        'PoolFactory' : '',
+        'Client': '0xF2b41F07C11B824136e0039eB62998e0780726c3',
+        'KYC': '0x4Cd23Ea6f2dE45bf28e896D6EE15d2f19142e119',
+        'System': '0xbe54f81E2E68774776ee1A42ceB812dB67373d74',
+        'Holder': '0xe2FE646652bD9F729c6c58f98e6505A1045f5983',
+        'Ledger': '0x16838f4258c1e61c53568bc49dbCc4D609B03662',
+        'Account': '0xB39191EE7d7e7B312e47Ade8140092B12A268A64',
+        'Factory': '0xfcE4aBaf3Bd4BF915941982F8077c46674FF5b3F',
+        'Via_USD cash': '0x5033484a39e5fB10D3F1dB747f90CD4C67b953b5',
+        'Via_EUR cash': '0x6D451294701613C3e9a645318fC326E73f916AA8',
+        'Via_INR cash': '0x53f74A82FcD41A0F4c226f637316Ba12b2a46Af7',
+        'Via_ USD bond': '0x015d98b0FAdf938f26F49a5072825AbD25e15FB0',
+        'Via_EUR bond': '0x8DcD8cC5670E4619bF829dc76b0a6bFFc3c00B78',
+        'Via_INR bond': '0xe8d6b9740345f861413b534ba6c6aEB56877F14e',
+        'PreTrade': '0xc8eD22Bd6F005C33d75f43597B2F0Df5a341580B',
+        'Trade': '0x859eF97574F7E95A350A111eA2F4A72f77164c25',
+        'PostTrade': '0x211EEfE214956a6f04441d12E3B2359A844c9604',
+        'SecuritiesRegistry': '0xD03dc801cd78eBc118BB7561F0194f8743A4Fd94',
+        'OrderPool': '0x4cf59ED63Ac3a433e3E186c10Db74EFbea3d16D4',
+        'PoolFactory': '0x6413c92dfc2DcBFeCeB870D7687C7b67C3693E6B',
         'CASH': {
-            'Via_USD': '0x42b7685421aF0BeBEB9cA99E2Ff059325BAeA9FC',
-            'Via_EUR': '0x57F4862dEA8F1630c5DC902575150F4917A8D6f0',
-            'Via_INR': '0x47460efF3df6EbFfCDb29bdA83245A61A9a089e0',
+            'Via_USD': '0x5033484a39e5fB10D3F1dB747f90CD4C67b953b5',
+            'Via_EUR': '0x6D451294701613C3e9a645318fC326E73f916AA8',
+            'Via_INR': '0x53f74A82FcD41A0F4c226f637316Ba12b2a46Af7',
         },
         'BOND': {
-            'Via_USD': '0xb2B06a0f589b8f29cebb959bBe4c41a7A2E0793D',
-            'Via_EUR': '0x3ec51F58C16c7cAeb6bc928c0e9AE7e1D5E96C94',
-            'Via_INR': '0xd1b8631735D78123A906066fF0D48705D3BbcdB1'
+            'Via_USD': '0x015d98b0FAdf938f26F49a5072825AbD25e15FB0',
+            'Via_EUR': '0x8DcD8cC5670E4619bF829dc76b0a6bFFc3c00B78',
+            'Via_INR': '0xe8d6b9740345f861413b534ba6c6aEB56877F14e'
+        }
     }
 }
 
