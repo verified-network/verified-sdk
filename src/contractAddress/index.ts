@@ -32,4 +32,4 @@ const contractAddress: Object = {
     }
 }
 
-export default contractAddress;
+export default contractAddress
