@@ -19,6 +19,27 @@ const contractAddress = {
         'SecuritiesRegistry' : '',
         'OrderPool' : '',
         'PoolFactory' : ''
+    },
+    'ropsten': {
+        'Client': '0x9329B62b5f9945AA280b800Deb145C3102B8d416',
+        'KYC': '0xF3a16711009F43511E6A678DCb84D8E2ca1D1CDe',
+        'System': '0x616482C2b338747e21c3518AA068fA55351ADE99',
+        'Holder': '0xa8b8A037cdA70335cef3324B802D5a2193B7e971',
+        'Ledger': '0x7A797FF609D70cA5b0bE005D94cA9c2Ec1679D43',
+        'Account': '0x255759391Bc1501baaEf11f0Bb591d882729C489',
+        'Factory': '0xe83038B14AB8dCB87f15fd48C0f1044625c03472',
+        'Via_USD cash': '0x7BF0080C5E8beF0aF33bF482437C8BD86e752228',
+        'Via_EUR cash': '0xFB76b6265fDDFe536AD18227b64e7d26589b147B',
+        'Via_INR cash': '0x2CBA3Bc9a1C553cAD3927f78c9D1CC7FbDf36b2A',
+        'Via_ USD bond': '0x4B0b24A9c9D2F31FEeed0C54fD237DC9d24B9c4d',
+        'Via_EUR bond': '0x7A32Db40BA733C531DfDa9F4CEcE356eFB3E18a3',
+        'Via_INR bond': '0xEC8694554F66149a87e187Cc3e3a6c3Df86f7917',
+        'PreTrade' : '0x52218Fb73cdE0b3f630d9221e2ea35D739E23034',
+        'Trade' : '0x728AFc4fA65bE77719750BB4962acCD81aF80298',
+        'PostTrade' : '0xCc5d5501890a1f78dFA6bCe8019DaeDeA6E162D6',
+        'SecuritiesRegistry' : '0x1E99ae988c872598Bf1874BEf42020Df9796f6dA',
+        'OrderPool' : '0xC512E567C3e6adCB829bc5DDE4E8FCf4F8aE270b',
+        'PoolFactory' : '0x75757799662D344A88f51546a0C8026F062960bb'
     }
 }
 
