@@ -28,11 +28,10 @@ export default class PostTradeContract extends VerifiedContract {
      * @param (uint entries, bytes32 _countryCode, bytes32 dpid)
      * @returns (bytes32[] memory)
      */
-    public async getSettlementRequests(_entries: string, _countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _entries)
+    public async getSettlementRequests(_countryCode: string, _dpid: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _countryCode)
         await this.validateInput(DATATYPES.STRING, _dpid)
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, _entries, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), this.sanitiseInput(DATATYPES.BYTE32, _dpid), options)
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), this.sanitiseInput(DATATYPES.BYTE32, _dpid), options)
     }
 
     /**

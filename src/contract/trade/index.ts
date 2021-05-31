@@ -25,15 +25,14 @@ export default class TradeContract extends VerifiedContract {
 
     /**
      * Get no of orders [callable by user on Trade.sol]
-     * @param (uint entries, bool originator)
+     * @param ( bool originator)
      * @returns (bytes32[] memory) Returns array of order references. 
      * Originator be set to ‘false’ if orders to fetch are not created by user, 
      * and to ‘true’ if orders to fetch are created by user
      */
-    public async getOrders(entries: string, originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, entries)
+    public async getOrders( originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.BOOLEAN, originator)
-        return this.callContract(FUNCTIONS.GETORDERS, entries, originator)
+        return this.callContract(FUNCTIONS.GETORDERS, originator)
     }
 
     /**
