@@ -1,9 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/trades/Trade.json';
-import { DATATYPES } from "../index";
 
 
 enum FUNCTIONS {
@@ -30,9 +29,9 @@ export default class TradeContract extends VerifiedContract {
      * Originator be set to ‘false’ if orders to fetch are not created by user, 
      * and to ‘true’ if orders to fetch are created by user
      */
-    public async getOrders( originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getOrders(originator: boolean, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.BOOLEAN, originator)
-        return this.callContract(FUNCTIONS.GETORDERS, originator)
+        return this.callContract(FUNCTIONS.GETORDERS, originator, options)
     }
 
     /**
@@ -43,7 +42,7 @@ export default class TradeContract extends VerifiedContract {
    */
     public async getOrder(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.GETORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref))
+        return this.callContract(FUNCTIONS.GETORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 
     /**
@@ -54,7 +53,7 @@ export default class TradeContract extends VerifiedContract {
      */
     public async getTrade(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
-        return this.callContract(FUNCTIONS.GETTRADE, this.sanitiseInput(DATATYPES.BYTE32, _ref))
+        return this.callContract(FUNCTIONS.GETTRADE, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 
 }

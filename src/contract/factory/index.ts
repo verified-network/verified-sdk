@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/payments/Factory.json';
 
@@ -26,8 +26,8 @@ export default class FactoryContract extends VerifiedContract {
      * @param
      * @returns returns number of tokens
      */
-    public async getTokenCount() {
-        return this.callContract(FUNCTIONS.GETTOKENCOUNT)
+    public async getTokenCount(options?: { gasPrice: number, gasLimit: number }) {
+        return this.callContract(FUNCTIONS.GETTOKENCOUNT, options)
     }
 
     /**
@@ -38,7 +38,7 @@ export default class FactoryContract extends VerifiedContract {
     public async getToken(_n: string, options?: { gasPrice: number, gasLimit: number }): any {
         // await this.validateInput(DATATYPES.STRING, _senderAddress)
         await this.validateInput(DATATYPES.STRING, _n)
-        return this.callContract(FUNCTIONS.GETTOKEN, _n)
+        return this.callContract(FUNCTIONS.GETTOKEN, _n, options)
     }
 
     /**
@@ -49,6 +49,6 @@ export default class FactoryContract extends VerifiedContract {
     */
     public async getNameAndType(_viaAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _viaAddress)
-        return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress)
+        return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress, options)
     }
 }

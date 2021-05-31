@@ -1,10 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Client.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
 import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients } from '../../models/client';
 
 enum FUNCTIONS {

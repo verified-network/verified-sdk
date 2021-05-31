@@ -1,11 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi,networks } from '../../abi/accounts/Ledger.json';
-import { contractAddress } from '../../contractAddress/index';
-import { CreateAccount } from '../../models/ledger';
-import { DATATYPES } from "../index";
+import { abi, networks } from '../../abi/accounts/Ledger.json';
 
 enum FUNCTIONS {
     CREATEACCOUNT = 'createAccount'

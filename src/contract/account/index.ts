@@ -1,11 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Account.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
-import { PostEntry } from '../../models/account';
 
 enum FUNCTIONS {
     POSTENTRY = 'postEntry',

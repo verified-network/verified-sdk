@@ -1,10 +1,9 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Kyc.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
+
 
 enum FUNCTIONS {
     GETSTATUS = 'getStatus',

@@ -1,10 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/trades/SecuritiesRegistry.json';
-import { DATATYPES } from "../index";
-
 
 enum FUNCTIONS {
   GETTOKEN = 'getToken'

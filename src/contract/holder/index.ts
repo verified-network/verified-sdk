@@ -1,11 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Holder.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
-import { GetAccountStatement, CreateLedger } from '../../models/holder';
 
 enum FUNCTIONS {
     GETENTRIES = 'getEntries',
@@ -31,8 +28,8 @@ export default class HolderContract extends VerifiedContract {
      * @returns [uint256]
      * Returns number of ledger entries for account holder
      */
-    public getEntries(): number {
-        return this.callContract(FUNCTIONS.GETENTRIES)
+    public getEntries(options?: { gasPrice: number, gasLimit: number }): number {
+        return this.callContract(FUNCTIONS.GETENTRIES, options)
     }
 
     /**
@@ -40,8 +37,8 @@ export default class HolderContract extends VerifiedContract {
      * Before viewing a statement, it needs to be updated by calling the following solidity function
      *
      */
-    public updateAccountStatement(): void {
-        return this.callContract(FUNCTIONS.UPDATEACCOUNTSTATEMENT)
+    public updateAccountStatement(options?: { gasPrice: number, gasLimit: number }): void {
+        return this.callContract(FUNCTIONS.UPDATEACCOUNTSTATEMENT, options)
     }
 
     /**
@@ -50,9 +47,9 @@ export default class HolderContract extends VerifiedContract {
      * @param (uint256 statementIndex)
      * @returns [bytes32, bytes32, bytes16]
      */
-    public async getAccountStatement(_statementIndex: string): any {
+    public async getAccountStatement(_statementIndex: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _statementIndex)
-        return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, _statementIndex)
+        return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, _statementIndex, options)
     }
 
 

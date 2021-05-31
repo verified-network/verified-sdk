@@ -1,10 +1,8 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/trades/OrderPool.json';
-import { DATATYPES } from "../index";
-
 
 enum FUNCTIONS {
   NEWORDER = 'newOrder',
@@ -16,11 +14,11 @@ export default class OrderPoolContract extends VerifiedContract {
   public contractAddress: string
   constructor(signer: VerifiedWallet) {
 
-      const chainId: string = signer.provider._network.chainId.toString()
-      const address = networks[chainId].address
-      super(address, JSON.stringify(abi), signer)
+    const chainId: string = signer.provider._network.chainId.toString()
+    const address = networks[chainId].address
+    super(address, JSON.stringify(abi), signer)
 
-      this.contractAddress = address
+    this.contractAddress = address
   }
 
   /**
