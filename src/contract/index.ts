@@ -20,6 +20,7 @@ export enum DATATYPES {
     ADDRESS = 'address',
     BOOLEAN = 'boolean',
     BYTE32 = 'byte32',
+    BYTE16 = 'byte16',
     BIGNUMBER = 'bignumber'
 }
 export class VerifiedContract {
@@ -84,6 +85,14 @@ export class VerifiedContract {
                      * @returns ⇒ string
                      */
                     return utils.formatBytes32String(data)
+                case DATATYPES.BYTE16:
+                    /**
+                     * Returns a bytes16 string representation of text. 
+                     * If the length of text exceeds 31 bytes, it will throw an error.
+                     * @params (text)
+                     * @returns ⇒ string
+                     */
+                    return utils.formatBytes32String(data).slice(16)
                 case DATATYPES.NUMBER:
                     /**
                      * Returns a BigNumber representation of value, parsed with unit digits 
@@ -180,7 +189,7 @@ export class VerifiedContract {
             let fn = this.contract[functionName];
             let _res = await fn(...args, ...options);
             console.log('_res', _res)
-            console.log('_res.value.toString()',_res.value.toString())
+            // console.log('_res.value.toString()',_res.value.toString())
             let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
             console.log('_resp', _resp)
             res.response = this.tempOutput(this.convertToArray(utils.deepCopy(_resp)))

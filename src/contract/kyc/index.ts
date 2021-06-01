@@ -1,10 +1,9 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/Kyc.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
+import { abi, networks } from '../../abi/accounts/Kyc.json';
+
 
 enum FUNCTIONS {
     GETSTATUS = 'getStatus',
@@ -23,14 +22,18 @@ enum FUNCTIONS {
     GETPHOTOID = 'getPhotoID',
     GETVIDEOID = 'getVideoID',
     GETADDRESS = 'getAddress',
+    GETKYC = 'getKyc'
 }
 
 export default class KYCContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].KYC, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
@@ -139,4 +142,15 @@ export default class KYCContract extends VerifiedContract {
     public async getAddress(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         return this.callContract(FUNCTIONS.GETADDRESS, _clientAddress, options)
     }
+
+    /**
+      * Get KYC details [callable by client or its manager or KYCAML submanager
+      * @param (address _client) 
+      * @returns (bytes32, bytes32, bytes32, bytes32, bytes32, bytes32)Returns KYC_file, fatca_declaration, crs_declaration, photo_id, video_id, address_proof
+      */
+    public async getKyc(_client: string, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETKYC, _client, options)
+    }
+
 }

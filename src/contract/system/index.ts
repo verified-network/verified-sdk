@@ -1,25 +1,32 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/System.json';
-import { contractAddress } from '../../contractAddress/index';
-import { DATATYPES } from "../index";
-import { CreateHolder, GetAccountHolder, GetAccountLedger, GetLedgerAccount } from '../../models/system';
+import { abi, networks } from '../../abi/accounts/System.json';
 
 enum FUNCTIONS {
     CREATEHOLDER = 'createHolder',
     GETACCOUNTHOLDER = 'getAccountHolder',
+    GETACCOUNTHOLDERS = 'getAccountHolders',
     GETACCOUNTLEDGER = 'getAccountLedger',
-    GETLEDGERACCOUNT = 'getLedgerAccount'
+    GETLEDGERACCOUNT = 'getLedgerAccount',
+    GETHOLDERDETAILS = 'getHolderDetails',
+    GETLEDGERDETAILS = 'getLedgerDetails',
+    GETLEDGERACCOUNTS = 'getLedgerAccounts',
+    GETACCOUNTDETAILS = 'getAccountDetails',
+    GETACCOUNTLEDGERS = 'getAccountLedgers',
+
 }
 
 export default class SystemContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].System, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
@@ -34,32 +41,100 @@ export default class SystemContract extends VerifiedContract {
     }
 
     /**
+    * The account holder’s address can be obtained by calling on the Account system the following solidity function.
+    * @param (address counterParty))
+    * @returns [address]
+    * _accountCreator is the client that created the account holders. Returns address array of account holders
+    */
+    public async getAccountHolder(_counterPartyAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _counterPartyAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _counterPartyAddress, options)
+    }
+
+    /**
      * The account holder’s address can be obtained by calling on the Account system the following solidity function.
      * @param (address accountCreator)
-     * @returns {address}
+     * @returns [address]
+     * _accountCreator is the client that created the account holders. Returns address array of account holders
      */
-    public async getAccountHolder(_accountCreatorAddress: string): any {
+    public async getAccountHolders(_accountCreatorAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountCreatorAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTHOLDER, _accountCreatorAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTHOLDERS, _accountCreatorAddress, options)
     }
 
     /**
      * The account ledger address can be obtained by calling the following function on the Account system contract
      * @param (address accountHolder)
-     * @returns 
+     * @returns (address[] memory)
+     * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
      */
-    public async getAccountLedger(_accountHolderAddress: string): any {
+    public async getAccountLedger(_accountHolderAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
-        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGER, _accountHolderAddress, options)
     }
 
     /**
-     * The created account address can be obtained by calling the following function on the Account system contract.
-     * @param (address accountLedger) 
-     * @returns 
+     * Get list of account ledgers
+     * @param (address _accountLedger)
+     * @returns (address[] memory)
+     * _accountLedger is the ledger in which the accounts were created in createAccount()
      */
-    public async getLedgerAccount(_accountLedgerAddress: string): any {
+    public async getLedgerAccount(_accountLedgerAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
-        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress)
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNT, _accountLedgerAddress, options)
+    }
+    /**
+     * Get list of account ledgers
+     * @param (address _accountLedger)
+     * @returns (address[] memory)
+     * _accountLedger is the ledger in which the accounts were created in createAccount()
+     */
+    public async getLedgerAccounts(_accountLedgerAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountLedgerAddress)
+        return this.callContract(FUNCTIONS.GETLEDGERACCOUNTS, _accountLedgerAddress, options)
+    }
+
+    /**
+     * Get account holder details
+     * @param (address accountLedger) 
+     * @returns bytes32
+     * _holder is any one of the account holders returned in getAccountHolders()
+     */
+    public async getHolderDetails(_holder: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _holder)
+        return this.callContract(FUNCTIONS.GETHOLDERDETAILS, _holder, options)
+    }
+
+    /**
+   * Get list of account ledgers
+   * @param (address _ledger)
+   * @returns bytes32
+   * _ledger is the any of the ledgers returned in getAccountLedgers()
+   */
+    public async getLedgerDetails(_ledger: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _ledger)
+        return this.callContract(FUNCTIONS.GETLEDGERDETAILS, _ledger, options)
+    }
+
+    /**
+     * Get list of account ledgers
+     * @param (address _account)
+     * @returns (bytes32, bytes32)
+     * _account is any of the accounts returned in getLedgerAccounts()
+     */
+    public async getAccountDetails(_account: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _account)
+        return this.callContract(FUNCTIONS.GETACCOUNTDETAILS, _account, options)
+    }
+
+    /**
+    * The account ledger address can be obtained by calling the following function on the Account system contract
+    * @param (address accountHolder)
+    * @returns (address[] memory)
+    * _accountHolder is the account holder for which the ledger was created in 5.3. Returns address array of ledgers.
+    */
+    public async getAccountLedgers(_accountHolderAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _accountHolderAddress)
+        return this.callContract(FUNCTIONS.GETACCOUNTLEDGERS, _accountHolderAddress, options)
     }
 }

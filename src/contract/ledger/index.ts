@@ -1,22 +1,22 @@
 // @ts-nocheck
 
-import { VerifiedContract } from '../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi } from '../../abi/accounts/Ledger.json';
-import { contractAddress } from '../../contractAddress/index';
-import { CreateAccount } from '../../models/ledger';
-import { DATATYPES } from "../index";
+import { abi, networks } from '../../abi/accounts/Ledger.json';
 
 enum FUNCTIONS {
     CREATEACCOUNT = 'createAccount'
 }
 
 export default class LedgerContract extends VerifiedContract {
-
+    public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
-        const network: string = signer.provider._network.name
-        super(contractAddress[network].Ledger, JSON.stringify(abi), signer)
+        const chainId: string = signer.provider._network.chainId.toString()
+        const address = networks[chainId].address
+        super(address, JSON.stringify(abi), signer)
+
+        this.contractAddress = address
     }
 
     /**
