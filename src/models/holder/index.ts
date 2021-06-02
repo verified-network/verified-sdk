@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 interface GetAccountStatement {
     //uint256 statementIndex
     _statementIndex: number
