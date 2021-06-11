@@ -24,7 +24,7 @@ export class VerifiedWallet extends EtherWallet {
      */
     static createWallet(): VerifiedWallet {
         const newWallet = EtherWallet.createRandom();
-        return new VerifiedWallet(this.parseMnemonics(newWallet.mnemonic.phrase, newWallet.mnemonic.path));
+        return new VerifiedWallet(VerifiedWallet.parseMnemonics(newWallet.mnemonic.phrase, newWallet.mnemonic.path));
     }
 
     /**
@@ -32,7 +32,7 @@ export class VerifiedWallet extends EtherWallet {
      */
     static importWallet(mnemonic: string, path?: string): VerifiedWallet {
         const newWallet = EtherWallet.fromMnemonic(mnemonic, path);
-        return new VerifiedWallet(this.parseMnemonics(newWallet.mnemonic.phrase, newWallet.mnemonic.path));
+        return new VerifiedWallet(VerifiedWallet.parseMnemonics(newWallet.mnemonic.phrase, newWallet.mnemonic.path));
     }
 
     public setProvider(provider: Provider) {
