@@ -6,20 +6,31 @@ const provider = new ethers.providers.JsonRpcProvider();
 
 const PreTrade = artifacts.require('PreTrade');
 const SecuritiesRegistry = artifacts.require('SecuritiesRegistry');
+const Security = artifacts.require('Security');
 const PoolFactory = artifacts.require('PoolFactory');
 const OrderPool = artifacts.require('OrderPool');
 const Trade = artifacts.require('Trade');
 const PostTrade = artifacts.require('PostTrade');
 const Client = artifacts.require('VerifiedClient');
 const KYC = artifacts.require('VerifiedKYC');
+const Cash = artifacts.require('ViaCash');
+const Oracle = artifacts.require('Oracle');
 
 contract("Trade contracts", async(accounts)=> {
 
     const dpid = "XYZ1234";
+    var viausdCashAddress = '0x3E972bc8610e9BEc09711D3C8C5056703960422D';
+    var oracleAddress = '0x5b893d68f8556D37caAb00D62d8fC7986514C9EF';
+
+    var getFirstEvent = (_event) => {
+        return new Promise((resolve, reject) => {
+          _event.once('data', resolve).once('error', reject)
+        });
+    }
 
     it("Sets manager and KYC status for client", async()=>{
-        var KYCedClient = await Client.at('0x6d1b2226BbdFC7E4eDe55676b13fFa74521cB966');
-        var ClientKYC = await KYC.at('0x17EA861E47EAdd16AEE1b3E85F750F05bA91fEA2');
+        var KYCedClient = await Client.at('0x15A182F894547a0e5a260cbdC7d298142D2b7c65');
+        var ClientKYC = await KYC.at('0xfF0bb0874ef29AE71A88DE36f780790d4b2d9E12');
 
         await KYCedClient.setManager(accounts[1], accounts[0])
         .then(async()=>{
@@ -31,7 +42,7 @@ contract("Trade contracts", async(accounts)=> {
                     await ClientKYC.getStatus(accounts[1])
                     .then(async(KycStatus)=>{
                         console.log("Got KYC status for client as " + KycStatus);
-                        await KYCedClient.addRole(accounts[2], ethers.utils.formatBytes32String("IN"), ethers.utils.formatBytes32String("DP"), {from:accounts[0]})
+                        await KYCedClient.addRole(accounts[2], ethers.utils.formatBytes32String("US"), ethers.utils.formatBytes32String("DP"), {from:accounts[0]})
                         .then(function(){
                             console.log("Set role for " + accounts[2] + " as depositary participant (DP).");  
                         })
@@ -62,9 +73,9 @@ contract("Trade contracts", async(accounts)=> {
         const dp = accounts[2];
 
         var Pretrade = await PreTrade.deployed();
-        await Pretrade.registerDematAccount(ethers.utils.formatBytes32String("VXINR"), {from: user})
+        await Pretrade.registerDematAccount(ethers.utils.formatBytes32String("VXUSD"), {from: user})
         .then(async()=>{
-            await Pretrade.getRegistrationRequests(ethers.utils.formatBytes32String("IN"), {from: dp})
+            await Pretrade.getRegistrationRequests(ethers.utils.formatBytes32String("US"), {from: dp})
             .then(async(regRequests)=>{
                 const[val, ...rest]=regRequests;
                 console.log("Received demat account registration request ref no " + val);
@@ -87,18 +98,18 @@ contract("Trade contracts", async(accounts)=> {
         const dp = accounts[2];
 
         var Pretrade = await PreTrade.deployed();
-        await Pretrade.registerSecurities(ethers.utils.formatBytes32String("VXINR"), 
+        await Pretrade.registerSecurities(ethers.utils.formatBytes32String("VXUSD"), 
                                             ethers.utils.formatBytes32String("Free"),
                                             ethers.utils.formatBytes32String("INISIN0000"),
                                             ethers.utils.formatBytes32String("Jio"),
                                             ethers.utils.formatBytes32String("Equity"),
-                                            ethers.utils.parseUnits('1000',3),
-                                            ethers.utils.parseUnits('100',3),
+                                            ethers.utils.parseUnits('1000',0),
+                                            ethers.utils.parseUnits('100',0),
                                             ethers.utils.formatBytes32String(""),
-                                            ethers.utils.parseUnits('0',3),
+                                            ethers.utils.parseUnits('0',0),
                                             {from: user})
         .then(async()=>{
-            await Pretrade.getConfirmationRequests(ethers.utils.formatBytes32String("IN"), {from: dp})
+            await Pretrade.getConfirmationRequests(ethers.utils.formatBytes32String("US"), {from: dp})
             .then(async(confirmationRequests)=>{
                 const[ref, ...rest]=confirmationRequests;
                 console.log("Received securities confirmation request " + ref);
@@ -122,80 +133,30 @@ contract("Trade contracts", async(accounts)=> {
         
         var registry = await SecuritiesRegistry.deployed();
         var factory = await PoolFactory.deployed();
-        var pool = await OrderPool.deployed();
 
-        var inrcashtokenaddress = '0x37241d8d1b0d13427BAcE5C95654a24A2221041C';
-
-        await registry.getToken(ethers.utils.formatBytes32String("VXINR"), ethers.utils.formatBytes32String("Jio"),
+        await registry.getToken(ethers.utils.formatBytes32String("VXUSD"), ethers.utils.formatBytes32String("Jio"),
                                 ethers.utils.formatBytes32String("INISIN0000"), {from: user})
         .then(async(security)=>{
             console.log("Tokenized security address is " + security);         
-            await factory.getPool(security, inrcashtokenaddress, {from: user})
+            await factory.getPool(security, ethers.utils.getAddress(viausdCashAddress), {from: user})
             .then(async(orderpool)=>{
                 console.log("Order pool address is " + orderpool); 
-                await pool.newOrder(security, inrcashtokenaddress, ethers.utils.parseUnits('120',3),
-                                ethers.utils.parseUnits('0',3), ethers.utils.parseUnits('500',3),
+                var pool = await OrderPool.at(orderpool);
+                await pool.newOrder(security, viausdCashAddress, ethers.utils.parseUnits('120',0),
+                                ethers.utils.parseUnits('0',0), ethers.utils.parseUnits('500',0),
                                 ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Sell"), {from: user})
-                .then(async(orderRef)=>{
-                    console.log("Order reference no is " + orderRef); 
-                    /*await pool.editOrder(orderRef, ethers.utils.parseUnits('110',3),
-                                    ethers.utils.parseUnits('0',3), ethers.utils.parseUnits('800',3),
-                                    ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Sell"), {from: user})
-                    .then(async(editStatus)=>{
-                        console.log("Order has been changed " + editStatus); 
-                        await pool.cancelOrder(orderRef, {from: user})
-                        .then(function(cancelStatus){
-                            console.log("Order has been cancelled " + cancelStatus); 
-                        });
-                    });*/
-                });
-            });
-        });
-    });
-    /*
-    it("Order matching for Trade", async()=>{
-        const seller = accounts[1];
-        const buyer = accounts[3];
-        const manager = accounts[0];
-        const dp = accounts[2];
-        
-        var registry = await SecuritiesRegistry.deployed();
-        var factory = await PoolFactory.deployed();
-        var pool = await OrderPool.deployed();
-        var trade = await Trade.deployed();
-
-        var inrcashtokenaddress = '';
-
-        await registry.getToken(ethers.utils.formatBytes32String("VXINR"), ethers.utils.formatBytes32String("Jio"),
-                                ethers.utils.formatBytes32String("INISIN0000"), {from: seller})
-        .then(async(security)=>{
-            console.log("Tokenized security address is " + security);         
-            await factory.getPool(security, inrcashtokenaddress, {from: seller})
-            .then(async(orderpool)=>{
-                console.log("Order pool address is " + orderpool); 
-                await pool.newOrder(security, inrcashtokenaddress, ethers.utils.parseUnits('120',3),
-                                ethers.utils.parseUnits('0',3), ethers.utils.parseUnits('500',3),
-                                ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Sell"), {from: seller})
-                .then(async(sellRef)=>{
-                    console.log("Sell Order reference no is " + sellRef); 
-                    await pool.newOrder(security, inrcashtokenaddress, ethers.utils.parseUnits('120',3),
-                                    ethers.utils.parseUnits('0',3), ethers.utils.parseUnits('500',3),
-                                    ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Buy"), {from: buyer})
-                    .then(async(buyRef)=>{
-                        console.log("Buy Order reference no is " + buyRef); 
-                        await trade.getOrders(ethers.utils.formatBytes32String("true"), {from: buyer})
-                        .then(async(orders)=>{
-                            const[ref, ...rest]=orders;
-                            console.log("Checking the first order " + ref); 
-                            await trade.getOrder(ref, {from: buyer})
-                            .then(function(order){
-                                const{a, b} = order;
-                                console.log("Order details fetched ");
-                            });
-                            await trade.getTrade(ref, {from: buyer})
-                            .then(function(bidask){
-                                const{bid, ask} = bidask;
-                                console.log("Trade details fetched, bid : " + bid + " ask : " + ask);
+                .then(async()=>{
+                    await pool.getOrderRef({from: user})
+                    .then(async(orderRef)=>{
+                        console.log("Order reference no is " + orderRef); 
+                        await pool.editOrder(orderRef, ethers.utils.parseUnits('110',0),
+                                        ethers.utils.parseUnits('0',0), ethers.utils.parseUnits('80',0),
+                                        ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Sell"), {from: user})
+                        .then(async()=>{
+                            console.log("Order has been changed."); 
+                            await pool.cancelOrder(orderRef, {from: user})
+                            .then(function(){
+                                console.log("Order has been cancelled."); 
                             });
                         });
                     });
@@ -203,7 +164,72 @@ contract("Trade contracts", async(accounts)=> {
             });
         });
     });
+    
+    it("Order matching for Trade", async()=>{
+        const seller = accounts[1];
+        const buyer = accounts[3];
+        const manager = accounts[0];
+        const dp = accounts[2];
 
+        console.log("Seller address is " + accounts[1]);
+        console.log("Buyer address is " + accounts[3]);
+        console.log("Manager address is " + accounts[0]);
+        console.log("DP address is " + accounts[2]);
+        
+        var registry = await SecuritiesRegistry.deployed();
+        var factory = await PoolFactory.deployed();
+        var trade = await Trade.deployed();
+        
+        var viausdCash = await Cash.at(viausdCashAddress);
+        var oracle = await Oracle.at(oracleAddress); 
+        await viausdCash.sendTransaction({buyer, to:viausdCashAddress, value:1e18});
+        await getFirstEvent(oracle.LogResult({fromBlock:'latest'}));
+
+        await registry.getToken(ethers.utils.formatBytes32String("VXUSD"), ethers.utils.formatBytes32String("Jio"),
+                                ethers.utils.formatBytes32String("INISIN0000"), {from: seller})
+        .then(async(security)=>{
+            console.log("Tokenized security address is " + security);         
+            await factory.getPool(security, viausdCashAddress, {from: seller})
+            .then(async(orderpool)=>{
+                console.log("Order pool address is " + orderpool); 
+                var pool = await OrderPool.at(orderpool);
+                await pool.newOrder(security, viausdCashAddress, ethers.utils.parseUnits('120',0),
+                                ethers.utils.parseUnits('0',0), ethers.utils.parseUnits('500',0),
+                                ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Sell"), {from: seller})
+                .then(async()=>{
+                    await pool.getOrderRef({from: seller})
+                    .then(async(sellRef)=>{
+                        console.log("Sell Order reference no is " + sellRef); 
+                        await pool.newOrder(security, viausdCashAddress, ethers.utils.parseUnits('120',0),
+                                        ethers.utils.parseUnits('0',0), ethers.utils.parseUnits('50',0),
+                                        ethers.utils.formatBytes32String("Market"), ethers.utils.formatBytes32String("Buy"), {from: buyer})
+                        .then(async()=>{
+                            await pool.getOrderRef({from: buyer})
+                            .then(async(buyRef)=>{
+                                console.log("Buy Order reference no is " + buyRef); 
+                                await trade.getOrders(ethers.utils.formatBytes32String("true"), {from: buyer})
+                                .then(async(orders)=>{
+                                    const[ref, ...rest]=orders;
+                                    console.log("Checking the first order " + ref); 
+                                    await trade.getOrder(ref, {from: buyer})
+                                    .then(function(order){
+                                        const{a, b} = order;
+                                        console.log("Order details fetched ");
+                                    });
+                                    await trade.getTrade(ref, {from: buyer})
+                                    .then(function(bidask){
+                                        const {bid, ask} = bidask;
+                                        console.log("Trade details fetched, bid : " + bid + " ask : " + ask);
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
+    
     it("Settling trades", async()=>{
         const seller = accounts[1];
         const buyer = accounts[3];
@@ -211,21 +237,37 @@ contract("Trade contracts", async(accounts)=> {
         const dp = accounts[2];
 
         var posttrade = await PostTrade.deployed();
+        var security = await Security.deployed();
 
-        await posttrade.getSettlementRequests(ethers.utils.formatBytes32String("IN"), dpid, {from: dp})
+        await posttrade.getSettlementRequests(ethers.utils.formatBytes32String("US"), ethers.utils.formatBytes32String(dpid), {from: dp})
         .then(async(posttradedata)=>{
-            if(isResult(posttradedata)){
-                const[ref, ...rest]=posttradedata;
-                console.log("Going to use post trade reference no " + ref);
-                await posttrade.getSettlementRequest(ref, {from: dp})
-                .then(async(settlement)=>{
-                    await posttrade.setSettlementStatus(ref, ethers.utils.formatBytes32String("IN"), ethers.utils.formatBytes32String("true"), {from: dp})
-                    .then(function(){
-                        console.log("Set settlement request status.");
-                    })
+            const[ref, ...rest]=posttradedata;
+            console.log("Going to use post trade reference no " + ref);
+            await posttrade.getSettlementRequest(ref, {from: dp})
+            .then(async(settlement)=>{
+                console.log("Settlement consideration " + settlement);  
+                await security.balanceOf(seller)   
+                .then(async(sellerbalance)=>{
+                    console.log("Seller balance before settling trade " + sellerbalance);
+                    await security.balanceOf(buyer)   
+                    .then(async(buyerbalance)=>{
+                        console.log("Buyer balance before settling trade " + buyerbalance);      
+                        await posttrade.setSettlementStatus(ref, ethers.utils.formatBytes32String("US"), ethers.utils.formatBytes32String("Confirm"), {from: dp})
+                        .then(async()=>{
+                            console.log("Settled trade.");
+                            await security.balanceOf(seller)   
+                            .then(async(postsellerbalance)=>{
+                                console.log("Seller balance after settling trade " + postsellerbalance);
+                                await security.balanceOf(buyer)   
+                                .then(async(postbuyerbalance)=>{
+                                    console.log("Buyer balance after settling trade " + postbuyerbalance);
+                                });
+                            });
+                        });
+                    });
                 });
-            }
+            });
         });
     });
-    */
+    
 });

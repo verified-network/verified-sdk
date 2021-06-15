@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 interface PostEntry {
     _accountAddress: string
     _accountNumber: number

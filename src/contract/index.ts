@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 "use strict"
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";

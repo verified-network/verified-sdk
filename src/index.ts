@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: BUSL-1.1
+
 import { VerifiedWallet } from './wallet';
 import { Provider } from './utils';
 import ClientContract from './contract/client';
