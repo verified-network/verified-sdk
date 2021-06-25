@@ -16,11 +16,22 @@ contract("Client and KYC testing", async(accounts)=> {
         .then(async()=>{
             await KYCedClient.getManager(accounts[1])
             .then(function(result){
-                console.log("Set manager address for client " + accounts[0]);
+                console.log("Set and Get manager address " + result);
             });
         });
     });
 
+    it("resets the manager", async()=>{
+        var KYCedClient = await Client.deployed();
+        await KYCedClient.setManager(accounts[1], accounts[2])
+        .then(async()=>{
+            await KYCedClient.getManager(accounts[1])
+            .then(function(result){
+                console.log("Reset manager address " + result);
+            });
+        });
+    });
+    
     it("sets and gets KYC status for client", async()=>{
         var ClientKYC = await Kyc.deployed();
         await ClientKYC.getStatus(accounts[1])
@@ -124,12 +135,36 @@ contract("Client and KYC testing", async(accounts)=> {
         .then(async()=>{
             await ClientKYC.getStatus(accounts[1])
             .then(async(KycStatus)=>{
-                await KYCedClient.setManager(accounts[1], accounts[2])
+                await KYCedClient.setManager(accounts[1], accounts[3], {from: accounts[2]})
                 .then(async()=>{
-                    console.log("Set manager whose address is " + accounts[2]);
+                    console.log("Set manager whose address is " + accounts[3]);
                     await KYCedClient.getManager(accounts[1])
                     .then(function(result){
                         console.log("New manager address " + result);
+                    });
+                });
+            });
+        });
+    });
+
+    it("sets and get sub manager roles", async()=>{
+        var KYCedClient = await Client.deployed();
+        await KYCedClient.getRole(accounts[2], ethers.utils.formatBytes32String("India"))
+        .then(async(result)=>{
+            console.log("Got role " + result);
+            await KYCedClient.addRole(accounts[2], ethers.utils.formatBytes32String("India"), ethers.utils.formatBytes32String("KYCAML"))
+            .then(async()=>{
+                console.log("Added sub manager " + accounts[2]);
+                await KYCedClient.getRole(accounts[2], ethers.utils.formatBytes32String("India"))
+                .then(async(result)=>{
+                    console.log("Got role " + result);
+                    await KYCedClient.removeRole(accounts[2], ethers.utils.formatBytes32String("India"), ethers.utils.formatBytes32String("KYCAML"))
+                    .then(async()=>{
+                        console.log("Removed sub manager " + accounts[2]);
+                        await KYCedClient.getRole(accounts[2], ethers.utils.formatBytes32String("India"))
+                        .then(async(result)=>{
+                            console.log("Got role " + result);
+                        });
                     });
                 });
             });
