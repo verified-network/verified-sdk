@@ -10,8 +10,10 @@ enum FUNCTIONS {
   GETREGISTRATIONREQUESTS = 'getRegistrationRequests',
   GETREGISTRATIONREQUEST = 'getRegistrationRequest',
   SETREGISTRATIONSTATUS = 'setRegistrationStatus',
-  CONFIRMSECURITIES = 'confirmSecurities',
+  REGISTERSECURITIES = 'registerSecurities',
   GETCONFIRMATIONREQUESTS = 'getConfirmationRequests',
+  GETCONFIRMATIONREQUEST = 'getConfirmationRequest',
+  CONFIRMSECURITIES = 'confirmSecurities',
 }
 
 export default class PreTradeContract extends VerifiedContract {
@@ -38,13 +40,12 @@ export default class PreTradeContract extends VerifiedContract {
 
   /**
    * Get no of registrations [sent by manager on PreTrade.sol, only works if manager’s role is DP]
-   * @param (bytes32 _countryCode, uint entries) 
+   * @param (bytes32 _countryCode) external view
    * @returns (bytes32[] memory) array of registration request references
    */
-  public async getRegistrationRequests(_countryCode: string, entries: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _senderAddress)
-    await this.validateInput(DATATYPES.STRING, entries)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, _senderAddress, entries, options)
+  public async getRegistrationRequests(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _countryCode)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, _countryCode, options)
   }
 
 
@@ -75,7 +76,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @param ( bytes32 _currencyCode,bytes32 _stype,bytes32 _isin,bytes32 _company,bytes32 _itype, uint _noOfCertificates,  uint _faceValue,bytes32 _lockInReason,uint256 _lockInReleaseDate)
    * @returns
    */
-  public async confirmSecuritiesClient(_currencyCode: string, _stype: string, _isin: string, _company: string, _itype: string, _noOfCertificates: string, _faceValue: string, _lockInReason: string, _lockInReleaseDate: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async registerSecurities(_currencyCode: string, _stype: string, _isin: string, _company: string, _itype: string, _noOfCertificates: string, _faceValue: string, _lockInReason: string, _lockInReleaseDate: string, options?: { gasPrice: number, gasLimit: number }): any {
 
     await this.validateInput(DATATYPES.STRING, _currencyCode)
     await this.validateInput(DATATYPES.STRING, _stype)
@@ -87,18 +88,28 @@ export default class PreTradeContract extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _lockInReason)
     await this.validateInput(DATATYPES.STRING, _lockInReleaseDate)
 
-    return this.callContract(FUNCTIONS.CONFIRMSECURITIES, this.sanitiseInput(DATATYPES.BYTE32, _currencyCode), this.sanitiseInput(DATATYPES.BYTE32, _stype), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _itype), _noOfCertificates, _faceValue, this.sanitiseInput(DATATYPES.BYTE32, _lockInReason), _lockInReleaseDate, options)
+    return this.callContract(FUNCTIONS.REGISTERSECURITIES, this.sanitiseInput(DATATYPES.BYTE32, _currencyCode), this.sanitiseInput(DATATYPES.BYTE32, _stype), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _itype), _noOfCertificates, _faceValue, this.sanitiseInput(DATATYPES.BYTE32, _lockInReason), _lockInReleaseDate, options)
   }
 
-
   /**
-   * Get no of securities registration requests [sent by manager on PreTrade.sol, only works if manager’s role is DP]
-   * @param (uint _entries, bytes32 _countryCode) 
-   * @returns
-   */
+    * Get no of securities registration requests [sent by manager on PreTrade.sol, only works if manager’s role is DP]
+    * @param (bytes32 _countryCode) 
+    * @returns
+    */
   public async getConfirmationRequests(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.CONFIRMSECURITIES, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
+    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
+  }
+
+  /**
+  * View security registration request [sent by manager on PreTrade.sol, only works if manager’s role is DP]
+  * @param (bytes32 _ref) 
+  * @returns (bytes32[] memory, uint[] memory, address)
+  * For any security registration request _ref, returns bytes array[isin, company, lock in reason, security type, instrument type], uint array[no of certificates, face value, lock in release date, registration request date] and address of user that sent the registration request.
+  */
+  public async getConfirmationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _ref)
+    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
   }
 
 
@@ -107,10 +118,10 @@ export default class PreTradeContract extends VerifiedContract {
    * @param (address _user, bytes32 _ref, bytes32 _status)
    * @returns
    */
-  public async confirmSecuritiesManager(_user: string, _ref: string, _status: string, options?: { gasPrice: number, gasLimit: number }): any {
+  public async confirmSecurities(_user: string, _ref: string, _status: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.ADDRESS, _user)
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _status)
-    return this.callContract(FUNCTIONS.TRANSFERFROM, _user, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _status), options)
+    return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _user, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _status), options)
   }
 }
