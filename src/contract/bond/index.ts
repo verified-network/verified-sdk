@@ -31,8 +31,8 @@ export default class BondContract extends VerifiedContract {
      * @param (bytes16 amount, address payer, bytes32 currency, address cashContract)
      * @returns boolean
      */
-    public async requestIssue(_amount: number, _payerAddress: string, _currency: string, _cashContractAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _amount)
+    public async requestIssue(_amount: string, _payerAddress: string, _currency: string, _cashContractAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _amount)
         await this.validateInput(DATATYPES.ADDRESS, _payerAddress)
         await this.validateInput(DATATYPES.STRING, _currency)
         await this.validateInput(DATATYPES.ADDRESS, _cashContractAddress)

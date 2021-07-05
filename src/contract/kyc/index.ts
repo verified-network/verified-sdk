@@ -16,7 +16,7 @@ enum FUNCTIONS {
     SETPHOTOID = 'setPhotoID',
     SETVIDEOID = 'setVideoID',
     SETADDRESS = 'setAddress',
-    UPDATEKYCRECORD = 'updateKycRecord',
+    SETKYC = 'setKyc',
     GETFILE = 'getFile',
     GETFATCA = 'getFATCA',
     GETCRS = 'getCRS',
@@ -74,50 +74,20 @@ export default class KYCContract extends VerifiedContract {
      * The investor can fill up its KYC using an API. This API call needs to be preceded by uploading the KYC documents 
      * (eg, photo ID, video ID, etc) to IPFS and using the IPFS urls in the API. Instead of uploading to IPFS, 
      * we may also plug in a third party KYC management system, so please check before implementing. 
-     * @param (client: string, file: string, address: string, photoId: string, videoId: string, fatca: string, crs: string) 
+     * @param {address _client,bytes32 _file, bytes32 _fatca,bytes32 _crs, bytes32 _photoId,bytes32 _videoId, bytes32 _address} 
      * @returns 
      */
-    public async updateKycRecord(_clientAddress: string, _file: string, address: string, photoId: string, videoId: string, fatca: string, crs: string, options?: { gasPrice, gasLimit }): void {
+    public async setKyc(_clientAddress: string, _file: string, _fatca: string, _crs: string, _photoId: string, _videoId: string, _address: string, options?: { gasPrice, gasLimit }): void {
+
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        await this.validateInput(DATATYPES.STRING, address)
-        await this.validateInput(DATATYPES.STRING, photoId)
-        await this.validateInput(DATATYPES.STRING, videoId)
-        await this.validateInput(DATATYPES.STRING, fatca)
-        await this.validateInput(DATATYPES.STRING, crs)
+        await this.validateInput(DATATYPES.STRING, _address)
+        await this.validateInput(DATATYPES.STRING, _photoId)
+        await this.validateInput(DATATYPES.STRING, _videoId)
+        await this.validateInput(DATATYPES.STRING, _fatca)
+        await this.validateInput(DATATYPES.STRING, _crs)
 
-        const setFile = this.setFile(_clientAddress, _file,)
-        const setAddress = this.setAddress(_clientAddress, address)
-        const setPhotoID = this.setPhotoID(_clientAddress, photoId)
-        const setVideoID = this.setVideoID(_clientAddress, videoId)
-        const setFATCA = this.setFATCA(_clientAddress, fatca)
-        const setCR = this.setCRS(_clientAddress, crs)
-        const response = await Promise.allSettled([setFile, setAddress, setPhotoID, setVideoID, setFATCA, setCR])
-        return response
-    }
-
-    public async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
-    }
-
-    public async setFATCA(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
-    }
-
-    public async setCRS(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
-    }
-
-    public async setPhotoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
-    }
-
-    public async setVideoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
-    }
-
-    public async setAddress(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
-        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETKYC, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), this.sanitiseInput(DATATYPES.BYTE32, _fatca), this.sanitiseInput(DATATYPES.BYTE32, _crs), this.sanitiseInput(DATATYPES.BYTE32, _photoId), this.sanitiseInput(DATATYPES.BYTE32, _videoId), this.sanitiseInput(DATATYPES.BYTE32, _address), options)
     }
 
     public async getFile(_clientAddress: string, options?: { gasPrice, gasLimit }): void {

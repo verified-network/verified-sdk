@@ -27,12 +27,13 @@ export default class AccountContract extends VerifiedContract {
      * @param (address _account, bytes32 _accountNumber, int256 _txAmount, bytes32 _txType, bytes32 _txDate, bytes32 _txDescription, bytes32 _vchType)
      * 
      */
-    public async postEntry(_accountAddress, _accountNumber, _txAmount, _txType, _txDate, _txDescription, _vchType, options?: { gasLimit, gasPrice }): any {
+    public async postEntry(_counterParty, _accountNumber, _txAmount, _txType, _txDate, _txDescription, _vchType, options?: { gasLimit, gasPrice }): any {
 
-        await this.validateInput(DATATYPES.ADDRESS, _accountAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _counterParty)
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
-        return this.callContract(FUNCTIONS.POSTENTRY, _accountAddress, _accountNumber, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), this.sanitiseInput(DATATYPES.BYTE32, _txDate), this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
+
+        return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, sanitiseInput(DATATYPES.BYTE32, _accountNumber), _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
     }
 
     /**
