@@ -181,10 +181,7 @@ export class VerifiedContract {
             if (options == 0) options[0] = {}
             console.log('*********', ...args)
             console.log('options after', options);
-            // options = typeof options === 'object' || typeof options === 'undefined' ? params.pop() : undefined;
-            // let {params, overrideOptions} = this.validateInputParams(functionName, _params);
-            // console.log("Params:: ", params, " Options:: ", options);
-
+           
             /**
              * Actual Function call using Ethers.js
              */

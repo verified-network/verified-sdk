@@ -37,7 +37,7 @@ export default class SystemContract extends VerifiedContract {
      */
     public async createHolder(_holderName: string, _accountHolder: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _holderName)
-        await this.validateInput(DATATYPES.STRING, _accountHolder)
+        await this.validateInput(DATATYPES.ADDRESS, _accountHolder)
         return this.callContract(FUNCTIONS.CREATEHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _holderName), _accountHolder, options)
     }
 

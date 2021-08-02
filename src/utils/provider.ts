@@ -12,4 +12,8 @@ export class Provider extends ethers.providers.JsonRpcProvider {
     static defaultProvider(network: string) {
         return ethers.providers.getDefaultProvider(network);
     }
+
+    static infuraProvider(network: string, key: string) {
+        return new ethers.providers.InfuraProvider(network, key);
+    }
 }

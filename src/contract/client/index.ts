@@ -59,8 +59,9 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETACCESS, _login, options)
     }
 
-    public async getAccess(params: GetAccess): any {
-        return this.callContract(FUNCTIONS.GETACCESS, params)
+    public async getAccess(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        return this.callContract(FUNCTIONS.GETACCESS, _clientAddress, options)
     }
 
     /**
