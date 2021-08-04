@@ -10,11 +10,13 @@ enum FUNCTIONS {
     UPDATEACCOUNTSTATEMENT = 'updateAccountStatement',
     GETACCOUNTSTATEMENT = 'getAccountStatement',
     CREATELEDGER = 'createLedger',
-    GETTRANSACTIONS = 'getTransactions'
+    GETTRANSACTIONS = 'getTransactions' 
 }
 
 export default class HolderContract extends VerifiedContract {
+
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
@@ -48,8 +50,8 @@ export default class HolderContract extends VerifiedContract {
      * @param (uint256 statementIndex)
      * @returns [bytes32, bytes32, bytes16]
      */
-    public async getAccountStatement(_statementIndex: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _statementIndex)
+    public async getAccountStatement(_statementIndex: number, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _statementIndex)
         return this.callContract(FUNCTIONS.GETACCOUNTSTATEMENT, _statementIndex, options)
     }
 

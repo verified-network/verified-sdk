@@ -23,11 +23,15 @@ enum FUNCTIONS {
     GETPHOTOID = 'getPhotoID',
     GETVIDEOID = 'getVideoID',
     GETADDRESS = 'getAddress',
-    GETKYC = 'getKyc'
+    GETKYC = 'getKyc',
+    SETCOUNTRY = 'setCountry',
+    GETCOUNTRY = 'getCountry'
 }
 
 export default class KYCContract extends VerifiedContract {
+    
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
@@ -90,6 +94,58 @@ export default class KYCContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETKYC, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), this.sanitiseInput(DATATYPES.BYTE32, _fatca), this.sanitiseInput(DATATYPES.BYTE32, _crs), this.sanitiseInput(DATATYPES.BYTE32, _photoId), this.sanitiseInput(DATATYPES.BYTE32, _videoId), this.sanitiseInput(DATATYPES.BYTE32, _address), options)
     }
 
+    public async setCountry(_clientAddress: string, _country: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _country)
+        return this.callContract(FUNCTIONS.SETCOUNTRY, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+    } 
+
+    public async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    } 
+
+    public async setFATCA(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    public async setCRS(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    public async setPhotoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    public async setVideoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    public async setAddress(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _file)
+        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+    }
+
+    /**
+      * Get KYC details [callable by client or its manager or KYCAML submanager
+      * @param (address _client) 
+      * @returns (bytes32, bytes32, bytes32, bytes32, bytes32, bytes32)Returns KYC_file, fatca_declaration, crs_declaration, photo_id, video_id, address_proof
+      */
+    public async getKyc(_client: string, options?: { gasLimit, gasPrice }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETKYC, _client, options)
+    } 
+
     public async getFile(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         return this.callContract(FUNCTIONS.GETFILE, _clientAddress, options)
     }
@@ -112,16 +168,10 @@ export default class KYCContract extends VerifiedContract {
 
     public async getAddress(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         return this.callContract(FUNCTIONS.GETADDRESS, _clientAddress, options)
-    }
-
-    /**
-      * Get KYC details [callable by client or its manager or KYCAML submanager
-      * @param (address _client) 
-      * @returns (bytes32, bytes32, bytes32, bytes32, bytes32, bytes32)Returns KYC_file, fatca_declaration, crs_declaration, photo_id, video_id, address_proof
-      */
-    public async getKyc(_client: string, options?: { gasLimit, gasPrice }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _client)
-        return this.callContract(FUNCTIONS.GETKYC, _client, options)
+    }       
+    
+    public async getCountry(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        return this.callContract(FUNCTIONS.GETCOUNTRY, _clientAddress, options)
     }
 
 }

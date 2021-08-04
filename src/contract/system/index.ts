@@ -15,12 +15,13 @@ enum FUNCTIONS {
     GETLEDGERDETAILS = 'getLedgerDetails',
     GETLEDGERACCOUNTS = 'getLedgerAccounts',
     GETACCOUNTDETAILS = 'getAccountDetails',
-    GETACCOUNTLEDGERS = 'getAccountLedgers',
-
+    GETACCOUNTLEDGERS = 'getAccountLedgers'
 }
 
 export default class SystemContract extends VerifiedContract {
+
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()

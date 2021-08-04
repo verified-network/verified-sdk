@@ -4,7 +4,7 @@
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Client.json';
-import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients } from '../../models/client';
+import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients, GetManagers } from '../../models/client';
 
 enum FUNCTIONS {
     INITIALIZE = 'initialize',
@@ -20,7 +20,8 @@ enum FUNCTIONS {
     GETCLIENTS = 'getClients',
     GETROLE = 'getRole',
     REMOVEROLE = 'removeRole',
-    ADDROLE = 'addRole'
+    ADDROLE = 'addRole',
+    GETMANAGERS = 'getManagers'
 }
 
 export default class ClientContract extends VerifiedContract {
@@ -159,5 +160,11 @@ export default class ClientContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.STRING, _role)
         return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
+    }
+
+    public async getManagers(_role: string, _country: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, _role)
+        await this.validateInput(DATATYPES.STRING, _country)
+        return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), options)
     }
 }

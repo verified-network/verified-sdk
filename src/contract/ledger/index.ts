@@ -6,11 +6,13 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Ledger.json';
 
 enum FUNCTIONS {
-    CREATEACCOUNT = 'createAccount'
+    CREATEACCOUNT = 'createAccount' 
 }
 
 export default class LedgerContract extends VerifiedContract {
+    
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
