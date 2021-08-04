@@ -17,7 +17,9 @@ enum FUNCTIONS {
 }
 
 export default class PreTradeContract extends VerifiedContract {
+
   public contractAddress: string
+  
   constructor(signer: VerifiedWallet) {
 
     const chainId: string = signer.provider._network.chainId.toString()
@@ -34,7 +36,7 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async registerDematAccount(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.REGISTERDEMATACCOUNT, _countryCode, options)
+    return this.callContract(FUNCTIONS.REGISTERDEMATACCOUNT, sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
   }
 
 
@@ -45,7 +47,7 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async getRegistrationRequests(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, _countryCode, options)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
   }
 
 
@@ -56,7 +58,7 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, _ref, options)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, sanitiseInput(DATATYPES.BYTE32, _ref), options)
   }
 
   /**
@@ -68,7 +70,7 @@ export default class PreTradeContract extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _DPID)
     await this.validateInput(DATATYPES.STRING, _dematAccountNo)
-    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, _ref, _DPID, _dematAccountNo, options)
+    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, sanitiseInput(DATATYPES.BYTE32, _ref), sanitiseInput(DATATYPES.BYTE32, _DPID), sanitiseInput(DATATYPES.BYTE32, _dematAccountNo), options)
   }
 
   /**
@@ -124,4 +126,5 @@ export default class PreTradeContract extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _status)
     return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _user, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _status), options)
   }
+  
 }

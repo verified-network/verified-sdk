@@ -13,7 +13,9 @@ enum FUNCTIONS {
 }
 
 export default class TradeContract extends VerifiedContract {
+
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()

@@ -9,10 +9,13 @@ enum FUNCTIONS {
   NEWORDER = 'newOrder',
   EDITORDER = 'editOrder',
   CANCELORDER = 'cancelOrder',
+  GETORDERREF = 'getOrderRef'
 }
 
 export default class OrderPoolContract extends VerifiedContract {
+
   public contractAddress: string
+  
   constructor(signer: VerifiedWallet) {
 
     const chainId: string = signer.provider._network.chainId.toString()
@@ -51,7 +54,7 @@ export default class OrderPoolContract extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _qty)
     await this.validateInput(DATATYPES.STRING, _orderType)
     await this.validateInput(DATATYPES.STRING, _order)
-    return this.callContract(FUNCTIONS.EDITORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), _cash, _price, _trigger, _qty, this.sanitiseInput(DATATYPES.BYTE32, _orderType), this.sanitiseInput(DATATYPES.BYTE32, _order), options)
+    return this.callContract(FUNCTIONS.EDITORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), _price, _trigger, _qty, this.sanitiseInput(DATATYPES.BYTE32, _orderType), this.sanitiseInput(DATATYPES.BYTE32, _order), options)
   }
 
 
@@ -63,6 +66,10 @@ export default class OrderPoolContract extends VerifiedContract {
   public async cancelOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, ref)
     return this.callContract(FUNCTIONS.CANCELORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+  }
+
+  public async getOrderRef(options?: { gasPrice: number, gasLimit: number }): any {
+    return this.callContract(FUNCTIONS.GETORDERREF, options)
   }
 
 }
