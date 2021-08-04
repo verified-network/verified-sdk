@@ -11,7 +11,9 @@ enum FUNCTIONS {
 }
 
 export default class CashContract extends VerifiedContract {
+
     public contractAddress: string
+    
     constructor(signer: VerifiedWallet) {
 
         const chainId: string = signer.provider._network.chainId.toString()
@@ -32,7 +34,7 @@ export default class CashContract extends VerifiedContract {
     public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
-        await this.validateInput(DATATYPES.STRING, _tokens)
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
     }
 
@@ -42,7 +44,7 @@ export default class CashContract extends VerifiedContract {
      * @returns boolean
      */
     public async payIn(_tokens: string, _payer: string, _currency: string, _sender: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _tokens)
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
         await this.validateInput(DATATYPES.STRING, _currency)
         await this.validateInput(DATATYPES.ADDRESS, _sender)

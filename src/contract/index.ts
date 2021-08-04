@@ -37,17 +37,6 @@ export class VerifiedContract {
         this.contract = new ethers.Contract(address, this.abiInterface, signer);
     }
 
-    /* ethers.utils.computeAddress( publicOrPrivateKey ) ⇒ string< Address >source
-    Returns the address for publicOrPrivateKey. A public key may be compressed or uncompressed, and a private key will be converted automatically to a public key for the derivation. */
-    // public validateInputParams(functionName: string, _params: any) {
-    //     console.log(_params);
-    //     console.log("****************");
-    //     // let inputLength = 2;
-    //     // let params = _params.splice(0, inputLength);
-    //     let overrideOptions = _params.splice(- 1);
-    //     return { _params, overrideOptions };
-    // }
-
     protected async validateInput(type: DATATYPES, data: any) {
         let error: string = '';
         let status: boolean = true;
