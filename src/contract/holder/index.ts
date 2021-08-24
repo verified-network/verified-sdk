@@ -17,10 +17,9 @@ export default class HolderContract extends VerifiedContract {
 
     public contractAddress: string
     
-    constructor(signer: VerifiedWallet) {
-
+    constructor(signer: VerifiedWallet, holderAddress: string) {
         const chainId: string = signer.provider._network.chainId.toString()
-        const address = networks[chainId].address
+        const address = holderAddress
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
