@@ -14,10 +14,10 @@ export default class CashContract extends VerifiedContract {
 
     public contractAddress: string
     
-    constructor(signer: VerifiedWallet) {
+    constructor(signer: VerifiedWallet, currencyAddress: string) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        const address = networks[chainId].address
+        const address = currencyAddress
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address

@@ -29,8 +29,8 @@ export default class FactoryContract extends VerifiedContract {
      * @param
      * @returns returns number of tokens
      */
-    public async getTokenCount(options?: { gasPrice: number, gasLimit: number }) {
-        return this.callContract(FUNCTIONS.GETTOKENCOUNT, options)
+    public async getTokenCount() {
+        return this.callContract(FUNCTIONS.GETTOKENCOUNT)
     }
 
     /**
@@ -39,7 +39,7 @@ export default class FactoryContract extends VerifiedContract {
     * @returns boolean
     */
     public async getToken(_n: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _n)
+        //await this.validateInput(DATATYPES.NUMBER, _n)
         return this.callContract(FUNCTIONS.GETTOKEN, _n, options)
     }
 
