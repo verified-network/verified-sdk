@@ -34,8 +34,8 @@ export default class AccountContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _counterParty)
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
-
-        return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, sanitiseInput(DATATYPES.BYTE32, _accountNumber), _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
+        await this.validateInput(DATATYPES.NUMBER, _txDate)
+        return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber), _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
     }
 
     /**

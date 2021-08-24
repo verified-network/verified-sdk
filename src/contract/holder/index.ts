@@ -75,7 +75,7 @@ export default class HolderContract extends VerifiedContract {
     * Arrays returned are for – party, amount, transaction type, transaction date, description
     */
     public async getTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): number {
-        await this.validateInput(DATATYPES.STRING, _txDate)
+        await this.validateInput(DATATYPES.NUMBER, _txDate)
         return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, options)
     }
 }
