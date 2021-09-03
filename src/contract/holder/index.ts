@@ -10,7 +10,8 @@ enum FUNCTIONS {
     UPDATEACCOUNTSTATEMENT = 'updateAccountStatement',
     GETACCOUNTSTATEMENT = 'getAccountStatement',
     CREATELEDGER = 'createLedger',
-    GETTRANSACTIONS = 'getTransactions' 
+    GETTRANSACTIONS = 'getTransactions',
+    FETCHTRANSACTIONS = 'fetchTransactions' 
 }
 
 export default class HolderContract extends VerifiedContract {
@@ -30,8 +31,8 @@ export default class HolderContract extends VerifiedContract {
      * @returns [uint256]
      * Returns number of ledger entries for account holder
      */
-    public getEntries(options?: { gasPrice: number, gasLimit: number }): number {
-        return this.callContract(FUNCTIONS.GETENTRIES, options)
+    public getEntries(): number {
+        return this.callContract(FUNCTIONS.GETENTRIES)
     }
 
     /**
@@ -68,14 +69,21 @@ export default class HolderContract extends VerifiedContract {
     }
 
     /**
-    * Get list of transactions for account holder [callable by KYC passed client
+    * Prepare list of transactions for account holder [callable by KYC passed client
     * @param (uint256 _txDate)
-    * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
     * _txDate is unix timestamp for date on and which transactions are returned. 
-    * Arrays returned are for – party, amount, transaction type, transaction date, description
     */
-    public async getTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): number {
+    public async fetchTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _txDate)
         return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, options)
+    }
+
+    /**
+    * Get list of transactions for account holder [callable by KYC passed client
+    * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
+    * Arrays returned are for – party, amount, transaction type, transaction date, description
+    */
+    public async getTransactions(): any {
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS)
     }
 }
