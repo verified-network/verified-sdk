@@ -46,9 +46,9 @@ export default class KYCContract extends VerifiedContract {
      * @param (address _client, bool _status) 
      * @returns 
      */
-    public async setStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
+    public async setStatus(_clientAddress: string, _status: string, options?: { gasLimit, gasPrice }): any {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        await this.validateInput(DATATYPES.BOOLEAN, _status)
+        await this.validateInput(DATATYPES.NUMBER, _status)
         return this.callContract(FUNCTIONS.SETSTATUS, _clientAddress, _status, options)
     }
 

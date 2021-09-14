@@ -7,7 +7,8 @@ import { abi, networks } from '../../abi/payments/Token.json';
 
 enum FUNCTIONS {
     TRANSFERTOKEN = 'transferToken',
-    BALANCE = 'balanceOf'
+    BALANCE = 'balanceOf',
+    GETISSUER = 'getIssuer'
 }
 
 export default class TokenContract extends VerifiedContract {
@@ -43,6 +44,12 @@ export default class TokenContract extends VerifiedContract {
     public async balanceOf(_wallet: string, options?:{ gasPrice: number, gasLimit: number}): any {
         await this.validateInput(DATATYPES.ADDRESS, _wallet)
         return this.callContract(FUNCTIONS.BALANCE, _wallet, options)
+    }
+
+    /* Get address of issuer of token
+    */
+    public async getIssuer() {
+        return this.callContract(FUNCTIONS.GETISSUER)
     }
 
 }
