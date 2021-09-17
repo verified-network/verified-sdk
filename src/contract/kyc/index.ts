@@ -81,8 +81,7 @@ export default class KYCContract extends VerifiedContract {
      * @param {address _client,bytes32 _file, bytes32 _fatca,bytes32 _crs, bytes32 _photoId,bytes32 _videoId, bytes32 _address} 
      * @returns 
      */
-    public async setKyc(_clientAddress: string, _file: string, _fatca: string, _crs: string, _photoId: string, _videoId: string, _address: string, options?: { gasPrice, gasLimit }): void {
-
+    public async setKyc(_clientAddress: string, _file: string, _fatca: string, _crs: string, _photoId: string, _videoId: string, _address: string, _country: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
         await this.validateInput(DATATYPES.STRING, _address)
@@ -90,8 +89,8 @@ export default class KYCContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _videoId)
         await this.validateInput(DATATYPES.STRING, _fatca)
         await this.validateInput(DATATYPES.STRING, _crs)
-
-        return this.callContract(FUNCTIONS.SETKYC, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), this.sanitiseInput(DATATYPES.BYTE32, _fatca), this.sanitiseInput(DATATYPES.BYTE32, _crs), this.sanitiseInput(DATATYPES.BYTE32, _photoId), this.sanitiseInput(DATATYPES.BYTE32, _videoId), this.sanitiseInput(DATATYPES.BYTE32, _address), options)
+        await this.validateInput(DATATYPES.STRING, _country)
+        return this.callContract(FUNCTIONS.SETKYC, _clientAddress, _file, _fatca, _crs, _photoId, _videoId, _address, _country, options)
     }
 
     public async setCountry(_clientAddress: string, _country: string, options?: { gasPrice, gasLimit }): void {
