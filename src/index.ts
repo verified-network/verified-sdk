@@ -18,10 +18,9 @@ import SecuritiesRegistryContract from './contract/securitiesregistry';
 import TradeContract from './contract/trade';
 import FactoryContract from './contract/factory';
 import TokenContract from './contract/token';
+import OracleContract from './contract/oracle';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
-
-
 
 export {
     VerifiedWallet,
@@ -42,6 +41,7 @@ export {
     TradeContract,
     FactoryContract,
     TokenContract,
+    OracleContract,
     utils,
     contractAddress
 }

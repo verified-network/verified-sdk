@@ -53,4 +53,13 @@ export default class FactoryContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _viaAddress)
         return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress, options)
     }
+
+    /*
+        Watches and notifies event (TokenCreated) that is emitted when the factory creates a bond token.
+    */
+    public async getCallback(eventName: string, callback: any) {
+        await this.validateInput(DATATYPES.STRING, eventName)
+        return this.getEvent(eventName, callback);
+    }
+    
 }
