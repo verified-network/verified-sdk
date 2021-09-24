@@ -96,43 +96,43 @@ export default class KYCContract extends VerifiedContract {
     public async setCountry(_clientAddress: string, _country: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _country)
-        return this.callContract(FUNCTIONS.SETCOUNTRY, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+        return this.callContract(FUNCTIONS.SETCOUNTRY, _clientAddress, _country, options)
     } 
 
     public async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETFILE, _clientAddress, _file, options)
     } 
 
     public async setFATCA(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETFATCA, _clientAddress, _file, options)
     }
 
     public async setCRS(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETCRS, _clientAddress, _file, options)
     }
 
     public async setPhotoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETPHOTOID, _clientAddress, _file, options)
     }
 
     public async setVideoID(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETVIDEOID, _clientAddress, _file, options)
     }
 
     public async setAddress(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _file)
-        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _file), options)
+        return this.callContract(FUNCTIONS.SETADDRESS, _clientAddress, _file, options)
     }
 
     /**

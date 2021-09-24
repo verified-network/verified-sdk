@@ -132,10 +132,9 @@ export default class ClientContract extends VerifiedContract {
     * @params (address _submanager, bytes32 _country)
     * @returns {address[] memory}
     */
-    public async getRole(_submanager: string, _country: string, options?: { gasPrice, gasLimit }): any {
+    public async getRole(_submanager: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
-        await this.validateInput(DATATYPES.STRING, _country)
-        return this.callContract(FUNCTIONS.GETROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+        return this.callContract(FUNCTIONS.GETROLE, _submanager, options)
     }
 
     /**
