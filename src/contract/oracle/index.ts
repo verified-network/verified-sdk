@@ -5,6 +5,10 @@ import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/payments/Oracle.json';
 
+enum FUNCTIONS {
+    RESULTRECEIVED = 'LogResult'
+}
+
 export default class OracleContract extends VerifiedContract {
 
     public contractAddress: string
@@ -21,9 +25,8 @@ export default class OracleContract extends VerifiedContract {
     /*
         Watches and notifies event (LogResult) that is emitted when the Verified oracle fetches prices.
     */
-    public async getCallback(eventName: string, callback: any) {
-        await this.validateInput(DATATYPES.STRING, eventName)
-        return this.getEvent(eventName, callback);
+    public notifyResult(callback: any): object {
+        this.getEvent(FUNCTIONS.RESULTRECEIVED, callback)
     }
 
 }

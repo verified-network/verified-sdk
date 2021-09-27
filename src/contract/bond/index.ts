@@ -9,7 +9,11 @@ enum FUNCTIONS {
     TRANSFERFROM = 'transferFrom',
     GETBONDS = 'getBonds',
     GETBONDISSUES = 'getBondIssues',
-    GETBONDPURCHASES = 'getBondPurchases'
+    GETBONDPURCHASES = 'getBondPurchases',
+    ISSUE = 'BondIssued',
+    REDEEM = 'BondRedeemed',
+    PURCHASE = 'BondPurchased',
+    TRANSFER = 'Transfer'
 }
 
 export default class BondContract extends VerifiedContract {
@@ -68,6 +72,22 @@ export default class BondContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _issuer)
         await this.validateInput(DATATYPES.ADDRESS, _bond)
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _issuer, _bond, options)
+    }
+
+    public notifyBondIssue(callback: any): object {
+        this.getEvent(FUNCTIONS.ISSUE, callback)
+    }
+
+    public notifyBondRedemption(callback: any): object {
+        this.getEvent(FUNCTIONS.REDEEM, callback)
+    }
+
+    public notifyBondPurchase(callback: any): object {
+        this.getEvent(FUNCTIONS.PURCHASE, callback)
+    }
+
+    public notifyBondTransfer(callback: any): object {
+        this.getEvent(FUNCTIONS.TRANSFER, callback)
     }
 
 }

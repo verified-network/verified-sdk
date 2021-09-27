@@ -21,7 +21,8 @@ enum FUNCTIONS {
     GETROLE = 'getRole',
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
-    GETMANAGERS = 'getManagers'
+    GETMANAGERS = 'getManagers',
+    MANAGERADDED = 'ManagerRole'
 }
 
 export default class ClientContract extends VerifiedContract {
@@ -165,5 +166,9 @@ export default class ClientContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _role)
         await this.validateInput(DATATYPES.STRING, _country)
         return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+    }
+
+    public notifyManagerAdded(callback: any): object {
+        this.getEvent(FUNCTIONS.MANAGERADDED, callback)
     }
 }

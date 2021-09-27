@@ -8,7 +8,10 @@ import { abi, networks } from '../../abi/payments/Cash.json';
 enum FUNCTIONS {
     TRANSFERFROM = 'transferFrom',
     PAYIN = 'payIn',
-    BALANCE = 'balanceOf'
+    BALANCE = 'balanceOf',
+    ISSUE = 'CashIssued',
+    REDEEM = 'CashRedeemed',
+    TRANSFER = 'Transfer'
 }
 
 export default class CashContract extends VerifiedContract {
@@ -57,5 +60,17 @@ export default class CashContract extends VerifiedContract {
     public async balanceOf(_wallet: string, options?:{ gasPrice: number, gasLimit: number}): any {
         await this.validateInput(DATATYPES.ADDRESS, _wallet)
         return this.callContract(FUNCTIONS.BALANCE, _wallet, options)
+    }
+
+    public notifyCashIssue(callback: any): object {
+        this.getEvent(FUNCTIONS.ISSUE, callback)
+    }
+
+    public notifyCashRedemption(callback: any): object {
+        this.getEvent(FUNCTIONS.REDEEM, callback)
+    }
+
+    public notifyCashTransfer(callback: any): object {
+        this.getEvent(FUNCTIONS.TRANSFER, callback)
     }
 }
