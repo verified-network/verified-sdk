@@ -13,7 +13,7 @@ enum FUNCTIONS {
     ISSUE = 'BondIssued',
     REDEEM = 'BondRedeemed',
     PURCHASE = 'BondPurchased',
-    TRANSFER = 'Transfer'
+    TRANSFER = 'BondTransfer'
 }
 
 export default class BondContract extends VerifiedContract {

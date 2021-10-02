@@ -11,7 +11,7 @@ enum FUNCTIONS {
     BALANCE = 'balanceOf',
     ISSUE = 'CashIssued',
     REDEEM = 'CashRedeemed',
-    TRANSFER = 'Transfer'
+    TRANSFER = 'CashTransfer'
 }
 
 export default class CashContract extends VerifiedContract {
@@ -47,12 +47,11 @@ export default class CashContract extends VerifiedContract {
      * @param (uint256 _tokens, address _payer, bytes32 _currency, address _sender)
      * @returns boolean
      */
-    public async payIn(_tokens: string, _payer: string, _currency: string, _sender: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async payIn(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _tokens)
-        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress) 
         await this.validateInput(DATATYPES.STRING, _currency)
-        await this.validateInput(DATATYPES.ADDRESS, _sender)
-        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), _sender, options)
+        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 
     /* Request balance of wallet in contract
