@@ -165,21 +165,21 @@ export class VerifiedContract {
             const totalArguments = args.length
 
             if (totalArguments > 1) options = args.splice(-1)
-            console.log('options before', options);
+            //console.log('options before', options);
 
             if (options == 0) options[0] = {}
-            console.log('*********', ...args)
-            console.log('options after', options);
+            //console.log('*********', ...args)
+            //console.log('options after', options);
            
             /**
              * Actual Function call using Ethers.js
              */
             let fn = this.contract[functionName];
             let _res = await fn(...args, ...options);
-            console.log('_res', _res)
-            // console.log('_res.value.toString()',_res.value.toString())
+            //console.log('_res', _res)
+            //console.log('_res.value.toString()',_res.value.toString())
             let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
-            console.log('_resp', _resp)
+            //console.log('_resp', _resp)
             res.response = this.tempOutput(this.convertToArray(utils.deepCopy(_resp)))
             res.status = STATUS.SUCCESS
             res.message = ''
