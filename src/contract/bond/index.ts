@@ -13,7 +13,7 @@ enum FUNCTIONS {
     ISSUE = 'BondIssued',
     REDEEM = 'BondRedeemed',
     PURCHASE = 'BondPurchased',
-    TRANSFER = 'BondTransfer'
+    LIQUIDATE = 'BondLiquidated'
 }
 
 export default class BondContract extends VerifiedContract {
@@ -74,20 +74,32 @@ export default class BondContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _issuer, _bond, options)
     }
 
+    /*
+    emits event BondIssued(address indexed _token, address issuer, uint256 issuedAmount, bytes32 collateralCurrency, uint256 collateralValue);
+    */
     public notifyBondIssue(callback: any): object {
         this.getEvent(FUNCTIONS.ISSUE, callback)
     }
 
+    /*
+    emits event BondRedeemed(address indexed _token, address redeemedBy, uint256 redemptionAmount, bytes32 redemptionCurrency);
+    */
     public notifyBondRedemption(callback: any): object {
         this.getEvent(FUNCTIONS.REDEEM, callback)
     }
 
+    /*
+    emits event BondPurchased(address indexed _token, address purchaser, uint256 purchasedAmount, bytes32 paidInCurrency, uint256 paidInAmount);
+    */
     public notifyBondPurchase(callback: any): object {
         this.getEvent(FUNCTIONS.PURCHASE, callback)
     }
 
-    public notifyBondTransfer(callback: any): object {
-        this.getEvent(FUNCTIONS.TRANSFER, callback)
+    /*
+    emits event BondLiquidated(address indexed _token, address redeemedBy, uint256 redemptionAmount, bytes32 redemptionCurrency);
+    */
+    public notifyBondLiquidation(callback: any): object {
+        this.getEvent(FUNCTIONS.LIQUIDATE, callback)
     }
 
 }

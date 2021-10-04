@@ -11,7 +11,8 @@ enum FUNCTIONS {
     BALANCE = 'balanceOf',
     ISSUE = 'CashIssued',
     REDEEM = 'CashRedeemed',
-    TRANSFER = 'CashTransfer'
+    TRANSFER = 'CashTransfer',
+    EXCHANGE = 'CashDeposits'
 }
 
 export default class CashContract extends VerifiedContract {
@@ -61,15 +62,31 @@ export default class CashContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.BALANCE, _wallet, options)
     }
 
+    /* 
+    emits event CashIssued(address indexed _party, bytes32 currency, uint256 amount);
+    */
     public notifyCashIssue(callback: any): object {
         this.getEvent(FUNCTIONS.ISSUE, callback)
     }
 
+    /* 
+    emits event CashRedeemed(address indexed _party, bytes32 currency, bytes16 amount);
+    */
     public notifyCashRedemption(callback: any): object {
         this.getEvent(FUNCTIONS.REDEEM, callback)
     }
 
+    /* 
+    emits event CashTransfer(address indexed from, address indexed to, uint tokens);
+    */
     public notifyCashTransfer(callback: any): object {
         this.getEvent(FUNCTIONS.TRANSFER, callback)
+    }
+
+    /* 
+    emits event CashDeposits(address indexed depositor, bytes32 currency, bytes16 amount);
+    */
+    public notifyCashExchange(callback: any): object {
+        this.getEvent(FUNCTIONS.EXCHANGE, callback)
     }
 }
