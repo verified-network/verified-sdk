@@ -196,7 +196,7 @@ export class VerifiedContract {
 
     protected getEvent(eventName: string, callback: any) {
         let res = <SCResponse>{};
-        this.contract.on(eventName, (...data) => {
+        this.contract.once(eventName, (...data) => {
             const dataToBeFormatted = data.splice(0, data.length - 1)
             res.response = this.tempOutput(utils.deepCopy(dataToBeFormatted))
             res.status = STATUS.SUCCESS;

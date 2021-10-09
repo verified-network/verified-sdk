@@ -90,13 +90,13 @@ export default class KYCContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _fatca)
         await this.validateInput(DATATYPES.STRING, _crs)
         await this.validateInput(DATATYPES.STRING, _country)
-        return this.callContract(FUNCTIONS.SETKYC, _clientAddress, _file, _fatca, _crs, _photoId, _videoId, _address, _country, options)
+        return this.callContract(FUNCTIONS.SETKYC, _clientAddress, _file, _fatca, _crs, _photoId, _videoId, _address, this.sanitiseInput(DATATYPES.BYTE32,_country), options)
     }
 
     public async setCountry(_clientAddress: string, _country: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         await this.validateInput(DATATYPES.STRING, _country)
-        return this.callContract(FUNCTIONS.SETCOUNTRY, _clientAddress, _country, options)
+        return this.callContract(FUNCTIONS.SETCOUNTRY, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32,_country), options)
     } 
 
     public async setFile(_clientAddress: string, _file: string, options?: { gasPrice, gasLimit }): void {
@@ -146,30 +146,37 @@ export default class KYCContract extends VerifiedContract {
     } 
 
     public async getFile(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETFILE, _clientAddress, options)
     }
 
     public async getFATCA(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETFATCA, _clientAddress, options)
     }
 
     public async getCRS(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETCRS, _clientAddress, options)
     }
 
     public async getPhotoID(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETPHOTOID, _clientAddress, options)
     }
 
     public async getVideoID(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETVIDEOID, _clientAddress, options)
     }
 
     public async getAddress(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETADDRESS, _clientAddress, options)
     }       
     
     public async getCountry(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETCOUNTRY, _clientAddress, options)
     }
 

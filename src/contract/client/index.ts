@@ -40,12 +40,14 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.INITIALIZE, params)
     }
 
-    public setCustody(params: SetCustody): any {
-        return this.callContract(FUNCTIONS.SETCUSTODY, params)
+    public setCustody(address: string, custody: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, address);
+        return this.callContract(FUNCTIONS.SETCUSTODY, address, this.sanitiseInput(DATATYPES.BYTE32, custody), options);
     }
 
-    public getCustody(params: GetCustody): any {
-        return this.callContract(FUNCTIONS.GETCUSTODY, params)
+    public getCustody(address: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, address);
+        return this.callContract(FUNCTIONS.GETCUSTODY, address, options);
     }
 
     /**
