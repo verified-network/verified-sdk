@@ -25,7 +25,13 @@ enum FUNCTIONS {
     GETADDRESS = 'getAddress',
     GETKYC = 'getKyc',
     SETCOUNTRY = 'setCountry',
-    GETCOUNTRY = 'getCountry'
+    GETCOUNTRY = 'getCountry',
+    SETNAME = 'setName',
+    GETNAME = 'getName',
+    SETPHONE = 'setPhone',
+    GETPHONE = 'getPhone',
+    SETEMAIL = 'setEmail',
+    GETEMAIL = 'getEmail'
 }
 
 export default class KYCContract extends VerifiedContract {
@@ -92,6 +98,25 @@ export default class KYCContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _country)
         return this.callContract(FUNCTIONS.SETKYC, _clientAddress, _file, _fatca, _crs, _photoId, _videoId, _address, this.sanitiseInput(DATATYPES.BYTE32,_country), options)
     }
+
+    public async setName(_clientAddress: string, _name: string, _surname: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _name)
+        await this.validateInput(DATATYPES.STRING, _surname)
+        return this.callContract(FUNCTIONS.SETNAME, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32,_name), this.sanitiseInput(DATATYPES.BYTE32,_surname), options)
+    } 
+
+    public async setPhone(_clientAddress: string, _phone: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _phone)
+        return this.callContract(FUNCTIONS.SETPHONE, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32,_phone), options)
+    } 
+
+    public async setEmail(_clientAddress: string, _email: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.STRING, _email)
+        return this.callContract(FUNCTIONS.SETEMAIL, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32,_email), options)
+    } 
 
     public async setCountry(_clientAddress: string, _country: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
@@ -178,6 +203,21 @@ export default class KYCContract extends VerifiedContract {
     public async getCountry(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETCOUNTRY, _clientAddress, options)
+    }
+
+    public async getName(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        return this.callContract(FUNCTIONS.GETNAME, _clientAddress, options)
+    }
+
+    public async getPhone(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        return this.callContract(FUNCTIONS.GETPHONE, _clientAddress, options)
+    }
+
+    public async getEmail(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        return this.callContract(FUNCTIONS.GETEMAIL, _clientAddress, options)
     }
 
 }
