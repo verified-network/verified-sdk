@@ -68,6 +68,11 @@ export default class OrderPoolContract extends VerifiedContract {
     return this.callContract(FUNCTIONS.CANCELORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
   }
 
+  /**
+   * Returns order reference for requestor
+   * @param options 
+   * @returns 
+   */
   public async getOrderRef(options?: { gasPrice: number, gasLimit: number }): any {
     return this.callContract(FUNCTIONS.GETORDERREF, options)
   }

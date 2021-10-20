@@ -5,7 +5,6 @@ import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/trades/Trade.json';
 
-
 enum FUNCTIONS {
     GETORDERS = 'getOrders',
     GETORDER = 'getOrder',
@@ -40,8 +39,19 @@ export default class TradeContract extends VerifiedContract {
     /**
    * View order [callable by user on Trade.sol]
    * @param (bytes32 ref)
-   * @returns (uint256, uint256, uint256, bytes32, uint, bytes32)
-   * Returns array of bytes32[currency,security name, buy/sell order, status], and array of uint[price, trigger, quantity, execution date]
+   * @returns (struct order{
+                address party;
+                address security;
+                uint256 price;
+                uint256 trigger; 
+                bytes32 otype;
+                bytes32 order;
+                bytes32 status;
+                bytes32 currency;
+                bytes32 securityName;
+                uint256 qty;
+                uint256 dt;
+            })
    */
     public async getOrder(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, ref)
@@ -51,7 +61,7 @@ export default class TradeContract extends VerifiedContract {
     /**
      * View trade [callable by user]
      * @param (bytes32 ref)
-     * @returns (bytes16, bytes16)
+     * @returns (uint256, uint256)
      * Returns last bid price, ask price.
      */
     public async getTrade(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {

@@ -52,9 +52,9 @@ export default class PreTradeContract extends VerifiedContract {
 
 
   /**
-   * Register demat account [sent by user on PreTrade.sol]
+   * Get registration request for passed registration reference
    * @param (bytes32 _ref)
-   * @returns ( address user, bytes32 countryCode,bytes32 dematAccountNo, bytes32 DPID, uint registrationDate) Return variables are quite clear from function signature. DPID means depositary participant ID.
+   * @returns (address user, bytes32 countryCode, bytes32 dematAccountNo, bytes32 DPID, uint registrationDate) 
    */
   public async getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
@@ -79,7 +79,6 @@ export default class PreTradeContract extends VerifiedContract {
    * @returns
    */
   public async registerSecurities(_currencyCode: string, _stype: string, _isin: string, _company: string, _itype: string, _noOfCertificates: string, _faceValue: string, _lockInReason: string, _lockInReleaseDate: string, options?: { gasPrice: number, gasLimit: number }): any {
-
     await this.validateInput(DATATYPES.STRING, _currencyCode)
     await this.validateInput(DATATYPES.STRING, _stype)
     await this.validateInput(DATATYPES.STRING, _isin)
@@ -106,8 +105,20 @@ export default class PreTradeContract extends VerifiedContract {
   /**
   * View security registration request [sent by manager on PreTrade.sol, only works if manager’s role is DP]
   * @param (bytes32 _ref) 
-  * @returns (bytes32[] memory, uint[] memory, address)
-  * For any security registration request _ref, returns bytes array[isin, company, lock in reason, security type, instrument type], uint array[no of certificates, face value, lock in release date, registration request date] and address of user that sent the registration request.
+  * @returns (struct security{  address requestor;
+                                address token;
+                                bytes32 currencyCode;
+                                bytes32 stype;
+                                bytes32 isin; 
+                                bytes32 company; 
+                                bytes32 itype;
+                                bytes32 lockInReason;
+                                bytes32 approvalStatus;
+                                uint noOfCertificates;
+                                uint lockInReleaseDate;
+                                uint registrationRequestDate;
+                                uint256 faceValue;
+                            } )
   */
   public async getConfirmationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
