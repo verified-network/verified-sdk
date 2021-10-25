@@ -54,7 +54,7 @@ export default class TradeContract extends VerifiedContract {
             })
    */
     public async getOrder(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, ref)
+        await this.validateInput(DATATYPES.STRING, _ref)
         return this.callContract(FUNCTIONS.GETORDER, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 
@@ -65,7 +65,7 @@ export default class TradeContract extends VerifiedContract {
      * Returns last bid price, ask price.
      */
     public async getTrade(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, ref)
+        await this.validateInput(DATATYPES.STRING, _ref)
         return this.callContract(FUNCTIONS.GETTRADE, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 

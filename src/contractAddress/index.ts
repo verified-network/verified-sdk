@@ -15,6 +15,7 @@ const contractAddress: Object = {
         'Trade': '0x3434A64E3b3d6C77eA236292c2fbbbd8f42762a5',
         'PostTrade': '0x0810F4B3c7024767cb57E09514c33b228e06a057',
         'SecuritiesRegistry': '0x79593EDC4b8582a0aA8DAe79eC93D3C7430ABd3B',
+        'Security': '',
         'OrderPool': '0xe2632C558E312f3Ef8A94dCbB41D4397d53fFBe6',
         'PoolFactory': '0x590d2ba266e6b05B63F57501eb22Faf0b73d4553',
         'CASH': {

@@ -50,7 +50,7 @@ export default class CashContract extends VerifiedContract {
      */
     public async payIn(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _tokens)
-        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress) 
+        await this.validateInput(DATATYPES.ADDRESS, _payer) 
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
