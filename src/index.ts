@@ -19,6 +19,7 @@ import TradeContract from './contract/trade';
 import FactoryContract from './contract/factory';
 import TokenContract from './contract/token';
 import SecurityContract from './contract/security';
+import OracleContract from './contract/oracle';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -42,6 +43,7 @@ export {
     FactoryContract,
     TokenContract,
     SecurityContract,
+    OracleContract,
     utils,
     contractAddress
 }
