@@ -29,8 +29,7 @@ export default class AccountContract extends VerifiedContract {
      * @param (address _account, bytes32 _accountNumber, int256 _txAmount, bytes32 _txType, bytes32 _txDate, bytes32 _txDescription, bytes32 _vchType)
      * 
      */
-    public async postEntry(_counterParty, _accountNumber, _txAmount, _txType, _txDate, _txDescription, _vchType, options?: { gasLimit, gasPrice }): any {
-
+    public async postEntry(_counterParty:address, _accountNumber:string, _txAmount:string, _txType:string, _txDate:string, _txDescription:string, _vchType:string, options?: { gasLimit, gasPrice }): any {
         await this.validateInput(DATATYPES.ADDRESS, _counterParty)
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
@@ -44,8 +43,7 @@ export default class AccountContract extends VerifiedContract {
     * @returns (address, address, bytes16, bytes32, bytes32, bytes32)
     *  For _accountNumber on _txDate, returns ledger, party, txAmount, txType, txDescription, voucherType
     */
-    public async getEntry(_accountNumber, _txDate, options?: { gasLimit, gasPrice }): any {
-
+    public async getEntry(_accountNumber:string, _txDate:string, options?: { gasLimit, gasPrice }): any {
         await this.validateInput(DATATYPES.STRING, _accountNumber)
         await this.validateInput(DATATYPES.STRING, _txDate)
         return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber), this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
