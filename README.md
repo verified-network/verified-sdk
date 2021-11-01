@@ -42,8 +42,12 @@ OrderPoolContract,
 PoolFactoryContract,
 PostTradeContract,
 PreTradeContract,
+SecurityContract,
 SecuritiesRegistryContract,
-TradeContract
+TradeContract,
+ProductContract,
+IssueContract,
+BalancerManagerContract
 ```
 
 # VerifiedContract
