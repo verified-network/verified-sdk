@@ -1,11 +1,11 @@
 const contractAddress: Object = {
     'ropsten': {
-        'Client': '0xc5fA33C9FfA51cE0982089DfCEa0D0591D9863f5',
-        'KYC': '0x7fd4D48AF2B984772c309856e5A0a779B2d048A6',
-        'System': '0x488B840d929dbD3DE41ca6e98815271DD0Fdadac',
-        'Holder': '0x3e4256A3cEE979099A6BfFb8993A8Ec9613Ec6e1',
-        'Ledger': '0x4cfAf4F5fe6f81815289078b9c014Bf4fBA6a11d',
-        'Account': '0x926Aa8c8826e5e1E656f5b5f3cd42cD6831c63c5',
+        'Client': '0xDE913403cfeF324fA5B3c3cEe60586df7cAA4123',
+        'KYC': '0xDe275F643288fA44B6217f164CeE3353df8b0474',
+        'System': '0x4A13082F6F6AA94B1334e8DaBF93E12442900B91',
+        'Holder': '0xDAC4DAad7B6d14e16cC3D9Fc9dcc314190c3753d',
+        'Ledger': '0x7d8C5FD01936356cb15BEBE9222EdDD3e13bAE57',
+        'Account': '0x6Ec5F5464fC1ee7B3c12B8a9a31DF5DfB51B91F9',
         'Factory': '0x688fBf0A2e72f937e2Ef322079b746f320413063',        
         'Cash': '0xCeE5540B147b08A933FA8fD353446f6C60Fd95f7',
         'Bond': '0xaA7461A8be14fB0Fa2682a72968dFB0d48867A81',

@@ -11,7 +11,8 @@ enum FUNCTIONS {
     GETACCOUNTSTATEMENT = 'getAccountStatement',
     CREATELEDGER = 'createLedger',
     GETTRANSACTIONS = 'getTransactions',
-    FETCHTRANSACTIONS = 'fetchTransactions' 
+    FETCHTRANSACTIONS = 'fetchTransactions',
+    GETENTRY = 'getEntry' 
 }
 
 export default class HolderContract extends VerifiedContract {
@@ -80,10 +81,22 @@ export default class HolderContract extends VerifiedContract {
 
     /**
     * Get list of transactions for account holder [callable by KYC passed client
-    * @returns (address[] memory, bytes16[] memory, bytes32[] memory, uint256[] memory, bytes32[] memory);
-    * Arrays returned are for – party, amount, transaction type, transaction date, description
+    * @returns uint256 (number of transactions to _txDate and denominated in _currency)
     */
-    public async getTransactions(): any {
-        return this.callContract(FUNCTIONS.GETTRANSACTIONS)
+     public async getTransactions(_txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _txDate)
+        await this.validateInput(DATATYPES.BYTE32, _currency)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, _currency, options)
+    }
+
+    /**
+    * Get list of transactions for account holder [callable by KYC passed client
+    * @returns (address party, uint256 amount, bytes32 currency, bytes32 transaction type, uint256 date, bytes32 description, bytes32 voucherType);
+    */
+    public async getEntry(_index:string, _txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _index)
+        await this.validateInput(DATATYPES.NUMBER, _txDate)
+        await this.validateInput(DATATYPES.BYTE32, _currency)
+        return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, _currency, options)
     }
 }
