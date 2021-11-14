@@ -86,7 +86,7 @@ export default class HolderContract extends VerifiedContract {
      public async getTransactions(_txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _txDate)
         await this.validateInput(DATATYPES.BYTE32, _currency)
-        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, _currency, options)
+        return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 
     /**
@@ -97,6 +97,6 @@ export default class HolderContract extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, _index)
         await this.validateInput(DATATYPES.NUMBER, _txDate)
         await this.validateInput(DATATYPES.BYTE32, _currency)
-        return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, _currency, options)
+        return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 }
