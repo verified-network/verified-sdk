@@ -75,7 +75,7 @@ export default class HolderContract extends VerifiedContract {
     * _txDate is unix timestamp for date on and which transactions are returned. 
     */
     public async fetchTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _txDate)
+        //await this.validateInput(DATATYPES.NUMBER, _txDate)
         return this.callContract(FUNCTIONS.FETCHTRANSACTIONS, _txDate, options)
     }
 
@@ -84,8 +84,8 @@ export default class HolderContract extends VerifiedContract {
     * @returns uint256 (number of transactions to _txDate and denominated in _currency)
     */
      public async getTransactions(_txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _txDate)
-        await this.validateInput(DATATYPES.BYTE32, _currency)
+        //await this.validateInput(DATATYPES.NUMBER, _txDate)
+        await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.GETTRANSACTIONS, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 
@@ -94,9 +94,9 @@ export default class HolderContract extends VerifiedContract {
     * @returns (address party, uint256 amount, bytes32 currency, bytes32 transaction type, uint256 date, bytes32 description, bytes32 voucherType);
     */
     public async getEntry(_index:string, _txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _index)
-        await this.validateInput(DATATYPES.NUMBER, _txDate)
-        await this.validateInput(DATATYPES.BYTE32, _currency)
+        //await this.validateInput(DATATYPES.NUMBER, _index)
+        //await this.validateInput(DATATYPES.NUMBER, _txDate)
+        await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 }

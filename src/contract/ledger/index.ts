@@ -26,14 +26,15 @@ export default class LedgerContract extends VerifiedContract {
      * Once the general ledgers are set up, accounts need to be created for each party that the issuer or investor transacts with. 
      * For example, a issuer can be a counter party for an investor. An investor who buys a bond from another investor will also 
      * become its counter party. Accounts need to be created using the following solidity function using the party/counterparty’s address
-     * @param (address _account, bytes32 _currency)
+     * @param (address _account, bytes32 _cashtoken, bytes32 _currency)
      * @returns 
      */
 
-    public async createAccount(_accountName: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async createAccount(_accountName: string, _cashtoken: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _accountName)
+        await this.validateInput(DATATYPES.STRING, _cashtoken)
         await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.CREATEACCOUNT, this.sanitiseInput(DATATYPES.BYTE32, _accountName), this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+        return this.callContract(FUNCTIONS.CREATEACCOUNT, this.sanitiseInput(DATATYPES.BYTE32, _accountName), this.sanitiseInput(DATATYPES.BYTE32, _cashtoken), this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 
 
