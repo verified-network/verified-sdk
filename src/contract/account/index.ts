@@ -6,8 +6,7 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/accounts/Account.json';
 
 enum FUNCTIONS {
-    POSTENTRY = 'postEntry',
-    GETENTRY = 'getEntry'
+    POSTENTRY = 'postEntry'
 }
 
 export default class AccountContract extends VerifiedContract {
@@ -31,23 +30,12 @@ export default class AccountContract extends VerifiedContract {
      */
     public async postEntry(_counterParty:address, _txAmount:string, _txType:string, _txDate:string, _txDescription:string, _vchType:string, options?: { gasLimit, gasPrice }): any {
         await this.validateInput(DATATYPES.ADDRESS, _counterParty)
-        //await this.validateInput(DATATYPES.NUMBER, _txAmount)
-        //await this.validateInput(DATATYPES.NUMBER, _txDate)
+        await this.validateInput(DATATYPES.NUMBER, _txAmount)
+        await this.validateInput(DATATYPES.NUMBER, _txDate)
         await this.validateInput(DATATYPES.STRING, _txType)
         await this.validateInput(DATATYPES.STRING, _txDescription)
         await this.validateInput(DATATYPES.STRING, _vchType)
         return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
     }
 
-    /**
-    * View account transaction [callable by KYC passed client
-    * @param (bytes32 _accountNumber, bytes32 _txDate)
-    * @returns (address, address, bytes16, bytes32, bytes32, bytes32)
-    *  For _accountNumber on _txDate, returns ledger, party, txAmount, txType, txDescription, voucherType
-    */
-    public async getEntry(_accountNumber:string, _txDate:string, options?: { gasLimit, gasPrice }): any {
-        await this.validateInput(DATATYPES.STRING, _accountNumber)
-        await this.validateInput(DATATYPES.STRING, _txDate)
-        return this.callContract(FUNCTIONS.GETENTRY, this.sanitiseInput(DATATYPES.BYTE32, _accountNumber), this.sanitiseInput(DATATYPES.BYTE32, _txDate), options)
-    }
 }
