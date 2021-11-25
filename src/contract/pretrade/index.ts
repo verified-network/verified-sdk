@@ -31,12 +31,12 @@ export default class PreTradeContract extends VerifiedContract {
 
   /**
    * Register demat account [sent by user on PreTrade.sol]
-   * @param (bytes32 _countryCode)
-   * @returns Returns nothing. Ensure _countryCode maps to http://country.io/names.json 
+   * @param (bytes32 _currencyCode)
+   * @returns Returns nothing.  
    */
-  public async registerDematAccount(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.REGISTERDEMATACCOUNT, sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
+  public async registerDematAccount(_currencyCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _currencyCode)
+    return this.callContract(FUNCTIONS.REGISTERDEMATACCOUNT, this.sanitiseInput(DATATYPES.BYTE32, _currencyCode), options)
   }
 
 
@@ -47,7 +47,7 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async getRegistrationRequests(_countryCode: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _countryCode)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, _countryCode), options)
   }
 
 
@@ -58,7 +58,7 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _ref)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, sanitiseInput(DATATYPES.BYTE32, _ref), options)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
   }
 
   /**
@@ -70,7 +70,7 @@ export default class PreTradeContract extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _DPID)
     await this.validateInput(DATATYPES.STRING, _dematAccountNo)
-    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, sanitiseInput(DATATYPES.BYTE32, _ref), sanitiseInput(DATATYPES.BYTE32, _DPID), sanitiseInput(DATATYPES.BYTE32, _dematAccountNo), options)
+    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _DPID), this.sanitiseInput(DATATYPES.BYTE32, _dematAccountNo), options)
   }
 
   /**

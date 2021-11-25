@@ -91,8 +91,7 @@ export class VerifiedContract {
                      * @param ( value [ , unit = "ether" ] ) 
                      * @returns ⇒ BigNumber
                      */
-                    utils.parseUnits(data)
-                    break;
+                    return utils.parseUnits(data)
                 case DATATYPES.BOOLEAN:
                     const arr = [true, false, "true", "false", 'TRUE', 'FALSE']
                     return arr.indexOf(data) !== -1 ? true : new Error("Invalid Boolean value");
@@ -147,7 +146,8 @@ export class VerifiedContract {
             if (element.hash !== undefined || element.transactionHash) return response.hash = element.hash || element.transactionHash
             if (element._isBigNumber) return response.result.push(element.toString())
             if (utils.isAddress(element)) return response.result.push(element)
-            if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
+            //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
+            if (utils.isBytesLike(element)) return response.result.push(element)
             if (typeof element === 'boolean' || (this.validateInput(DATATYPES.ADDRESS, element))) return response.result.push(element)
         }); 
         return response
