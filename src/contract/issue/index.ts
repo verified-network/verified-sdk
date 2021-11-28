@@ -24,7 +24,8 @@ enum FUNCTIONS {
     GETINTERESTRATE = 'getinterestRateInBips',
     PAYOUT = 'payOut',
     ISSUESHARE = 'issueShare',
-    ISSUEBOND = 'issueBond'
+    ISSUEBOND = 'issueBond',
+    GETBENEFICIARIES = 'getBeneficiaries'
 }
 
 export default class IssueContract extends VerifiedContract {
@@ -46,6 +47,14 @@ export default class IssueContract extends VerifiedContract {
 
     public async getBond(){
         return this.callContract(FUNCTIONS.GETBOND)
+    }
+
+    public async askOffers(){
+        return this.callContract(FUNCTIONS.ASKOFFERS)
+    }
+
+    public async getBeneficiaries(){
+        return this.callContract(FUNCTIONS.GETBENEFICIARIES)
     }
 
     public async startIssue(cutOffTime: string, options?: { gasPrice: number, gasLimit: number }): any {
@@ -121,70 +130,64 @@ export default class IssueContract extends VerifiedContract {
     }
 
     public async issueShare( _issueSize: string,
-        _offerPrice: string,
-        _minAskPrice: string,
-        _minSubscription: string,
-        _currency: string,
-        _offerType: string,
-        _depository: string,
-        _isin: string,
-        currencyAddress: string,
-        options?: { gasPrice: number, gasLimit: number }): any {
+                            _offerPrice: string,
+                            _minAskPrice: string,
+                            _minSubscription: string,
+                            _currency: string,
+                            _offerType: string,
+                            _isin: string,
+                            _offeringDocuments: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _issueSize)
         await this.validateInput(DATATYPES.NUMBER, _offerPrice)
         await this.validateInput(DATATYPES.NUMBER, _minAskPrice)
         await this.validateInput(DATATYPES.NUMBER, _minSubscription)
         await this.validateInput(DATATYPES.STRING, _currency)
         await this.validateInput(DATATYPES.STRING, _offerType)
-        await this.validateInput(DATATYPES.STRING, _depository)
+        await this.validateInput(DATATYPES.STRING, _offeringDocuments)
         await this.validateInput(DATATYPES.STRING, _isin)
-        await this.validateInput(DATATYPES.ADDRESS, currencyAddress)
         return this.callContract(FUNCTIONS.ISSUESHARE, _issueSize, 
                                     _offerPrice,  
                                     _minAskPrice,
                                     _minSubscription,
                                     this.sanitiseInput(DATATYPES.BYTE32, _currency),
                                     this.sanitiseInput(DATATYPES.BYTE32, _offerType),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _depository),
                                     this.sanitiseInput(DATATYPES.BYTE32, _isin),
-                                    this.sanitiseInput(DATATYPES.BYTE32, currencyAddress),
-                options)
+                                    _offeringDocuments,
+                                options)
     }
 
     public async issueBond( _issueSize: string,
-        _offerPrice: string,
-        _minAskPrice: string,
-        _couponPaymentCycle: string,
-        _tenure: string,
-        _currency: string,
-        _instrumentType: string,
-        _priority: string,
-        _depository: string,
-        _isin: string,
-        currencyAddress: string,
-        options?: { gasPrice: number, gasLimit: number }): any {
+                            _offerPrice: string,
+                            _minAskPrice: string,
+                            _minSubscription: string,
+                            _couponPaymentCycle: string,
+                            _tenure: string,
+                            _currency: string,
+                            _offerType: string,
+                            _isin: string,
+                            _offeringDocuments: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _issueSize)
         await this.validateInput(DATATYPES.NUMBER, _offerPrice)
         await this.validateInput(DATATYPES.NUMBER, _minAskPrice)
+        await this.validateInput(DATATYPES.NUMBER, _minSubscription)
         await this.validateInput(DATATYPES.NUMBER, _couponPaymentCycle)
         await this.validateInput(DATATYPES.NUMBER, _tenure)
         await this.validateInput(DATATYPES.STRING, _currency)
-        await this.validateInput(DATATYPES.STRING, _instrumentType)
-        await this.validateInput(DATATYPES.STRING, _priority)
-        await this.validateInput(DATATYPES.STRING, _depository)
+        await this.validateInput(DATATYPES.STRING, _offerType)
         await this.validateInput(DATATYPES.STRING, _isin)
-        await this.validateInput(DATATYPES.ADDRESS, currencyAddress)
+        await this.validateInput(DATATYPES.STRING, _offeringDocuments)
         return this.callContract(FUNCTIONS.ISSUEBOND, _issueSize, 
                                     _offerPrice,  
                                     _minAskPrice,
+                                    _minSubscription,
                                     _couponPaymentCycle,
                                     _tenure,
                                     this.sanitiseInput(DATATYPES.BYTE32, _currency),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _instrumentType),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _priority),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _depository),
+                                    this.sanitiseInput(DATATYPES.BYTE32, _offerType),
                                     this.sanitiseInput(DATATYPES.BYTE32, _isin),
-                                    this.sanitiseInput(DATATYPES.BYTE32, currencyAddress),
+                                    _offeringDocuments,
                 options)
     }
 

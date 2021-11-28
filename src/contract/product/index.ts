@@ -40,8 +40,7 @@ export default class ProductContract extends VerifiedContract {
                                 _arrangerAddress: string,
                                 _arrangerCountry: string,
                                 _arrangerSignatoryEmail: string,
-                                _issuerRegistrationNumber: string,
-                                _arrangerRegistrationNumber: string, 
+                                _registrationDocuments: string,
                                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _productCategory)
         await this.validateInput(DATATYPES.STRING, _issuerName)
@@ -52,8 +51,7 @@ export default class ProductContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _arrangerAddress)
         await this.validateInput(DATATYPES.STRING, _arrangerCountry)
         await this.validateInput(DATATYPES.STRING, _arrangerSignatoryEmail)
-        await this.validateInput(DATATYPES.STRING, _issuerRegistrationNumber)
-        await this.validateInput(DATATYPES.STRING, _arrangerRegistrationNumber)
+        await this.validateInput(DATATYPES.STRING, _registrationDocuments)
         return this.callContract(FUNCTIONS.GETTOKEN, this.sanitiseInput(DATATYPES.BYTE32, _productCategory), 
                                                     this.sanitiseInput(DATATYPES.BYTE32, _issuerName), 
                                                     this.sanitiseInput(DATATYPES.BYTE32, _issuerAddress),
@@ -63,8 +61,7 @@ export default class ProductContract extends VerifiedContract {
                                                     this.sanitiseInput(DATATYPES.BYTE32, _arrangerAddress),
                                                     this.sanitiseInput(DATATYPES.BYTE32, _arrangerCountry),
                                                     this.sanitiseInput(DATATYPES.BYTE32, _arrangerSignatoryEmail),
-                                                    this.sanitiseInput(DATATYPES.BYTE32, _issuerRegistrationNumber),
-                                                    this.sanitiseInput(DATATYPES.BYTE32, _arrangerRegistrationNumber), 
+                                                    _registrationDocuments, 
                                 options)
     }
 
@@ -82,10 +79,10 @@ export default class ProductContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETPRODUCT, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
     }
 
-    public async registerCertificate(_ref: string, _issuerCertificate: string, _isin: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async registerCertificate(_ref: string, _issuerCertificate: string, _arrangerCertificate: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
         await this.validateInput(DATATYPES.STRING, _issuerCertificate)
-        await this.validateInput(DATATYPES.STRING, _isin)
+        await this.validateInput(DATATYPES.STRING, _arrangerCertificate)
         return this.callContract(FUNCTIONS.REGISTERCERTIFICATE, this.sanitiseInput(DATATYPES.BYTE32, _ref), _issuerCertificate, _arrangerCertificate, options)
     }
 

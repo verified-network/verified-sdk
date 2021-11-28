@@ -11,7 +11,9 @@ enum FUNCTIONS {
   REGISTERCREDITSCORE = 'registerCreditScore',
   GETPRICE = 'getPrice',
   GETCORPORATEACTION = 'getCorporateActions',
-  GETCREDITSCORE = 'getCreditScore'
+  GETCREDITSCORE = 'getCreditScore',
+  GETSECURITIES = 'getSecuritiesInvested',
+  CREATESECURITY = 'createSecurity'
 }
 
 export default class SecuritiesRegistryContract extends VerifiedContract {
@@ -104,6 +106,36 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
   public async getPrice(_isin: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _isin)
     return this.callContract(FUNCTIONS.GETPRICE, this.sanitiseInput(DATATYPES.BYTE32, _isin), options)
+  }
+
+  /**
+   * Gets securities invested by message sender 
+   * @param options 
+   * @returns array of addresses of security tokens
+   */
+  public async getSecuritiesInvested(options?: { gasPrice: number, gasLimit: number }): any {
+    return this.callContract(FUNCTIONS.GETSECURITIES)
+  }
+
+  /**
+   * Creates a security which is either a secondary issue (created by the PreTrade contract) or a primary issue (created by the Issues contract)
+   * @param _issuer 
+   * @param _security 
+   * @param _currency 
+   * @param _company 
+   * @param _isin 
+   * @param _settlementBy is either "DP" or "STP", DP settlements need to be confirmed by issuers while STP settlements are native tokens that do not require issuer confirmations
+   * @param options 
+   * @returns 
+   */
+  public async createSecurity(_issuer: string, _security: string, _currency: string, _company: string, _isin: string, _settlementBy: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _issuer)
+    await this.validateInput(DATATYPES.ADDRESS, _security)
+    await this.validateInput(DATATYPES.STRING, _currency)
+    await this.validateInput(DATATYPES.STRING, _company)
+    await this.validateInput(DATATYPES.STRING, _isin)
+    await this.validateInput(DATATYPES.STRING, _settlementBy)
+    return this.callContract(FUNCTIONS.CREATESECURITY, _issuer, _security, this.sanitiseInput(DATATYPES.BYTE32, _currency), this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _settlementBy), options)
   }
 
 }

@@ -57,8 +57,7 @@ export default class PreTradeContract extends VerifiedContract {
    * @returns (address user, bytes32 countryCode, bytes32 dematAccountNo, bytes32 DPID, uint registrationDate) 
    */
   public async getRegistrationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _ref)
-    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+    return this.callContract(FUNCTIONS.GETREGISTRATIONREQUEST, _ref, options)
   }
 
   /**
@@ -67,10 +66,9 @@ export default class PreTradeContract extends VerifiedContract {
    * @returns
    */
   public async setRegistrationStatus(_ref: string, _DPID: string, _dematAccountNo: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _DPID)
     await this.validateInput(DATATYPES.STRING, _dematAccountNo)
-    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _DPID), this.sanitiseInput(DATATYPES.BYTE32, _dematAccountNo), options)
+    return this.callContract(FUNCTIONS.SETREGISTRATIONSTATUS, _ref, this.sanitiseInput(DATATYPES.BYTE32, _DPID), this.sanitiseInput(DATATYPES.BYTE32, _dematAccountNo), options)
   }
 
   /**
@@ -121,8 +119,7 @@ export default class PreTradeContract extends VerifiedContract {
                             } )
   */
   public async getConfirmationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, _ref)
-    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, _ref, options)
   }
 
 
@@ -133,9 +130,8 @@ export default class PreTradeContract extends VerifiedContract {
    */
   public async confirmSecurities(_user: string, _ref: string, _status: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.ADDRESS, _user)
-    await this.validateInput(DATATYPES.STRING, _ref)
     await this.validateInput(DATATYPES.STRING, _status)
-    return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _user, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _status), options)
+    return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _user, _ref, this.sanitiseInput(DATATYPES.BYTE32, _status), options)
   }
   
 }
