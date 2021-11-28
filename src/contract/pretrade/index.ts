@@ -14,6 +14,8 @@ enum FUNCTIONS {
   GETCONFIRMATIONREQUESTS = 'getConfirmationRequests',
   GETCONFIRMATIONREQUEST = 'getConfirmationRequest',
   CONFIRMSECURITIES = 'confirmSecurities',
+  GETSECURITY = 'getSecurity',
+  GETDPID = 'getDP'
 }
 
 export default class PreTradeContract extends VerifiedContract {
@@ -132,6 +134,28 @@ export default class PreTradeContract extends VerifiedContract {
     await this.validateInput(DATATYPES.ADDRESS, _user)
     await this.validateInput(DATATYPES.STRING, _status)
     return this.callContract(FUNCTIONS.CONFIRMSECURITIES, _user, _ref, this.sanitiseInput(DATATYPES.BYTE32, _status), options)
+  }
+
+  /**
+   * Gets security ISIN, company, token
+   * @param _token 
+   * @param options 
+   * @returns 
+   */
+  public async getSecurity(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _token)
+    return this.callContract(FUNCTIONS.GETSECURITY, _token, options)
+  }
+
+  /**
+   * Get Depositary participant ID for user
+   * @param _party 
+   * @param options 
+   * @returns 
+   */
+  public async getDP(_party: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _party)
+    return this.callContract(FUNCTIONS.GETDPID, _party, options)
   }
   
 }

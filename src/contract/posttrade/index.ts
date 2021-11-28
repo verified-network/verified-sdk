@@ -55,7 +55,7 @@ export default class PostTradeContract extends VerifiedContract {
      */
     public async getSettlementRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, _ref, options)
     }
 
     /**
@@ -66,7 +66,7 @@ export default class PostTradeContract extends VerifiedContract {
     public async setSettlementStatus(_ref: string, _settlementStatus: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
         await this.validateInput(DATATYPES.STRING, _settlementStatus)
-        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(DATATYPES.BYTE32, _ref), this.sanitiseInput(DATATYPES.BYTE32, _settlementStatus), options)
+        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, _ref, this.sanitiseInput(DATATYPES.BYTE32, _settlementStatus), options)
     }
 
 }
