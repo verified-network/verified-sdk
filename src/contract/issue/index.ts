@@ -10,7 +10,7 @@ enum FUNCTIONS {
     GETBOND = 'getBond',
     STARTISSUE = 'startIssue',
     ASKOFFERS = 'askOffers',
-    CLOSEISSUE = 'closeIssue',
+    GETSUBSCRIBERS = 'getSubscribers',
     ALLOTISSUE = 'allotIssue',
     NEXTINSTALLMENT = 'computeNextInstallment',
     GETPAYMENTFOR = 'getPaymentAmountFor',
@@ -32,10 +32,10 @@ export default class IssueContract extends VerifiedContract {
 
     public contractAddress: string
     
-    constructor(signer: VerifiedWallet) {
+    constructor(signer: VerifiedWallet, issue: string) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        const address = networks[chainId].address
+        const address = issue
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
@@ -62,8 +62,8 @@ export default class IssueContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.STARTISSUE, cutOffTime, options)
     }
 
-    public async closeIssue(){
-        return this.callContract(FUNCTIONS.CLOSEISSUE)
+    public async getSubscribers(){
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS)
     }
 
     public async allotIssue(_allotment: string, _platform: string, _pool: string, _investor: string, _amount: string, _asset: string, options?: { gasPrice: number, gasLimit: number }): any {

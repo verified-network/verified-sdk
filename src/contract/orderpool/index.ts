@@ -63,8 +63,8 @@ export default class OrderPoolContract extends VerifiedContract {
    * @param (bytes32 ref)
    * @returns (bool)
    */
-  public async cancelOrder(ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-    await this.validateInput(DATATYPES.STRING, ref)
+  public async cancelOrder(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _ref)
     return this.callContract(FUNCTIONS.CANCELORDER, _ref, options)
   }
 

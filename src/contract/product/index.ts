@@ -8,7 +8,9 @@ import { abi, networks } from '../../abi/securities/Products.json';
 enum FUNCTIONS {
     REGISTERPRODUCT = 'recordProduct',
     CLIENTPRODUCT = 'getProductsForClient',
+    CLIENTISSUE = 'getIssuesForClient',
     COUNTRYPRODUCT = 'getProductsForCountry',
+    COUNTRYISSUE = 'getIssuesForCountry',
     GETPRODUCT = 'getProduct',
     REGISTERCERTIFICATE = 'registerCertificate',
     GETCERTIFICATE = 'getCertificate',
@@ -69,9 +71,18 @@ export default class ProductContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.CLIENTPRODUCT)
     }
 
+    public async getIssuesForClient(){
+        return this.callContract(FUNCTIONS.CLIENTISSUE)
+    }
+
     public async getProductsForCountry(_country: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _country)
         return this.callContract(FUNCTIONS.COUNTRYPRODUCT, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+    }
+
+    public async getIssuesForCountry(_country: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _country)
+        return this.callContract(FUNCTIONS.COUNTRYISSUE, this.sanitiseInput(DATATYPES.BYTE32, _country), options)
     }
 
     public async getProduct(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
