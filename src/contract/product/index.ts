@@ -54,7 +54,7 @@ export default class ProductContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _arrangerCountry)
         await this.validateInput(DATATYPES.STRING, _arrangerSignatoryEmail)
         await this.validateInput(DATATYPES.STRING, _registrationDocuments)
-        return this.callContract(FUNCTIONS.GETTOKEN, this.sanitiseInput(DATATYPES.BYTE32, _productCategory), 
+        return this.callContract(FUNCTIONS.REGISTERPRODUCT, this.sanitiseInput(DATATYPES.BYTE32, _productCategory), 
                                                     this.sanitiseInput(DATATYPES.BYTE32, _issuerName), 
                                                     this.sanitiseInput(DATATYPES.BYTE32, _issuerAddress),
                                                     this.sanitiseInput(DATATYPES.BYTE32, _issuerCountry),
@@ -87,39 +87,39 @@ export default class ProductContract extends VerifiedContract {
 
     public async getProduct(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETPRODUCT, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETPRODUCT, _ref, options)
     }
 
     public async registerCertificate(_ref: string, _issuerCertificate: string, _arrangerCertificate: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
         await this.validateInput(DATATYPES.STRING, _issuerCertificate)
         await this.validateInput(DATATYPES.STRING, _arrangerCertificate)
-        return this.callContract(FUNCTIONS.REGISTERCERTIFICATE, this.sanitiseInput(DATATYPES.BYTE32, _ref), _issuerCertificate, _arrangerCertificate, options)
+        return this.callContract(FUNCTIONS.REGISTERCERTIFICATE, _ref, _issuerCertificate, _arrangerCertificate, options)
     }
 
     public async getCertificate(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETCERTIFICATE, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETCERTIFICATE, _ref, options)
     }
 
     public async confirmProduct(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.CONFIRMPRODUCT, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.CONFIRMPRODUCT, _ref, options)
     }
 
     public async getIssue(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETISSUE, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETISSUE, _ref, options)
     }
 
     public async getIssuerName(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETISSUERNAME, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETISSUERNAME, _ref, options)
     }
 
     public async getIssuerAddress(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _ref)
-        return this.callContract(FUNCTIONS.GETISSUERADDRESS, this.sanitiseInput(DATATYPES.BYTE32, _ref), options)
+        return this.callContract(FUNCTIONS.GETISSUERADDRESS, _ref, options)
     }
 
 }
