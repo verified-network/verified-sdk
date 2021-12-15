@@ -12,8 +12,10 @@ enum FUNCTIONS {
   GETPRICE = 'getPrice',
   GETCORPORATEACTION = 'getCorporateActions',
   GETCREDITSCORE = 'getCreditScore',
-  GETSECURITIES = 'getSecuritiesInvested',
-  CREATESECURITY = 'createSecurity'
+  GETINVESTEDSECURITIES = 'getSecuritiesInvested',
+  GETSECURITYDETAILS = 'getSecurityDetails',
+  CREATESECURITY = 'createSecurity',
+  GETISSUEDSECURITIES = 'getSecuritiesIssued'
 }
 
 export default class SecuritiesRegistryContract extends VerifiedContract {
@@ -114,7 +116,27 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
    * @returns array of addresses of security tokens
    */
   public async getSecuritiesInvested(options?: { gasPrice: number, gasLimit: number }): any {
-    return this.callContract(FUNCTIONS.GETSECURITIES)
+    return this.callContract(FUNCTIONS.GETINVESTEDSECURITIES)
+  }
+
+  /**
+   * Gets securities issued
+   * @param options 
+   * @returns array of addresses of security tokens
+   */
+  public async getSecuritiesIssued(options?: { gasPrice: number, gasLimit: number }): any {
+    return this.callContract(FUNCTIONS.GETISSUEDSECURITIES)
+  }
+
+  /**
+   * Fetches details of a security token {bytes32 company, bytes32 currency, bytes32 isin, bytes32 creditScore, bytes16 price, address issuer}
+   * @param _security address of security token returned by getSecuritiesInvested() function
+   * @param options 
+   * @returns 
+   */
+  public async getSecurityDetails(_security: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _security)
+    return this.callContract(FUNCTIONS.GETSECURITYDETAILS, _security, options)
   }
 
   /**
