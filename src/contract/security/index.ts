@@ -6,21 +6,28 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/trades/Security.json';
 
 enum FUNCTIONS {
-    GETSETTLEMENTS = 'getSettlements'
+    GETSETTLEMENTS = 'getSettlements',
+    BALANCE = 'balanceOf'
 }
 
 export default class SecurityContract extends VerifiedContract {
 
     public contractAddress: string
     
-    constructor(signer: VerifiedWallet) {
+    constructor(signer: VerifiedWallet, tokenAddress: string) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        const address = networks[chainId].address
+        const address = tokenAddress
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
     }
+
+    public async balanceOf(_wallet: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _wallet)
+        return this.callContract(FUNCTIONS.BALANCE, this.sanitiseInput(DATATYPES.ADDRESS, _wallet), options)
+    }
+
     /**
      * Fetches settlement registry for client account.
      * @param _client account address
