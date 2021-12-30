@@ -31,7 +31,9 @@ enum FUNCTIONS {
     SETPHONE = 'setPhone',
     GETPHONE = 'getPhone',
     SETEMAIL = 'setEmail',
-    GETEMAIL = 'getEmail'
+    GETEMAIL = 'getEmail',
+    GETKYCPAID = 'getKYCPaid',
+    SETKYCPAID = 'setKYCPaid'
 }
 
 export default class KYCContract extends VerifiedContract {
@@ -218,6 +220,17 @@ export default class KYCContract extends VerifiedContract {
     public async getEmail(_clientAddress: string, options?: { gasPrice, gasLimit }): void {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
         return this.callContract(FUNCTIONS.GETEMAIL, _clientAddress, options)
+    }
+
+    public async setKYCPaid(_clientAddress: string, _paidStatus: boolean, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        await this.validateInput(DATATYPES.BOOLEAN, _paidStatus)
+        return this.callContract(FUNCTIONS.SETKYCPAID, _clientAddress, _paidStatus, options)
+    }
+
+    public async getKYCPaid(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
+        return this.callContract(FUNCTIONS.GETKYCPAID, _clientAddress, options)
     }
 
 }
