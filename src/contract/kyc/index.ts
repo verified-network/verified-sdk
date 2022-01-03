@@ -222,10 +222,10 @@ export default class KYCContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETEMAIL, _clientAddress, options)
     }
 
-    public async setKYCPaid(_clientAddress: string, _paidStatus: boolean, options?: { gasPrice, gasLimit }): any {
+    public async setKYCPaid(_clientAddress: string, _paidStatus: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        await this.validateInput(DATATYPES.BOOLEAN, _paidStatus)
-        return this.callContract(FUNCTIONS.SETKYCPAID, _clientAddress, _paidStatus, options)
+        await this.validateInput(DATATYPES.STRING, _paidStatus)
+        return this.callContract(FUNCTIONS.SETKYCPAID, _clientAddress, this.sanitiseInput(DATATYPES.BYTE32, _paidStatus), options)
     }
 
     public async getKYCPaid(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
