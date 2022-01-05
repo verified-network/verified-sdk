@@ -9,7 +9,10 @@ enum FUNCTIONS {
     GETTOKENCOUNT = 'getTokenCount',
     GETTOKEN = 'getToken',
     GETNAMEANDTYPE = 'getNameAndType',
-    TOKENCREATED = 'TokenCreated'
+    TOKENCREATED = 'TokenCreated',
+    GETTOKENBYNAMETYPE = 'getTokenByNameType',
+    GETISSUER = 'getIssuer',
+    GETADDRESSTYPE = 'getAddressAndType'
 }
 
 export default class FactoryContract extends VerifiedContract {
@@ -60,6 +63,23 @@ export default class FactoryContract extends VerifiedContract {
     */
     public notifyTokenCreated(callback: any): object {
         this.getEvent(FUNCTIONS.TOKENCREATED, callback)
+    }
+
+    public async getTokenByNameType(tokenName: string, tokenType: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, tokenName)
+        await this.validateInput(DATATYPES.STRING, tokenType)
+        return this.callContract(FUNCTIONS.GETTOKENBYNAMETYPE, this.sanitiseInput(DATATYPES.BYTE32, tokenName), this.sanitiseInput(DATATYPES.BYTE32, tokenType), options)
+    }
+
+    public async getIssuer(tokenName: string, tokenType: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, tokenName)
+        await this.validateInput(DATATYPES.STRING, tokenType)
+        return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(DATATYPES.BYTE32, tokenName), this.sanitiseInput(DATATYPES.BYTE32, tokenType), options)
+    }
+
+    public async getAddressAndType(tokenName: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, tokenName)
+        return this.callContract(FUNCTIONS.GETADDRESSTYPE, this.sanitiseInput(DATATYPES.BYTE32, tokenName), options)
     }
     
 }

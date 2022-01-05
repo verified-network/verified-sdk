@@ -21,7 +21,7 @@ const contractAddress: Object = {
         'Products': '0xF91691BDA104Ad1F236c934c6d25FbD2f99d220F',
         'Issues': '0x3b20aDc6f6B7c7B7379088c763CC1e65c3bF44Dc',
         'BalancerManager': '',
-        'Custody': '0x4133189077C15278e893473c311D4DC5FCdDCb43',
+        'Custody': '0xb6DD33C076fE95ffACC84E048Bda1caa6C304673',
         'CASH': {
             'VCUSD': '0x56849B0a8108d03926062187b2D97f67465Bb1a6',
             'VCEUR': '0xB1D0B7a9d2CcD787dedc7f70aE6462062dc84255',
