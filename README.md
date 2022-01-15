@@ -47,7 +47,7 @@ SecuritiesRegistryContract,
 TradeContract,
 ProductContract,
 IssueContract,
-BalancerManagerContract
+CustodyContract
 ```
 
 # VerifiedContract

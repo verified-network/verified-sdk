@@ -157,11 +157,12 @@ export default class ClientContract extends VerifiedContract {
      * @params (address _submanager, bytes32 _country, bytes32 _role)
      * @returns 
      */
-    public async addRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
+    public async addRole(_submanager: string, _country: string, _role: string, _id: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.STRING, _role)
-        return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
+        await this.validateInput(DATATYPES.STRING, _id)
+        return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _id), options)
     }
 
     public async getManagers(_role: string, _country: string, options?: { gasPrice, gasLimit }): any {
