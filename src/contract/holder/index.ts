@@ -12,7 +12,9 @@ enum FUNCTIONS {
     CREATELEDGER = 'createLedger',
     GETTRANSACTIONS = 'getTransactions',
     FETCHTRANSACTIONS = 'fetchTransactions',
-    GETENTRY = 'getEntry' 
+    GETENTRY = 'getEntry',
+    SETBLOCK = 'setBlock',
+    GETBLOCK = 'getBlock' 
 }
 
 export default class HolderContract extends VerifiedContract {
@@ -74,9 +76,10 @@ export default class HolderContract extends VerifiedContract {
     * @param (uint256 _txDate)
     * _txDate is unix timestamp for date on and which transactions are returned. 
     */
-    public async fetchTransactions(_txDate: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _txDate)
-        return this.callContract(FUNCTIONS.FETCHTRANSACTIONS, _txDate, options)
+    public async fetchTransactions(_startDate: string, _endDate: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _startDate)
+        await this.validateInput(DATATYPES.NUMBER, _endDate)
+        return this.callContract(FUNCTIONS.FETCHTRANSACTIONS, _startDate, _endDate, options)
     }
 
     /**
@@ -99,4 +102,14 @@ export default class HolderContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
+
+    public async setBlock(_block: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _block)
+        return this.callContract(FUNCTIONS.SETBLOCK, _block, options)
+    }
+
+    public async getBlock(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.GETBLOCK)
+    }
+
 }

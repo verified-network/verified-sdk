@@ -58,9 +58,9 @@ export default class ClientContract extends VerifiedContract {
      * @params (bool login) 
      * @returns 
      */
-    public async setAccess(_login: boolean, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.BOOLEAN, _login)
-        return this.callContract(FUNCTIONS.SETACCESS, _login, options)
+    public async setAccess(_token: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, _token)
+        return this.callContract(FUNCTIONS.SETACCESS, _token, options)
     }
 
     public async getAccess(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
@@ -124,10 +124,9 @@ export default class ClientContract extends VerifiedContract {
      * @params (address _manager,bool _status) 
      * @returns {address[] memory}
      */
-    public async getClients(_managerAddress: string, _status: boolean, options?: { gasPrice, gasLimit }): any {
+    public async getClients(_managerAddress: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _managerAddress)
-        await this.validateInput(DATATYPES.BOOLEAN, _status)
-        return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, _status, options)
+        return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, options)
     }
 
     /**

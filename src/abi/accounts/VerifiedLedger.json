@@ -45,7 +45,11 @@
       "constant": false,
       "inputs": [
         {
-          "name": "_txDate",
+          "name": "_startDate",
+          "type": "uint256"
+        },
+        {
+          "name": "_endDate",
           "type": "uint256"
         }
       ],
@@ -91,25 +95,25 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes16\"},{\"name\":\"\",\"type\":\"bytes32\"},{\"name\":\"\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_accountName\",\"type\":\"bytes32\"},{\"name\":\"_currency\",\"type\":\"bytes32\"}],\"name\":\"createAccount\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_txDate\",\"type\":\"uint256\"}],\"name\":\"getEntries\",\"outputs\":[{\"components\":[{\"name\":\"txType\",\"type\":\"bytes32\"},{\"name\":\"txDate\",\"type\":\"uint256\"},{\"name\":\"txDescription\",\"type\":\"bytes32\"},{\"name\":\"voucherType\",\"type\":\"bytes32\"},{\"name\":\"txCurrency\",\"type\":\"bytes32\"},{\"name\":\"txAmount\",\"type\":\"bytes16\"},{\"name\":\"party\",\"type\":\"address\"}],\"name\":\"\",\"type\":\"tuple[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/VerifiedLedger.sol\":\"VerifiedLedger\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/VerifiedEntry.sol\":{\"keccak256\":\"0x7afc5f4d35715a1f193ab5503ca972c17ba63002fdc8d56e5a9538209b95f8e4\",\"urls\":[\"bzzr://006e434fd09ad59bc0e3e538e5e54fa0523604086201180e6e53f1a1caeab4d8\"]},\"project:/contracts/interfaces/VerifiedLedger.sol\":{\"keccak256\":\"0x268e60308657ab71ac3570b6c6e64cefd71f67fd02af5c3f3bfa6e59cdd45f2a\",\"urls\":[\"bzzr://b6fd4bcf26d617af95b052db7d06fde1360a4fcf43b7f9233248ae6575c12d28\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[],\"name\":\"getBalance\",\"outputs\":[{\"name\":\"\",\"type\":\"bytes16\"},{\"name\":\"\",\"type\":\"bytes32\"},{\"name\":\"\",\"type\":\"bytes32\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_accountName\",\"type\":\"bytes32\"},{\"name\":\"_currency\",\"type\":\"bytes32\"}],\"name\":\"createAccount\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":false,\"inputs\":[{\"name\":\"_startDate\",\"type\":\"uint256\"},{\"name\":\"_endDate\",\"type\":\"uint256\"}],\"name\":\"getEntries\",\"outputs\":[{\"components\":[{\"name\":\"txType\",\"type\":\"bytes32\"},{\"name\":\"txDate\",\"type\":\"uint256\"},{\"name\":\"txDescription\",\"type\":\"bytes32\"},{\"name\":\"voucherType\",\"type\":\"bytes32\"},{\"name\":\"txCurrency\",\"type\":\"bytes32\"},{\"name\":\"txAmount\",\"type\":\"bytes16\"},{\"name\":\"party\",\"type\":\"address\"}],\"name\":\"\",\"type\":\"tuple[]\"}],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/VerifiedLedger.sol\":\"VerifiedLedger\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/VerifiedEntry.sol\":{\"keccak256\":\"0x7afc5f4d35715a1f193ab5503ca972c17ba63002fdc8d56e5a9538209b95f8e4\",\"urls\":[\"bzzr://006e434fd09ad59bc0e3e538e5e54fa0523604086201180e6e53f1a1caeab4d8\"]},\"project:/contracts/interfaces/VerifiedLedger.sol\":{\"keccak256\":\"0xa1f6ea4cc8dd3a0d50cfa492d47ad9499d8b367437d9d3e3fcff8c4a2de7ac70\",\"urls\":[\"bzzr://4d5bfa9d24dd02b436cfb94b7a08e4b42a2fcb480a6a008d384d6a068a72ace6\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "sourceMap": "",
   "deployedSourceMap": "",
-  "source": "// (c) Kallol Borah, 2020\r\n// Ledger interface\r\n// SPDX-License-Identifier: MIT\r\n\r\npragma solidity 0.5.7;\r\npragma experimental ABIEncoderV2;\r\n\r\nimport \"./VerifiedEntry.sol\";\r\n\r\ninterface VerifiedLedger{\r\n\r\n    function getBalance() external returns (bytes16, bytes32, bytes32);\r\n\r\n    function createAccount(bytes32 _accountName, bytes32 _currency) external;\r\n\r\n    function getEntries(uint256 _txDate) external returns(VerifiedEntry.account[] memory); \r\n\r\n}\r\n",
+  "source": "// (c) Kallol Borah, 2020\r\n// Ledger interface\r\n// SPDX-License-Identifier: MIT\r\n\r\npragma solidity 0.5.7;\r\npragma experimental ABIEncoderV2;\r\n\r\nimport \"./VerifiedEntry.sol\";\r\n\r\ninterface VerifiedLedger{\r\n\r\n    function getBalance() external returns (bytes16, bytes32, bytes32);\r\n\r\n    function createAccount(bytes32 _accountName, bytes32 _currency) external;\r\n\r\n    function getEntries(uint256 _startDate, uint256 _endDate) external returns(VerifiedEntry.account[] memory); \r\n\r\n}\r\n",
   "sourcePath": "D:\\Code\\verified-accounts\\contracts\\interfaces\\VerifiedLedger.sol",
   "ast": {
     "absolutePath": "project:/contracts/interfaces/VerifiedLedger.sol",
     "exportedSymbols": {
       "VerifiedLedger": [
-        10065
+        9940
       ]
     },
-    "id": 10066,
+    "id": 9941,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 10038,
+        "id": 9911,
         "literals": [
           "solidity",
           "0.5",
@@ -119,7 +123,7 @@
         "src": "83:22:24"
       },
       {
-        "id": 10039,
+        "id": 9912,
         "literals": [
           "experimental",
           "ABIEncoderV2"
@@ -130,10 +134,10 @@
       {
         "absolutePath": "project:/contracts/interfaces/VerifiedEntry.sol",
         "file": "./VerifiedEntry.sol",
-        "id": 10040,
+        "id": 9913,
         "nodeType": "ImportDirective",
-        "scope": 10066,
-        "sourceUnit": 9798,
+        "scope": 9941,
+        "sourceUnit": 9659,
         "src": "144:29:24",
         "symbolAliases": [],
         "unitAlias": ""
@@ -144,9 +148,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 10065,
+        "id": 9940,
         "linearizedBaseContracts": [
-          10065
+          9940
         ],
         "name": "VerifiedLedger",
         "nodeType": "ContractDefinition",
@@ -154,28 +158,28 @@
           {
             "body": null,
             "documentation": null,
-            "id": 10049,
+            "id": 9922,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getBalance",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10041,
+              "id": 9914,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "229:2:24"
             },
             "returnParameters": {
-              "id": 10048,
+              "id": 9921,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10043,
+                  "id": 9916,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10049,
+                  "scope": 9922,
                   "src": "250:7:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -184,7 +188,7 @@
                     "typeString": "bytes16"
                   },
                   "typeName": {
-                    "id": 10042,
+                    "id": 9915,
                     "name": "bytes16",
                     "nodeType": "ElementaryTypeName",
                     "src": "250:7:24",
@@ -198,10 +202,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10045,
+                  "id": 9918,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10049,
+                  "scope": 9922,
                   "src": "259:7:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -210,7 +214,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10044,
+                    "id": 9917,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "259:7:24",
@@ -224,10 +228,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10047,
+                  "id": 9920,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10049,
+                  "scope": 9922,
                   "src": "268:7:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -236,7 +240,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10046,
+                    "id": 9919,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "268:7:24",
@@ -251,7 +255,7 @@
               ],
               "src": "249:27:24"
             },
-            "scope": 10065,
+            "scope": 9940,
             "src": "210:67:24",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -260,22 +264,22 @@
           {
             "body": null,
             "documentation": null,
-            "id": 10056,
+            "id": 9929,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "createAccount",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10054,
+              "id": 9927,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10051,
+                  "id": 9924,
                   "name": "_accountName",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10056,
+                  "scope": 9929,
                   "src": "308:20:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -284,7 +288,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10050,
+                    "id": 9923,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "308:7:24",
@@ -298,10 +302,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 10053,
+                  "id": 9926,
                   "name": "_currency",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10056,
+                  "scope": 9929,
                   "src": "330:17:24",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -310,7 +314,7 @@
                     "typeString": "bytes32"
                   },
                   "typeName": {
-                    "id": 10052,
+                    "id": 9925,
                     "name": "bytes32",
                     "nodeType": "ElementaryTypeName",
                     "src": "330:7:24",
@@ -326,12 +330,12 @@
               "src": "307:41:24"
             },
             "returnParameters": {
-              "id": 10055,
+              "id": 9928,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "357:0:24"
             },
-            "scope": 10065,
+            "scope": 9940,
             "src": "285:73:24",
             "stateMutability": "nonpayable",
             "superFunction": null,
@@ -340,23 +344,23 @@
           {
             "body": null,
             "documentation": null,
-            "id": 10064,
+            "id": 9939,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
             "name": "getEntries",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 10059,
+              "id": 9934,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10058,
-                  "name": "_txDate",
+                  "id": 9931,
+                  "name": "_startDate",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10064,
-                  "src": "386:15:24",
+                  "scope": 9939,
+                  "src": "386:18:24",
                   "stateVariable": false,
                   "storageLocation": "default",
                   "typeDescriptions": {
@@ -364,7 +368,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 10057,
+                    "id": 9930,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "386:7:24",
@@ -375,46 +379,72 @@
                   },
                   "value": null,
                   "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 9933,
+                  "name": "_endDate",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 9939,
+                  "src": "406:16:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 9932,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "406:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
                 }
               ],
-              "src": "385:17:24"
+              "src": "385:38:24"
             },
             "returnParameters": {
-              "id": 10063,
+              "id": 9938,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 10062,
+                  "id": 9937,
                   "name": "",
                   "nodeType": "VariableDeclaration",
-                  "scope": 10064,
-                  "src": "420:30:24",
+                  "scope": 9939,
+                  "src": "441:30:24",
                   "stateVariable": false,
                   "storageLocation": "memory",
                   "typeDescriptions": {
-                    "typeIdentifier": "t_array$_t_struct$_account_$9796_memory_$dyn_memory_ptr",
+                    "typeIdentifier": "t_array$_t_struct$_account_$9657_memory_$dyn_memory_ptr",
                     "typeString": "struct VerifiedEntry.account[]"
                   },
                   "typeName": {
                     "baseType": {
                       "contractScope": null,
-                      "id": 10060,
+                      "id": 9935,
                       "name": "VerifiedEntry.account",
                       "nodeType": "UserDefinedTypeName",
-                      "referencedDeclaration": 9796,
-                      "src": "420:21:24",
+                      "referencedDeclaration": 9657,
+                      "src": "441:21:24",
                       "typeDescriptions": {
-                        "typeIdentifier": "t_struct$_account_$9796_storage_ptr",
+                        "typeIdentifier": "t_struct$_account_$9657_storage_ptr",
                         "typeString": "struct VerifiedEntry.account"
                       }
                     },
-                    "id": 10061,
+                    "id": 9936,
                     "length": null,
                     "nodeType": "ArrayTypeName",
-                    "src": "420:23:24",
+                    "src": "441:23:24",
                     "typeDescriptions": {
-                      "typeIdentifier": "t_array$_t_struct$_account_$9796_storage_$dyn_storage_ptr",
+                      "typeIdentifier": "t_array$_t_struct$_account_$9657_storage_$dyn_storage_ptr",
                       "typeString": "struct VerifiedEntry.account[]"
                     }
                   },
@@ -422,27 +452,27 @@
                   "visibility": "internal"
                 }
               ],
-              "src": "419:32:24"
+              "src": "440:32:24"
             },
-            "scope": 10065,
-            "src": "366:86:24",
+            "scope": 9940,
+            "src": "366:107:24",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "external"
           }
         ],
-        "scope": 10066,
-        "src": "177:281:24"
+        "scope": 9941,
+        "src": "177:302:24"
       }
     ],
-    "src": "83:377:24"
+    "src": "83:398:24"
   },
   "legacyAST": {
     "attributes": {
       "absolutePath": "project:/contracts/interfaces/VerifiedLedger.sol",
       "exportedSymbols": {
         "VerifiedLedger": [
-          10065
+          9940
         ]
       }
     },
@@ -455,7 +485,7 @@
             ".7"
           ]
         },
-        "id": 10038,
+        "id": 9911,
         "name": "PragmaDirective",
         "src": "83:22:24"
       },
@@ -466,22 +496,22 @@
             "ABIEncoderV2"
           ]
         },
-        "id": 10039,
+        "id": 9912,
         "name": "PragmaDirective",
         "src": "107:33:24"
       },
       {
         "attributes": {
-          "SourceUnit": 9798,
+          "SourceUnit": 9659,
           "absolutePath": "project:/contracts/interfaces/VerifiedEntry.sol",
           "file": "./VerifiedEntry.sol",
-          "scope": 10066,
+          "scope": 9941,
           "symbolAliases": [
             null
           ],
           "unitAlias": ""
         },
-        "id": 10040,
+        "id": 9913,
         "name": "ImportDirective",
         "src": "144:29:24"
       },
@@ -497,10 +527,10 @@
           "documentation": null,
           "fullyImplemented": false,
           "linearizedBaseContracts": [
-            10065
+            9940
           ],
           "name": "VerifiedLedger",
-          "scope": 10066
+          "scope": 9941
         },
         "children": [
           {
@@ -514,7 +544,7 @@
                 null
               ],
               "name": "getBalance",
-              "scope": 10065,
+              "scope": 9940,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "external"
@@ -527,7 +557,7 @@
                   ]
                 },
                 "children": [],
-                "id": 10041,
+                "id": 9914,
                 "name": "ParameterList",
                 "src": "229:2:24"
               },
@@ -537,7 +567,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 10049,
+                      "scope": 9922,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes16",
@@ -550,12 +580,12 @@
                           "name": "bytes16",
                           "type": "bytes16"
                         },
-                        "id": 10042,
+                        "id": 9915,
                         "name": "ElementaryTypeName",
                         "src": "250:7:24"
                       }
                     ],
-                    "id": 10043,
+                    "id": 9916,
                     "name": "VariableDeclaration",
                     "src": "250:7:24"
                   },
@@ -563,7 +593,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 10049,
+                      "scope": 9922,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -576,12 +606,12 @@
                           "name": "bytes32",
                           "type": "bytes32"
                         },
-                        "id": 10044,
+                        "id": 9917,
                         "name": "ElementaryTypeName",
                         "src": "259:7:24"
                       }
                     ],
-                    "id": 10045,
+                    "id": 9918,
                     "name": "VariableDeclaration",
                     "src": "259:7:24"
                   },
@@ -589,7 +619,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 10049,
+                      "scope": 9922,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -602,22 +632,22 @@
                           "name": "bytes32",
                           "type": "bytes32"
                         },
-                        "id": 10046,
+                        "id": 9919,
                         "name": "ElementaryTypeName",
                         "src": "268:7:24"
                       }
                     ],
-                    "id": 10047,
+                    "id": 9920,
                     "name": "VariableDeclaration",
                     "src": "268:7:24"
                   }
                 ],
-                "id": 10048,
+                "id": 9921,
                 "name": "ParameterList",
                 "src": "249:27:24"
               }
             ],
-            "id": 10049,
+            "id": 9922,
             "name": "FunctionDefinition",
             "src": "210:67:24"
           },
@@ -632,7 +662,7 @@
                 null
               ],
               "name": "createAccount",
-              "scope": 10065,
+              "scope": 9940,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "external"
@@ -644,7 +674,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_accountName",
-                      "scope": 10056,
+                      "scope": 9929,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -657,12 +687,12 @@
                           "name": "bytes32",
                           "type": "bytes32"
                         },
-                        "id": 10050,
+                        "id": 9923,
                         "name": "ElementaryTypeName",
                         "src": "308:7:24"
                       }
                     ],
-                    "id": 10051,
+                    "id": 9924,
                     "name": "VariableDeclaration",
                     "src": "308:20:24"
                   },
@@ -670,7 +700,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "_currency",
-                      "scope": 10056,
+                      "scope": 9929,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "bytes32",
@@ -683,17 +713,17 @@
                           "name": "bytes32",
                           "type": "bytes32"
                         },
-                        "id": 10052,
+                        "id": 9925,
                         "name": "ElementaryTypeName",
                         "src": "330:7:24"
                       }
                     ],
-                    "id": 10053,
+                    "id": 9926,
                     "name": "VariableDeclaration",
                     "src": "330:17:24"
                   }
                 ],
-                "id": 10054,
+                "id": 9927,
                 "name": "ParameterList",
                 "src": "307:41:24"
               },
@@ -704,12 +734,12 @@
                   ]
                 },
                 "children": [],
-                "id": 10055,
+                "id": 9928,
                 "name": "ParameterList",
                 "src": "357:0:24"
               }
             ],
-            "id": 10056,
+            "id": 9929,
             "name": "FunctionDefinition",
             "src": "285:73:24"
           },
@@ -724,7 +754,7 @@
                 null
               ],
               "name": "getEntries",
-              "scope": 10065,
+              "scope": 9940,
               "stateMutability": "nonpayable",
               "superFunction": null,
               "visibility": "external"
@@ -735,8 +765,8 @@
                   {
                     "attributes": {
                       "constant": false,
-                      "name": "_txDate",
-                      "scope": 10064,
+                      "name": "_startDate",
+                      "scope": 9939,
                       "stateVariable": false,
                       "storageLocation": "default",
                       "type": "uint256",
@@ -749,19 +779,45 @@
                           "name": "uint256",
                           "type": "uint256"
                         },
-                        "id": 10057,
+                        "id": 9930,
                         "name": "ElementaryTypeName",
                         "src": "386:7:24"
                       }
                     ],
-                    "id": 10058,
+                    "id": 9931,
                     "name": "VariableDeclaration",
-                    "src": "386:15:24"
+                    "src": "386:18:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_endDate",
+                      "scope": 9939,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 9932,
+                        "name": "ElementaryTypeName",
+                        "src": "406:7:24"
+                      }
+                    ],
+                    "id": 9933,
+                    "name": "VariableDeclaration",
+                    "src": "406:16:24"
                   }
                 ],
-                "id": 10059,
+                "id": 9934,
                 "name": "ParameterList",
-                "src": "385:17:24"
+                "src": "385:38:24"
               },
               {
                 "children": [
@@ -769,7 +825,7 @@
                     "attributes": {
                       "constant": false,
                       "name": "",
-                      "scope": 10064,
+                      "scope": 9939,
                       "stateVariable": false,
                       "storageLocation": "memory",
                       "type": "struct VerifiedEntry.account[]",
@@ -787,42 +843,42 @@
                             "attributes": {
                               "contractScope": null,
                               "name": "VerifiedEntry.account",
-                              "referencedDeclaration": 9796,
+                              "referencedDeclaration": 9657,
                               "type": "struct VerifiedEntry.account"
                             },
-                            "id": 10060,
+                            "id": 9935,
                             "name": "UserDefinedTypeName",
-                            "src": "420:21:24"
+                            "src": "441:21:24"
                           }
                         ],
-                        "id": 10061,
+                        "id": 9936,
                         "name": "ArrayTypeName",
-                        "src": "420:23:24"
+                        "src": "441:23:24"
                       }
                     ],
-                    "id": 10062,
+                    "id": 9937,
                     "name": "VariableDeclaration",
-                    "src": "420:30:24"
+                    "src": "441:30:24"
                   }
                 ],
-                "id": 10063,
+                "id": 9938,
                 "name": "ParameterList",
-                "src": "419:32:24"
+                "src": "440:32:24"
               }
             ],
-            "id": 10064,
+            "id": 9939,
             "name": "FunctionDefinition",
-            "src": "366:86:24"
+            "src": "366:107:24"
           }
         ],
-        "id": 10065,
+        "id": 9940,
         "name": "ContractDefinition",
-        "src": "177:281:24"
+        "src": "177:302:24"
       }
     ],
-    "id": 10066,
+    "id": 9941,
     "name": "SourceUnit",
-    "src": "83:377:24"
+    "src": "83:398:24"
   },
   "compiler": {
     "name": "solc",
@@ -830,7 +886,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.3",
-  "updatedAt": "2022-01-15T13:50:22.523Z",
+  "updatedAt": "2022-01-20T18:49:43.906Z",
   "devdoc": {
     "methods": {}
   },

@@ -28,14 +28,15 @@ export default class AccountContract extends VerifiedContract {
      * @param (address _account, bytes32 _accountNumber, int256 _txAmount, bytes32 _txType, bytes32 _txDate, bytes32 _txDescription, bytes32 _vchType)
      * 
      */
-    public async postEntry(_counterParty:address, _txAmount:string, _txType:string, _txDate:string, _txDescription:string, _vchType:string, options?: { gasLimit, gasPrice }): any {
+    public async postEntry(_counterParty:address, _txAmount:string, _txType:string, _txDate:string, _txDescription:string, _vchType:string, _txHash:string, options?: { gasLimit, gasPrice }): any {
         await this.validateInput(DATATYPES.ADDRESS, _counterParty)
         await this.validateInput(DATATYPES.NUMBER, _txAmount)
         await this.validateInput(DATATYPES.NUMBER, _txDate)
         await this.validateInput(DATATYPES.STRING, _txType)
         await this.validateInput(DATATYPES.STRING, _txDescription)
         await this.validateInput(DATATYPES.STRING, _vchType)
-        return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), options)
+        await this.validateInput(DATATYPES.STRING, _txHash)
+        return this.callContract(FUNCTIONS.POSTENTRY, _counterParty, _txAmount, this.sanitiseInput(DATATYPES.BYTE32, _txType), _txDate, this.sanitiseInput(DATATYPES.BYTE32, _txDescription), this.sanitiseInput(DATATYPES.BYTE32, _vchType), _txHash, options)
     }
 
 }
