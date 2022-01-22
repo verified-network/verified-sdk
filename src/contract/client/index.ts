@@ -22,7 +22,7 @@ enum FUNCTIONS {
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
     GETMANAGERS = 'getManagers',
-    MANAGERADDED = 'ManagerRole'
+    MANAGERADDED = 'ManagerAdded'
 }
 
 export default class ClientContract extends VerifiedContract {
