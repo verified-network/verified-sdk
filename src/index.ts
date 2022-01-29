@@ -22,7 +22,8 @@ import SecurityContract from './contract/security';
 import OracleContract from './contract/oracle';
 import BalancerManagerContract from './contract/balancer';
 import ProductContract from './contract/product';
-import IssueContract from './contract/issue';
+import StocksContract from './contract/stocks';
+import BondsContract from './contract/bonds';
 import CustodyContract from './contract/custody';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
@@ -50,7 +51,8 @@ export {
     OracleContract,
     BalancerManagerContract,
     ProductContract,
-    IssueContract,
+    StocksContract,
+    BondsContract,
     CustodyContract,
     utils,
     contractAddress

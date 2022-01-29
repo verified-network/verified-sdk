@@ -3,10 +3,9 @@
 
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/securities/Issues.json';
+import { abi, networks } from '../../abi/securities/Bonds.json';
 
 enum FUNCTIONS {
-    GETSHARE = 'getShare',
     GETBOND = 'getBond',
     STARTISSUE = 'startIssue',
     ASKOFFERS = 'askOffers',
@@ -23,12 +22,11 @@ enum FUNCTIONS {
     GETCOUPONFREQUENCY = 'getcouponFrequencyInMonths',
     GETINTERESTRATE = 'getinterestRateInBips',
     PAYOUT = 'payOut',
-    ISSUESHARE = 'issueShare',
     ISSUEBOND = 'issueBond',
     GETBENEFICIARIES = 'getBeneficiaries'
 }
 
-export default class IssueContract extends VerifiedContract {
+export default class BondsContract extends VerifiedContract {
 
     public contractAddress: string
     
@@ -39,10 +37,6 @@ export default class IssueContract extends VerifiedContract {
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
-    }
-
-    public async getShare(){
-        return this.callContract(FUNCTIONS.GETSHARE)
     }
 
     public async getBond(){
@@ -127,34 +121,6 @@ export default class IssueContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _currency)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         return this.callContract(FUNCTIONS.PAYOUT, _beneficiary, this.sanitiseInput(DATATYPES.BYTE32, _currency), _amount, options)
-    }
-
-    public async issueShare( _issueSize: string,
-                            _offerPrice: string,
-                            _minAskPrice: string,
-                            _minSubscription: string,
-                            _currency: string,
-                            _offerType: string,
-                            _isin: string,
-                            _offeringDocuments: string,
-                            options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _issueSize)
-        await this.validateInput(DATATYPES.NUMBER, _offerPrice)
-        await this.validateInput(DATATYPES.NUMBER, _minAskPrice)
-        await this.validateInput(DATATYPES.NUMBER, _minSubscription)
-        await this.validateInput(DATATYPES.STRING, _currency)
-        await this.validateInput(DATATYPES.STRING, _offerType)
-        await this.validateInput(DATATYPES.STRING, _offeringDocuments)
-        await this.validateInput(DATATYPES.STRING, _isin)
-        return this.callContract(FUNCTIONS.ISSUESHARE, _issueSize, 
-                                    _offerPrice,  
-                                    _minAskPrice,
-                                    _minSubscription,
-                                    this.sanitiseInput(DATATYPES.BYTE32, _currency),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _offerType),
-                                    this.sanitiseInput(DATATYPES.BYTE32, _isin),
-                                    _offeringDocuments,
-                                options)
     }
 
     public async issueBond( _issueSize: string,

@@ -18,8 +18,8 @@ const contractAddress: Object = {
         'Security': '0xD18B507f14834C2C68EF020AFBC2152A5224eDe7',
         'OrderPool': '0x8c89b9429E51EaBa96319d89dD1AC38d9bB60B3E',
         'PoolFactory': '0x3eCF4C3A74f6A81a4d9E536828A300a12771aafc',
-        'Products': '0x7bf3E9ED5D12046D9Bf35de2940d844D5dcd8141',
-        'Issues': '0x01E833Acc0fA75331190DaA43a37f840f399F145',
+        'Products': '0x1334747e2D87f95677e11574c89aE1f90608374a',
+        'Issues': '0xa21406864117f40d876Fd5e2D9040254a683Bf93',
         'BalancerManager': '',
         'Custody': '0xb6DD33C076fE95ffACC84E048Bda1caa6C304673',
         'CASH': {
