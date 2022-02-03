@@ -25,6 +25,7 @@ import ProductContract from './contract/product';
 import StocksContract from './contract/stocks';
 import BondsContract from './contract/bonds';
 import CustodyContract from './contract/custody';
+import LiquidityContract from './contract/liquidity';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -54,6 +55,7 @@ export {
     StocksContract,
     BondsContract,
     CustodyContract,
+    LiquidityContract,
     utils,
     contractAddress
 }

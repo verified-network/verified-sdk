@@ -20,7 +20,7 @@ const contractAddress: Object = {
         'PoolFactory': '0x3eCF4C3A74f6A81a4d9E536828A300a12771aafc',
         'Products': '0x1334747e2D87f95677e11574c89aE1f90608374a',
         'Issues': '0xa21406864117f40d876Fd5e2D9040254a683Bf93',
-        'BalancerManager': '',
+        'Liquidity': '0xE14abC526075126D4463981725b7b58cEB170eb5',
         'Custody': '0xb6DD33C076fE95ffACC84E048Bda1caa6C304673',
         'CASH': {
             'VCUSD': '0x4B443145d87CA76A64BFA48cfb8352E3a86d1e05',
