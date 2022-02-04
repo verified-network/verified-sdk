@@ -20,12 +20,13 @@ import FactoryContract from './contract/factory';
 import TokenContract from './contract/token';
 import SecurityContract from './contract/security';
 import OracleContract from './contract/oracle';
-import BalancerManagerContract from './contract/balancer';
 import ProductContract from './contract/product';
 import StocksContract from './contract/stocks';
 import BondsContract from './contract/bonds';
 import CustodyContract from './contract/custody';
 import LiquidityContract from './contract/liquidity';
+import DistributionContract from './contract/distribution';
+import RatesContract from './contract/rates';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -50,12 +51,13 @@ export {
     TokenContract,
     SecurityContract,
     OracleContract,
-    BalancerManagerContract,
+    DistributionContract,
     ProductContract,
     StocksContract,
     BondsContract,
     CustodyContract,
     LiquidityContract,
+    RatesContract,
     utils,
     contractAddress
 }

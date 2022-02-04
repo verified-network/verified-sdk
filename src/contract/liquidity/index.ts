@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/liquidity/LPToken.json';
+import { abi, networks } from '../../abi/liquidity/Liquidity.json';
 
 enum FUNCTIONS {
     CREATESUPPLY = 'createSupply',

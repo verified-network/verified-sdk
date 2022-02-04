@@ -96,11 +96,12 @@ export default class HolderContract extends VerifiedContract {
     * Get list of transactions for account holder [callable by KYC passed client
     * @returns (address party, uint256 amount, bytes32 currency, bytes32 transaction type, uint256 date, bytes32 description, bytes32 voucherType);
     */
-    public async getEntry(_index:string, _txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _index)
+    public async getEntry(_start:string, _end:string, _txDate: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _start)
+        await this.validateInput(DATATYPES.NUMBER, _end)
         await this.validateInput(DATATYPES.NUMBER, _txDate)
         await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.GETENTRY, _index, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+        return this.callContract(FUNCTIONS.GETENTRY, _start, _end, _txDate, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
     }
 
     public async setBlock(_block: string, options?: { gasPrice: number, gasLimit: number }): any {

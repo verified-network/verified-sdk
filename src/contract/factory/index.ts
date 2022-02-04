@@ -12,7 +12,11 @@ enum FUNCTIONS {
     TOKENCREATED = 'TokenCreated',
     GETTOKENBYNAMETYPE = 'getTokenByNameType',
     GETISSUER = 'getIssuer',
-    GETADDRESSTYPE = 'getAddressAndType'
+    GETADDRESSTYPE = 'getAddressAndType',
+    SETORACLEURL = 'setViaOracleUrl',
+    GETORACLEURL = 'getViaOracleUrl',
+    SETPAYOUTURL = 'setFiatPayoutUrl',
+    GETPAYOUTURL = 'getFiatPayoutUrl'
 }
 
 export default class FactoryContract extends VerifiedContract {
@@ -81,5 +85,23 @@ export default class FactoryContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, tokenName)
         return this.callContract(FUNCTIONS.GETADDRESSTYPE, this.sanitiseInput(DATATYPES.BYTE32, tokenName), options)
     }
+
+    public async setViaOracleUrl(_url: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _url)
+        return this.callContract(FUNCTIONS.SETORACLEURL, _url, options)
+    }   
     
+    public async setFiatPayoutUrl(_url: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _url)
+        return this.callContract(FUNCTIONS.SETPAYOUTURL, _url, options)
+    } 
+
+    public async getViaOracleUrl(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.GETORACLEURL, options)
+    }   
+    
+    public async getFiatPayoutUrl(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.GETPAYOUTURL, options)
+    } 
+
 }
