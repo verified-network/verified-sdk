@@ -83,7 +83,7 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
   public async getCorporateActions(_category: string, _isin: string, options?: { gasPrice: number, gasLimit: number }): any {
     await this.validateInput(DATATYPES.STRING, _category)
     await this.validateInput(DATATYPES.STRING, _isin)
-    return this.callContract(FUNCTIONS.GETCORPORATEACTION, _category, this.sanitiseInput(DATATYPES.BYTE32, _isin), options)
+    return this.callContract(FUNCTIONS.GETCORPORATEACTION, this.sanitiseInput(DATATYPES.BYTE32, _isin), _category, options)
   }
 
   /**
