@@ -7,7 +7,8 @@ import { abi, networks } from '../../abi/balancer/BalancerManager.json';
 
 enum FUNCTIONS {
     OFFER = 'offer',
-    GETOFFERED = 'getOffered'
+    GETOFFERED = 'getOffered',
+    GETALLOTTEDSTAKE = 'getAllotedStake'
 }
 
 export default class BalancerManager extends VerifiedContract {
@@ -31,9 +32,24 @@ export default class BalancerManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, options);
     }
 
+    /**
+     * Gets security tokens offered for passed token parameter
+     * @param offered   address of liquidity token offered by asset manager 
+     * @param options 
+     * @returns         array of structs of security tokens matching with offered liquidity token 
+     */
     public async getOffered(offered: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, offered);
         return this.callContract(FUNCTIONS.GETOFFERED, offered, options);
+    }
+
+    /**
+     * Gets allotted liquidity stake for caller (asset manager) that is available to invest
+     * @param options 
+     * @returns         amount of available liquidity for caller (asset manager)
+     */
+    public async getAllotedStake(options?: { gasPrice, gasLimit }): any {
+        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE, options);
     }
     
 }
