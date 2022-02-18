@@ -12,11 +12,16 @@ enum FUNCTIONS {
     REGISTERPLATFORM = 'registerPlatform',
     BUY = 'buy',
     GETINVESTORS = 'getInvestors',
-    GETINVESTMENT = 'getInvestment',
+    GETINVESTMENT = 'getInvestment',    
     ISSUE = 'issue',
     STAKE = 'stake',
     WITHDRAW = 'withdraw',
     DISTRIBUTE = 'distribute',
+    ADDMANAGER = 'addManager',
+    REMOVEMANAGER = 'removeManager',
+    GETMANAGERS = 'getManagers',
+    GETPLATFORMPERFORMANCE = 'getPlatformPerformance',
+    GETMANAGERPERFORMANCE = 'getManagerPerformance',
     PROVIDELIQUIDITY = 'provideLiquidity'
 }
 
@@ -138,17 +143,92 @@ export default class LiquidityContract extends VerifiedContract {
     /**
         Pay out of income by Market maker contracts to VITTA Liquidity providers
         @param  _distribution   amount of VITTA to mint and distribute pro rata to liquidity providers
+        @param  _manager        address of asset manager
      */
-    public async distribute(_distribution: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async distribute(_distribution: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _distribution)
-        return this.callContract(FUNCTIONS.DISTRIBUTE, _distribution, options)
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
+        return this.callContract(FUNCTIONS.DISTRIBUTE, _distribution, _manager, options)
     }
 
     /**
-        Provides staked VITTA to Market maker contracts based on prior liquidity consumed and commission earned 
+     * Adds asset manager to manage liquidity
+     * @param _platform address of market making platform (eg Balancer)
+     * @param _manager  address of asset manager
+     * @param options   
+     * @returns         none
      */
-    public async provideLiquidity(options?: { gasPrice: number, gasLimit: number }): any {
-        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, options)
+    public async addManager(_platform: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
+        return this.callContract(FUNCTIONS.ADDMANAGER, _platform, _manager, options)
+    }
+
+    /**
+     * Removes asset manager managing liquidity
+     * @param _platform address of market making platform (eg Balancer)
+     * @param _manager  address of asset manager
+     * @param options   
+     * @returns         none
+     */
+    public async removeManager(_platform: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
+        return this.callContract(FUNCTIONS.REMOVEMANAGER, _platform, _manager, options)
+    }
+
+    /**
+     * Fetches asset managers
+     * @param _platform address of market making platform
+     * @param options 
+     * @returns         array of asset manager addresses
+     */
+    public async getManagers(_platform: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        return this.callContract(FUNCTIONS.GETMANAGERS, _platform, options)
+    }
+
+    /**
+     * Gets return on investment performance of market making platform
+     * @param _platform address of market making platform
+     * @param options 
+     * @returns         uint256 unstakedLiquidity, 
+                        uint256 balancePlatformLiquidity,
+                        uint256 platformLiquidityProvided,
+                        uint256 platformCommissionsEarned
+     */
+    public async getPlatformPerformance(_platform: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        return this.callContract(FUNCTIONS.GETPLATFORMPERFORMANCE, _platform, options)
+    }
+
+    /**
+     * Gets return on investment performance for asset manager
+     * @param _platform address of market making platform (eg Balancer)
+     * @param _manager  address of asset manager
+     * @param options   
+     * @returns         uint256 managerLiquidityProvided,
+                        uint256 managerCommissionsEarned
+     */
+    public async getManagerPerformance(_platform: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
+        return this.callContract(FUNCTIONS.GETMANAGERPERFORMANCE, _platform, _manager, options)
+    }
+
+    /**
+     * Provides liquidity to asset managers on platform
+     * @param _platform     address of market making platform
+     * @param _manager      address of asset manager
+     * @param _liquidity    amount of liquidity to provision to asset manager on platform 
+     * @param options 
+     * @returns             none
+     */
+    public async provideLiquidity(_platform: string, _manager: string, _liquidity: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
+        await this.validateInput(DATATYPES.NUMBER, _liquidity)
+        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, options)
     } 
 
 }
