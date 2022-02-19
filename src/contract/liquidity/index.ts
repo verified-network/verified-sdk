@@ -20,6 +20,7 @@ enum FUNCTIONS {
     ADDMANAGER = 'addManager',
     REMOVEMANAGER = 'removeManager',
     GETMANAGERS = 'getManagers',
+    GETPLATFORMS = 'getPlaforms',
     GETPLATFORMPERFORMANCE = 'getPlatformPerformance',
     GETMANAGERPERFORMANCE = 'getManagerPerformance',
     PROVIDELIQUIDITY = 'provideLiquidity'
@@ -55,9 +56,10 @@ export default class LiquidityContract extends VerifiedContract {
         Specifies list of supported tokens that can be invested in the Verified Liquidity token
         @param  _tokens array of supported token addresses
      */
-    public async supportTokens(_tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async supportTokens(_tokens: string, _name: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _tokens)
-        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, options)
+        await this.validateInput(DATATYPES.STRING, _name)
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, this.sanitiseInput(DATATYPES.BYTE32, _name), options)
     }
 
     /**
@@ -73,9 +75,10 @@ export default class LiquidityContract extends VerifiedContract {
         Registers a liquidity platform (eg, DEX) where Verified Liquidity tokens can be used to underwrite investments
         @param  _liquidityPlatform  address of the market making platform
      */
-    public async registerPlatform(_platform: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async registerPlatform(_platform: string, _name: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _platform)
-        return this.callContract(FUNCTIONS.REGISTERPLATFORM, _platform, options)
+        await this.validateInput(DATATYPES.STRING, _name)
+        return this.callContract(FUNCTIONS.REGISTERPLATFORM, _platform, this.sanitiseInput(DATATYPES.BYTE32, _name), options)
     }
 
     /**
@@ -92,9 +95,16 @@ export default class LiquidityContract extends VerifiedContract {
     /**
         Fetches investors in VITTA
      */
-    public async getInvestors(options?: { gasPrice: number, gasLimit: number }): any {
-        return this.callContract(FUNCTIONS.GETINVESTORS, options)
-    }   
+    public async getInvestors(){
+        return this.callContract(FUNCTIONS.GETINVESTORS)
+    }
+    
+    /**
+        Fetches registered platforms
+     */
+    public async getPlaforms(){
+        return this.callContract(FUNCTIONS.GETPLATFORMS)
+    }
 
     /**
         Fetches investment detail for specific investor in VITTA

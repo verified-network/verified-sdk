@@ -62,8 +62,8 @@ export default class AssetManager extends VerifiedContract {
      * @param options 
      * @returns         amount of available liquidity for caller (asset manager)
      */
-    public async getAllotedStake(options?: { gasPrice, gasLimit }): any {
-        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE, options);
+    public async getAllotedStake() {
+        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE);
     }
     
 }
