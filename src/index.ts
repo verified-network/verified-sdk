@@ -27,7 +27,7 @@ import CustodyContract from './contract/custody';
 import LiquidityContract from './contract/liquidity';
 import DistributionContract from './contract/distribution';
 import RatesContract from './contract/rates';
-import BalancerManager from './contract/balancer';
+import AssetManager from './contract/assetmanager';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -59,7 +59,7 @@ export {
     CustodyContract,
     LiquidityContract,
     RatesContract,
-    BalancerManager,
+    AssetManager,
     utils,
     contractAddress
 }
