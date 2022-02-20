@@ -9,7 +9,8 @@ enum FUNCTIONS {
     OFFER = 'offer',
     GETOFFERED = 'getOffered',
     GETOFFERMADE = 'getOfferMade',
-    GETALLOTTEDSTAKE = 'getAllotedStake'
+    GETALLOTTEDSTAKE = 'getAllotedStake',
+    GETLIQUIDITYPROVIDERS = 'getLiquidityProviders'
 }
 
 export default class AssetManager extends VerifiedContract {
@@ -64,6 +65,17 @@ export default class AssetManager extends VerifiedContract {
      */
     public async getAllotedStake() {
         return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE);
+    }
+
+    /**
+     * Gets liquidity providers for a security token offering
+     * @param security  address of security token 
+     * @param options 
+     * @returns         array of structs of liquidity providers 
+     */
+     public async getLiquidityProviders(security: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, options);
     }
     
 }
