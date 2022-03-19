@@ -16,7 +16,7 @@ enum FUNCTIONS {
     ISSUE = 'issue',
     STAKE = 'stake',
     WITHDRAW = 'withdraw',
-    DISTRIBUTE = 'distribute',
+    PAYOUT = 'payOut',
     ADDMANAGER = 'addManager',
     REMOVEMANAGER = 'removeManager',
     GETMANAGERS = 'getManagers',
@@ -151,14 +151,14 @@ export default class LiquidityContract extends VerifiedContract {
     }
 
     /**
-        Pay out of income by Market maker contracts to VITTA Liquidity providers
+        Pay out of income to VITTA Liquidity providers
         @param  _distribution   amount of VITTA to mint and distribute pro rata to liquidity providers
-        @param  _manager        address of asset manager
+        @param  _platform       address of liquidity platform
      */
-    public async distribute(_distribution: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async payOut(_distribution: string, _platform: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _distribution)
-        await this.validateInput(DATATYPES.ADDRESS, _manager)
-        return this.callContract(FUNCTIONS.DISTRIBUTE, _distribution, _manager, options)
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        return this.callContract(FUNCTIONS.PAYOUT, _distribution, _platform, options)
     }
 
     /**
@@ -220,10 +220,11 @@ export default class LiquidityContract extends VerifiedContract {
      * @returns         uint256 managerLiquidityProvided,
                         uint256 managerCommissionsEarned
      */
-    public async getManagerPerformance(_platform: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getManagerPerformance(_platform: string, _token: string, _manager: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
         await this.validateInput(DATATYPES.ADDRESS, _manager)
-        return this.callContract(FUNCTIONS.GETMANAGERPERFORMANCE, _platform, _manager, options)
+        return this.callContract(FUNCTIONS.GETMANAGERPERFORMANCE, _platform, _token, _manager, options)
     }
 
     /**

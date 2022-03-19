@@ -69,12 +69,12 @@ export default class RatesContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETFEE, this.sanitiseInput(DATATYPES.BYTE32, _feeType), options)
     }
 
-    public async getFeeToSetter(options?: { gasPrice: number, gasLimit: number }): any {
-        return this.callContract(FUNCTIONS.GETFEETOSETTER, options)
+    public async getFeeToSetter(){
+        return this.callContract(FUNCTIONS.GETFEETOSETTER)
     }
 
-    public async getCustodian(options?: { gasPrice: number, gasLimit: number }): any {
-        return this.callContract(FUNCTIONS.GETCUSTODIAN, options)
+    public async getCustodian(){
+        return this.callContract(FUNCTIONS.GETCUSTODIAN)
     }
 
     public async transferToCustody(_percent: string, _transferFrom: string, options?: { gasPrice: number, gasLimit: number }): any {
