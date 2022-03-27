@@ -9,6 +9,7 @@ enum FUNCTIONS {
     CREATESUPPLY = 'createSupply',
     SUPPORTTOKENS = 'supportTokens',
     CHECKSUPPORTFORTOKEN = 'checkSupportForToken',
+    GETSUPPORTEDTOKENS = 'getSupportedTokens',
     REGISTERPLATFORM = 'registerPlatform',
     BUY = 'buy',
     GETINVESTORS = 'getInvestors',
@@ -69,6 +70,14 @@ export default class LiquidityContract extends VerifiedContract {
     public async checkSupportForToken(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _token)
         return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, _token, options)
+    }
+
+    /**
+     * Returns list of supported liquidity tokens (eg, VITTA, USDC, DAI)
+     * @returns array of struct of tokens 
+     */
+    public async getSupportedTokens(){
+        return this.callContract(FUNCTIONS.GETSUPPORTEDTOKENS);
     }
 
     /**
