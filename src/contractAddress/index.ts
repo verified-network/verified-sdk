@@ -1,5 +1,44 @@
 const contractAddress: Object = {
     'ropsten': {
+        'Client': '0x6D9da1cd9c1400E0f8D772121Ed9266A84516266',
+        'KYC': '0x53B0F6DC7A5316Fbb5cba3a5735E7c9F08630d38',
+        'System': '0x4D5F070fFc1EFc8cE19125811465B2398A6B63Ce',
+        'Holder': '0x16D9eeC1E02fF07792ff44049306adc7e025CCd2',
+        'Ledger': '0x7cB66e68D9Fc535421845eC5D93c274a81DD7829',
+        'Account': '0xB1181E942A3f849bF0aC36212438FaDf39bEdF67',
+        'Factory': '0x81Fe2733F5Bc90a79fDAf4A0b59CAc657b3a812b',        
+        'Cash': '0x92b642DB978F632fc5C7bE7b12e0D6EFa00e769d',
+        'Bond': '0xC4DBF3B102aA9786DCD25E3D8C0D92775E005307',
+        'Token': '0x780F0DDBd558dF24b45246e16853A5BE5a4D91B4',
+        'Oracle': '0x7b1e440Afbe779c91c69c3d6701622a2dE382529',
+        'Rates': '0x6BC91F495277D1265Cc4773ad9fAD424D799C671',
+        'PreTrade': '0x9a9Af328e870A0f2e7DD020b401635d1c06De82f',
+        'Trade': '0xC188E6110824692db011B9e0dBFFC10fF93CDaD4',
+        'PostTrade': '0x19dbf499b0280eCB0A4cD82d1e8AA50b2E22A12a',
+        'SecuritiesRegistry': '0xf56912A7F0243CdebA4e061107db8150Fd74125d',
+        'Security': '0x1a45210b8C249570FD57370445235b9E9B503EAb',
+        'OrderPool': '0x356cE8FB4DC597C3E92626E383c4594A0bEdFe17',
+        'PoolFactory': '0x8f7055d73AF19BdCedB29a4dff120D50a1B2880D',
+        'Products': '0x835c9dd824b5C124108fc3E1f2571D2EC88e38a1',
+        'Stocks': '0xE043297d16f257A29EbbCEBB4b84fa7FA3EbD0c9',
+        'Bonds': '0x7FCF2af5Ad2f16d123c4485d51A2524051840185',
+        'Liquidity': '0x87533Dc125aA75d57b414C8A06f2E783D90d5745',
+        'Distribution': '0x6d6464028158c53E0d71FbFB1FB68167CD20dB84',
+        'BalancerManager': '0xc9e7Fc395Dcf0b73Dc9592237376e8C214a9A776',
+        'PrimaryIssuePoolFactory' : '0x6d0fd1287f5f4cC2b9838DeD8efCcDcdEB2fdD00',
+        'Custody': '0x087B980dDbd585Ad20dae5c0286F2485b73a781A',
+        'CASH': {
+            'VCUSD': '0x810BA1960a9fEA35FA55453DDae516B8203eaF1C',
+            'VCEUR': '0x69969733E53639A3cbf85C8f906e68f30c3B713D',
+            'VCINR': '0xB99E6dbF41D8edCd88c5D6A3C25fe3aA57e0c731'
+        },
+        'BOND': {
+            'VBUSD': '0x83E82f153a0F2D59Ff26fFAB214b75bbA15533dc',
+            'VBEUR': '0xaB37EdbdC82BC2819882977bb2fA890d74cE7661',
+            'VBINR': '0x944952B6D0bF527982704a7Ce8D15663efBCD92A'
+        },
+    },
+    'rinkeby': {
         'Client': '',
         'KYC': '',
         'System': '',
@@ -24,7 +63,8 @@ const contractAddress: Object = {
         'Bonds': '',
         'Liquidity': '',
         'Distribution': '',
-        'AssetManager': '',
+        'BalancerManager': '',
+        'PrimaryIssuePoolFactory' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -35,56 +75,7 @@ const contractAddress: Object = {
             'VBUSD': '',
             'VBEUR': '',
             'VBINR': ''
-        }
-    },
-    'rinkeby': {
-        'Client': '0xa92C067625387007f93f6144E1A26f9507d31115',
-        'KYC': '0x6b72E9AF66298bff8a62dECc57F16a526a784F8C',
-        'System': '0xd416Cb9dfFA1A3976f7F53aF971783c7C187D52c',
-        'Holder': '0xDd0fafa5B85219E1E981853d5ffDd8B63BdC3F4F',
-        'Ledger': '0x8f7ce35b7c8984F60341FA46aAEf7064F684387d',
-        'Account': '0xE7A77739d3C3F749748809c7A8783708391d76fE',
-        'Factory': '0x5dcFE6D2640958BE7544e8D5294515177fA03916',        
-        'Cash': '0x13971abA5E482AA1b9653b643b8ba926543f9ec8',
-        'Bond': '0x56B802f315e97c2BDDb0dA5F13EE8e11cBa3846B',
-        'Token': '0xf2bF56Fa33060cbDC3c726549A76eeef9016E4cc',
-        'Oracle': '0x6F4443048912EA873bD2fa2EB3cbe57117b7FFfB',
-        'Rates': '0xe1eA3F8c5951C6EDF5e892CCCa854e07d8ec8dA0',
-        'PreTrade': '0xEF52B2289BE5eaf61100c59f529B42ba8d6022F1',
-        'Trade': '0x607080F3dB562aE9aFf0b3f2189798b873E2bB62',
-        'PostTrade': '0xa1B83AC5CcA17D4AB7Af485114D63D0Efdb15Dd4',
-        'SecuritiesRegistry': '0x6A64137174ed9277857945e83dE1a6CEcbF674c1',
-        'Security': '0xA84965eDDF405B76ea8fA9d902396562B9fd9AA1',
-        'OrderPool': '0xC12AAe1dB077cF8C07d3fC3d003377C7bbe3eFF4',
-        'PoolFactory': '0x60617fcc143856d08cE2fECF9c10e89D0dF27F78',
-        'Products': '0x095a3075De6950530F6053C97dB06cc74E78E11e',
-        'Stocks': '0x09B50b30DEAeceBC2CA8c4Cc867A84751D8E4436',
-        'Bonds': '0x84987732BE41aF27A1Cb4B9d7866cCF6b0112E4B',
-        'Liquidity': '0x3B381Ed9f650E0245562dfC9d096f5f9bEAF7a79',
-        'Distribution': '0x422edB7b1211C4cb754E7229B7AF2f7f1835bb1F',
-        'BalancerManager': '0xa4C1b21F2B4d121d3159953c8Bda5b248CC35353',
-        'PrimaryIssuePoolFactory' : '0x60bc622E02424ACDD415373B6Dd40870d077faa4',
-        'Custody': '0x82ebEc154A8b895BD1a495dC238aaF4d5f012f94',
-        'L1CASH': {
-            'VCUSD': '0x89C04aD27E9b564F0982746Db806f8a922DC5c37',
-            'VCEUR': '0xf63c825387c888b5f39f33bc92295F43Ab5D8CBA',
-            'VCINR': '0xBa45ecdf02E25a9aB010c11b80C39867F2acd97c'
         },
-        'L1BOND': {
-            'VBUSD': '0x1127199Ce3e72906a890Ec2AEe857416e8089D4d',
-            'VBEUR': '0x9208582f80f49ac1d7f2db19Bbb7C6F20b27b045',
-            'VBINR': '0x374d1587fd988b2a9622EEc7391CBA51f4b81535'
-        },
-        'L2CASH': {
-            'VCUSD': '0x97C85ccB3e3b9513Be0cCA1E85DB768c5e5B5625',
-            'VCEUR': '0xe5A2F234621957613e00Bbfb3AaD6d69cBbF07b3',
-            'VCINR': '0xdA804B01916AA531505bC400B6cF9D98260763A0'
-        },
-        'L2BOND': {
-            'VBUSD': '0x56b16549357b64CB38f946E9A1b22D54473596ef',
-            'VBEUR': '0x8aeb39340d78A567c66A31b5216BF7dADbf07872',
-            'VBINR': '0x81335dCEb9aeC42848929cA50dF5bB03d7ACa025'
-        }
     },
     'mainnet': {
         'Client': '',
