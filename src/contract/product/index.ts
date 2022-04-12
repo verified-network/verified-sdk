@@ -20,7 +20,8 @@ enum FUNCTIONS {
     GETISSUERNAME = 'getIssuerName',
     GETISSUERADDRESS = 'getIssuerAddress',
     GETPLATFORMS = 'getPlatforms',
-    GETPRODUCTREFERENCE = 'getProductReference'
+    GETPRODUCTREFERENCE = 'getProductReference',
+    SETSIGNER = 'setSigner'
 }
 
 export default class ProductContract extends VerifiedContract {
@@ -34,6 +35,11 @@ export default class ProductContract extends VerifiedContract {
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
+    }
+
+    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _signer)
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
     }
 
     public async recordProduct( _productCategory: string,
