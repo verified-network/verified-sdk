@@ -17,7 +17,9 @@ enum FUNCTIONS {
     GETORACLEURL = 'getViaOracleUrl',
     SETPAYOUTURL = 'setFiatPayoutUrl',
     GETPAYOUTURL = 'getFiatPayoutUrl',
-    SETSIGNER = 'setSigner'
+    SETSIGNER = 'setSigner',
+    SETCRYPTODATAURL = 'setCryptoDataURL',
+    SETORACLES = 'setOracles'
 }
 
 export default class FactoryContract extends VerifiedContract {
@@ -108,6 +110,15 @@ export default class FactoryContract extends VerifiedContract {
     
     public async getFiatPayoutUrl(options?: { gasPrice: number, gasLimit: number }): any {
         return this.callContract(FUNCTIONS.GETPAYOUTURL, options)
+    } 
+
+    public async setCryptoDataURL(_url: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _url)
+        return this.callContract(FUNCTIONS.SETCRYPTODATAURL, _url, options)
+    } 
+
+    public async setOracles(_oracles: string, options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.SETORACLES, _oracles, options)
     } 
 
 }
