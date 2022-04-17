@@ -28,8 +28,8 @@ import LiquidityContract from './contract/liquidity';
 import DistributionContract from './contract/distribution';
 import RatesContract from './contract/rates';
 import AssetManager from './contract/assetmanager';
-import VerifiedCash from './contract/public/cash';
-import VerifiedRates from './contract/public/rates';
+//import VerifiedCash from './contract/public/cash';
+//import VerifiedRates from './contract/public/rates';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -62,8 +62,8 @@ export {
     LiquidityContract,
     RatesContract,
     AssetManager,
-    VerifiedCash,
-    VerifiedRates,
+    //VerifiedCash,
+    //VerifiedRates,
     utils,
     contractAddress
 }

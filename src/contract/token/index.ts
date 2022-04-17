@@ -6,7 +6,7 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/payments/Token.json';
 
 enum FUNCTIONS {
-    TRANSFERTOKEN = 'transferToken',
+    TRANSFERFROM = 'transferFrom',
     BALANCE = 'balanceOf',
     GETISSUER = 'getIssuer'
 }
@@ -32,11 +32,11 @@ export default class TokenContract extends VerifiedContract {
      * @param (address _sender, address _receiver, uint256 _tokens) 
     * @returns bool
     */
-    public async transferToken(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async transferFrom(_senderAddress: string, _recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _senderAddress)
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
         await this.validateInput(DATATYPES.NUMBER, _tokens)
-        return this.callContract(FUNCTIONS.TRANSFERTOKEN, _senderAddress, _recieverAddress, _tokens, options)
+        return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
     }
 
     /* Request bond token balance of wallet
