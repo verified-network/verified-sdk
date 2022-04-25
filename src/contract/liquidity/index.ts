@@ -24,7 +24,8 @@ enum FUNCTIONS {
     GETPLATFORMS = 'getPlaforms',
     GETPLATFORMPERFORMANCE = 'getPlatformPerformance',
     GETMANAGERPERFORMANCE = 'getManagerPerformance',
-    PROVIDELIQUIDITY = 'provideLiquidity'
+    PROVIDELIQUIDITY = 'provideLiquidity',
+    BALANCE = 'balance'
 }
 
 export default class LiquidityContract extends VerifiedContract {
@@ -250,5 +251,16 @@ export default class LiquidityContract extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, _liquidity)
         return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, options)
     } 
+
+    /**
+     * Fetches balance of investor
+     * @param _investor address of investor
+     * @param options 
+     * @returns         balance of investor
+     */
+    public async balanceOf(_investor: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _investor)
+        return this.callContract(FUNCTIONS.BALANCE, _investor, options)
+    }
 
 }
