@@ -3,23 +3,24 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/Cash.json';
+import { abi, networks } from '../../../abi/deposits/L1Cash.json';
 
 enum FUNCTIONS {
     SUPPORTTOKENS = 'supportTokens',
     CHECKSUPPORTFORTOKEN = 'checkSupportForToken',
     GETSUPPORTEDTOKENS = 'getSupportedTokens',
     REQUESTISSUE = 'requestIssue',
+    SETSIGNER = 'setSigner'
 }
 
 export default class VerifiedCash extends VerifiedContract {
     
     public contractAddress: string
     
-    constructor(signer: VerifiedWallet) {
+    constructor(signer: VerifiedWallet, currencyAddress: string) {
 
         const chainId: string = signer.provider._network.chainId.toString()
-        const address = networks[chainId].address
+        const address = currencyAddress
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
@@ -27,7 +28,8 @@ export default class VerifiedCash extends VerifiedContract {
     
     /**
         Specifies list of supported tokens that can be invested in the Verified Liquidity token
-        @param  _tokens array of supported token addresses
+        @param  _tokens address of token supported
+        @param  _name   string name of token supported
      */
     public async supportTokens(_tokens: string, _name: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _tokens)
@@ -56,11 +58,22 @@ export default class VerifiedCash extends VerifiedContract {
         Used by external apps (eg, exchange, wallet) to buy Verified cash token 
         @param  _token  address of token used by investor to buy the cash token
         @param  _amount amount of token that is transferred from investor to this cash token issuing contract
+        @param  _buyer  address of buyer
      */
-    public async requestIssue(_token: string, _amount: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async requestIssue(_token: string, _amount: string, _buyer: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _token)
         await this.validateInput(DATATYPES.NUMBER, _amount)
-        return this.callContract(FUNCTIONS.REQUESTISSUE, _token, _amount, options)
+        await this.validateInput(DATATYPES.ADDRESS, _buyer)
+        return this.callContract(FUNCTIONS.REQUESTISSUE, _token, _amount, _buyer, options)
     }
+
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _signer)
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
+    } 
 
 }
