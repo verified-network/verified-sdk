@@ -45,17 +45,17 @@ const contractAddress: Object = {
         'Holder': '',
         'Ledger': '',
         'Account': '',
-        'Factory': '0xB7b47966B7C9633b91cB1BEB0A997D35fF5EA77a',        
-        'Cash': '0x95b31E7608b37B7A7c6adee75B775bC2F1f665A1',
-        'Bond': '0x5797C2340E97F026aEC6a019BE698D77E1B19Ee4',
+        'Factory': '0x2b66caaA24652155f471406b1E213bbb1cB38EEc',        
+        'Cash': '0xE51395e01c1c5b1F1b42fD1E1c0cE9dA5B96d00d',
+        'Bond': '0xFAb77c118D5EAbc6339Afc9D0258D26ed5A05727',
         'Token': '',
         'Oracle': '',
-        'Rates': '0xc5c2Aeb737C016FDB2655Ff7B748667f5ab6A7f1',
+        'Rates': '0x1E6332119363597902fD1d4E44F3365Ce4A051c2',
         'PreTrade': '',
         'Trade': '',
         'PostTrade': '',
         'SecuritiesRegistry': '',
-        'Security': '0x30A613eBd1A460E4800395bc0BF6E1B6cE58Eb2c',
+        'Security': '0xf53c0e4B9478fD0C840450d5B73a3C5746Bf0E2F',
         'OrderPool': '',
         'PoolFactory': '',
         'Products': '0xE3ba3A9598Cd99851Bd671E476331622d7306191',
@@ -67,14 +67,14 @@ const contractAddress: Object = {
         'PrimaryIssuePoolFactory' : '0x48E30d2C73BCa133Bbe7fac2fD32E7a4684d5d99',
         'Custody': '',
         'CASH': {
-            'VCUSD': '0x5e143828Ff6CCD59418752fc2019966EE3A97725',
-            'VCEUR': '0xe1621E2A7184a2BE93A09C6288b35Ad83994fFcA',
-            'VCINR': '0xE29c0CE49AE3b4b7F8A727e48A11e2Fd72df92dA'
+            'VCUSD': '0x090164a1146372c04ae79e46399455138552c961',
+            'VCEUR': '0x83A09794126e2458C6C9C8328d560303a2F5b30e',
+            'VCINR': '0x0f5313fdf029a357Bb732180a3516bb156e1dc70'
         },
         'BOND': {
-            'VBUSD': '0xC341Ed6b732dd30D4b5100ecb558A8EA252E8929',
-            'VBEUR': '0xD4442eFEA597aA53C4eF2E41d4c743d509266d99',
-            'VBINR': '0xAcCC074Ebaa695604b9A5995Cda2EeaC5c1aF19C'
+            'VBUSD': '0xb10000d793B5C4dA0dF7c88C80f144C3444F8F51',
+            'VBEUR': '0x742644c1b79D6eA8A040C8819c25AAa395Da84BB',
+            'VBINR': '0x608c46624F91D33D9B64D9558B1217E4e0CA6D20'
         },
     },
     'mainnet': {

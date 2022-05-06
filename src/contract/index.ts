@@ -56,7 +56,7 @@ export class VerifiedContract {
                 else status = false
                 break;
             case DATATYPES.STRING:
-                if ((typeof data === 'string' || data instanceof String)) error = 'Invalid string value'
+                if ((typeof data === 'string' || data instanceof String || Object.prototype.toString.call(data) === '[object String]')) error = 'Invalid string value'
                 else status = false
                 break;
         }
