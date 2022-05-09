@@ -10,7 +10,10 @@ enum FUNCTIONS {
     CHECKSUPPORTFORTOKEN = 'checkSupportForToken',
     GETSUPPORTEDTOKENS = 'getSupportedTokens',
     REQUESTISSUE = 'requestIssue',
-    SETSIGNER = 'setSigner'
+    SETSIGNER = 'setSigner',
+    ADDISSUEDBALANCE = 'addIssuedBalance',
+    PURCHASE = 'purchase',
+    REDEEMBOND = 'redeemBond'
 }
 
 export default class VerifiedBond extends VerifiedContract {
@@ -75,5 +78,59 @@ export default class VerifiedBond extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _signer)
         return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
     } 
+
+    public async addIssuedBalance(_amount: string, 
+                                _issuer: string, 
+                                _currency: string, 
+                                _issuedBond: string,
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _issuer)
+        await this.validateInput(DATATYPES.ADDRESS, _issuedBond)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _issuer, this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuedBond,
+                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public async purchase(_amount: string, 
+                        _purchaser: string, 
+                        _currency: string, 
+                        _purchasedBond: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _purchaser)
+        await this.validateInput(DATATYPES.ADDRESS, _purchasedBond)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.PURCHASE, _amount, _purchaser, this.sanitiseInput(DATATYPES.BYTE32, _currency), _purchasedBond,
+                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public async redeemBond(_amount: string, 
+                            _payOutTo: string, 
+                            _currency: string, 
+                            _redeemedToken: string,
+                            _hashedMessage: string,
+                            _v: string,
+                            _r: string,
+                            _s: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _payOutTo)
+        await this.validateInput(DATATYPES.ADDRESS, _redeemedToken)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(DATATYPES.BYTE32, _currency), _redeemedToken,
+                            this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                            _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
 
 }

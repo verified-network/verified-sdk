@@ -10,7 +10,11 @@ enum FUNCTIONS {
     CHECKSUPPORTFORTOKEN = 'checkSupportForToken',
     GETSUPPORTEDTOKENS = 'getSupportedTokens',
     REQUESTISSUE = 'requestIssue',
-    SETSIGNER = 'setSigner'
+    SETSIGNER = 'setSigner',
+    ADDISSUEDBALANCE = 'addIssuedBalance',
+    TRANSFERDEPOSIT = 'transferDeposit',
+    REDEEMDEPOSITS = 'redeemDeposits',
+    TRANSFERISSUEDBALANCE = 'transferIssuedBalance'
 }
 
 export default class VerifiedCash extends VerifiedContract {
@@ -75,5 +79,77 @@ export default class VerifiedCash extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _signer)
         return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
     } 
+
+    public async addIssuedBalance(_amount: string, 
+                                _buyer: string, 
+                                _currency: string, 
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _buyer)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
+                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public async transferDeposit(_transferor: string, 
+                                _amount: string, 
+                                _transferee: string, 
+                                _currency: string,
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _transferor)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.ADDRESS, _transferee)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.TRANSFERDEPOSIT, _transferor, _amount, _transferee, 
+                                this.sanitiseInput(DATATYPES.BYTE32, _currency), 
+                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public async redeemDeposits(_amount: string, 
+                                _redeemer: string, 
+                                _currency: string, 
+                                _redeemedFor: string,
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _redeemer)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _redeemedFor)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.REDEEMDEPOSITS, _amount, _redeemer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
+                                _redeemedFor, this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public async transferIssuedBalance( _transferor: string,
+                                        _currency: string,
+                                        _amount: string, 
+                                        _deposited: string, 
+                                        _hashedMessage: string,
+                                        _v: string,
+                                        _r: string,
+                                        _s: string,
+                                        options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _transferor)
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.NUMBER, _deposited)
+        await this.validateInput(DATATYPES.NUMBER, _v)
+        return this.callContract(FUNCTIONS.TRANSFERISSUEDBALANCE, _transferor, _currency, _amount, _deposited, 
+                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
+                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
 
 }
