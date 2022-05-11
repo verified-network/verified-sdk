@@ -13,7 +13,11 @@ enum FUNCTIONS {
     SETSIGNER = 'setSigner',
     ADDISSUEDBALANCE = 'addIssuedBalance',
     PURCHASE = 'purchase',
-    REDEEMBOND = 'redeemBond'
+    REDEEMBOND = 'redeemBond',
+    BONDISSUEREQUEST = 'BondIssueRequest',
+    BONDISSUED = 'BondIssued',
+    BONDREDEEMED = 'BondRedeemed',
+    BONDPURCHASED = 'BondPurchased'
 }
 
 export default class VerifiedBond extends VerifiedContract {
@@ -131,6 +135,22 @@ export default class VerifiedBond extends VerifiedContract {
         return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(DATATYPES.BYTE32, _currency), _redeemedToken,
                             this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
                             _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public notifyBondIssueRequest(callback: any): object {
+        this.getEvent(FUNCTIONS.BONDISSUEREQUEST, callback)
+    }
+
+    public notifyBondIssue(callback: any): object {
+        this.getEvent(FUNCTIONS.BONDISSUED, callback)
+    }
+
+    public notifyBondRedemption(callback: any): object {
+        this.getEvent(FUNCTIONS.BONDREDEEMED, callback)
+    }
+
+    public notifyBondPurchase(callback: any): object {
+        this.getEvent(FUNCTIONS.BONDPURCHASED, callback)
     }
 
 }

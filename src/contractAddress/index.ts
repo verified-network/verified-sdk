@@ -45,17 +45,17 @@ const contractAddress: Object = {
         'Holder': '',
         'Ledger': '',
         'Account': '',
-        'Factory': '0x2b66caaA24652155f471406b1E213bbb1cB38EEc',        
-        'Cash': '0xE51395e01c1c5b1F1b42fD1E1c0cE9dA5B96d00d',
-        'Bond': '0xFAb77c118D5EAbc6339Afc9D0258D26ed5A05727',
+        'Factory': '0x25Ea69098cc17ee089Dd56f939EBfAD6E392A831',        
+        'Cash': '0x66ec2e2C6f60eAafEE2b55E0db0C88fd72ccd960',
+        'Bond': '0x768124FC20ECe424CD996829018857f16dEEe698',
         'Token': '',
         'Oracle': '',
-        'Rates': '0x1E6332119363597902fD1d4E44F3365Ce4A051c2',
+        'Rates': '0x65cF05ba9c8B79668AA1B5D58195eE266C9344D6',
         'PreTrade': '',
         'Trade': '',
         'PostTrade': '',
         'SecuritiesRegistry': '',
-        'Security': '0xf53c0e4B9478fD0C840450d5B73a3C5746Bf0E2F',
+        'Security': '0xd378916F1DedA7802141c497Be0d19C63A0F0c5b',
         'OrderPool': '',
         'PoolFactory': '',
         'Products': '0xE3ba3A9598Cd99851Bd671E476331622d7306191',
@@ -67,14 +67,14 @@ const contractAddress: Object = {
         'PrimaryIssuePoolFactory' : '0x48E30d2C73BCa133Bbe7fac2fD32E7a4684d5d99',
         'Custody': '',
         'CASH': {
-            'VCUSD': '0x090164a1146372c04ae79e46399455138552c961',
-            'VCEUR': '0x83A09794126e2458C6C9C8328d560303a2F5b30e',
-            'VCINR': '0x0f5313fdf029a357Bb732180a3516bb156e1dc70'
+            'VCUSD': '0x9d3A0e250C2bA2F66bE92930613590a24AD83b9D',
+            'VCEUR': '0xa29e3a6068803163D77eb439Ca4223A9cdDBD723',
+            'VCINR': '0x9eD5f526bc47cfd03EceDF04F48975eAA9a5d7E1'
         },
         'BOND': {
-            'VBUSD': '0xb10000d793B5C4dA0dF7c88C80f144C3444F8F51',
-            'VBEUR': '0x742644c1b79D6eA8A040C8819c25AAa395Da84BB',
-            'VBINR': '0x608c46624F91D33D9B64D9558B1217E4e0CA6D20'
+            'VBUSD': '0x7f707d8f9D6A968b839A627c2dc66C306dC32e72',
+            'VBEUR': '0x93CdF81C20936644323402e1A61f93d7b44f8a5D',
+            'VBINR': '0xc86B8220a0f2C987Ec0ab3027E7BAbD1baac292E'
         },
     },
     'mainnet': {

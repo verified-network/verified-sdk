@@ -14,7 +14,13 @@ enum FUNCTIONS {
     ADDISSUEDBALANCE = 'addIssuedBalance',
     TRANSFERDEPOSIT = 'transferDeposit',
     REDEEMDEPOSITS = 'redeemDeposits',
-    TRANSFERISSUEDBALANCE = 'transferIssuedBalance'
+    TRANSFERISSUEDBALANCE = 'transferIssuedBalance',
+    CASHISSUEREQUEST = 'CashIssueRequest',
+    CASHREDEEMED = 'CashRedeemed',
+    CASHTRANSFER = 'CashTransfer',
+    CASHISSUED = 'CashIssued',
+    ADDEDL2BALANCE = 'addedL2Balance',
+    TRANSFERREDL2BALANCE = 'transferredL2Balance'
 }
 
 export default class VerifiedCash extends VerifiedContract {
@@ -151,5 +157,28 @@ export default class VerifiedCash extends VerifiedContract {
                                 _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
     }
 
+    public notifyCashIssueRequest(callback: any): object {
+        this.getEvent(FUNCTIONS.CASHISSUEREQUEST, callback)
+    }
+
+    public notifyCashRedemption(callback: any): object {
+        this.getEvent(FUNCTIONS.CASHREDEEMED, callback)
+    }
+
+    public notifyCashTransfer(callback: any): object {
+        this.getEvent(FUNCTIONS.CASHTRANSFER, callback)
+    }
+
+    public notifyCashIssue(callback: any): object {
+        this.getEvent(FUNCTIONS.CASHISSUED, callback)
+    }
+
+    public notifyL2BalanceAdded(callback: any): object {
+        this.getEvent(FUNCTIONS.ADDEDL2BALANCE, callback)
+    }
+
+    public notifyL2BalanceTransferred(callback: any): object {
+        this.getEvent(FUNCTIONS.TRANSFERREDL2BALANCE, callback)
+    }
 
 }

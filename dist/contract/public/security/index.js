@@ -9,6 +9,7 @@ var FUNCTIONS;
     FUNCTIONS["SETSIGNER"] = "setSigner";
     FUNCTIONS["ADDBALANCE"] = "addToBalance";
     FUNCTIONS["TRANSFERBALANCE"] = "transferBalance";
+    FUNCTIONS["SECURITIESADDED"] = "securitiesAdded";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedSecurity extends index_1.VerifiedContract {
     constructor(signer) {
@@ -37,6 +38,9 @@ class VerifiedSecurity extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _v);
         return this.callContract(FUNCTIONS.TRANSFERBALANCE, _isin, _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+    }
+    notifySecuritiesAdded(callback) {
+        this.getEvent(FUNCTIONS.SECURITIESADDED, callback);
     }
 }
 exports.default = VerifiedSecurity;

@@ -14,6 +14,10 @@ var FUNCTIONS;
     FUNCTIONS["ADDISSUEDBALANCE"] = "addIssuedBalance";
     FUNCTIONS["PURCHASE"] = "purchase";
     FUNCTIONS["REDEEMBOND"] = "redeemBond";
+    FUNCTIONS["BONDISSUEREQUEST"] = "BondIssueRequest";
+    FUNCTIONS["BONDISSUED"] = "BondIssued";
+    FUNCTIONS["BONDREDEEMED"] = "BondRedeemed";
+    FUNCTIONS["BONDPURCHASED"] = "BondPurchased";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedBond extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
@@ -87,6 +91,18 @@ class VerifiedBond extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _v);
         return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _redeemedToken, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+    }
+    notifyBondIssueRequest(callback) {
+        this.getEvent(FUNCTIONS.BONDISSUEREQUEST, callback);
+    }
+    notifyBondIssue(callback) {
+        this.getEvent(FUNCTIONS.BONDISSUED, callback);
+    }
+    notifyBondRedemption(callback) {
+        this.getEvent(FUNCTIONS.BONDREDEEMED, callback);
+    }
+    notifyBondPurchase(callback) {
+        this.getEvent(FUNCTIONS.BONDPURCHASED, callback);
     }
 }
 exports.default = VerifiedBond;

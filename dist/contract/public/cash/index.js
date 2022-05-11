@@ -15,6 +15,12 @@ var FUNCTIONS;
     FUNCTIONS["TRANSFERDEPOSIT"] = "transferDeposit";
     FUNCTIONS["REDEEMDEPOSITS"] = "redeemDeposits";
     FUNCTIONS["TRANSFERISSUEDBALANCE"] = "transferIssuedBalance";
+    FUNCTIONS["CASHISSUEREQUEST"] = "CashIssueRequest";
+    FUNCTIONS["CASHREDEEMED"] = "CashRedeemed";
+    FUNCTIONS["CASHTRANSFER"] = "CashTransfer";
+    FUNCTIONS["CASHISSUED"] = "CashIssued";
+    FUNCTIONS["ADDEDL2BALANCE"] = "addedL2Balance";
+    FUNCTIONS["TRANSFERREDL2BALANCE"] = "transferredL2Balance";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedCash extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
@@ -94,6 +100,24 @@ class VerifiedCash extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, _deposited);
         await this.validateInput(index_1.DATATYPES.NUMBER, _v);
         return this.callContract(FUNCTIONS.TRANSFERISSUEDBALANCE, _transferor, _currency, _amount, _deposited, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+    }
+    notifyCashIssueRequest(callback) {
+        this.getEvent(FUNCTIONS.CASHISSUEREQUEST, callback);
+    }
+    notifyCashRedemption(callback) {
+        this.getEvent(FUNCTIONS.CASHREDEEMED, callback);
+    }
+    notifyCashTransfer(callback) {
+        this.getEvent(FUNCTIONS.CASHTRANSFER, callback);
+    }
+    notifyCashIssue(callback) {
+        this.getEvent(FUNCTIONS.CASHISSUED, callback);
+    }
+    notifyL2BalanceAdded(callback) {
+        this.getEvent(FUNCTIONS.ADDEDL2BALANCE, callback);
+    }
+    notifyL2BalanceTransferred(callback) {
+        this.getEvent(FUNCTIONS.TRANSFERREDL2BALANCE, callback);
     }
 }
 exports.default = VerifiedCash;

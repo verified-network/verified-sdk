@@ -8,7 +8,8 @@ import { abi, networks } from '../../../abi/deposits/L1Security.json';
 enum FUNCTIONS {
     SETSIGNER = 'setSigner',
     ADDBALANCE = 'addToBalance',
-    TRANSFERBALANCE = 'transferBalance'
+    TRANSFERBALANCE = 'transferBalance',
+    SECURITIESADDED = 'securitiesAdded'
 }
 
 export default class VerifiedSecurity extends VerifiedContract {
@@ -67,6 +68,10 @@ export default class VerifiedSecurity extends VerifiedContract {
         return this.callContract(FUNCTIONS.TRANSFERBALANCE, _isin, _transferor, _amount, _transferee, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
                                 this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
                                 _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+    }
+
+    public notifySecuritiesAdded(callback: any): object {
+        this.getEvent(FUNCTIONS.SECURITIESADDED, callback)
     }
     
 }
