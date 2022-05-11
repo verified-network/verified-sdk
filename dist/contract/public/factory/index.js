@@ -10,6 +10,9 @@ var FUNCTIONS;
     FUNCTIONS["GETTYPE"] = "getType";
     FUNCTIONS["GETTOKENBYNAMETYPE"] = "getTokenByNameType";
     FUNCTIONS["GETISSUER"] = "getIssuer";
+    FUNCTIONS["GETTOKENCOUNT"] = "getTokenCount";
+    FUNCTIONS["GETTOKEN"] = "getToken";
+    FUNCTIONS["GETNAMEANDTYPE"] = "getNameAndType";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedFactory extends index_1.VerifiedContract {
     constructor(signer) {
@@ -17,6 +20,33 @@ class VerifiedFactory extends index_1.VerifiedContract {
         const address = L1Factory_json_1.networks[chainId].address;
         super(address, JSON.stringify(L1Factory_json_1.abi), signer);
         this.contractAddress = address;
+    }
+    /**
+     * Get number of tokens [callable by client]
+     * @param
+     * @returns returns number of tokens
+     */
+    async getTokenCount() {
+        return this.callContract(FUNCTIONS.GETTOKENCOUNT);
+    }
+    /**
+    * Get address of token by index [callable by client].
+    * @param (uint256 n)
+    * @returns boolean
+    */
+    async getToken(_n, options) {
+        //await this.validateInput(DATATYPES.NUMBER, _n)
+        return this.callContract(FUNCTIONS.GETTOKEN, _n, options);
+    }
+    /**
+    * Get name and type of token by its address callable by client
+    * @param (address _viaAddress)
+    * @returns boolean
+    * returns name and type of token by its address passed as parameter.
+    */
+    async getNameAndType(_viaAddress, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _viaAddress);
+        return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress, options);
     }
     /**
      * Get name of token
