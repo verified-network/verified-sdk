@@ -29,13 +29,13 @@ class VerifiedSecurity extends index_1.VerifiedContract {
     async addToBalance(_isin, _amount, _tokenHolder, _currency, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _tokenHolder);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.ADDBALANCE, _isin, _amount, _tokenHolder, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ADDBALANCE, this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _amount, _tokenHolder, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     async transferBalance(_isin, _transferor, _amount, _transferee, _currency, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.TRANSFERBALANCE, _isin, _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.TRANSFERBALANCE, this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     notifySecuritiesAdded(callback) {
         this.getEvent(FUNCTIONS.SECURITIESADDED, callback);
