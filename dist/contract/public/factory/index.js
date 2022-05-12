@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const L1Factory_json_1 = require("../../../abi/deposits/L1Factory.json");
+const Factory_json_1 = require("../../../abi/deposits/Factory.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["GETNAME"] = "getName";
@@ -17,8 +17,8 @@ var FUNCTIONS;
 class VerifiedFactory extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = signer.provider._network.chainId.toString();
-        const address = L1Factory_json_1.networks[chainId].address;
-        super(address, JSON.stringify(L1Factory_json_1.abi), signer);
+        const address = Factory_json_1.networks[chainId].address;
+        super(address, JSON.stringify(Factory_json_1.abi), signer);
         this.contractAddress = address;
     }
     /**

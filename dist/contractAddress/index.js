@@ -47,17 +47,17 @@ const contractAddress = {
         'Holder': '',
         'Ledger': '',
         'Account': '',
-        'Factory': '0xcD0D695A8EA887B957Ae42D991fF8151C791ca33',
-        'Cash': '0x9487f2e462882faE0518546c4c81261E5901FD6b',
-        'Bond': '0xee3a35113bC32D6E62dF16420C72fd3a5804ed26',
+        'Factory': '0x98d83E59A1751515D8f8813B17Ec05C307C04000',
+        'Cash': '0xfd08F93328F68B588E8F3cC785ff4B635f3016F7',
+        'Bond': '0x296501863311Ba178A1b8A04917479bdC103ea54',
         'Token': '',
         'Oracle': '',
-        'Rates': '0xfC9eC10Cc06B6334BD6ae729e33fad9D94203eE2',
+        'Rates': '0xfA818981Fe058d273e6b7c51B8DCDe7060A4fAD2',
         'PreTrade': '',
         'Trade': '',
         'PostTrade': '',
         'SecuritiesRegistry': '',
-        'Security': '0x41Bcc6CE69143E0cbC89b9d0E62E61c70AA666B4',
+        'Security': '0x06A1Ce95931B274b311a48A6830070266fEabc02',
         'OrderPool': '',
         'PoolFactory': '',
         'Products': '0xE3ba3A9598Cd99851Bd671E476331622d7306191',
@@ -69,14 +69,14 @@ const contractAddress = {
         'PrimaryIssuePoolFactory': '0x48E30d2C73BCa133Bbe7fac2fD32E7a4684d5d99',
         'Custody': '',
         'CASH': {
-            'VCUSD': '0xF6caB0b95bb9a6eF7127dACF9a1796615729c3Bb',
-            'VCEUR': '0x2896439B052581Be2c5cDB3AC66Ad556751ff4B8',
-            'VCINR': '0x35173400d1CF5A52B2be0b3347060D2B7A4Af38d'
+            'VCUSD': '0xD7516974cA3fdccC838379bea732815729fC4600',
+            'VCEUR': '0x2096465f146FCE0A017f2FF1465Ef8c7526B4947',
+            'VCINR': '0xc95d7EdF400B26E29a1BabF77A070ba2B406f531'
         },
         'BOND': {
-            'VBUSD': '0xdA3eDFFd5E69E9E87D274727149706C1561409E0',
-            'VBEUR': '0x479309254FAa2Ed22099182668CEd8469692B194',
-            'VBINR': '0xbDac842cD341f41Ad2FF91D334FAd3BD051846A4'
+            'VBUSD': '0x8573f5C00fb624CB230835b1bE94E2215e99f96F',
+            'VBEUR': '0x51D5b54ae977921deCEF0343e8E737154534c46a',
+            'VBINR': '0xdD3941C83A291Eb3e885a5Fc2aE18133420923C3'
         },
     },
     'mainnet': {

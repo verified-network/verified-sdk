@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const L1Cash_json_1 = require("../../../abi/deposits/L1Cash.json");
+const Cash_json_1 = require("../../../abi/deposits/Cash.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
@@ -26,7 +26,7 @@ class VerifiedCash extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
         const chainId = signer.provider._network.chainId.toString();
         const address = currencyAddress;
-        super(address, JSON.stringify(L1Cash_json_1.abi), signer);
+        super(address, JSON.stringify(Cash_json_1.abi), signer);
         this.contractAddress = address;
     }
     /**
@@ -77,29 +77,25 @@ class VerifiedCash extends index_1.VerifiedContract {
     async addIssuedBalance(_amount, _buyer, _currency, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _buyer);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _buyer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _buyer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     async transferDeposit(_transferor, _amount, _transferee, _currency, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.TRANSFERDEPOSIT, _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.TRANSFERDEPOSIT, _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     async redeemDeposits(_amount, _redeemer, _currency, _redeemedFor, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _redeemer);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _redeemedFor);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.REDEEMDEPOSITS, _amount, _redeemer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _redeemedFor, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.REDEEMDEPOSITS, _amount, _redeemer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _redeemedFor, _hashedMessage, _v, _r, _s, options);
     }
     async transferIssuedBalance(_transferor, _currency, _amount, _deposited, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _deposited);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.TRANSFERISSUEDBALANCE, _transferor, _currency, _amount, _deposited, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.TRANSFERISSUEDBALANCE, _transferor, _currency, _amount, _deposited, _hashedMessage, _v, _r, _s, options);
     }
     notifyCashIssueRequest(callback) {
         this.getEvent(FUNCTIONS.CASHISSUEREQUEST, callback);

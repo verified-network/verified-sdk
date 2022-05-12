@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/L1Rates.json';
+import { abi, networks } from '../../../abi/deposits/Rates.json';
 
 enum FUNCTIONS {
     SETFEETO = 'setFeeTo',

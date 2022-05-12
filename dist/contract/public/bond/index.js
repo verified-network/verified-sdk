@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const L1Bond_json_1 = require("../../../abi/deposits/L1Bond.json");
+const Bond_json_1 = require("../../../abi/deposits/Bond.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
@@ -23,7 +23,7 @@ class VerifiedBond extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
         const chainId = signer.provider._network.chainId.toString();
         const address = bondCurrencyAddress;
-        super(address, JSON.stringify(L1Bond_json_1.abi), signer);
+        super(address, JSON.stringify(Bond_json_1.abi), signer);
         this.contractAddress = address;
     }
     /**
@@ -75,22 +75,19 @@ class VerifiedBond extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuedBond);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _issuer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuedBond, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _issuer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuedBond, _hashedMessage, _v, _r, _s, options);
     }
     async purchase(_amount, _purchaser, _currency, _purchasedBond, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _purchaser);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _purchasedBond);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.PURCHASE, _amount, _purchaser, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _purchasedBond, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.PURCHASE, _amount, _purchaser, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _purchasedBond, _hashedMessage, _v, _r, _s, options);
     }
     async redeemBond(_amount, _payOutTo, _currency, _redeemedToken, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _payOutTo);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _redeemedToken);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _v);
-        return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _redeemedToken, this.sanitiseInput(index_1.DATATYPES.BYTE32, _hashedMessage), _v, this.sanitiseInput(index_1.DATATYPES.BYTE32, _r), this.sanitiseInput(index_1.DATATYPES.BYTE32, _s), options);
+        return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _redeemedToken, _hashedMessage, _v, _r, _s, options);
     }
     notifyBondIssueRequest(callback) {
         this.getEvent(FUNCTIONS.BONDISSUEREQUEST, callback);

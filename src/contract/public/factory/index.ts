@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/L1Factory.json';
+import { abi, networks } from '../../../abi/deposits/Factory.json';
 
 enum FUNCTIONS {
     GETNAME = 'getName',

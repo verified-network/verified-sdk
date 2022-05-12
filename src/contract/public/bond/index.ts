@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/L1Bond.json';
+import { abi, networks } from '../../../abi/deposits/Bond.json';
 
 enum FUNCTIONS {
     SUPPORTTOKENS = 'supportTokens',
@@ -95,10 +95,8 @@ export default class VerifiedBond extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _issuer)
         await this.validateInput(DATATYPES.ADDRESS, _issuedBond)
         await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
         return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _issuer, this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuedBond,
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     public async purchase(_amount: string, 
@@ -112,11 +110,9 @@ export default class VerifiedBond extends VerifiedContract {
                         options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _purchaser)
         await this.validateInput(DATATYPES.ADDRESS, _purchasedBond)
-        await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
         return this.callContract(FUNCTIONS.PURCHASE, _amount, _purchaser, this.sanitiseInput(DATATYPES.BYTE32, _currency), _purchasedBond,
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                        _hashedMessage, _v, _r, _s, options)
     }
 
     public async redeemBond(_amount: string, 
@@ -130,11 +126,9 @@ export default class VerifiedBond extends VerifiedContract {
                             options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _payOutTo)
         await this.validateInput(DATATYPES.ADDRESS, _redeemedToken)
-        await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
         return this.callContract(FUNCTIONS.REDEEMBOND, _amount, _payOutTo, this.sanitiseInput(DATATYPES.BYTE32, _currency), _redeemedToken,
-                            this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                            _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                            _hashedMessage, _v, _r, _s, options)
     }
 
     public notifyBondIssueRequest(callback: any): object {

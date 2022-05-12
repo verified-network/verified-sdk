@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const L1Rates_json_1 = require("../../../abi/deposits/L1Rates.json");
+const Rates_json_1 = require("../../../abi/deposits/Rates.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SETFEETO"] = "setFeeTo";
@@ -20,8 +20,8 @@ var FUNCTIONS;
 class VerifiedRates extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = signer.provider._network.chainId.toString();
-        const address = L1Rates_json_1.networks[chainId].address;
-        super(address, JSON.stringify(L1Rates_json_1.abi), signer);
+        const address = Rates_json_1.networks[chainId].address;
+        super(address, JSON.stringify(Rates_json_1.abi), signer);
         this.contractAddress = address;
     }
     async setFeeTo(_feeTo, _fee, _feeType, options) {

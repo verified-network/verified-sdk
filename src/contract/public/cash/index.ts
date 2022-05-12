@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/L1Cash.json';
+import { abi, networks } from '../../../abi/deposits/Cash.json';
 
 enum FUNCTIONS {
     SUPPORTTOKENS = 'supportTokens',
@@ -95,11 +95,9 @@ export default class VerifiedCash extends VerifiedContract {
                                 _s: string,
                                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _buyer)
-        await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
         return this.callContract(FUNCTIONS.ADDISSUEDBALANCE, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     public async transferDeposit(_transferor: string, 
@@ -113,12 +111,10 @@ export default class VerifiedCash extends VerifiedContract {
                                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _transferor)
         await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.ADDRESS, _transferee)
-        await this.validateInput(DATATYPES.NUMBER, _v)
+        await this.validateInput(DATATYPES.ADDRESS, _transferee)        
         return this.callContract(FUNCTIONS.TRANSFERDEPOSIT, _transferor, _amount, _transferee, 
                                 this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     public async redeemDeposits(_amount: string, 
@@ -133,10 +129,8 @@ export default class VerifiedCash extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _redeemer)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.NUMBER, _redeemedFor)
-        await this.validateInput(DATATYPES.NUMBER, _v)
         return this.callContract(FUNCTIONS.REDEEMDEPOSITS, _amount, _redeemer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                                _redeemedFor, this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _redeemedFor, _hashedMessage, _v, _r, _s, options)
     }
 
     public async transferIssuedBalance( _transferor: string,
@@ -151,10 +145,8 @@ export default class VerifiedCash extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _transferor)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.NUMBER, _deposited)
-        await this.validateInput(DATATYPES.NUMBER, _v)
         return this.callContract(FUNCTIONS.TRANSFERISSUEDBALANCE, _transferor, _currency, _amount, _deposited, 
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     public notifyCashIssueRequest(callback: any): object {

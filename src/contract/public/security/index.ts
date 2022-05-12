@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/deposits/L1Security.json';
+import { abi, networks } from '../../../abi/deposits/Security.json';
 
 enum FUNCTIONS {
     SETSIGNER = 'setSigner',
@@ -44,11 +44,9 @@ export default class VerifiedSecurity extends VerifiedContract {
                             _s: string,
                             options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _tokenHolder)
-        await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
         return this.callContract(FUNCTIONS.ADDBALANCE, _isin, _amount, _tokenHolder, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                            _hashedMessage, _v, _r, _s, options)
     }
 
     public async transferBalance(_isin: string,
@@ -64,10 +62,8 @@ export default class VerifiedSecurity extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _transferee)
         await this.validateInput(DATATYPES.ADDRESS, _transferor)
         await this.validateInput(DATATYPES.NUMBER, _amount)
-        await this.validateInput(DATATYPES.NUMBER, _v)
         return this.callContract(FUNCTIONS.TRANSFERBALANCE, _isin, _transferor, _amount, _transferee, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                                this.sanitiseInput(DATATYPES.BYTE32, _hashedMessage), 
-                                _v, this.sanitiseInput(DATATYPES.BYTE32, _r), this.sanitiseInput(DATATYPES.BYTE32, _s), options)
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     public notifySecuritiesAdded(callback: any): object {
