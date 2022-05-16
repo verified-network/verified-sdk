@@ -12,7 +12,9 @@ enum FUNCTIONS {
     ISSUE = 'BondIssued',
     REDEEM = 'BondRedeemed',
     PURCHASE = 'BondPurchased',
-    LIQUIDATE = 'BondLiquidated'
+    LIQUIDATE = 'BondLiquidated',
+    SETSIGNER = 'setSigner',
+    REQUESTISSUEFROML1 = 'requestIssueFromL1'
 }
 
 export default class BondContract extends VerifiedContract {
@@ -59,6 +61,29 @@ export default class BondContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _issuer)
         await this.validateInput(DATATYPES.ADDRESS, _bond)
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _issuer, _bond, options)
+    }
+
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _signer)
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
+    } 
+
+    public async requestIssueFromL1(_amount: string, 
+                                    _buyer: string, 
+                                    _currency: string, 
+                                    _hashedMessage: string,
+                                    _v: string,
+                                    _r: string,
+                                    _s: string,
+                                    options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _buyer)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
+        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     /*

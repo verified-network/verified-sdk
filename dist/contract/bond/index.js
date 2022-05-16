@@ -13,6 +13,8 @@ var FUNCTIONS;
     FUNCTIONS["REDEEM"] = "BondRedeemed";
     FUNCTIONS["PURCHASE"] = "BondPurchased";
     FUNCTIONS["LIQUIDATE"] = "BondLiquidated";
+    FUNCTIONS["SETSIGNER"] = "setSigner";
+    FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class BondContract extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
@@ -50,6 +52,19 @@ class BondContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _bond);
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _issuer, _bond, options);
+    }
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    async setSigner(_signer, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
+    }
+    async requestIssueFromL1(_amount, _buyer, _currency, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _buyer);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     /*
     emits event BondIssued(address indexed _token, address issuer, uint256 issuedAmount, bytes32 collateralCurrency, uint256 collateralValue);

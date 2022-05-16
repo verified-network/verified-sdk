@@ -12,7 +12,9 @@ enum FUNCTIONS {
     ISSUE = 'CashIssued',
     REDEEM = 'CashRedeemed',
     TRANSFER = 'CashTransfer',
-    EXCHANGE = 'CashDeposits'
+    EXCHANGE = 'CashDeposits',
+    SETSIGNER = 'setSigner',
+    REQUESTISSUEFROML1 = 'requestIssueFromL1'
 }
 
 export default class CashContract extends VerifiedContract {
@@ -53,6 +55,29 @@ export default class CashContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _payer) 
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+    }
+
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _signer)
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
+    } 
+
+    public async requestIssueFromL1(_amount: string, 
+                                    _buyer: string, 
+                                    _currency: string, 
+                                    _hashedMessage: string,
+                                    _v: string,
+                                    _r: string,
+                                    _s: string,
+                                    options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _buyer)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
+        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
+                                _hashedMessage, _v, _r, _s, options)
     }
 
     /* Request balance of wallet in contract

@@ -13,6 +13,8 @@ var FUNCTIONS;
     FUNCTIONS["REDEEM"] = "CashRedeemed";
     FUNCTIONS["TRANSFER"] = "CashTransfer";
     FUNCTIONS["EXCHANGE"] = "CashDeposits";
+    FUNCTIONS["SETSIGNER"] = "setSigner";
+    FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CashContract extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
@@ -45,6 +47,19 @@ class CashContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
         await this.validateInput(index_1.DATATYPES.STRING, _currency);
         return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+    }
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    async setSigner(_signer, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
+    }
+    async requestIssueFromL1(_amount, _buyer, _currency, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _buyer);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     /* Request balance of wallet in contract
     */
