@@ -25,7 +25,8 @@ enum FUNCTIONS {
     GETPLATFORMPERFORMANCE = 'getPlatformPerformance',
     GETMANAGERPERFORMANCE = 'getManagerPerformance',
     PROVIDELIQUIDITY = 'provideLiquidity',
-    BALANCE = 'balance'
+    BALANCE = 'balance',
+    NOTIFYISSUE = 'RequestIssue'
 }
 
 export default class LiquidityContract extends VerifiedContract {
@@ -261,6 +262,10 @@ export default class LiquidityContract extends VerifiedContract {
     public async balanceOf(_investor: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _investor)
         return this.callContract(FUNCTIONS.BALANCE, _investor, options)
+    }
+
+    public notifyIssue(callback: any): object {
+        this.getEvent(FUNCTIONS.NOTIFYISSUE, callback)
     }
 
 }

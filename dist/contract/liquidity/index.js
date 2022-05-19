@@ -26,6 +26,7 @@ var FUNCTIONS;
     FUNCTIONS["GETMANAGERPERFORMANCE"] = "getManagerPerformance";
     FUNCTIONS["PROVIDELIQUIDITY"] = "provideLiquidity";
     FUNCTIONS["BALANCE"] = "balance";
+    FUNCTIONS["NOTIFYISSUE"] = "RequestIssue";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class LiquidityContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -235,6 +236,9 @@ class LiquidityContract extends index_1.VerifiedContract {
     async balanceOf(_investor, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _investor);
         return this.callContract(FUNCTIONS.BALANCE, _investor, options);
+    }
+    notifyIssue(callback) {
+        this.getEvent(FUNCTIONS.NOTIFYISSUE, callback);
     }
 }
 exports.default = LiquidityContract;
