@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../index");
-const Distribution_json_1 = require("../../abi/liquidity/Distribution.json");
+const Distribution_json_1 = require("../../abi/L2distribution/Distribution.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["ADDREVENUESHAREHOLDER"] = "addRevenueShareholder";

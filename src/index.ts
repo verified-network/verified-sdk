@@ -32,6 +32,7 @@ import VerifiedCash from './contract/public/cash';
 import VerifiedBond from './contract/public/bond';
 import VerifiedSecurity from './contract/public/security';
 import VerifiedFactory from './contract/public/factory';
+import VerifiedDistribution from './contract/public/distribution';
 import VerifiedRates from './contract/public/rates';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
@@ -69,6 +70,7 @@ export {
     VerifiedBond,
     VerifiedSecurity,
     VerifiedFactory,
+    VerifiedDistribution,
     VerifiedRates,
     utils,
     contractAddress
