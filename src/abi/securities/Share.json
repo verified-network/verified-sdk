@@ -1,0 +1,1550 @@
+{
+  "contractName": "Share",
+  "abi": [
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_issueSize",
+          "type": "uint256"
+        },
+        {
+          "name": "_offerPrice",
+          "type": "uint256"
+        },
+        {
+          "name": "_minAskPrice",
+          "type": "uint256"
+        },
+        {
+          "name": "_minSubscription",
+          "type": "uint256"
+        },
+        {
+          "name": "_currency",
+          "type": "bytes32"
+        },
+        {
+          "name": "_offerType",
+          "type": "bytes32"
+        },
+        {
+          "name": "_isin",
+          "type": "bytes32"
+        },
+        {
+          "name": "_offeringDocuments",
+          "type": "string"
+        }
+      ],
+      "name": "issueShare",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "getShare",
+      "outputs": [
+        {
+          "components": [
+            {
+              "name": "issueSize",
+              "type": "uint256"
+            },
+            {
+              "name": "faceValue",
+              "type": "uint256"
+            },
+            {
+              "name": "offerPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "minAskPrice",
+              "type": "uint256"
+            },
+            {
+              "name": "minSubscription",
+              "type": "uint256"
+            },
+            {
+              "name": "currency",
+              "type": "bytes32"
+            },
+            {
+              "name": "security",
+              "type": "address"
+            }
+          ],
+          "name": "",
+          "type": "tuple[]"
+        },
+        {
+          "components": [
+            {
+              "name": "offerType",
+              "type": "bytes32"
+            },
+            {
+              "name": "isin",
+              "type": "bytes32"
+            },
+            {
+              "name": "status",
+              "type": "bytes32"
+            },
+            {
+              "name": "offeringDocuments",
+              "type": "string"
+            }
+          ],
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.5.7+commit.6da8b019\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"constant\":false,\"inputs\":[{\"name\":\"_issueSize\",\"type\":\"uint256\"},{\"name\":\"_offerPrice\",\"type\":\"uint256\"},{\"name\":\"_minAskPrice\",\"type\":\"uint256\"},{\"name\":\"_minSubscription\",\"type\":\"uint256\"},{\"name\":\"_currency\",\"type\":\"bytes32\"},{\"name\":\"_offerType\",\"type\":\"bytes32\"},{\"name\":\"_isin\",\"type\":\"bytes32\"},{\"name\":\"_offeringDocuments\",\"type\":\"string\"}],\"name\":\"issueShare\",\"outputs\":[],\"payable\":false,\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"constant\":true,\"inputs\":[],\"name\":\"getShare\",\"outputs\":[{\"components\":[{\"name\":\"issueSize\",\"type\":\"uint256\"},{\"name\":\"faceValue\",\"type\":\"uint256\"},{\"name\":\"offerPrice\",\"type\":\"uint256\"},{\"name\":\"minAskPrice\",\"type\":\"uint256\"},{\"name\":\"minSubscription\",\"type\":\"uint256\"},{\"name\":\"currency\",\"type\":\"bytes32\"},{\"name\":\"security\",\"type\":\"address\"}],\"name\":\"\",\"type\":\"tuple[]\"},{\"components\":[{\"name\":\"offerType\",\"type\":\"bytes32\"},{\"name\":\"isin\",\"type\":\"bytes32\"},{\"name\":\"status\",\"type\":\"bytes32\"},{\"name\":\"offeringDocuments\",\"type\":\"string\"}],\"name\":\"\",\"type\":\"tuple\"}],\"payable\":false,\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IShare.sol\":\"Share\"},\"evmVersion\":\"petersburg\",\"libraries\":{},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IShare.sol\":{\"keccak256\":\"0x52738b3c3e559c679b1592c7d1a323bb19e91b38a67da611c1b0b564c0c00a90\",\"urls\":[\"bzzr://9de17b5da08614d2d0004cc7aba7c0e6e7b360a37b3dce93b687ead0d3eb45e7\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// Interface definition of a Share (stock)\r\n// (c) Kallol Borah, 2021\r\n\r\npragma solidity 0.5.7;\r\npragma experimental ABIEncoderV2;\r\n\r\ninterface Share {\r\n\r\n    struct currencySpecificStockAttribs {\r\n        uint256 issueSize;\r\n        uint256 faceValue;\r\n        uint256 offerPrice; \r\n        uint256 minAskPrice;   \r\n        uint256 minSubscription;\r\n        bytes32 currency;\r\n        address security;\r\n    }\r\n\r\n    struct commonStockAttribs {\r\n        bytes32 offerType;\r\n        bytes32 isin;\r\n        bytes32 status;\r\n        string offeringDocuments;\r\n    }\r\n\r\n    function issueShare(uint256 _issueSize,\r\n                        uint256 _offerPrice, \r\n                        uint256 _minAskPrice, \r\n                        uint256 _minSubscription,\r\n                        bytes32 _currency,\r\n                        bytes32 _offerType,\r\n                        bytes32 _isin,\r\n                        string calldata _offeringDocuments\r\n                        ) external;\r\n\r\n    function getShare() external view returns(Share.currencySpecificStockAttribs[] memory, Share.commonStockAttribs memory);\r\n\r\n}",
+  "sourcePath": "D:\\Code\\verified-securities\\securities\\contracts\\interfaces\\IShare.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IShare.sol",
+    "exportedSymbols": {
+      "Share": [
+        5822
+      ]
+    },
+    "id": 5823,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 5769,
+        "literals": [
+          "solidity",
+          "0.5",
+          ".7"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "73:22:24"
+      },
+      {
+        "id": 5770,
+        "literals": [
+          "experimental",
+          "ABIEncoderV2"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "97:33:24"
+      },
+      {
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 5822,
+        "linearizedBaseContracts": [
+          5822
+        ],
+        "name": "Share",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "Share.currencySpecificStockAttribs",
+            "id": 5785,
+            "members": [
+              {
+                "constant": false,
+                "id": 5772,
+                "name": "issueSize",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "206:17:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5771,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "206:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5774,
+                "name": "faceValue",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "234:17:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5773,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "234:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5776,
+                "name": "offerPrice",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "262:18:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5775,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "262:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5778,
+                "name": "minAskPrice",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "292:19:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5777,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "292:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5780,
+                "name": "minSubscription",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "325:23:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 5779,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "325:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5782,
+                "name": "currency",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "359:16:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 5781,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "359:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5784,
+                "name": "security",
+                "nodeType": "VariableDeclaration",
+                "scope": 5785,
+                "src": "386:16:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 5783,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "386:7:24",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "currencySpecificStockAttribs",
+            "nodeType": "StructDefinition",
+            "scope": 5822,
+            "src": "159:251:24",
+            "visibility": "public"
+          },
+          {
+            "canonicalName": "Share.commonStockAttribs",
+            "id": 5794,
+            "members": [
+              {
+                "constant": false,
+                "id": 5787,
+                "name": "offerType",
+                "nodeType": "VariableDeclaration",
+                "scope": 5794,
+                "src": "455:17:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 5786,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "455:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5789,
+                "name": "isin",
+                "nodeType": "VariableDeclaration",
+                "scope": 5794,
+                "src": "483:12:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 5788,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "483:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5791,
+                "name": "status",
+                "nodeType": "VariableDeclaration",
+                "scope": 5794,
+                "src": "506:14:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_bytes32",
+                  "typeString": "bytes32"
+                },
+                "typeName": {
+                  "id": 5790,
+                  "name": "bytes32",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "506:7:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 5793,
+                "name": "offeringDocuments",
+                "nodeType": "VariableDeclaration",
+                "scope": 5794,
+                "src": "531:24:24",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_string_storage_ptr",
+                  "typeString": "string"
+                },
+                "typeName": {
+                  "id": 5792,
+                  "name": "string",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "531:6:24",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_storage_ptr",
+                    "typeString": "string"
+                  }
+                },
+                "value": null,
+                "visibility": "internal"
+              }
+            ],
+            "name": "commonStockAttribs",
+            "nodeType": "StructDefinition",
+            "scope": 5822,
+            "src": "418:145:24",
+            "visibility": "public"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5813,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "issueShare",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5811,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5796,
+                  "name": "_issueSize",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "591:18:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5795,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "591:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5798,
+                  "name": "_offerPrice",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "636:19:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5797,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "636:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5800,
+                  "name": "_minAskPrice",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "683:20:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5799,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "683:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5802,
+                  "name": "_minSubscription",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "731:24:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 5801,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "731:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5804,
+                  "name": "_currency",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "782:17:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 5803,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "782:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5806,
+                  "name": "_offerType",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "826:18:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 5805,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "826:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5808,
+                  "name": "_isin",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "871:13:24",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 5807,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "871:7:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5810,
+                  "name": "_offeringDocuments",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5813,
+                  "src": "911:34:24",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_calldata_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 5809,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "911:6:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "590:382:24"
+            },
+            "returnParameters": {
+              "id": 5812,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "981:0:24"
+            },
+            "scope": 5822,
+            "src": "571:411:24",
+            "stateMutability": "nonpayable",
+            "superFunction": null,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "id": 5821,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getShare",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 5814,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1007:2:24"
+            },
+            "returnParameters": {
+              "id": 5820,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 5817,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5821,
+                  "src": "1032:43:24",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_currencySpecificStockAttribs_$5785_memory_$dyn_memory_ptr",
+                    "typeString": "struct Share.currencySpecificStockAttribs[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "contractScope": null,
+                      "id": 5815,
+                      "name": "Share.currencySpecificStockAttribs",
+                      "nodeType": "UserDefinedTypeName",
+                      "referencedDeclaration": 5785,
+                      "src": "1032:34:24",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_currencySpecificStockAttribs_$5785_storage_ptr",
+                        "typeString": "struct Share.currencySpecificStockAttribs"
+                      }
+                    },
+                    "id": 5816,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1032:36:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_currencySpecificStockAttribs_$5785_storage_$dyn_storage_ptr",
+                      "typeString": "struct Share.currencySpecificStockAttribs[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 5819,
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 5821,
+                  "src": "1077:31:24",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_commonStockAttribs_$5794_memory_ptr",
+                    "typeString": "struct Share.commonStockAttribs"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 5818,
+                    "name": "Share.commonStockAttribs",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 5794,
+                    "src": "1077:24:24",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_commonStockAttribs_$5794_storage_ptr",
+                      "typeString": "struct Share.commonStockAttribs"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1031:78:24"
+            },
+            "scope": 5822,
+            "src": "990:120:24",
+            "stateMutability": "view",
+            "superFunction": null,
+            "visibility": "external"
+          }
+        ],
+        "scope": 5823,
+        "src": "134:981:24"
+      }
+    ],
+    "src": "73:1042:24"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/interfaces/IShare.sol",
+      "exportedSymbols": {
+        "Share": [
+          5822
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.5",
+            ".7"
+          ]
+        },
+        "id": 5769,
+        "name": "PragmaDirective",
+        "src": "73:22:24"
+      },
+      {
+        "attributes": {
+          "literals": [
+            "experimental",
+            "ABIEncoderV2"
+          ]
+        },
+        "id": 5770,
+        "name": "PragmaDirective",
+        "src": "97:33:24"
+      },
+      {
+        "attributes": {
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            5822
+          ],
+          "name": "Share",
+          "scope": 5823
+        },
+        "children": [
+          {
+            "attributes": {
+              "canonicalName": "Share.currencySpecificStockAttribs",
+              "name": "currencySpecificStockAttribs",
+              "scope": 5822,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "issueSize",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 5771,
+                    "name": "ElementaryTypeName",
+                    "src": "206:7:24"
+                  }
+                ],
+                "id": 5772,
+                "name": "VariableDeclaration",
+                "src": "206:17:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "faceValue",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 5773,
+                    "name": "ElementaryTypeName",
+                    "src": "234:7:24"
+                  }
+                ],
+                "id": 5774,
+                "name": "VariableDeclaration",
+                "src": "234:17:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "offerPrice",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 5775,
+                    "name": "ElementaryTypeName",
+                    "src": "262:7:24"
+                  }
+                ],
+                "id": 5776,
+                "name": "VariableDeclaration",
+                "src": "262:18:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "minAskPrice",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 5777,
+                    "name": "ElementaryTypeName",
+                    "src": "292:7:24"
+                  }
+                ],
+                "id": 5778,
+                "name": "VariableDeclaration",
+                "src": "292:19:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "minSubscription",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "uint256",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "uint256",
+                      "type": "uint256"
+                    },
+                    "id": 5779,
+                    "name": "ElementaryTypeName",
+                    "src": "325:7:24"
+                  }
+                ],
+                "id": 5780,
+                "name": "VariableDeclaration",
+                "src": "325:23:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "currency",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 5781,
+                    "name": "ElementaryTypeName",
+                    "src": "359:7:24"
+                  }
+                ],
+                "id": 5782,
+                "name": "VariableDeclaration",
+                "src": "359:16:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "security",
+                  "scope": 5785,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "address",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "address",
+                      "stateMutability": "nonpayable",
+                      "type": "address"
+                    },
+                    "id": 5783,
+                    "name": "ElementaryTypeName",
+                    "src": "386:7:24"
+                  }
+                ],
+                "id": 5784,
+                "name": "VariableDeclaration",
+                "src": "386:16:24"
+              }
+            ],
+            "id": 5785,
+            "name": "StructDefinition",
+            "src": "159:251:24"
+          },
+          {
+            "attributes": {
+              "canonicalName": "Share.commonStockAttribs",
+              "name": "commonStockAttribs",
+              "scope": 5822,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "offerType",
+                  "scope": 5794,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 5786,
+                    "name": "ElementaryTypeName",
+                    "src": "455:7:24"
+                  }
+                ],
+                "id": 5787,
+                "name": "VariableDeclaration",
+                "src": "455:17:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "isin",
+                  "scope": 5794,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 5788,
+                    "name": "ElementaryTypeName",
+                    "src": "483:7:24"
+                  }
+                ],
+                "id": 5789,
+                "name": "VariableDeclaration",
+                "src": "483:12:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "status",
+                  "scope": 5794,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "bytes32",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "bytes32",
+                      "type": "bytes32"
+                    },
+                    "id": 5790,
+                    "name": "ElementaryTypeName",
+                    "src": "506:7:24"
+                  }
+                ],
+                "id": 5791,
+                "name": "VariableDeclaration",
+                "src": "506:14:24"
+              },
+              {
+                "attributes": {
+                  "constant": false,
+                  "name": "offeringDocuments",
+                  "scope": 5794,
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "type": "string",
+                  "value": null,
+                  "visibility": "internal"
+                },
+                "children": [
+                  {
+                    "attributes": {
+                      "name": "string",
+                      "type": "string"
+                    },
+                    "id": 5792,
+                    "name": "ElementaryTypeName",
+                    "src": "531:6:24"
+                  }
+                ],
+                "id": 5793,
+                "name": "VariableDeclaration",
+                "src": "531:24:24"
+              }
+            ],
+            "id": 5794,
+            "name": "StructDefinition",
+            "src": "418:145:24"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "issueShare",
+              "scope": 5822,
+              "stateMutability": "nonpayable",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_issueSize",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 5795,
+                        "name": "ElementaryTypeName",
+                        "src": "591:7:24"
+                      }
+                    ],
+                    "id": 5796,
+                    "name": "VariableDeclaration",
+                    "src": "591:18:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_offerPrice",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 5797,
+                        "name": "ElementaryTypeName",
+                        "src": "636:7:24"
+                      }
+                    ],
+                    "id": 5798,
+                    "name": "VariableDeclaration",
+                    "src": "636:19:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_minAskPrice",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 5799,
+                        "name": "ElementaryTypeName",
+                        "src": "683:7:24"
+                      }
+                    ],
+                    "id": 5800,
+                    "name": "VariableDeclaration",
+                    "src": "683:20:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_minSubscription",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 5801,
+                        "name": "ElementaryTypeName",
+                        "src": "731:7:24"
+                      }
+                    ],
+                    "id": 5802,
+                    "name": "VariableDeclaration",
+                    "src": "731:24:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_currency",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 5803,
+                        "name": "ElementaryTypeName",
+                        "src": "782:7:24"
+                      }
+                    ],
+                    "id": 5804,
+                    "name": "VariableDeclaration",
+                    "src": "782:17:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_offerType",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 5805,
+                        "name": "ElementaryTypeName",
+                        "src": "826:7:24"
+                      }
+                    ],
+                    "id": 5806,
+                    "name": "VariableDeclaration",
+                    "src": "826:18:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_isin",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 5807,
+                        "name": "ElementaryTypeName",
+                        "src": "871:7:24"
+                      }
+                    ],
+                    "id": 5808,
+                    "name": "VariableDeclaration",
+                    "src": "871:13:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "_offeringDocuments",
+                      "scope": 5813,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "string",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "string",
+                          "type": "string"
+                        },
+                        "id": 5809,
+                        "name": "ElementaryTypeName",
+                        "src": "911:6:24"
+                      }
+                    ],
+                    "id": 5810,
+                    "name": "VariableDeclaration",
+                    "src": "911:34:24"
+                  }
+                ],
+                "id": 5811,
+                "name": "ParameterList",
+                "src": "590:382:24"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 5812,
+                "name": "ParameterList",
+                "src": "981:0:24"
+              }
+            ],
+            "id": 5813,
+            "name": "FunctionDefinition",
+            "src": "571:411:24"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "getShare",
+              "scope": 5822,
+              "stateMutability": "view",
+              "superFunction": null,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 5814,
+                "name": "ParameterList",
+                "src": "1007:2:24"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 5821,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "struct Share.currencySpecificStockAttribs[]",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "length": null,
+                          "type": "struct Share.currencySpecificStockAttribs[]"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "contractScope": null,
+                              "name": "Share.currencySpecificStockAttribs",
+                              "referencedDeclaration": 5785,
+                              "type": "struct Share.currencySpecificStockAttribs"
+                            },
+                            "id": 5815,
+                            "name": "UserDefinedTypeName",
+                            "src": "1032:34:24"
+                          }
+                        ],
+                        "id": 5816,
+                        "name": "ArrayTypeName",
+                        "src": "1032:36:24"
+                      }
+                    ],
+                    "id": 5817,
+                    "name": "VariableDeclaration",
+                    "src": "1032:43:24"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "name": "",
+                      "scope": 5821,
+                      "stateVariable": false,
+                      "storageLocation": "memory",
+                      "type": "struct Share.commonStockAttribs",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "Share.commonStockAttribs",
+                          "referencedDeclaration": 5794,
+                          "type": "struct Share.commonStockAttribs"
+                        },
+                        "id": 5818,
+                        "name": "UserDefinedTypeName",
+                        "src": "1077:24:24"
+                      }
+                    ],
+                    "id": 5819,
+                    "name": "VariableDeclaration",
+                    "src": "1077:31:24"
+                  }
+                ],
+                "id": 5820,
+                "name": "ParameterList",
+                "src": "1031:78:24"
+              }
+            ],
+            "id": 5821,
+            "name": "FunctionDefinition",
+            "src": "990:120:24"
+          }
+        ],
+        "id": 5822,
+        "name": "ContractDefinition",
+        "src": "134:981:24"
+      }
+    ],
+    "id": 5823,
+    "name": "SourceUnit",
+    "src": "73:1042:24"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.5.7+commit.6da8b019.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-05-27T15:19:38.209Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
