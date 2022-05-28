@@ -1,44 +1,44 @@
 const contractAddress: Object = {
-    'ropsten': {
+    'L1-goerli': {
         'Client': '',
         'KYC': '',
         'System': '',
         'Holder': '',
         'Ledger': '',
         'Account': '',
-        'Factory': '',        
-        'Cash': '',
-        'Bond': '',
+        'Factory': '0xC5893D32ff3389fF8eE7De566C6487Fffa5d4d40',        
+        'Cash': '0x4f1578c1F52401A600Cf000DD0aD3B19826baf5c',
+        'Bond': '0xbfAC42b83fBB6fb34914368BD0A9654fBEc559C3',
         'Token': '',
         'Oracle': '',
-        'Rates': '',
+        'Rates': '0x48b14BA34CB0c95779B4049C3B994a5ab43a6385',
         'PreTrade': '',
         'Trade': '',
         'PostTrade': '',
         'SecuritiesRegistry': '',
-        'Security': '',
+        'Security': '0x8B7D20deDF0DC7874B3C357Ba759890e51ad4bb3',
         'OrderPool': '',
         'PoolFactory': '',
         'Products': '',
         'Stocks': '',
         'Bonds': '',
-        'Liquidity': '',
-        'Distribution': '',
+        'Liquidity': '0xBe0ffE30eF6C651E12bfA1de4557C7DB0226E6f6',
+        'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
         'BalancerManager': '',
         'PrimaryIssuePoolFactory' : '',
         'Custody': '',
         'CASH': {
-            'VCUSD': '',
-            'VCEUR': '',
-            'VCINR': ''
+            'VCUSD': '0xCb8eF17d0715bB115977C65e04423d9171025911',
+            'VCEUR': '0xde5c4d3eC34e7918f97dc1bd0a4A2D9EfCeb95EB',
+            'VCINR': '0x52C3406DA3ce0aC152c61eEE0958A9fC4B5c1326'
         },
         'BOND': {
-            'VBUSD': '',
-            'VBEUR': '',
-            'VBINR': ''
+            'VBUSD': '0x90bBea33248898fcaf3677265BDf11BF29D0cA8E',
+            'VBEUR': '0xA659FF847d4d0e86F40b0e22257fB4C38BA7Ce1b',
+            'VBINR': '0xeb0a155f635259849a17CC944B039DD2B7d61F04'
         },
     },
-    'rinkeby': {
+    'L2-rinkeby': {
         'Client': '0xD1eD0CD2b5AD5e32105D7103ce3ee4923831Ef8a',
         'KYC': '0x441A2beB81c8Ce6fb3182A8f1AA8199a0FF73212',
         'System': '0x3e8AFD3e756aB76cF9589BDaD6235507F406cC4c',
