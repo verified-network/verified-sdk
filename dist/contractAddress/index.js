@@ -63,10 +63,10 @@ const contractAddress = {
         'Products': '0xb82145a30bF76fE779092AC44352E6C916Edf8a8',
         'Stocks': '0xC7ed942A71f240EF60C4f079EF52D832ad8B9e80',
         'Bonds': '0x37d9f6472F33fcC5a6d2Ff6AC30808a8333f00A8',
-        'Liquidity': '0x7aEe1300Fb72B0c7B6A76f9835Cb06Bc7C5a8502',
+        'Liquidity': '0xB97a45FeA56715437eE49C70A16370d5782187F9',
         'Distribution': '0xEA1599ff4DcF79046499e875aFe834e5cA298a44',
-        'BalancerManager': '',
-        'PrimaryIssuePoolFactory': '',
+        'BalancerManager': '0xE289f11c4aE331B9d8592E9fE2E9aB382b3ede65',
+        'PrimaryIssuePoolFactory': '0xB4780520cf34F4d41CA02E0aF4808dc894bc1F64',
         'Custody': '0x83502d470B59249Df680aEC3d410A1294e42117a',
         'CASH': {
             'VCUSD': '0x0c30c72f75aC4860138bE0D39Dc2D98D8C95CC44',
