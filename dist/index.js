@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.contractAddress = exports.utils = exports.VerifiedRates = exports.VerifiedDistribution = exports.VerifiedFactory = exports.VerifiedSecurity = exports.VerifiedBond = exports.VerifiedCash = exports.AssetManager = exports.RatesContract = exports.LiquidityContract = exports.CustodyContract = exports.BondsContract = exports.StocksContract = exports.ProductContract = exports.DistributionContract = exports.OracleContract = exports.SecurityContract = exports.TokenContract = exports.FactoryContract = exports.TradeContract = exports.SecuritiesRegistryContract = exports.PreTradeContract = exports.PostTradeContract = exports.PoolFactoryContract = exports.OrderPoolContract = exports.CashContract = exports.BondContract = exports.AccountContract = exports.LedgerContract = exports.HolderContract = exports.SystemContract = exports.KYCContract = exports.ClientContract = exports.Provider = exports.VerifiedWallet = void 0;
+exports.contractAddress = exports.utils = exports.VerifiedClient = exports.VerifiedProducts = exports.VerifiedRates = exports.VerifiedDistribution = exports.VerifiedFactory = exports.VerifiedSecurity = exports.VerifiedBond = exports.VerifiedCash = exports.AssetManager = exports.RatesContract = exports.LiquidityContract = exports.CustodyContract = exports.BondsContract = exports.StocksContract = exports.ProductContract = exports.DistributionContract = exports.OracleContract = exports.SecurityContract = exports.TokenContract = exports.FactoryContract = exports.TradeContract = exports.SecuritiesRegistryContract = exports.PreTradeContract = exports.PostTradeContract = exports.PoolFactoryContract = exports.OrderPoolContract = exports.CashContract = exports.BondContract = exports.AccountContract = exports.LedgerContract = exports.HolderContract = exports.SystemContract = exports.KYCContract = exports.ClientContract = exports.Provider = exports.VerifiedWallet = void 0;
 const wallet_1 = require("./wallet");
 Object.defineProperty(exports, "VerifiedWallet", { enumerable: true, get: function () { return wallet_1.VerifiedWallet; } });
 const utils_1 = require("./utils");
@@ -73,6 +73,10 @@ const distribution_2 = __importDefault(require("./contract/public/distribution")
 exports.VerifiedDistribution = distribution_2.default;
 const rates_2 = __importDefault(require("./contract/public/rates"));
 exports.VerifiedRates = rates_2.default;
+const product_2 = __importDefault(require("./contract/public/product"));
+exports.VerifiedProducts = product_2.default;
+const client_2 = __importDefault(require("./contract/public/client"));
+exports.VerifiedClient = client_2.default;
 const ethers_1 = require("ethers");
 Object.defineProperty(exports, "utils", { enumerable: true, get: function () { return ethers_1.utils; } });
 const contractAddress_1 = __importDefault(require("./contractAddress"));
