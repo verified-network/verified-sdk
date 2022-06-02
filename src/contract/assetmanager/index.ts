@@ -10,7 +10,13 @@ enum FUNCTIONS {
     GETOFFERED = 'getOffered',
     GETOFFERMADE = 'getOfferMade',
     GETALLOTTEDSTAKE = 'getAllotedStake',
-    GETLIQUIDITYPROVIDERS = 'getLiquidityProviders'
+    GETLIQUIDITYPROVIDERS = 'getLiquidityProviders',
+    ISSUE = 'issue',
+    GETSUBSCRIBERS = 'getSubscribers',
+    CLOSE = 'close',
+    ACCEPT = 'accept',
+    REJECT = 'reject',
+    SETTLE = 'settle'
 }
 
 export default class AssetManager extends VerifiedContract {
@@ -24,14 +30,27 @@ export default class AssetManager extends VerifiedContract {
         this.contractAddress = address
     }
 
-    public async offer(owned: string, isin: string, offered:string, tomatch:string, desired:string, min:string, options?: { gasPrice, gasLimit }): any {
+    public async offer( owned: string, 
+                        isin: string, 
+                        offered:string, 
+                        tomatch:string, 
+                        desired:string, 
+                        min:string, 
+                        issuer: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, owned);
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(DATATYPES.ADDRESS, issuer);
         await this.validateInput(DATATYPES.STRING, isin);
         await this.validateInput(DATATYPES.NUMBER, offered);
         await this.validateInput(DATATYPES.NUMBER, desired);
         await this.validateInput(DATATYPES.NUMBER, min);
-        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, options);
+        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer,
+                                    _hashedMessage, _v, _r, _s, options);
     }
 
     /**
@@ -73,9 +92,86 @@ export default class AssetManager extends VerifiedContract {
      * @param options 
      * @returns         array of structs of liquidity providers 
      */
-     public async getLiquidityProviders(security: string, options?: { gasPrice, gasLimit }): any {
+     public async getLiquidityProviders(security: string, 
+                                        _hashedMessage: string,
+                                        _v: string,
+                                        _r: string,
+                                        _s: string,
+                                        options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, options);
+        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, _hashedMessage, _v, _r, _s, options);
     }
     
+    public async issue( security: string, 
+                        cutoffTime: string,
+                        issuer: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        await this.validateInput(DATATYPES.ADDRESS, issuer);
+        await this.validateInput(DATATYPES.NUMBER, cutoffTime);
+        return this.callContract(FUNCTIONS.ISSUE, security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async getSubscribers(poolId: string, 
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async close( security: string, 
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.CLOSE, security, _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async accept(poolid: string, 
+                        investor: string,
+                        amnt: string,
+                        asset: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, investor);
+        await this.validateInput(DATATYPES.ADDRESS, asset);
+        await this.validateInput(DATATYPES.NUMBER, amnt);
+        await this.validateInput(DATATYPES.STRING, poolid);
+        return this.callContract(FUNCTIONS.ACCEPT, this.sanitiseInput(DATATYPES.BYTE32, poolId), investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
+    }    
+
+    public async reject(poolid: string, 
+                        investor: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, investor);
+        await this.validateInput(DATATYPES.STRING, poolid);
+        return this.callContract(FUNCTIONS.REJECT, this.sanitiseInput(DATATYPES.BYTE32, poolId), investor, _hashedMessage, _v, _r, _s, options);
+    }  
+
+    public async settle(poolId: string, 
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.SETTLE, this.sanitiseInput(DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+    }
+
 }

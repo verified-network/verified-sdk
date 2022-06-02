@@ -11,6 +11,12 @@ var FUNCTIONS;
     FUNCTIONS["GETOFFERMADE"] = "getOfferMade";
     FUNCTIONS["GETALLOTTEDSTAKE"] = "getAllotedStake";
     FUNCTIONS["GETLIQUIDITYPROVIDERS"] = "getLiquidityProviders";
+    FUNCTIONS["ISSUE"] = "issue";
+    FUNCTIONS["GETSUBSCRIBERS"] = "getSubscribers";
+    FUNCTIONS["CLOSE"] = "close";
+    FUNCTIONS["ACCEPT"] = "accept";
+    FUNCTIONS["REJECT"] = "reject";
+    FUNCTIONS["SETTLE"] = "settle";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class AssetManager extends index_1.VerifiedContract {
     constructor(signer, platformAddress) {
@@ -19,14 +25,15 @@ class AssetManager extends index_1.VerifiedContract {
         super(address, JSON.stringify(BalancerManager_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async offer(owned, isin, offered, tomatch, desired, min, options) {
+    async offer(owned, isin, offered, tomatch, desired, min, issuer, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, owned);
         await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
         await this.validateInput(index_1.DATATYPES.STRING, isin);
         await this.validateInput(index_1.DATATYPES.NUMBER, offered);
         await this.validateInput(index_1.DATATYPES.NUMBER, desired);
         await this.validateInput(index_1.DATATYPES.NUMBER, min);
-        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, options);
+        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, _hashedMessage, _v, _r, _s, options);
     }
     /**
      * Gets security tokens offered for passed token parameter
@@ -64,9 +71,39 @@ class AssetManager extends index_1.VerifiedContract {
      * @param options
      * @returns         array of structs of liquidity providers
      */
-    async getLiquidityProviders(security, options) {
+    async getLiquidityProviders(security, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, options);
+        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, _hashedMessage, _v, _r, _s, options);
+    }
+    async issue(security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
+        await this.validateInput(index_1.DATATYPES.NUMBER, cutoffTime);
+        return this.callContract(FUNCTIONS.ISSUE, security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options);
+    }
+    async getSubscribers(poolId, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+    }
+    async close(security, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.CLOSE, security, _hashedMessage, _v, _r, _s, options);
+    }
+    async accept(poolid, investor, amnt, asset, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, investor);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, asset);
+        await this.validateInput(index_1.DATATYPES.NUMBER, amnt);
+        await this.validateInput(index_1.DATATYPES.STRING, poolid);
+        return this.callContract(FUNCTIONS.ACCEPT, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
+    }
+    async reject(poolid, investor, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, investor);
+        await this.validateInput(index_1.DATATYPES.STRING, poolid);
+        return this.callContract(FUNCTIONS.REJECT, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), investor, _hashedMessage, _v, _r, _s, options);
+    }
+    async settle(poolId, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.SETTLE, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = AssetManager;
