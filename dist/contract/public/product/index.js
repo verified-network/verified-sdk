@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const VerifiedProducts_json_1 = require("../../../abi/assetmanager/VerifiedProducts.json");
+const Products_json_1 = require("../../../abi/assetmanager/Products.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["ISSUEPRODUCT"] = "issueProduct";
@@ -11,8 +11,8 @@ var FUNCTIONS;
 class VerifiedProducts extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = signer.provider._network.chainId.toString();
-        const address = VerifiedProducts_json_1.networks[chainId].address;
-        super(address, JSON.stringify(VerifiedProducts_json_1.abi), signer);
+        const address = Products_json_1.networks[chainId].address;
+        super(address, JSON.stringify(Products_json_1.abi), signer);
         this.contractAddress = address;
     }
     async issueProduct(issue, ref, _hashedMessage, _v, _r, _s, options) {
