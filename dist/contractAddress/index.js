@@ -24,7 +24,7 @@ const contractAddress = {
         'Products': '0x812cD96Bd1D9C35EaCD3F09Dc504B2d30e63EFe5',
         'Stocks': '',
         'Bonds': '',
-        'Liquidity': '0xBe0ffE30eF6C651E12bfA1de4557C7DB0226E6f6',
+        'Liquidity': '0xf6FeBF7B2d2A9828F4B75dB9AE56414907175849',
         'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
         'BalancerManager': '0x69071961A04024F20A180B66F391DA5B14040bEa',
         'PrimaryIssuePoolFactory': '0x3Ea829F1a0E01dFDa096f71DEAFd3582DF5E5a26',
