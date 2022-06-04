@@ -38,6 +38,16 @@ export class VerifiedWallet extends EtherWallet {
     public setProvider(provider: Provider) {
         return new VerifiedWallet(this.privateKey, provider);
     }
+
+    public extractKey(object){        
+        object = "{\"networks\":"+object+"}"
+        console.log("To parse "+object)
+        Object.keys(object["networks"]).forEach(function(key) {
+            console.log("Network id "+key)
+            return key
+        })
+    }
+
     /**
      * The Metamask plugin also allows signing transactions to
      * send ether and pay to change state within the blockchain.
@@ -52,4 +62,5 @@ export class VerifiedWallet extends EtherWallet {
         const signer = provider.getSigner()
         return signer
     }
+
 }
