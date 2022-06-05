@@ -12,7 +12,6 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class TokenContract extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
-        const chainId = signer.provider._network.chainId.toString();
         const address = bondCurrencyAddress;
         super(address, JSON.stringify(Token_json_1.abi), signer);
         this.contractAddress = address;

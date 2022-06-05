@@ -22,7 +22,7 @@ export default class HolderContract extends VerifiedContract {
     public contractAddress: string
     
     constructor(signer: VerifiedWallet, holderAddress: string) {
-        const chainId: string = signer.provider._network.chainId.toString()
+        
         const address = holderAddress
         super(address, JSON.stringify(abi), signer)
 

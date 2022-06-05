@@ -19,7 +19,7 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class PreTradeContract extends index_1.VerifiedContract {
     constructor(signer) {
-        const chainId = signer.provider._network.chainId.toString();
+        const chainId = Object.keys(PreTrade_json_1.networks);
         const address = PreTrade_json_1.networks[chainId].address;
         super(address, JSON.stringify(PreTrade_json_1.abi), signer);
         this.contractAddress = address;

@@ -23,7 +23,6 @@ export default class AssetManager extends VerifiedContract {
     public contractAddress: string
     constructor(signer: VerifiedWallet, platformAddress: string) {
 
-        const chainId: string = signer.provider._network.chainId.toString()
         const address = platformAddress
         super(address, JSON.stringify(abi), signer)
 

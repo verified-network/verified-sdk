@@ -17,7 +17,6 @@ export default class TokenContract extends VerifiedContract {
     
     constructor(signer: VerifiedWallet, bondCurrencyAddress: string) {
 
-        const chainId: string = signer.provider._network.chainId.toString()
         const address = bondCurrencyAddress
         super(address, JSON.stringify(abi), signer)
 

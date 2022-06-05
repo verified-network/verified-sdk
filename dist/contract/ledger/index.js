@@ -10,7 +10,6 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class LedgerContract extends index_1.VerifiedContract {
     constructor(signer, ledgerAddress) {
-        const chainId = signer.provider._network.chainId.toString();
         const address = ledgerAddress;
         super(address, JSON.stringify(Ledger_json_1.abi), signer);
         this.contractAddress = address;

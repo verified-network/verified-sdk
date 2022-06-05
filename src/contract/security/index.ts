@@ -16,7 +16,6 @@ export default class SecurityContract extends VerifiedContract {
     
     constructor(signer: VerifiedWallet, tokenAddress: string) {
 
-        const chainId: string = signer.provider._network.chainId.toString()
         const address = tokenAddress
         super(address, JSON.stringify(abi), signer)
 

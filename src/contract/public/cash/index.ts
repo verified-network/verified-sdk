@@ -29,7 +29,6 @@ export default class VerifiedCash extends VerifiedContract {
     
     constructor(signer: VerifiedWallet, currencyAddress: string) {
 
-        const chainId: string = signer.provider._network.chainId.toString()
         const address = currencyAddress
         super(address, JSON.stringify(abi), signer)
 

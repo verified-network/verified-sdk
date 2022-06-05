@@ -28,8 +28,7 @@ export default class FactoryContract extends VerifiedContract {
     
     constructor(signer: VerifiedWallet) {
         
-        //const chainId: string = signer.provider._network.chainId.toString()
-        const chainId: string = signer.extractKey(JSON.stringify(networks))
+        const chainId: string = Object.keys(networks)
         console.log("Factory chain id "+chainId);
         const address = networks[chainId].address
         super(address, JSON.stringify(abi), signer)

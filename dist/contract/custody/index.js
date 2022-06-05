@@ -19,7 +19,7 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CustodyContract extends index_1.VerifiedContract {
     constructor(signer) {
-        const chainId = signer.provider._network.chainId.toString();
+        const chainId = Object.keys(Vault_json_1.networks);
         const address = Vault_json_1.networks[chainId].address;
         super(address, JSON.stringify(Vault_json_1.abi), signer);
         this.contractAddress = address;

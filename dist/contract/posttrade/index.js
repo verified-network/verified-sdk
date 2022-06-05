@@ -12,7 +12,7 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class PostTradeContract extends index_1.VerifiedContract {
     constructor(signer) {
-        const chainId = signer.provider._network.chainId.toString();
+        const chainId = Object.keys(PostTrade_json_1.networks);
         const address = PostTrade_json_1.networks[chainId].address;
         super(address, JSON.stringify(PostTrade_json_1.abi), signer);
         this.contractAddress = address;

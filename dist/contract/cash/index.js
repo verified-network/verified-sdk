@@ -18,7 +18,6 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CashContract extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
-        const chainId = signer.provider._network.chainId.toString();
         const address = currencyAddress;
         super(address, JSON.stringify(Cash_json_1.abi), signer);
         this.contractAddress = address;

@@ -23,8 +23,7 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class FactoryContract extends index_1.VerifiedContract {
     constructor(signer) {
-        //const chainId: string = signer.provider._network.chainId.toString()
-        const chainId = signer.extractKey(JSON.stringify(Factory_json_1.networks));
+        const chainId = Object.keys(Factory_json_1.networks);
         console.log("Factory chain id " + chainId);
         const address = Factory_json_1.networks[chainId].address;
         super(address, JSON.stringify(Factory_json_1.abi), signer);

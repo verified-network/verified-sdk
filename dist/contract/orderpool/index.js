@@ -13,7 +13,6 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class OrderPoolContract extends index_1.VerifiedContract {
     constructor(signer, orderPool) {
-        const chainId = signer.provider._network.chainId.toString();
         const address = orderPool;
         super(address, JSON.stringify(OrderPool_json_1.abi), signer);
         this.contractAddress = address;

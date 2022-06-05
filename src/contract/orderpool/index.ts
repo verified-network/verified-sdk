@@ -18,7 +18,6 @@ export default class OrderPoolContract extends VerifiedContract {
   
   constructor(signer: VerifiedWallet, orderPool: string) {
 
-    const chainId: string = signer.provider._network.chainId.toString()
     const address = orderPool
     super(address, JSON.stringify(abi), signer)
 

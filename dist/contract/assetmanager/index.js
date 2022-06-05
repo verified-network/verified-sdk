@@ -20,7 +20,6 @@ var FUNCTIONS;
 })(FUNCTIONS || (FUNCTIONS = {}));
 class AssetManager extends index_1.VerifiedContract {
     constructor(signer, platformAddress) {
-        const chainId = signer.provider._network.chainId.toString();
         const address = platformAddress;
         super(address, JSON.stringify(BalancerManager_json_1.abi), signer);
         this.contractAddress = address;
