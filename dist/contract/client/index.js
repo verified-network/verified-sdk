@@ -49,9 +49,10 @@ class ClientContract extends index_1.VerifiedContract {
      * @params (bool login)
      * @returns
      */
-    async setAccess(_token, options) {
+    async setAccess(_client, _token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
         await this.validateInput(index_1.DATATYPES.STRING, _token);
-        return this.callContract(FUNCTIONS.SETACCESS, _token, options);
+        return this.callContract(FUNCTIONS.SETACCESS, _client, _token, options);
     }
     async getAccess(_clientAddress, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _clientAddress);
