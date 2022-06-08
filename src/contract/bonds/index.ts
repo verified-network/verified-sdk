@@ -26,7 +26,8 @@ enum FUNCTIONS {
     GETBENEFICIARIES = 'getBeneficiaries',
     SETLIQUIDITYPROVIDERS = 'setLiquidityProviders',
     SETPLATFORMPOOLS = 'setPlatformPools',
-    SETPLATFORMSUBSCRIBERS = 'setPlatformSubscribers'
+    SETPLATFORMSUBSCRIBERS = 'setPlatformSubscribers',
+    SETTLE = 'settleIssue'
 }
 
 export default class BondsContract extends VerifiedContract {
@@ -71,6 +72,11 @@ export default class BondsContract extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _asset)
         return this.callContract(FUNCTIONS.ALLOTISSUE, this.sanitiseInput(DATATYPES.BYTE32, _allotment), 
                                                         _platform, this.sanitiseInput(DATATYPES.BYTE32, _pool), _investor, _amount, _asset, options)
+    }
+
+    public async settle(issue: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, issue)
+        return this.callContract(FUNCTIONS.SETTLE, issue, options)
     }
 
     public async computeNextInstallment(_currency: string, options?: { gasPrice: number, gasLimit: number }): any {

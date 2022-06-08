@@ -27,6 +27,7 @@ var FUNCTIONS;
     FUNCTIONS["SETLIQUIDITYPROVIDERS"] = "setLiquidityProviders";
     FUNCTIONS["SETPLATFORMPOOLS"] = "setPlatformPools";
     FUNCTIONS["SETPLATFORMSUBSCRIBERS"] = "setPlatformSubscribers";
+    FUNCTIONS["SETTLE"] = "settleIssue";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class BondsContract extends index_1.VerifiedContract {
     constructor(signer, issue) {
@@ -58,6 +59,10 @@ class BondsContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _asset);
         return this.callContract(FUNCTIONS.ALLOTISSUE, this.sanitiseInput(index_1.DATATYPES.BYTE32, _allotment), _platform, this.sanitiseInput(index_1.DATATYPES.BYTE32, _pool), _investor, _amount, _asset, options);
+    }
+    async settle(issue, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, issue);
+        return this.callContract(FUNCTIONS.SETTLE, issue, options);
     }
     async computeNextInstallment(_currency, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _currency);
