@@ -23,7 +23,10 @@ enum FUNCTIONS {
     GETINTERESTRATE = 'getinterestRateInBips',
     PAYOUT = 'payOut',
     ISSUEBOND = 'issueBond',
-    GETBENEFICIARIES = 'getBeneficiaries'
+    GETBENEFICIARIES = 'getBeneficiaries',
+    SETLIQUIDITYPROVIDERS = 'setLiquidityProviders',
+    SETPLATFORMPOOLS = 'setPlatformPools',
+    SETPLATFORMSUBSCRIBERS = 'setPlatformSubscribers'
 }
 
 export default class BondsContract extends VerifiedContract {
@@ -154,6 +157,50 @@ export default class BondsContract extends VerifiedContract {
                                     this.sanitiseInput(DATATYPES.BYTE32, _isin),
                                     _offeringDocuments,
                 options)
+    }
+
+    public async setLiquidityProviders( platform: string, liquidityProviders: string, 
+                                        _hashedMessage: string,
+                                        _v: string,
+                                        _r: string,
+                                        _s: string,
+                                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, platform);
+        await this.validateInput(DATATYPES.STRING, liquidityProviders);
+        return this.callContract(FUNCTIONS.SETLIQUIDITYPROVIDERS, platform, liquidityProviders,
+                    _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async setPlatformPools(  platform: string, 
+                                    securityToken: string, 
+                                    pools: string,
+                                    status: string,
+                                    _hashedMessage: string,
+                                    _v: string,
+                                    _r: string,
+                                    _s: string,
+                                    options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, platform);
+        await this.validateInput(DATATYPES.ADDRESS, securityToken);
+        await this.validateInput(DATATYPES.STRING, pools);
+        await this.validateInput(DATATYPES.STRING, status);
+        return this.callContract(FUNCTIONS.SETPLATFORMPOOLS, platform, securityToken, pools, status,
+                    _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async setPlatformSubscribers(platform: string, 
+                                        pool: string,
+                                        eois: string,
+                                        _hashedMessage: string,
+                                        _v: string,
+                                        _r: string,
+                                        _s: string,
+                                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, platform);
+        await this.validateInput(DATATYPES.STRING, pool);
+        await this.validateInput(DATATYPES.STRING, eois);
+        return this.callContract(FUNCTIONS.SETPLATFORMSUBSCRIBERS, platform, this.sanitiseInput(DATATYPES.BYTE32, pool), eois,
+                                _hashedMessage, _v, _r, _s, options);
     }
 
 }

@@ -21,7 +21,8 @@ enum FUNCTIONS {
     GETISSUERADDRESS = 'getIssuerAddress',
     GETPLATFORMS = 'getPlatforms',
     GETPRODUCTREFERENCE = 'getProductReference',
-    SETSIGNER = 'setSigner'
+    SETSIGNER = 'setSigner',
+    REGISTERPLATFORM = 'registerPlatform'
 }
 
 export default class ProductContract extends VerifiedContract {
@@ -142,6 +143,17 @@ export default class ProductContract extends VerifiedContract {
     public async getProductReference(_issue: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _issue)
         return this.callContract(FUNCTIONS.GETPRODUCTREFERENCE, _issue, options)
+    }
+
+    public async registerPlatform( liquidityPlatform: string, 
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, liquidityPlatform);
+        return this.callContract(FUNCTIONS.REGISTERPLATFORM, liquidityPlatform,
+                            _hashedMessage, _v, _r, _s, options);
     }
 
 }

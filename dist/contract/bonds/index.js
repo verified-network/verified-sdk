@@ -24,6 +24,9 @@ var FUNCTIONS;
     FUNCTIONS["PAYOUT"] = "payOut";
     FUNCTIONS["ISSUEBOND"] = "issueBond";
     FUNCTIONS["GETBENEFICIARIES"] = "getBeneficiaries";
+    FUNCTIONS["SETLIQUIDITYPROVIDERS"] = "setLiquidityProviders";
+    FUNCTIONS["SETPLATFORMPOOLS"] = "setPlatformPools";
+    FUNCTIONS["SETPLATFORMSUBSCRIBERS"] = "setPlatformSubscribers";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class BondsContract extends index_1.VerifiedContract {
     constructor(signer, issue) {
@@ -109,6 +112,24 @@ class BondsContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _isin);
         await this.validateInput(index_1.DATATYPES.STRING, _offeringDocuments);
         return this.callContract(FUNCTIONS.ISSUEBOND, _issueSize, _offerPrice, _minAskPrice, _minSubscription, _couponPaymentCycle, _tenure, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), this.sanitiseInput(index_1.DATATYPES.BYTE32, _offerType), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _offeringDocuments, options);
+    }
+    async setLiquidityProviders(platform, liquidityProviders, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, platform);
+        await this.validateInput(index_1.DATATYPES.STRING, liquidityProviders);
+        return this.callContract(FUNCTIONS.SETLIQUIDITYPROVIDERS, platform, liquidityProviders, _hashedMessage, _v, _r, _s, options);
+    }
+    async setPlatformPools(platform, securityToken, pools, status, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, platform);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, securityToken);
+        await this.validateInput(index_1.DATATYPES.STRING, pools);
+        await this.validateInput(index_1.DATATYPES.STRING, status);
+        return this.callContract(FUNCTIONS.SETPLATFORMPOOLS, platform, securityToken, pools, status, _hashedMessage, _v, _r, _s, options);
+    }
+    async setPlatformSubscribers(platform, pool, eois, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, platform);
+        await this.validateInput(index_1.DATATYPES.STRING, pool);
+        await this.validateInput(index_1.DATATYPES.STRING, eois);
+        return this.callContract(FUNCTIONS.SETPLATFORMSUBSCRIBERS, platform, this.sanitiseInput(index_1.DATATYPES.BYTE32, pool), eois, _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = BondsContract;

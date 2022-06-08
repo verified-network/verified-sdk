@@ -22,6 +22,7 @@ var FUNCTIONS;
     FUNCTIONS["GETPLATFORMS"] = "getPlatforms";
     FUNCTIONS["GETPRODUCTREFERENCE"] = "getProductReference";
     FUNCTIONS["SETSIGNER"] = "setSigner";
+    FUNCTIONS["REGISTERPLATFORM"] = "registerPlatform";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class ProductContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -100,6 +101,10 @@ class ProductContract extends index_1.VerifiedContract {
     async getProductReference(_issue, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issue);
         return this.callContract(FUNCTIONS.GETPRODUCTREFERENCE, _issue, options);
+    }
+    async registerPlatform(liquidityPlatform, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, liquidityPlatform);
+        return this.callContract(FUNCTIONS.REGISTERPLATFORM, liquidityPlatform, _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = ProductContract;
