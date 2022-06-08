@@ -92,13 +92,15 @@ export default class AssetManager extends VerifiedContract {
      * @returns         array of structs of liquidity providers 
      */
      public async getLiquidityProviders(security: string, 
-                                        _hashedMessage: string,
-                                        _v: string,
-                                        _r: string,
-                                        _s: string,
+                                        //_hashedMessage: string,
+                                        //_v: string,
+                                        //_r: string,
+                                        //_s: string,
                                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, 
+                                //_hashedMessage, _v, _r, _s, 
+                                options);
     }
     
     public async issue( security: string, 

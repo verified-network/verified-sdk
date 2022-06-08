@@ -70,9 +70,16 @@ class AssetManager extends index_1.VerifiedContract {
      * @param options
      * @returns         array of structs of liquidity providers
      */
-    async getLiquidityProviders(security, _hashedMessage, _v, _r, _s, options) {
+    async getLiquidityProviders(security, 
+    //_hashedMessage: string,
+    //_v: string,
+    //_r: string,
+    //_s: string,
+    options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, 
+        //_hashedMessage, _v, _r, _s, 
+        options);
     }
     async issue(security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
