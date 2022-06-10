@@ -24,7 +24,12 @@ class AssetManager extends index_1.VerifiedContract {
         super(address, JSON.stringify(BalancerManager_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async offer(owned, isin, offered, tomatch, desired, min, issuer, _hashedMessage, _v, _r, _s, options) {
+    async offer(owned, isin, offered, tomatch, desired, min, issuer, 
+    //_hashedMessage: string,
+    //_v: string,
+    //_r: string,
+    //_s: string,
+    options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, owned);
         await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
         await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
@@ -32,7 +37,8 @@ class AssetManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, offered);
         await this.validateInput(index_1.DATATYPES.NUMBER, desired);
         await this.validateInput(index_1.DATATYPES.NUMBER, min);
-        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, 
+        /*_hashedMessage, _v, _r, _s,*/ options);
     }
     /**
      * Gets security tokens offered for passed token parameter

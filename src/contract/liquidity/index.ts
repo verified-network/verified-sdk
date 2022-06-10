@@ -21,7 +21,7 @@ enum FUNCTIONS {
     ADDMANAGER = 'addManager',
     REMOVEMANAGER = 'removeManager',
     GETMANAGERS = 'getManagers',
-    GETPLATFORMS = 'getPlaforms',
+    GETPLATFORMS = 'getPlatforms',
     GETPLATFORMPERFORMANCE = 'getPlatformPerformance',
     GETMANAGERPERFORMANCE = 'getManagerPerformance',
     PROVIDELIQUIDITY = 'provideLiquidity',
@@ -113,7 +113,7 @@ export default class LiquidityContract extends VerifiedContract {
     /**
         Fetches registered platforms
      */
-    public async getPlaforms(){
+    public async getPlatforms(){
         return this.callContract(FUNCTIONS.GETPLATFORMS)
     }
 

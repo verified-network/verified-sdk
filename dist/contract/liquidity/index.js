@@ -21,7 +21,7 @@ var FUNCTIONS;
     FUNCTIONS["ADDMANAGER"] = "addManager";
     FUNCTIONS["REMOVEMANAGER"] = "removeManager";
     FUNCTIONS["GETMANAGERS"] = "getManagers";
-    FUNCTIONS["GETPLATFORMS"] = "getPlaforms";
+    FUNCTIONS["GETPLATFORMS"] = "getPlatforms";
     FUNCTIONS["GETPLATFORMPERFORMANCE"] = "getPlatformPerformance";
     FUNCTIONS["GETMANAGERPERFORMANCE"] = "getManagerPerformance";
     FUNCTIONS["PROVIDELIQUIDITY"] = "provideLiquidity";
@@ -99,7 +99,7 @@ class LiquidityContract extends index_1.VerifiedContract {
     /**
         Fetches registered platforms
      */
-    async getPlaforms() {
+    async getPlatforms() {
         return this.callContract(FUNCTIONS.GETPLATFORMS);
     }
     /**

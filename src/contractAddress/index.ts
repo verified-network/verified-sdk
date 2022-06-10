@@ -22,10 +22,10 @@ const contractAddress: Object = {
         'Products': '0xF647F22e8Ce31d912c2786135610f9f4A45c8690',
         'Stocks': '',
         'Bonds': '',
-        'Liquidity': '0xf6FeBF7B2d2A9828F4B75dB9AE56414907175849',
+        'Liquidity': '0x843B749A35F703DcE3e94eaF48d459F02Bb21bf6',
         'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
-        'BalancerManager': '0x5bd1c54f94eE6eB7a7fA94bB31A600B9Ea6E179a',
-        'PrimaryIssuePoolFactory' : '0xe1e009F722e5fb544b35543Cc5da7B7E00a56abB',
+        'BalancerManager': '0x52dBaa7940f546FC915427D52afdCf0c39a539Bc',
+        'PrimaryIssuePoolFactory' : '0x90aeE3e5BDCbd9ee28e37709585101742FCD6890',
         'Custody': '',
         'CASH': {
             'VCUSD': '0xCb8eF17d0715bB115977C65e04423d9171025911',
@@ -65,7 +65,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerManager': '',
         'PrimaryIssuePoolFactory' : '',
-        'Custody': '',
+        'Custody': '0x138a6aF82D20c1bb4589721C846626317C5E1143',
         'CASH': {
             'VCUSD': '0xdD089A53574CabcA8082F81CC883bdBFCb0e464a',
             'VCEUR': '0xC889374e780911b6524ADde13998F7Cb2b0Bb8d5',

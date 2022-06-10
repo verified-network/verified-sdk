@@ -36,10 +36,10 @@ export default class AssetManager extends VerifiedContract {
                         desired:string, 
                         min:string, 
                         issuer: string,
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
+                        //_hashedMessage: string,
+                        //_v: string,
+                        //_r: string,
+                        //_s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, owned);
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
@@ -49,7 +49,7 @@ export default class AssetManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, desired);
         await this.validateInput(DATATYPES.NUMBER, min);
         return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer,
-                                    _hashedMessage, _v, _r, _s, options);
+                                    /*_hashedMessage, _v, _r, _s,*/ options);
     }
 
     /**
