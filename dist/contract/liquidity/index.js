@@ -221,11 +221,13 @@ class LiquidityContract extends index_1.VerifiedContract {
      * @param options
      * @returns             none
      */
-    async provideLiquidity(_platform, _manager, _liquidity, options) {
+    async provideLiquidity(_platform, _manager, _liquidity, _token, _tokenAmount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _manager);
         await this.validateInput(index_1.DATATYPES.NUMBER, _liquidity);
-        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _tokenAmount);
+        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, _token, _tokenAmount, options);
     }
     /**
      * Fetches balance of investor

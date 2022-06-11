@@ -246,11 +246,13 @@ export default class LiquidityContract extends VerifiedContract {
      * @param options 
      * @returns             none
      */
-    public async provideLiquidity(_platform: string, _manager: string, _liquidity: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async provideLiquidity(_platform: string, _manager: string, _liquidity: string, _token: string, _tokenAmount: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _platform)
         await this.validateInput(DATATYPES.ADDRESS, _manager)
         await this.validateInput(DATATYPES.NUMBER, _liquidity)
-        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, options)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        await this.validateInput(DATATYPES.NUMBER, _tokenAmount)
+        return this.callContract(FUNCTIONS.PROVIDELIQUIDITY, _platform, _manager, _liquidity, _token, _tokenAmount, options)
     } 
 
     /**
