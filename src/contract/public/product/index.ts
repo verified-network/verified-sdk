@@ -6,7 +6,8 @@ import { VerifiedWallet } from "../../../wallet";
 import { abi, networks } from '../../../abi/assetmanager/Products.json';
 
 enum FUNCTIONS {
-    ISSUEPRODUCT = 'issueProduct'
+    ISSUEPRODUCT = 'issueProduct',
+    GETPRODUCTREFERENCE = 'getProductReference'
 }
 
 export default class VerifiedProducts extends VerifiedContract {
@@ -32,6 +33,12 @@ export default class VerifiedProducts extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, issue);
         await this.validateInput(DATATYPES.STRING, ref);
         return this.callContract(FUNCTIONS.ISSUEPRODUCT, issue, this.sanitiseInput(DATATYPES.BYTE32, ref), _hashedMessage, _v, _r, _s, options);
-    }  
+    } 
+    
+    public async getProductReference(  issue: string, 
+                                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, issue);
+        return this.callContract(FUNCTIONS.GETPRODUCTREFERENCE, issue, options);
+    }
 
 }

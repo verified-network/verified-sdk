@@ -7,6 +7,7 @@ const Products_json_1 = require("../../../abi/assetmanager/Products.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["ISSUEPRODUCT"] = "issueProduct";
+    FUNCTIONS["GETPRODUCTREFERENCE"] = "getProductReference";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedProducts extends index_1.VerifiedContract {
     constructor(signer) {
@@ -19,6 +20,10 @@ class VerifiedProducts extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, issue);
         await this.validateInput(index_1.DATATYPES.STRING, ref);
         return this.callContract(FUNCTIONS.ISSUEPRODUCT, issue, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), _hashedMessage, _v, _r, _s, options);
+    }
+    async getProductReference(issue, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, issue);
+        return this.callContract(FUNCTIONS.GETPRODUCTREFERENCE, issue, options);
     }
 }
 exports.default = VerifiedProducts;
