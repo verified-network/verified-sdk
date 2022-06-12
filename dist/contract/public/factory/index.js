@@ -13,6 +13,10 @@ var FUNCTIONS;
     FUNCTIONS["GETTOKENCOUNT"] = "getTokenCount";
     FUNCTIONS["GETTOKEN"] = "getToken";
     FUNCTIONS["GETNAMEANDTYPE"] = "getNameAndType";
+    FUNCTIONS["SETSIGNER"] = "setSigner";
+    FUNCTIONS["ADDBALANCE"] = "addToBalance";
+    FUNCTIONS["ISSUESECURITY"] = "issueSecurity";
+    FUNCTIONS["SECURITIESADDED"] = "securitiesAdded";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedFactory extends index_1.VerifiedContract {
     constructor(signer) {
@@ -20,6 +24,14 @@ class VerifiedFactory extends index_1.VerifiedContract {
         const address = Factory_json_1.networks[chainId].address;
         super(address, JSON.stringify(Factory_json_1.abi), signer);
         this.contractAddress = address;
+    }
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    async setSigner(_signer, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
     }
     /**
      * Get number of tokens [callable by client]
@@ -87,6 +99,21 @@ class VerifiedFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, tokenName);
         await this.validateInput(index_1.DATATYPES.STRING, tokenType);
         return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(index_1.DATATYPES.BYTE32, tokenType), this.sanitiseInput(index_1.DATATYPES.BYTE32, tokenName), options);
+    }
+    async issueSecurity(_security, _company, _isin, _currency, _issuer, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuer, _hashedMessage, _v, _r, _s, options);
+    }
+    async addBalance(_security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options);
+    }
+    notifySecuritiesAdded(callback) {
+        this.getEvent(FUNCTIONS.SECURITIESADDED, callback);
     }
 }
 exports.default = VerifiedFactory;

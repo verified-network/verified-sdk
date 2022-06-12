@@ -12,7 +12,11 @@ enum FUNCTIONS {
     GETISSUER = 'getIssuer',
     GETTOKENCOUNT = 'getTokenCount',
     GETTOKEN = 'getToken',
-    GETNAMEANDTYPE = 'getNameAndType'
+    GETNAMEANDTYPE = 'getNameAndType',
+    SETSIGNER = 'setSigner',
+    ADDBALANCE = 'addToBalance',
+    ISSUESECURITY = 'issueSecurity',
+    SECURITIESADDED = 'securitiesAdded'
 }
 
 export default class VerifiedFactory extends VerifiedContract {
@@ -27,6 +31,15 @@ export default class VerifiedFactory extends VerifiedContract {
 
         this.contractAddress = address
     }
+
+    /**
+        Sets signer to verify bridge
+        @param  _signer  address of signer that can only be set by owner of bridge
+     */
+    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _signer)
+        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
+    } 
 
     /**
      * Get number of tokens [callable by client]
@@ -100,6 +113,42 @@ export default class VerifiedFactory extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, tokenName)
         await this.validateInput(DATATYPES.STRING, tokenType)
         return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(DATATYPES.BYTE32, tokenType), this.sanitiseInput(DATATYPES.BYTE32, tokenName), options)
+    }
+
+    public async issueSecurity(_security: string,
+                _company: string, 
+                _isin: string, 
+                _currency: string, 
+                _issuer: string,
+                _hashedMessage: string,
+                _v: string,
+                _r: string,
+                _s: string,
+                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _security)
+        await this.validateInput(DATATYPES.ADDRESS, _issuer)        
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuer, 
+                _hashedMessage, _v, _r, _s, options)
+    }
+
+    public async addBalance(_security: string,
+                            _transferor: string, 
+                            _transferee: string, 
+                            _amount: string, 
+                            _hashedMessage: string,
+                            _v: string,
+                            _r: string,
+                            _s: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _security)
+        await this.validateInput(DATATYPES.ADDRESS, _transferor)
+        await this.validateInput(DATATYPES.ADDRESS, _transferee) 
+        await this.validateInput(DATATYPES.NUMBER, _amount)             
+        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options)
+    }
+
+    public notifySecuritiesAdded(callback: any): object {
+        this.getEvent(FUNCTIONS.SECURITIESADDED, callback)
     }
     
 }
