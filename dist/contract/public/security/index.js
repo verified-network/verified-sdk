@@ -6,39 +6,19 @@ const index_1 = require("../../index");
 const Security_json_1 = require("../../../abi/deposits/Security.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
-    FUNCTIONS["SETSIGNER"] = "setSigner";
-    FUNCTIONS["ADDBALANCE"] = "addToBalance";
-    FUNCTIONS["TRANSFERBALANCE"] = "transferBalance";
-    FUNCTIONS["SECURITIESADDED"] = "securitiesAdded";
+    FUNCTIONS["APPROVETOKEN"] = "approveToken";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedSecurity extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(Security_json_1.networks);
-        const address = Security_json_1.networks[chainId].address;
+    constructor(signer, tokenAddress) {
+        const address = tokenAddress;
         super(address, JSON.stringify(Security_json_1.abi), signer);
         this.contractAddress = address;
     }
-    /**
-        Sets signer to verify bridge
-        @param  _signer  address of signer that can only be set by owner of bridge
-     */
-    async setSigner(_signer, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
-        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
-    }
-    async addToBalance(_isin, _amount, _tokenHolder, _currency, _hashedMessage, _v, _r, _s, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _tokenHolder);
+    async approveToken(_owner, _spender, _amount, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _owner);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.ADDBALANCE, this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _amount, _tokenHolder, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
-    }
-    async transferBalance(_isin, _transferor, _amount, _transferee, _currency, _hashedMessage, _v, _r, _s, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.TRANSFERBALANCE, this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _transferor, _amount, _transferee, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
-    }
-    notifySecuritiesAdded(callback) {
-        this.getEvent(FUNCTIONS.SECURITIESADDED, callback);
+        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = VerifiedSecurity;

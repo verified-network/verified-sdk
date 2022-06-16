@@ -30,10 +30,10 @@ import RatesContract from './contract/rates';
 import AssetManager from './contract/assetmanager';
 import VerifiedCash from './contract/public/cash';
 import VerifiedBond from './contract/public/bond';
+import VerifiedSecurity from './contract/public/security';
 import VerifiedFactory from './contract/public/factory';
 import VerifiedDistribution from './contract/public/distribution';
 import VerifiedRates from './contract/public/rates';
-import VerifiedProducts from './contract/public/product';
 import VerifiedClient from './contract/public/client';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
@@ -69,10 +69,10 @@ export {
     AssetManager,
     VerifiedCash,
     VerifiedBond,
+    VerifiedSecurity,
     VerifiedFactory,
     VerifiedDistribution,
     VerifiedRates,
-    VerifiedProducts,
     VerifiedClient,
     utils,
     contractAddress
