@@ -15,7 +15,10 @@ enum FUNCTIONS {
     PROMPTSIGNATURES = 'promptSignatures',
     SIGNTRANSACTION = 'signTransaction',
     CHECKQUORUM = 'checkQuorum',
-    GETSHARDS = 'getShards'
+    GETSHARDS = 'getShards',
+    NEWPARTICIPANT = 'NewParticipant',
+    NEWTRANSACTION = 'NewTransaction',
+    SIGNTRANSACTION = 'SignTransaction'
 }
 
 export default class CustodyContract extends VerifiedContract {
@@ -82,13 +85,25 @@ export default class CustodyContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _participant)
         await this.validateInput(DATATYPES.STRING, _txid)
-        return this.callContract(FUNCTIONS.CHECKQUORUM, this.sanitiseInput(DATATYPES.BYTE32, _creator), this.sanitiseInput(DATATYPES.BYTE32, _participant), this.sanitiseInput(DATATYPES.BYTE32, _txid), options)
+        return this.callContract(FUNCTIONS.CHECKQUORUM, this.sanitiseInput(DATATYPES.BYTE32, _creator), this.sanitiseInput(DATATYPES.BYTE32, _participant), _txid, options)
     }
 
     public async getShards(_creator: string, _txid: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _txid)
-        return this.callContract(FUNCTIONS.GETSHARDS, this.sanitiseInput(DATATYPES.BYTE32, _creator), this.sanitiseInput(DATATYPES.BYTE32, _txid), options)
+        return this.callContract(FUNCTIONS.GETSHARDS, this.sanitiseInput(DATATYPES.BYTE32, _creator), _txid, options)
+    }
+
+    public notifyNewParticipant(callback: any): object {
+        this.getEvent(FUNCTIONS.NEWPARTICIPANT, callback);
+    }
+
+    public notifyNewTransaction(callback: any): object {
+        this.getEvent(FUNCTIONS.NEWTRANSACTION, callback);
+    }
+
+    public notifySignTransaction(callback: any): object {
+        this.getEvent(FUNCTIONS.SIGNTRANSACTION, callback);
     }
 
 }

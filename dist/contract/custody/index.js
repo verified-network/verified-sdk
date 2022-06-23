@@ -16,6 +16,9 @@ var FUNCTIONS;
     FUNCTIONS["SIGNTRANSACTION"] = "signTransaction";
     FUNCTIONS["CHECKQUORUM"] = "checkQuorum";
     FUNCTIONS["GETSHARDS"] = "getShards";
+    FUNCTIONS["NEWPARTICIPANT"] = "NewParticipant";
+    FUNCTIONS["NEWTRANSACTION"] = "NewTransaction";
+    FUNCTIONS["SIGNTRANSACTION"] = "SignTransaction";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CustodyContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -67,12 +70,21 @@ class CustodyContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
         await this.validateInput(index_1.DATATYPES.STRING, _txid);
-        return this.callContract(FUNCTIONS.CHECKQUORUM, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), this.sanitiseInput(index_1.DATATYPES.BYTE32, _txid), options);
+        return this.callContract(FUNCTIONS.CHECKQUORUM, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _txid, options);
     }
     async getShards(_creator, _txid, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _txid);
-        return this.callContract(FUNCTIONS.GETSHARDS, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), this.sanitiseInput(index_1.DATATYPES.BYTE32, _txid), options);
+        return this.callContract(FUNCTIONS.GETSHARDS, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _txid, options);
+    }
+    notifyNewParticipant(callback) {
+        this.getEvent(FUNCTIONS.NEWPARTICIPANT, callback);
+    }
+    notifyNewTransaction(callback) {
+        this.getEvent(FUNCTIONS.NEWTRANSACTION, callback);
+    }
+    notifySignTransaction(callback) {
+        this.getEvent(FUNCTIONS.SIGNTRANSACTION, callback);
     }
 }
 exports.default = CustodyContract;
