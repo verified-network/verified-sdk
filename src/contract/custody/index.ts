@@ -18,7 +18,7 @@ enum FUNCTIONS {
     GETSHARDS = 'getShards',
     NEWPARTICIPANT = 'NewParticipant',
     NEWTRANSACTION = 'NewTransaction',
-    SIGNTRANSACTION = 'SignTransaction'
+    SIGNATURE = 'SignTransaction'
 }
 
 export default class CustodyContract extends VerifiedContract {
@@ -103,7 +103,7 @@ export default class CustodyContract extends VerifiedContract {
     }
 
     public notifySignTransaction(callback: any): object {
-        this.getEvent(FUNCTIONS.SIGNTRANSACTION, callback);
+        this.getEvent(FUNCTIONS.SIGNATURE, callback);
     }
 
 }

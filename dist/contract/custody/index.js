@@ -18,7 +18,7 @@ var FUNCTIONS;
     FUNCTIONS["GETSHARDS"] = "getShards";
     FUNCTIONS["NEWPARTICIPANT"] = "NewParticipant";
     FUNCTIONS["NEWTRANSACTION"] = "NewTransaction";
-    FUNCTIONS["SIGNTRANSACTION"] = "SignTransaction";
+    FUNCTIONS["SIGNATURE"] = "SignTransaction";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CustodyContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -84,7 +84,7 @@ class CustodyContract extends index_1.VerifiedContract {
         this.getEvent(FUNCTIONS.NEWTRANSACTION, callback);
     }
     notifySignTransaction(callback) {
-        this.getEvent(FUNCTIONS.SIGNTRANSACTION, callback);
+        this.getEvent(FUNCTIONS.SIGNATURE, callback);
     }
 }
 exports.default = CustodyContract;
