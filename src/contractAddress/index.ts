@@ -1,40 +1,40 @@
 const contractAddress: Object = {
-    'L1-goerli': {
-        'Client': '0xEF52B2289BE5eaf61100c59f529B42ba8d6022F1',
+    'L1-rinkeby': {
+        'Client': '0xd0f9F21B209BD1FA88c99F765B7a1032255C953F',
         'KYC': '',
         'System': '',
         'Holder': '',
         'Ledger': '',
         'Account': '',
-        'Factory': '0x31A0469B5B0941aCcf75643aAB81ae319AD07733',        
-        'Cash': '0x13AAf050FD9BB16bb57A9D141515f789cD711004',
-        'Bond': '0xc97E5FFE71eE3dBf90a01917b154a20F6DfF6eb9',
+        'Factory': '0x52E88bced2F214cb6DC27B4c9b5D2026CA9A5C91',        
+        'Cash': '0xe94E5c776b67f895dB02b0841365115Dc1847733',
+        'Bond': '0xEA503c36561564f0AA2745677e7835722168e634',
         'Token': '',
         'Oracle': '',
-        'Rates': '0xDccbBf85d4881f0BA8ea7c9Cb02f4Ed8a123A3fD',
+        'Rates': '0x9f9D43B1231ba641EAAf1ca2982b9b9E39884538',
         'PreTrade': '',
         'Trade': '',
         'PostTrade': '',
         'SecuritiesRegistry': '',
-        'Security': '0x6c09aA54F469052E29bBa80b632fDBc95Ea0a0e8',
+        'Security': '0x59c03C48407641648D673e483d40c8a9A3552DFc',
         'OrderPool': '',
         'PoolFactory': '',
         'Stocks': '',
         'Bonds': '',
-        'Liquidity': '0xE3B74659a6464519987DEe03F17696690BF3Ae10',
-        'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
-        'BalancerManager': '0x607080F3dB562aE9aFf0b3f2189798b873E2bB62',
-        'PrimaryIssuePoolFactory' : '0xA84965eDDF405B76ea8fA9d902396562B9fd9AA1',
-        'Custody': '0x2D36DBD05580BF946fFf959DC5Af882F641edADc',
+        'Liquidity': '0x06b40A1471d715FD0581854F22166283D89b0302',
+        'Distribution': '0x7aE7fe788D1f14B22a7f6C3707320FbE3A51968b',
+        'BalancerPrimaryIssueManager': '0x66E5FE7B82686833a063a050A2A2b9Fdf17adBEd',
+        'BalancerSecondaryIssueManager' : '0x3da4a6DB7cFcDe2d4fb48e8E946d57EdB52d435a',
+        'Custody': '0x8357FB36fFA9dcE78A43Fb33DbFFAAB2738E5B1a',
         'CASH': {
-            'VCUSD': '0x64EA01fF7e9A0986Cd70b4d19CEDB26a9f99F0c1',
-            'VCEUR': '0x5f678B12C4a5fc2136CC9060B10BB2a8AFdfA5b6',
-            'VCINR': '0x74153fe9E896EC7067CC53c9533BFC00c45CD629'
+            'VCUSD': '0x0817a43DB9b3e562FF70C1aa6e27E109324ca16A',
+            'VCEUR': '0xF0B677058BbBA3066B644034054447412D5EB40d',
+            'VCINR': '0x0D3d2e2Be0902Ebe5fD7E75dD57B127203Fc9e78'
         },
         'BOND': {
-            'VBUSD': '0x64a281e17b089aB8F0D50729b2C9C779B460e1fC',
-            'VBEUR': '0x220C22b1a292504afdA9FC0fE39D83e4bcBb834E',
-            'VBINR': '0x3cbaD48599a8EBfF275480E51ee03F9b1F63F0de'
+            'VBUSD': '0xD1fB140A486BFCec3744E4aE2b9B7c84989ae937',
+            'VBEUR': '0xA719C7365F5a20Ef694409B0fF0084127919b019',
+            'VBINR': '0xD8A84301df4138c48Fdb1b6C7c96980983200835'
         },
     },
     'L2-goerli': {

@@ -27,7 +27,8 @@ import CustodyContract from './contract/custody';
 import LiquidityContract from './contract/liquidity';
 import DistributionContract from './contract/distribution';
 import RatesContract from './contract/rates';
-import AssetManager from './contract/assetmanager';
+import BalancerPrimaryIssueManager from './contract/balancer/primary';
+import BalancerSecondaryIssueManager from './contract/balancer/secondary';
 import VerifiedCash from './contract/public/cash';
 import VerifiedBond from './contract/public/bond';
 import VerifiedSecurity from './contract/public/security';
@@ -66,7 +67,8 @@ export {
     CustodyContract,
     LiquidityContract,
     RatesContract,
-    AssetManager,
+    BalancerPrimaryIssueManager,
+    BalancerSecondaryIssueManager,
     VerifiedCash,
     VerifiedBond,
     VerifiedSecurity,
