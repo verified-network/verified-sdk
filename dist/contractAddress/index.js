@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     'L1-rinkeby': {
-        'Client': '0xd0f9F21B209BD1FA88c99F765B7a1032255C953F',
+        'Client': '0xA0893b7bafC5773c088Bf11E323f8C4F03759929',
         'KYC': '',
         'System': '',
         'Holder': '',
@@ -25,8 +25,8 @@ const contractAddress = {
         'Bonds': '',
         'Liquidity': '0x06b40A1471d715FD0581854F22166283D89b0302',
         'Distribution': '0x7aE7fe788D1f14B22a7f6C3707320FbE3A51968b',
-        'BalancerPrimaryIssueManager': '0x66E5FE7B82686833a063a050A2A2b9Fdf17adBEd',
-        'BalancerSecondaryIssueManager': '0x3da4a6DB7cFcDe2d4fb48e8E946d57EdB52d435a',
+        'BalancerPrimaryIssueManager': '0xc4FC6e44AC4bB67eC08FFF6ce47BB44E9BE038e8',
+        'BalancerSecondaryIssueManager': '0x8099A9C79672BDDD0506364f4B0791A2384a960B',
         'Custody': '0x8357FB36fFA9dcE78A43Fb33DbFFAAB2738E5B1a',
         'CASH': {
             'VCUSD': '0x0817a43DB9b3e562FF70C1aa6e27E109324ca16A',
