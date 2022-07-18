@@ -14,9 +14,10 @@ var FUNCTIONS;
     FUNCTIONS["GETTOKEN"] = "getToken";
     FUNCTIONS["GETNAMEANDTYPE"] = "getNameAndType";
     FUNCTIONS["SETSIGNER"] = "setSigner";
-    FUNCTIONS["ADDBALANCE"] = "addToBalance";
+    FUNCTIONS["ADDBALANCE"] = "addBalance";
     FUNCTIONS["ISSUESECURITY"] = "issueSecurity";
     FUNCTIONS["SECURITIESADDED"] = "securitiesAdded";
+    FUNCTIONS["GETSECURITYTOKEN"] = "getSecurityToken";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedFactory extends index_1.VerifiedContract {
     constructor(signer) {
@@ -104,6 +105,11 @@ class VerifiedFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuer, _hashedMessage, _v, _r, _s, options);
+    }
+    async getSecurityToken(security, issuer, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
+        return this.callContract(FUNCTIONS.GETSECURITYTOKEN, security, issuer, options);
     }
     async addBalance(_security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
