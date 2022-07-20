@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
-    'L1-goerli': {
+    'L1-rinkeby': {
         'Client': '0xde54a4fD12D2ecE0b97348db764248375a1b1027',
         'KYC': '',
         'System': '',
