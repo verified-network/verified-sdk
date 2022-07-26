@@ -1,6 +1,6 @@
 const contractAddress: Object = {
     'L1-rinkeby': {
-        'Client': '0xde54a4fD12D2ecE0b97348db764248375a1b1027',
+        'Client': '0x09DD477A956d6e23c4B183f62004390A377B049f',
         'KYC': '',
         'System': '',
         'Holder': '',
@@ -23,8 +23,8 @@ const contractAddress: Object = {
         'Bonds': '',
         'Liquidity': '0x06b40A1471d715FD0581854F22166283D89b0302',
         'Distribution': '0x7aE7fe788D1f14B22a7f6C3707320FbE3A51968b',
-        'BalancerPrimaryIssueManager': '0x0AB021b3eCA4cD5451c2D80f72495d03433b3c80',
-        'BalancerSecondaryIssueManager' : '0x1AB6c6E32F56CEE867EB1A1D069023E3f77DD2cc',
+        'BalancerPrimaryIssueManager': '0x5266906543BdFAC071eFDb176f91930350e14C14',
+        'BalancerSecondaryIssueManager' : '0xd07793Fb430Bc003f476860379371CCb2f46D8E6',
         'Custody': '0x8357FB36fFA9dcE78A43Fb33DbFFAAB2738E5B1a',
         'CASH': {
             'VCUSD': '0x687135E1C8A4f2525483BE09C0401543F5DEd0E3',
@@ -57,9 +57,9 @@ const contractAddress: Object = {
         'Security': '0x346A38af25f5ae61A571DFC2431d84f1D3D0Ef6e',
         'OrderPool': '0x32e1D25C0ffb5AcfCc1d3392aaAB332157D1C0cc',
         'PoolFactory': '0x6Ea7c61a85E6e07711C15Eb7B3E74f7844c1c7b9',
-        'Products': '0x8300dc279ad80Ec37C4a9278F99997bb358ef7dc',
-        'Stocks': '0x68252500966C0253f8BcCa1bd7300422401d047F',
-        'Bonds': '0x4d57943C1DDcC9A064d4495F57B5ecD6d3e794c6',
+        'Products': '0x8f60B2df5803A9cAAC202140825Ad3be158bDb96',
+        'Stocks': '0x7338E7a7A5da4ED7CfA48cb49329E8234a5c2870',
+        'Bonds': '0x4DFE3441A4916efACe1Ad4530Ef9A42864134d1B',
         'Liquidity': '',
         'Distribution': '',
         'BalancerManager': '',
