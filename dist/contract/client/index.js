@@ -22,6 +22,7 @@ var FUNCTIONS;
     FUNCTIONS["ADDROLE"] = "addRole";
     FUNCTIONS["GETMANAGERS"] = "getManagers";
     FUNCTIONS["MANAGERADDED"] = "ManagerAdded";
+    FUNCTIONS["GETCLIENT"] = "getClient";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class ClientContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -33,13 +34,19 @@ class ClientContract extends index_1.VerifiedContract {
     initialize(_address) {
         return this.callContract(FUNCTIONS.INITIALIZE, params);
     }
-    async setCustody(address, custody, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, address);
-        return this.callContract(FUNCTIONS.SETCUSTODY, address, this.sanitiseInput(index_1.DATATYPES.BYTE32, custody), options);
+    async setCustody(client, service, account, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, client);
+        return this.callContract(FUNCTIONS.SETCUSTODY, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, service), this.sanitiseInput(index_1.DATATYPES.BYTE32, account), options);
     }
-    async getCustody(address, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, address);
-        return this.callContract(FUNCTIONS.GETCUSTODY, address, options);
+    async getCustody(client, service, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, client);
+        await this.validateInput(index_1.DATATYPES.STRING, service);
+        return this.callContract(FUNCTIONS.GETCUSTODY, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, service), options);
+    }
+    async getClient(service, account, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, service);
+        await this.validateInput(index_1.DATATYPES.STRING, account);
+        return this.callContract(FUNCTIONS.GETCLIENT, this.sanitiseInput(index_1.DATATYPES.BYTE32, service), this.sanitiseInput(index_1.DATATYPES.BYTE32, account), options);
     }
     /**
      * We can implement registration and log in using a SSO scheme such as Firebase (https://firebase.google.com/docs/auth) or Azure.

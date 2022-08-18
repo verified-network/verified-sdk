@@ -15,6 +15,7 @@ var FUNCTIONS;
     FUNCTIONS["EXCHANGE"] = "CashDeposits";
     FUNCTIONS["SETSIGNER"] = "setSigner";
     FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
+    FUNCTIONS["BURNCASHTOKENS"] = "burnCashTokens";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class CashContract extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
@@ -46,6 +47,12 @@ class CashContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
         await this.validateInput(index_1.DATATYPES.STRING, _currency);
         return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+    }
+    async burnCashTokens(_tokens, _payer, _currency, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _tokens);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        return this.callContract(FUNCTIONS.BURNCASHTOKENS, _tokens, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
     }
     /**
         Sets signer to verify bridge

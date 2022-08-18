@@ -22,7 +22,8 @@ enum FUNCTIONS {
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
     GETMANAGERS = 'getManagers',
-    MANAGERADDED = 'ManagerAdded'
+    MANAGERADDED = 'ManagerAdded',
+    GETCLIENT = 'getClient'
 }
 
 export default class ClientContract extends VerifiedContract {
@@ -40,14 +41,21 @@ export default class ClientContract extends VerifiedContract {
         return this.callContract(FUNCTIONS.INITIALIZE, params)
     }
 
-    public async setCustody(address: string, custody: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, address);
-        return this.callContract(FUNCTIONS.SETCUSTODY, address, this.sanitiseInput(DATATYPES.BYTE32, custody), options);
+    public async setCustody(client: string, service: string, account: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, client);
+        return this.callContract(FUNCTIONS.SETCUSTODY, client, this.sanitiseInput(DATATYPES.BYTE32, service), this.sanitiseInput(DATATYPES.BYTE32, account), options);
     }
 
-    public async getCustody(address: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, address);
-        return this.callContract(FUNCTIONS.GETCUSTODY, address, options);
+    public async getCustody(client: string, service: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, client);
+        await this.validateInput(DATATYPES.STRING, service);
+        return this.callContract(FUNCTIONS.GETCUSTODY, client, this.sanitiseInput(DATATYPES.BYTE32, service), options);
+    }
+
+    public async getClient(service: string, account: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, service);
+        await this.validateInput(DATATYPES.STRING, account);
+        return this.callContract(FUNCTIONS.GETCLIENT, this.sanitiseInput(DATATYPES.BYTE32, service), this.sanitiseInput(DATATYPES.BYTE32, account), options);
     }
 
     /**
