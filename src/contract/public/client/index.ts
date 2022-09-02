@@ -9,7 +9,8 @@ enum FUNCTIONS {
     SETSIGNER = 'setSigner',
     GETROLE = 'getRole',
     REMOVEROLE = 'removeRole',
-    ADDROLE = 'addRole'
+    ADDROLE = 'addRole',
+    UPDATEKYC = 'KycUpdate'
 }
 
 export default class VerifiedClient extends VerifiedContract {
@@ -72,6 +73,20 @@ export default class VerifiedClient extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _role)
         await this.validateInput(DATATYPES.STRING, _id)
         return this.callContract(FUNCTIONS.ADDROLE, _manager, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _id), _hashedMessage, _v, _r, _s, options)
+    }
+
+    public async KycUpdate(client: string, name: string, surname: string, country: string, status: string, 
+                                    _hashedMessage: string,
+                                    _v: string,
+                                    _r: string,
+                                    _s: string,
+                                    options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, client)
+        await this.validateInput(DATATYPES.STRING, name)
+        await this.validateInput(DATATYPES.STRING, surname)
+        await this.validateInput(DATATYPES.STRING, country)
+        await this.validateInput(DATATYPES.NUMBER, status)
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options)
     }
 
 }

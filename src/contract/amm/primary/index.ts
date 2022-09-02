@@ -3,7 +3,8 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/assetmanager/PrimaryIssueManager.json';
+import { abiBalancer, networks } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
+import { abiKyber, networks } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
 
 enum FUNCTIONS {
     OFFER = 'offer',
@@ -23,10 +24,13 @@ enum FUNCTIONS {
 
 export default class PrimaryIssueManager extends VerifiedContract {
     public contractAddress: string
-    constructor(signer: VerifiedWallet, platformAddress: string) {
+    constructor(signer: VerifiedWallet, platformAddress: string, platform: string) {
 
         const address = platformAddress
-        super(address, JSON.stringify(abi), signer)
+        if(platform=="balancer")
+            super(address, JSON.stringify(abiBalancer), signer)
+        else if(platform=="kyber")
+            super(address, JSON.stringify(abiKyber), signer)
 
         this.contractAddress = address
     }

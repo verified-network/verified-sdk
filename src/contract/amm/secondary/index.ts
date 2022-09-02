@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/assetmanager/SecondaryIssueManager.json';
+import { abi, networks } from '../../../abi/assetmanager/balancer/SecondaryIssueManager.json';
 
 enum FUNCTIONS {
     ISSUESECONDARY = 'issueSecondary',

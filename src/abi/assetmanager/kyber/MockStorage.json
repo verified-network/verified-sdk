@@ -1,0 +1,2304 @@
+{
+  "contractName": "MockStorage",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_admin",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "_networkHistory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "_feeHandlerHistory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "_kyberDaoHistory",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "_matchingEngineHistory",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum IKyberStorage.ReserveType",
+          "name": "reserveType",
+          "type": "uint8"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        }
+      ],
+      "name": "AddReserveToStorage",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "previousAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "AdminClaimed",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newAlerter",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isAdd",
+          "type": "bool"
+        }
+      ],
+      "name": "AlerterAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "contract IKyberNetwork",
+          "name": "newKyberNetwork",
+          "type": "address"
+        }
+      ],
+      "name": "KyberNetworkUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "src",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "dest",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "add",
+          "type": "bool"
+        }
+      ],
+      "name": "ListReservePairs",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "newOperator",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isAdd",
+          "type": "bool"
+        }
+      ],
+      "name": "OperatorAdded",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "RemoveReserveFromStorage",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        }
+      ],
+      "name": "ReserveRebateWalletSet",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "pendingAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "TransferAdminPending",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAlerter",
+          "type": "address"
+        }
+      ],
+      "name": "addAlerter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "kyberProxy",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "maxApprovedProxies",
+          "type": "uint256"
+        }
+      ],
+      "name": "addKyberProxy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newOperator",
+          "type": "address"
+        }
+      ],
+      "name": "addOperator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "enum IKyberStorage.ReserveType",
+          "name": "resType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "address payable",
+          "name": "rebateWallet",
+          "type": "address"
+        }
+      ],
+      "name": "addReserve",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "admin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "claimAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAlerters",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getContracts",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "kyberDaoAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "kyberFeeHandlerAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "kyberMatchingEngineAddresses",
+          "type": "address[]"
+        },
+        {
+          "internalType": "address[]",
+          "name": "kyberNetworkAddresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "getEntitledRebateData",
+      "outputs": [
+        {
+          "internalType": "bool[]",
+          "name": "entitledRebateArr",
+          "type": "bool[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "getFeeAccountedData",
+      "outputs": [
+        {
+          "internalType": "bool[]",
+          "name": "feeAccountedArr",
+          "type": "bool[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getKyberProxies",
+      "outputs": [
+        {
+          "internalType": "contract IKyberNetworkProxy[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getListedTokensByReserveId",
+      "outputs": [
+        {
+          "internalType": "contract IERC20[]",
+          "name": "srcTokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "contract IERC20[]",
+          "name": "destTokens",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getOperators",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "getRebateWalletsFromIds",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "rebateWallets",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getReserveAddressesByReserveId",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "reserveAddresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "name": "getReserveAddressesFromIds",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "reserveAddresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "endIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "getReserveAddressesPerTokenSrc",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "reserveAddresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        }
+      ],
+      "name": "getReserveDetailsByAddress",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        },
+        {
+          "internalType": "enum IKyberStorage.ReserveType",
+          "name": "resType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "isFeeAccountedFlag",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "isEntitledRebateFlag",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getReserveDetailsById",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "reserveAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        },
+        {
+          "internalType": "enum IKyberStorage.ReserveType",
+          "name": "resType",
+          "type": "uint8"
+        },
+        {
+          "internalType": "bool",
+          "name": "isFeeAccountedFlag",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "isEntitledRebateFlag",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        }
+      ],
+      "name": "getReserveId",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "reserveAddresses",
+          "type": "address[]"
+        }
+      ],
+      "name": "getReserveIdsFromAddresses",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "getReserveIdsPerTokenDest",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "getReserveIdsPerTokenSrc",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getReserves",
+      "outputs": [
+        {
+          "internalType": "contract IKyberReserve[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "reserveIds",
+          "type": "bytes32[]"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "src",
+          "type": "address"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "dest",
+          "type": "address"
+        }
+      ],
+      "name": "getReservesData",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "areAllReservesListed",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool[]",
+          "name": "feeAccountedArr",
+          "type": "bool[]"
+        },
+        {
+          "internalType": "bool[]",
+          "name": "entitledRebateArr",
+          "type": "bool[]"
+        },
+        {
+          "internalType": "contract IKyberReserve[]",
+          "name": "reserveAddresses",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "enum IKyberStorage.ReserveType",
+          "name": "resType",
+          "type": "uint8"
+        }
+      ],
+      "name": "getReservesPerType",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isKyberProxyAdded",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "kyberDaoHistory",
+      "outputs": [
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "kyberFeeHandlerHistory",
+      "outputs": [
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "kyberMatchingEngineHistory",
+      "outputs": [
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "kyberNetwork",
+      "outputs": [
+        {
+          "internalType": "contract IKyberNetwork",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "kyberNetworkHistory",
+      "outputs": [
+        {
+          "internalType": "contract IKyberHistory",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "bool",
+          "name": "ethToToken",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "tokenToEth",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "add",
+          "type": "bool"
+        }
+      ],
+      "name": "listPairForReserve",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "pendingAdmin",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "alerter",
+          "type": "address"
+        }
+      ],
+      "name": "removeAlerter",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "kyberProxy",
+          "type": "address"
+        }
+      ],
+      "name": "removeKyberProxy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "operator",
+          "type": "address"
+        }
+      ],
+      "name": "removeOperator",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "startIndex",
+          "type": "uint256"
+        }
+      ],
+      "name": "removeReserve",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_kyberFeeHandler",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_kyberMatchingEngine",
+          "type": "address"
+        }
+      ],
+      "name": "setContracts",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "fpr",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "apr",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "bridge",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "utility",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "custom",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "orderbook",
+          "type": "bool"
+        }
+      ],
+      "name": "setEntitledRebatePerReserveType",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "fpr",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "apr",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "bridge",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "utility",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "custom",
+          "type": "bool"
+        },
+        {
+          "internalType": "bool",
+          "name": "orderbook",
+          "type": "bool"
+        }
+      ],
+      "name": "setFeeAccountedPerReserveType",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_kyberDao",
+          "type": "address"
+        }
+      ],
+      "name": "setKyberDaoContract",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IKyberNetwork",
+          "name": "_kyberNetwork",
+          "type": "address"
+        }
+      ],
+      "name": "setNetworkContract",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        }
+      ],
+      "name": "setRebateWallet",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferAdmin",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "newAdmin",
+          "type": "address"
+        }
+      ],
+      "name": "transferAdminQuickly",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "reserve",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "reserveId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "setReserveId",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_admin\",\"type\":\"address\"},{\"internalType\":\"contract IKyberHistory\",\"name\":\"_networkHistory\",\"type\":\"address\"},{\"internalType\":\"contract IKyberHistory\",\"name\":\"_feeHandlerHistory\",\"type\":\"address\"},{\"internalType\":\"contract IKyberHistory\",\"name\":\"_kyberDaoHistory\",\"type\":\"address\"},{\"internalType\":\"contract IKyberHistory\",\"name\":\"_matchingEngineHistory\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"enum IKyberStorage.ReserveType\",\"name\":\"reserveType\",\"type\":\"uint8\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"}],\"name\":\"AddReserveToStorage\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"previousAdmin\",\"type\":\"address\"}],\"name\":\"AdminClaimed\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newAlerter\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isAdd\",\"type\":\"bool\"}],\"name\":\"AlerterAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"contract IKyberNetwork\",\"name\":\"newKyberNetwork\",\"type\":\"address\"}],\"name\":\"KyberNetworkUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"src\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"dest\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"add\",\"type\":\"bool\"}],\"name\":\"ListReservePairs\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"newOperator\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isAdd\",\"type\":\"bool\"}],\"name\":\"OperatorAdded\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"}],\"name\":\"RemoveReserveFromStorage\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"}],\"name\":\"ReserveRebateWalletSet\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"address\",\"name\":\"pendingAdmin\",\"type\":\"address\"}],\"name\":\"TransferAdminPending\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newAlerter\",\"type\":\"address\"}],\"name\":\"addAlerter\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"kyberProxy\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"maxApprovedProxies\",\"type\":\"uint256\"}],\"name\":\"addKyberProxy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newOperator\",\"type\":\"address\"}],\"name\":\"addOperator\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"internalType\":\"enum IKyberStorage.ReserveType\",\"name\":\"resType\",\"type\":\"uint8\"},{\"internalType\":\"address payable\",\"name\":\"rebateWallet\",\"type\":\"address\"}],\"name\":\"addReserve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"admin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"claimAdmin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getAlerters\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getContracts\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"kyberDaoAddresses\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"kyberFeeHandlerAddresses\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"kyberMatchingEngineAddresses\",\"type\":\"address[]\"},{\"internalType\":\"address[]\",\"name\":\"kyberNetworkAddresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"name\":\"getEntitledRebateData\",\"outputs\":[{\"internalType\":\"bool[]\",\"name\":\"entitledRebateArr\",\"type\":\"bool[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"name\":\"getFeeAccountedData\",\"outputs\":[{\"internalType\":\"bool[]\",\"name\":\"feeAccountedArr\",\"type\":\"bool[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getKyberProxies\",\"outputs\":[{\"internalType\":\"contract IKyberNetworkProxy[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"}],\"name\":\"getListedTokensByReserveId\",\"outputs\":[{\"internalType\":\"contract IERC20[]\",\"name\":\"srcTokens\",\"type\":\"address[]\"},{\"internalType\":\"contract IERC20[]\",\"name\":\"destTokens\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOperators\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"name\":\"getRebateWalletsFromIds\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"rebateWallets\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"}],\"name\":\"getReserveAddressesByReserveId\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"reserveAddresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"name\":\"getReserveAddressesFromIds\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"reserveAddresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"endIndex\",\"type\":\"uint256\"}],\"name\":\"getReserveAddressesPerTokenSrc\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"reserveAddresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"}],\"name\":\"getReserveDetailsByAddress\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"},{\"internalType\":\"enum IKyberStorage.ReserveType\",\"name\":\"resType\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"isFeeAccountedFlag\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isEntitledRebateFlag\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"}],\"name\":\"getReserveDetailsById\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"reserveAddress\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"},{\"internalType\":\"enum IKyberStorage.ReserveType\",\"name\":\"resType\",\"type\":\"uint8\"},{\"internalType\":\"bool\",\"name\":\"isFeeAccountedFlag\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"isEntitledRebateFlag\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"}],\"name\":\"getReserveId\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"reserveAddresses\",\"type\":\"address[]\"}],\"name\":\"getReserveIdsFromAddresses\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getReserveIdsPerTokenDest\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"}],\"name\":\"getReserveIdsPerTokenSrc\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getReserves\",\"outputs\":[{\"internalType\":\"contract IKyberReserve[]\",\"name\":\"\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"reserveIds\",\"type\":\"bytes32[]\"},{\"internalType\":\"contract IERC20\",\"name\":\"src\",\"type\":\"address\"},{\"internalType\":\"contract IERC20\",\"name\":\"dest\",\"type\":\"address\"}],\"name\":\"getReservesData\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"areAllReservesListed\",\"type\":\"bool\"},{\"internalType\":\"bool[]\",\"name\":\"feeAccountedArr\",\"type\":\"bool[]\"},{\"internalType\":\"bool[]\",\"name\":\"entitledRebateArr\",\"type\":\"bool[]\"},{\"internalType\":\"contract IKyberReserve[]\",\"name\":\"reserveAddresses\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"enum IKyberStorage.ReserveType\",\"name\":\"resType\",\"type\":\"uint8\"}],\"name\":\"getReservesPerType\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isKyberProxyAdded\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"kyberDaoHistory\",\"outputs\":[{\"internalType\":\"contract IKyberHistory\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"kyberFeeHandlerHistory\",\"outputs\":[{\"internalType\":\"contract IKyberHistory\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"kyberMatchingEngineHistory\",\"outputs\":[{\"internalType\":\"contract IKyberHistory\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"kyberNetwork\",\"outputs\":[{\"internalType\":\"contract IKyberNetwork\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"kyberNetworkHistory\",\"outputs\":[{\"internalType\":\"contract IKyberHistory\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"bool\",\"name\":\"ethToToken\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"tokenToEth\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"add\",\"type\":\"bool\"}],\"name\":\"listPairForReserve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"pendingAdmin\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"alerter\",\"type\":\"address\"}],\"name\":\"removeAlerter\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"kyberProxy\",\"type\":\"address\"}],\"name\":\"removeKyberProxy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"operator\",\"type\":\"address\"}],\"name\":\"removeOperator\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"startIndex\",\"type\":\"uint256\"}],\"name\":\"removeReserve\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_kyberFeeHandler\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_kyberMatchingEngine\",\"type\":\"address\"}],\"name\":\"setContracts\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"fpr\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"apr\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"bridge\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"utility\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"custom\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"orderbook\",\"type\":\"bool\"}],\"name\":\"setEntitledRebatePerReserveType\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"fpr\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"apr\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"bridge\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"utility\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"custom\",\"type\":\"bool\"},{\"internalType\":\"bool\",\"name\":\"orderbook\",\"type\":\"bool\"}],\"name\":\"setFeeAccountedPerReserveType\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_kyberDao\",\"type\":\"address\"}],\"name\":\"setKyberDaoContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IKyberNetwork\",\"name\":\"_kyberNetwork\",\"type\":\"address\"}],\"name\":\"setNetworkContract\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"},{\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"}],\"name\":\"setRebateWallet\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"reserve\",\"type\":\"address\"},{\"internalType\":\"bytes32\",\"name\":\"reserveId\",\"type\":\"bytes32\"}],\"name\":\"setReserveId\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"transferAdmin\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"newAdmin\",\"type\":\"address\"}],\"name\":\"transferAdminQuickly\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{\"addKyberProxy(address,uint256)\":{\"details\":\"No. of kyberProxies are capped\"},\"addReserve(address,bytes32,uint8,address)\":{\"details\":\"Adds a reserve to the storage\",\"params\":{\"rebateWallet\":\"Rebate wallet address for this reserve\",\"resType\":\"Type of the reserve out of enum ReserveType\",\"reserve\":\"The reserve address\",\"reserveId\":\"The reserve ID in 32 bytes.\"}},\"claimAdmin()\":{\"details\":\"Allows the pendingAdmin address to finalize the change admin process.\"},\"getContracts()\":{\"details\":\"Returns list of kyberDao, kyberFeeHandler, kyberMatchingEngine and kyberNetwork contractsIndex 0 is currently used contract address, indexes > 0 are older versions\"},\"getReserveAddressesPerTokenSrc(address,uint256,uint256)\":{\"details\":\"kyberNetwork is calling this function to approve (allowance) for list of reserves for a token      in case we have a long list of reserves, approving all of them could run out of gas      using startIndex and endIndex to prevent above scenario      also enable us to approve reserve one by one\"},\"getReservesData(bytes32[],address,address)\":{\"details\":\"Returns information about reserves given their reserve IDs      Also check if these reserve IDs are listed for token      Network calls this function to retrive information about fee, address and rebate information\"},\"listPairForReserve(bytes32,address,bool,bool,bool)\":{\"details\":\"Allow or prevent a specific reserve to trade a pair of tokens\",\"params\":{\"add\":\"If true then list this pair, otherwise unlist it\",\"ethToToken\":\"Will it support ether to token trade\",\"reserveId\":\"The reserve id\",\"token\":\"Token address\",\"tokenToEth\":\"Will it support token to ether trade\"}},\"removeReserve(bytes32,uint256)\":{\"details\":\"Removes a reserve from the storage\",\"params\":{\"reserveId\":\"The reserve id\",\"startIndex\":\"Index to start searching from in reserve array\"}},\"transferAdmin(address)\":{\"details\":\"Allows the current admin to set the pendingAdmin address\",\"params\":{\"newAdmin\":\"The address to transfer ownership to\"}},\"transferAdminQuickly(address)\":{\"details\":\"Allows the current admin to set the admin in one tx. Useful initial deployment.\",\"params\":{\"newAdmin\":\"The address to transfer ownership to.\"}}}},\"userdoc\":{\"methods\":{\"addReserve(address,bytes32,uint8,address)\":{\"notice\":\"Can be called only by operator\"},\"getContracts()\":{\"notice\":\"Should be called off chain\"},\"getKyberProxies()\":{\"notice\":\"Should be called off chain\"},\"getReserveDetailsByAddress(address)\":{\"notice\":\"Returns information about a reserve given its reserve ID\"},\"getReserveDetailsById(bytes32)\":{\"notice\":\"Returns information about a reserve given its reserve ID\"},\"getReserves()\":{\"notice\":\"Should be called off chain\"},\"listPairForReserve(bytes32,address,bool,bool,bool)\":{\"notice\":\"Can be called only by operator\"},\"removeReserve(bytes32,uint256)\":{\"notice\":\"Can be called only by operator\"}}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/sol6/mock/MockStorage.sol\":\"MockStorage\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/sol6/IERC20.sol\":{\"keccak256\":\"0xf4041129837399d72f0765fe8699b395dd20c9b28dc3ffb0b3ab1477f587a105\",\"urls\":[\"bzz-raw://0ac2ff9c6a013de9ff092a34b0cb8abace10db335fd4f5d12b594dbbb28de418\",\"dweb:/ipfs/QmSrLhkHzmAP6PZZ9K3EuvAQNiK4Npnq1YahwkAH5VxWX3\"]},\"project:/contracts/sol6/IKyberHistory.sol\":{\"keccak256\":\"0x670d79b2eb5f9a50997a793e460834b551d3bacbe480048c0705d9de0aafa628\",\"urls\":[\"bzz-raw://5b5ce1c43c3e4ff4e0ec841d7d6d555730a8fe747bf3d45009b0313f371fd31d\",\"dweb:/ipfs/QmakKnj1SP4hp2Qwgr61NtHEv2jYADFkvHysewfQBMhdPo\"]},\"project:/contracts/sol6/IKyberNetwork.sol\":{\"keccak256\":\"0x3ca4f7df0680d4ba37e12ed12bccd5edfb9c8880e2680108d70f70d40f24a1ba\",\"urls\":[\"bzz-raw://146b2ff4f465707496213b0847a2d7f03ffe6158ac346cadfca509ade2726c80\",\"dweb:/ipfs/QmPfqs1yUoZJ48iR8kj9sz2zELRmLtT28sYq43Q8ukQec2\"]},\"project:/contracts/sol6/IKyberNetworkProxy.sol\":{\"keccak256\":\"0x924bca36508068bb72414805dc8dc38b2093ea43574f36f0058862387c7b5830\",\"urls\":[\"bzz-raw://fa30a8c3c53e5e82754bd0f0f73babe20b009b615972d63095ba437b9f7a1aab\",\"dweb:/ipfs/QmPYZLebZHT5M4HzqsTx8pudPngv9ta2CDjV7HWcYxDtmF\"]},\"project:/contracts/sol6/IKyberReserve.sol\":{\"keccak256\":\"0x6ff6ee15312f1e649e4eaf909159ad5b6536effe3f3d4e0316cb767839c7615d\",\"urls\":[\"bzz-raw://76fa803cdc980a432de17946b5de33a06cfe2c69739e2b407aa046456c937c64\",\"dweb:/ipfs/QmexkxoxQKDseXW31WJJVZ7xVXdCDUABL1Gn7RnnEm1NrQ\"]},\"project:/contracts/sol6/IKyberStorage.sol\":{\"keccak256\":\"0x8cae203c522dcc0bb887b26cd27dbbe1103297ad2a74401969b3e7148a7ccf25\",\"urls\":[\"bzz-raw://869db29fada7c58e3edb999144423a1b8d927866635bf3cb582531982d5e62f1\",\"dweb:/ipfs/QmRoHtfpxhPLzNiYiZUHUtum53UoRs2NTxQwhv5LAxneTu\"]},\"project:/contracts/sol6/KyberStorage.sol\":{\"keccak256\":\"0xfd380f32114e1ee2b971b6697fc5cc9950480e6ff54c2281988f55af573f4090\",\"urls\":[\"bzz-raw://bc3658a20a7b1648f98b00f1e8dc99084d336cdeb1d1d5b1520ba7dac54b089f\",\"dweb:/ipfs/QmRxzxjyMKkwxiYBcEyzRCTwgxVRJ6qWkBkxEhFx9Pg7z9\"]},\"project:/contracts/sol6/mock/MockStorage.sol\":{\"keccak256\":\"0x0502b1b18c74aa08141e3b03c732a3c50d6edcbfe01a47536015b293b0ccef9e\",\"urls\":[\"bzz-raw://09f8fc83725f23476f2f22167dc35606d22cca704d3b2d94139b14bbe908ab18\",\"dweb:/ipfs/QmXgRmKxmpY8gJB764DzRPSzM5HEg6q1rGE4HAUkYN57fv\"]},\"project:/contracts/sol6/utils/PermissionGroupsNoModifiers.sol\":{\"keccak256\":\"0x215b31f8bcd0c2e60bccea36d2540362507158cc36b99de99fc917bd476ee28d\",\"urls\":[\"bzz-raw://78d42112fde760eff63bb4c2efc74d4bc87b119b1f72ed8bf30935d2488f3189\",\"dweb:/ipfs/QmWkmeQQhRExec9kKP7rkCPt6DR9HtbLjoH9p3BBpQEdS9\"]},\"project:/contracts/sol6/utils/Utils5.sol\":{\"keccak256\":\"0xcc8d04e27e08cf48469cab3787fbe3f8c75c9fb403881d0e48b8bce3e3cf4856\",\"urls\":[\"bzz-raw://a8462234fb6e27bd98d7d3a6a5550aee0bb534e595ca98e141595eda0a266c45\",\"dweb:/ipfs/QmRE71etadYcQt1xVrPBy3ejHnkEsV3xJwshecw73zCxBC\"]}},\"version\":1}",
+  "bytecode": "0x608060405263ffffffff60165563ffffffff6017553480156200002157600080fd5b50604051620044f6380380620044f6833981810160405260a08110156200004757600080fd5b508051602082015160408301516060840151608090940151929391929091908484848484846001600160a01b038116620000b2576040805162461bcd60e51b8152602060048201526007602482015266061646d696e20360cc1b604482015290519081900360640190fd5b600080546001600160a01b0319166001600160a01b03928316179055841662000122576040805162461bcd60e51b815260206004820152601560248201527f6b796265724e6574776f726b486973746f727920300000000000000000000000604482015290519081900360640190fd5b6001600160a01b0383166200017e576040805162461bcd60e51b815260206004820152601860248201527f6b7962657246656548616e646c6572486973746f727920300000000000000000604482015290519081900360640190fd5b6001600160a01b038216620001ce576040805162461bcd60e51b815260206004820152601160248201527006b7962657244616f486973746f7279203607c1b604482015290519081900360640190fd5b6001600160a01b0381166200022a576040805162461bcd60e51b815260206004820152601c60248201527f6b796265724d61746368696e67456e67696e65486973746f7279203000000000604482015290519081900360640190fd5b600780546001600160a01b039586166001600160a01b03199182161790915560088054948616948216949094179093556009805492851692841692909217909155600a8054919093169116179055505050505050614268806200028e6000396000f3fe608060405234801561001057600080fd5b50600436106102955760003560e01c806375829def11610167578063b78b842d116100ce578063d95c273011610087578063d95c273014610cc5578063e0fb275614610cf1578063e4b80c4d14610d5f578063f16e429b14610d7c578063f851a44014610dc7578063fa006d9314610dcf57610295565b8063b78b842d14610a98578063c3a2a93a14610aa0578063ce3a056414610bcb578063d589158214610bf7578063d84c19c714610c29578063d8952a4914610c9757610295565b8063a03bd93a11610120578063a03bd93a14610a00578063a59b60e414610a20578063aa1da48a14610a46578063aaaaa6c414610a62578063ac8a584a14610a6a578063b6cb51c214610a9057610295565b806375829def1461095857806377f50f971461097e5780637acc8678146109865780637c423f54146109ac578063803d58c8146109b45780639870d7fe146109da57610295565b8063338256531161020b5780634821ccfc116101c45780634821ccfc1461075057806350dceb7414610758578063599b9348146108c057806365a04d6d146108e65780636f795fa31461092a5780636ff277de1461093257610295565b8063338256531461055c5780633d3dc52c146105ca5780633d9036b4146105f05780633dfce895146106a6578063408ee7fe146106e357806345bd576c1461070957610295565b8063106e9a4b1161025d578063106e9a4b1461042057806313d47a8d146104585780631dd4c3ef1461049f5780632185340b1461050d578063267822471461053057806327a099d81461055457610295565b806301a12fd31461029a578063073c4c65146102c257806307f442e11461032e5780630902f1ac1461035a5780630a3cf98e146103b2575b600080fd5b6102c0600480360360208110156102b057600080fd5b50356001600160a01b0316610dd7565b005b6102df600480360360208110156102d857600080fd5b5035610f83565b604080516001600160a01b0380881682528616602082015290810184600781111561030657fe5b60ff168152921515602084015250151560408083019190915251908190036060019350915050f35b6102c06004803603604081101561034457600080fd5b506001600160a01b038135169060200135611078565b610362611173565b60408051602080825283518183015283519192839290830191858101910280838360005b8381101561039e578181015183820152602001610386565b505050509050019250505060405180910390f35b610362600480360360208110156103c857600080fd5b810190602081018135600160201b8111156103e257600080fd5b8201836020820111156103f457600080fd5b803590602001918460208302840111600160201b8311171561041557600080fd5b5090925090506111d5565b6104466004803603602081101561043657600080fd5b50356001600160a01b0316611293565b60408051918252519081900360200190f35b6102c0600480360360c081101561046e57600080fd5b508035151590602081013515159060408101351515906060810135151590608081013515159060a0013515156112ae565b610362600480360360208110156104b557600080fd5b810190602081018135600160201b8111156104cf57600080fd5b8201836020820111156104e157600080fd5b803590602001918460208302840111600160201b8311171561050257600080fd5b509092509050611554565b6102c06004803603604081101561052357600080fd5b5080359060200135611604565b610538611a23565b604080516001600160a01b039092168252519081900360200190f35b610362611a32565b6103626004803603602081101561057257600080fd5b810190602081018135600160201b81111561058c57600080fd5b82018360208201111561059e57600080fd5b803590602001918460208302840111600160201b831117156105bf57600080fd5b509092509050611a92565b610362600480360360208110156105e057600080fd5b50356001600160a01b0316611b43565b61060d6004803603602081101561060657600080fd5b5035611baf565b604051808060200180602001838103835285818151815260200191508051906020019060200280838360005b83811015610651578181015183820152602001610639565b50505050905001838103825284818151815260200191508051906020019060200280838360005b83811015610690578181015183820152602001610678565b5050505090500194505050505060405180910390f35b6102c0600480360360808110156106bc57600080fd5b506001600160a01b03813581169160208101359160ff604083013516916060013516611c93565b6102c0600480360360208110156106f957600080fd5b50356001600160a01b031661212f565b6102c0600480360360c081101561071f57600080fd5b508035151590602081013515159060408101351515906060810135151590608081013515159060a001351515612286565b6105386122d7565b6107d76004803603606081101561076e57600080fd5b810190602081018135600160201b81111561078857600080fd5b82018360208201111561079a57600080fd5b803590602001918460208302840111600160201b831117156107bb57600080fd5b91935091506001600160a01b03813581169160200135166122e6565b6040518085151515158152602001806020018060200180602001848103845287818151815260200191508051906020019060200280838360005b83811015610829578181015183820152602001610811565b50505050905001848103835286818151815260200191508051906020019060200280838360005b83811015610868578181015183820152602001610850565b50505050905001848103825285818151815260200191508051906020019060200280838360005b838110156108a757818101518382015260200161088f565b5050505090500197505050505050505060405180910390f35b6102c0600480360360208110156108d657600080fd5b50356001600160a01b0316612572565b6102c0600480360360a08110156108fc57600080fd5b508035906001600160a01b03602082013516906040810135151590606081013515159060800135151561268b565b6105386128c0565b6102c06004803603602081101561094857600080fd5b50356001600160a01b03166128cf565b6102c06004803603602081101561096e57600080fd5b50356001600160a01b0316612940565b6102c06129ef565b6102c06004803603602081101561099c57600080fd5b50356001600160a01b0316612aaf565b610362612ba2565b6102c0600480360360208110156109ca57600080fd5b50356001600160a01b0316612c02565b6102c0600480360360208110156109f057600080fd5b50356001600160a01b0316612d46565b61036260048036036020811015610a1657600080fd5b503560ff16612e9f565b61036260048036036020811015610a3657600080fd5b50356001600160a01b0316612f1e565b610a4e612f88565b604080519115158252519081900360200190f35b610538612f90565b6102c060048036036020811015610a8057600080fd5b50356001600160a01b0316612f9f565b610538613148565b610538613157565b610aa8613166565b6040518080602001806020018060200180602001858103855289818151815260200191508051906020019060200280838360005b83811015610af4578181015183820152602001610adc565b50505050905001858103845288818151815260200191508051906020019060200280838360005b83811015610b33578181015183820152602001610b1b565b50505050905001858103835287818151815260200191508051906020019060200280838360005b83811015610b72578181015183820152602001610b5a565b50505050905001858103825286818151815260200191508051906020019060200280838360005b83811015610bb1578181015183820152602001610b99565b505050509050019850505050505050505060405180910390f35b6102c060048036036040811015610be157600080fd5b506001600160a01b0381351690602001356135ce565b61036260048036036060811015610c0d57600080fd5b506001600160a01b0381351690602081013590604001356135ea565b61036260048036036020811015610c3f57600080fd5b810190602081018135600160201b811115610c5957600080fd5b820183602082011115610c6b57600080fd5b803590602001918460208302840111600160201b83111715610c8c57600080fd5b509092509050613777565b6102c060048036036040811015610cad57600080fd5b506001600160a01b0381358116916020013516613843565b6102c060048036036040811015610cdb57600080fd5b50803590602001356001600160a01b03166139b5565b61036260048036036020811015610d0757600080fd5b810190602081018135600160201b811115610d2157600080fd5b820183602082011115610d3357600080fd5b803590602001918460208302840111600160201b83111715610d5457600080fd5b509092509050613b76565b61036260048036036020811015610d7557600080fd5b5035613c1e565b610da260048036036020811015610d9257600080fd5b50356001600160a01b0316613c89565b604080518681526001600160a01b038616602082015290810184600781111561030657fe5b610538613cf5565b610362613d04565b610ddf613d64565b6001600160a01b03811660009081526003602052604090205460ff16610e3a576040805162461bcd60e51b815260206004820152600b60248201526a3737ba1030b632b93a32b960a91b604482015290519081900360640190fd5b6001600160a01b0381166000908152600360205260408120805460ff191690555b600554811015610f7f57816001600160a01b031660058281548110610e7c57fe5b6000918252602090912001546001600160a01b03161415610f7757600580546000198101908110610ea957fe5b600091825260209091200154600580546001600160a01b039092169183908110610ecf57fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b031602179055506005805480610f0857fe5b60008281526020808220830160001990810180546001600160a01b0319169055909201909255604080516001600160a01b03861681529182019290925281517f5611bf3e417d124f97bf2c788843ea8bb502b66079fbee02158ef30b172cb762929181900390910190a1610f7f565b600101610e5b565b5050565b6000818152600d6020908152604080832080548251818502810185019093528083528493849384938493606093830182828015610fe957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610fcb575b50505050509050805160001461106e576000878152600d60205260408120805490919061101257fe5b6000918252602080832090910154898352600e82526040808420546018909352909220546001600160a01b0392831698509116955080600781111561105357fe5b601654601754919650600190921b9182161515945016151591505b5091939590929450565b611080613db2565b6001600160a01b0382166110ca576040805162461bcd60e51b815260206004820152600c60248201526b06b7962657250726f787920360a41b604482015290519081900360640190fd5b600c548111611120576040805162461bcd60e51b815260206004820152601e60248201527f6d6178206b7962657250726f78696573206c696d697420726561636865640000604482015290519081900360640190fd5b50600c80546001810182556000919091527fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8c70180546001600160a01b0319166001600160a01b0392909216919091179055565b6060600b8054806020026020016040519081016040528092919081815260200182805480156111cb57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116111ad575b5050505050905090565b60608167ffffffffffffffff811180156111ee57600080fd5b50604051908082528060200260200182016040528015611218578160200160208202803683370190505b50905060005b815181101561128c57600e600085858481811061123757fe5b90506020020135815260200190815260200160002060009054906101000a90046001600160a01b031682828151811061126c57fe5b6001600160a01b039092166020928302919091019091015260010161121e565b5092915050565b6001600160a01b03166000908152600f602052604090205490565b6112b6613d64565b60165463ffffffff1415611311576040805162461bcd60e51b815260206004820152601a60248201527f666565206163636f756e7465642064617461206e6f7420736574000000000000604482015290519081900360640190fd5b6000861561136c57601654600216611368576040805162461bcd60e51b8152602060048201526015602482015274199c1c881b9bdd08199959481858d8dbdd5b9d1959605a1b604482015290519081900360640190fd5b6002175b85156113c5576016546004166113c1576040805162461bcd60e51b8152602060048201526015602482015274185c1c881b9bdd08199959481858d8dbdd5b9d1959605a1b604482015290519081900360640190fd5b6004175b841561142657601654600816611422576040805162461bcd60e51b815260206004820152601860248201527f627269646765206e6f7420666565206163636f756e7465640000000000000000604482015290519081900360640190fd5b6008175b831561148757601654601016611483576040805162461bcd60e51b815260206004820152601960248201527f7574696c697479206e6f7420666565206163636f756e74656400000000000000604482015290519081900360640190fd5b6010175b82156114e8576016546020166114e4576040805162461bcd60e51b815260206004820152601860248201527f637573746f6d206e6f7420666565206163636f756e7465640000000000000000604482015290519081900360640190fd5b6020175b811561154957601654604016611545576040805162461bcd60e51b815260206004820152601b60248201527f6f72646572626f6f6b206e6f7420666565206163636f756e7465640000000000604482015290519081900360640190fd5b6040175b601755505050505050565b60608167ffffffffffffffff8111801561156d57600080fd5b50604051908082528060200260200182016040528015611597578160200160208202803683370190505b5060175490915060005b838110156115fc576000601860008787858181106115bb57fe5b905060200201358152602001908152602001600020546001901b8316118382815181106115e457fe5b911515602092830291909101909101526001016115a1565b505092915050565b61160c613e05565b6000828152600d6020526040902054611662576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000828152600d602052604081208054829061167a57fe5b6000918252602090912001546001600160a01b0316905061169a83613e59565b600160ff1b825b600b548110156116ed57826001600160a01b0316600b82815481106116c257fe5b6000918252602090912001546001600160a01b031614156116e5578091506116ed565b6001016116a1565b5080600160ff1b141561173b576040805162461bcd60e51b81526020600482015260116024820152701c995cd95c9d99481b9bdd08199bdd5b99607a1b604482015290519081900360640190fd5b600b8054600019810190811061174d57fe5b600091825260209091200154600b80546001600160a01b03909216918390811061177357fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600b8054806117ac57fe5b60008281526020808220830160001990810180546001600160a01b03191690559092019092556001600160a01b0384168252600f905260409020546118225760405162461bcd60e51b81526004018080602001828103825260218152602001806142126021913960400191505060405180910390fd5b6001600160a01b0382166000908152600f6020908152604080832054808452600d9092528220805491965091829161185657fe5b6000918252602080832090910154835460018101855593835281832090930180546001600160a01b0319166001600160a01b0390941693909317909255858152600d90915260408120805482906118a957fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600060196000601860008881526020019081526020016000205460078111156118fc57fe5b600781111561190757fe5b600781111561191257fe5b8152602001908152602001600020905060008090505b81548110156119b35781818154811061193d57fe5b90600052602060002001548614156119ab5781548290600019810190811061196157fe5b906000526020600020015482828154811061197857fe5b90600052602060002001819055508180548061199057fe5b600190038181906000526020600020016000905590556119b3565b600101611928565b506001600160a01b0383166000818152600f6020908152604080832083905588835260188252808320839055600e90915280822080546001600160a01b0319169055518792917fa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c991a35050505050565b6001546001600160a01b031681565b606060048054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b60608167ffffffffffffffff81118015611aab57600080fd5b50604051908082528060200260200182016040528015611ad5578160200160208202803683370190505b50905060005b8281101561128c57600f6000858584818110611af357fe5b905060200201356001600160a01b03166001600160a01b03166001600160a01b0316815260200190815260200160002054828281518110611b3057fe5b6020908102919091010152600101611adb565b6001600160a01b038116600090815260106020908152604091829020805483518184028101840190945280845260609392830182828015611ba357602002820191906000526020600020905b815481526020019060010190808311611b8f575b50505050509050919050565b60608060126000848152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611c1957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611bfb575b5050505050915060136000848152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611c8757602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611c69575b50505050509050915091565b611c9b613e05565b6001600160a01b0384166000908152600f602052604090205415611cf7576040805162461bcd60e51b815260206004820152600e60248201526d1c995cd95c9d99481a185cc81a5960921b604482015290519081900360640190fd5b82611d39576040805162461bcd60e51b815260206004820152600d60248201526c0726573657276654964203d203609c1b604482015290519081900360640190fd5b6000826007811115611d4757fe5b14158015611d6057506007826007811115611d5e57fe5b105b611da4576040805162461bcd60e51b815260206004820152601060248201526f6261642072657365727665207479706560801b604482015290519081900360640190fd5b60165463ffffffff1415611dff576040805162461bcd60e51b815260206004820152601a60248201527f666565206163636f756e7465642064617461206e6f7420736574000000000000604482015290519081900360640190fd5b60175463ffffffff1415611e5a576040805162461bcd60e51b815260206004820152601c60248201527f656e7469746c6564207265626174652064617461206e6f742073657400000000604482015290519081900360640190fd5b6001600160a01b038116611eaa576040805162461bcd60e51b815260206004820152601260248201527107265626174652077616c6c657420697320360741b604482015290519081900360640190fd5b6000838152600e6020908152604080832080546001600160a01b0319166001600160a01b038616179055600d909152902054611f1c576000838152600d602090815260408220805460018101825590835291200180546001600160a01b0319166001600160a01b038616179055611fd5565b6000838152600d6020526040812080548290611f3457fe5b6000918252602090912001546001600160a01b031614611f8d576040805162461bcd60e51b815260206004820152600f60248201526e3932b9b2b93b32a4b2103a30b5b2b760891b604482015290519081900360640190fd5b6000838152600d602052604081208054869290611fa657fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b031602179055505b600b805460018101825560009182527f0175b7a638427703f0dbe7bb9bbf987a2551717b34e79f33b5b1008d1fa01db90180546001600160a01b0319166001600160a01b03871617905560199083600781111561202e57fe5b600781111561203957fe5b8152602080820192909252604090810160009081208054600181018255908252838220018690556001600160a01b0387168152600f909252902083905581600781111561208257fe5b6018600085815260200190815260200160002081905550806001600160a01b031683856001600160a01b03167f50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea85604051808260078111156120e057fe5b60ff16815260200191505060405180910390a46040516001600160a01b0382169084907f42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b390600090a350505050565b612137613d64565b6001600160a01b03811660009081526003602052604090205460ff1615612196576040805162461bcd60e51b815260206004820152600e60248201526d616c65727465722065786973747360901b604482015290519081900360640190fd5b6005546032116121dc576040805162461bcd60e51b815260206004820152600c60248201526b6d617820616c65727465727360a01b604482015290519081900360640190fd5b604080516001600160a01b03831681526001602082015281517f5611bf3e417d124f97bf2c788843ea8bb502b66079fbee02158ef30b172cb762929181900390910190a16001600160a01b03166000818152600360205260408120805460ff191660019081179091556005805491820181559091527f036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db00180546001600160a01b0319169091179055565b61228e613d64565b6000861561229a576002175b85156122a4576004175b84156122ae576008175b83156122b8576010175b82156122c2576020175b81156122cc576040175b601655505050505050565b600a546001600160a01b031681565b6000606080808667ffffffffffffffff8111801561230357600080fd5b5060405190808252806020026020018201604052801561232d578160200160208202803683370190505b5092508667ffffffffffffffff8111801561234757600080fd5b50604051908082528060200260200182016040528015612371578160200160208202803683370190505b5091508667ffffffffffffffff8111801561238b57600080fd5b506040519080825280602002602001820160405280156123b5578160200160208202803683370190505b50601754601654600196509192509060006001600160a01b03881673eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee14612407576001600160a01b0388166000908152601560205260409020612420565b6001600160a01b03891660009081526014602052604090205b905060005b8a811015612563576000601860008e8e8581811061243f57fe5b9050602002013581526020019081526020016000205490506000816001901b86161187838151811061246d57fe5b6020026020010190151590811515815250506000816001901b85161188838151811061249557fe5b91151560209283029190910190910152600d60008e8e858181106124b557fe5b9050602002013581526020019081526020016000206000815481106124d657fe5b9060005260206000200160009054906101000a90046001600160a01b031686838151811061250057fe5b60200260200101906001600160a01b031690816001600160a01b0316815250508260008e8e8581811061252f57fe5b602090810292909201358352508101919091526040016000205460ff1661255a576000985050612563565b50600101612425565b50505050945094509450949050565b61257a613d64565b6001600160a01b0381166125c6576040805162461bcd60e51b815260206004820152600e60248201526d06b796265724e6574776f726b20360941b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f18970d46ac8a7d7e0da90e1bebb0be3e87ffc7705fc09d3bba5373d59b7a12aa9181900360200190a16007546040805163c2eed5a360e01b81526001600160a01b0384811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561265057600080fd5b505af1158015612664573d6000803e3d6000fd5b5050601a80546001600160a01b0319166001600160a01b0394909416939093179092555050565b612693613e05565b6000858152600d60205260409020546126e9576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000858152600d602052604081208054829061270157fe5b6000918252602090912001546001600160a01b0316905080612758576040805162461bcd60e51b815260206004820152600b60248201526a072657365727665203d20360ac1b604482015290519081900360640190fd5b83156127ce5761276b8686600085613f9c565b604080516001600160a01b038381168252841515602083015282519088169273eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee928a927ffcdbd685961328a43b4aa133de257d3769cc01891b4ee00fd5058e5aa3564ca5929181900390910190a45b82156128b857601a54604080516332c8bd9f60e01b81526001600160a01b03848116600483015288811660248301528515156044830152915191909216916332c8bd9f91606480830192600092919082900301818387803b15801561283257600080fd5b505af1158015612846573d6000803e3d6000fd5b505050506128578686600185613f9c565b604080516001600160a01b0383811682528415156020830152825173eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee93918916928a927ffcdbd685961328a43b4aa133de257d3769cc01891b4ee00fd5058e5aa3564ca592918290030190a45b505050505050565b6007546001600160a01b031681565b6128d7613db2565b6009546040805163c2eed5a360e01b81526001600160a01b0384811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561292557600080fd5b505af1158015612939573d6000803e3d6000fd5b5050505050565b612948613d64565b6001600160a01b038116612991576040805162461bcd60e51b815260206004820152600b60248201526a06e65772061646d696e20360ac1b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f3b81caf78fa51ecbc8acb482fd7012a277b428d9b80f9d156e8a54107496cc409181900360200190a1600180546001600160a01b0319166001600160a01b0392909216919091179055565b6001546001600160a01b03163314612a3c576040805162461bcd60e51b815260206004820152600b60248201526a6e6f742070656e64696e6760a81b604482015290519081900360640190fd5b600154600054604080516001600160a01b03938416815292909116602083015280517f65da1cfc2c2e81576ad96afb24a581f8e109b7a403b35cbd3243a1c99efdb9ed9281900390910190a160018054600080546001600160a01b03199081166001600160a01b03841617909155169055565b612ab7613d64565b6001600160a01b038116612afc576040805162461bcd60e51b8152602060048201526007602482015266061646d696e20360cc1b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f3b81caf78fa51ecbc8acb482fd7012a277b428d9b80f9d156e8a54107496cc409181900360200190a1600054604080516001600160a01b038085168252909216602083015280517f65da1cfc2c2e81576ad96afb24a581f8e109b7a403b35cbd3243a1c99efdb9ed9281900390910190a1600080546001600160a01b0319166001600160a01b0392909216919091179055565b606060058054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b612c0a613db2565b600160ff1b60005b600c54811015612c5e57826001600160a01b0316600c8281548110612c3357fe5b6000918252602090912001546001600160a01b03161415612c5657809150612c5e565b600101612c12565b5080600160ff1b1415612caf576040805162461bcd60e51b81526020600482015260146024820152731ade58995c941c9bde1e481b9bdd08199bdd5b9960621b604482015290519081900360640190fd5b600c80546000198101908110612cc157fe5b600091825260209091200154600c80546001600160a01b039092169183908110612ce757fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600c805480612d2057fe5b600082815260209020810160001990810180546001600160a01b03191690550190555050565b612d4e613d64565b6001600160a01b03811660009081526002602052604090205460ff1615612dae576040805162461bcd60e51b815260206004820152600f60248201526e6f70657261746f722065786973747360881b604482015290519081900360640190fd5b600454603211612df5576040805162461bcd60e51b815260206004820152600d60248201526c6d6178206f70657261746f727360981b604482015290519081900360640190fd5b604080516001600160a01b03831681526001602082015281517f091a7a4b85135fdd7e8dbc18b12fabe5cc191ea867aa3c2e1a24a102af61d58b929181900390910190a16001600160a01b03166000818152600260205260408120805460ff191660019081179091556004805491820181559091527f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b0180546001600160a01b0319169091179055565b606060196000836007811115612eb157fe5b6007811115612ebc57fe5b8152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611ba35760200282019190600052602060002090815481526020019060010190808311611b8f5750505050509050919050565b6001600160a01b038116600090815260116020908152604091829020805483518184028101840190945280845260609392830182828015611ba35760200282019190600052602060002090815481526020019060010190808311611b8f5750505050509050919050565b600c54151590565b6009546001600160a01b031681565b612fa7613d64565b6001600160a01b03811660009081526002602052604090205460ff16613003576040805162461bcd60e51b815260206004820152600c60248201526b3737ba1037b832b930ba37b960a11b604482015290519081900360640190fd5b6001600160a01b0381166000908152600260205260408120805460ff191690555b600454811015610f7f57816001600160a01b03166004828154811061304557fe5b6000918252602090912001546001600160a01b031614156131405760048054600019810190811061307257fe5b600091825260209091200154600480546001600160a01b03909216918390811061309857fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555060048054806130d157fe5b60008281526020808220830160001990810180546001600160a01b0319169055909201909255604080516001600160a01b03861681529182019290925281517f091a7a4b85135fdd7e8dbc18b12fabe5cc191ea867aa3c2e1a24a102af61d58b929181900390910190a1610f7f565b600101613024565b6008546001600160a01b031681565b601a546001600160a01b031681565b606080606080600960009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156131ba57600080fd5b505afa1580156131ce573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405260208110156131f757600080fd5b8101908080516040519392919084600160201b82111561321657600080fd5b90830190602082018581111561322b57600080fd5b82518660208202830111600160201b8211171561324757600080fd5b82525081516020918201928201910280838360005b8381101561327457818101518382015260200161325c565b505050509050016040525050509350600860009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156132d157600080fd5b505afa1580156132e5573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561330e57600080fd5b8101908080516040519392919084600160201b82111561332d57600080fd5b90830190602082018581111561334257600080fd5b82518660208202830111600160201b8211171561335e57600080fd5b82525081516020918201928201910280838360005b8381101561338b578181015183820152602001613373565b505050509050016040525050509250600a60009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156133e857600080fd5b505afa1580156133fc573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561342557600080fd5b8101908080516040519392919084600160201b82111561344457600080fd5b90830190602082018581111561345957600080fd5b82518660208202830111600160201b8211171561347557600080fd5b82525081516020918201928201910280838360005b838110156134a257818101518382015260200161348a565b505050509050016040525050509150600760009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156134ff57600080fd5b505afa158015613513573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561353c57600080fd5b8101908080516040519392919084600160201b82111561355b57600080fd5b90830190602082018581111561357057600080fd5b82518660208202830111600160201b8211171561358c57600080fd5b82525081516020918201928201910280838360005b838110156135b95781810151838201526020016135a1565b50505050905001604052505050905090919293565b6001600160a01b039091166000908152600f6020526040902055565b60608060106000866001600160a01b03166001600160a01b0316815260200190815260200160002080548060200260200160405190810160405280929190818152602001828054801561365c57602002820191906000526020600020905b815481526020019060010190808311613648575b505050505090508051600014156136735750613770565b60008151841015613684578361368a565b60018251035b90508481101561369c57506137709050565b84810360010167ffffffffffffffff811180156136b857600080fd5b506040519080825280602002602001820160405280156136e2578160200160208202803683370190505b509250845b81811161376c57600d60008483815181106136fe57fe5b6020026020010151815260200190815260200160002060008154811061372057fe5b9060005260206000200160009054906101000a90046001600160a01b0316848783038151811061374c57fe5b6001600160a01b03909216602092830291909101909101526001016136e7565b5050505b9392505050565b60608167ffffffffffffffff8111801561379057600080fd5b506040519080825280602002602001820160405280156137ba578160200160208202803683370190505b50905060005b8281101561128c57600d60008585848181106137d857fe5b9050602002013581526020019081526020016000206000815481106137f957fe5b9060005260206000200160009054906101000a90046001600160a01b031682828151811061382357fe5b6001600160a01b03909216602092830291909101909101526001016137c0565b61384b613db2565b6001600160a01b03821661389a576040805162461bcd60e51b815260206004820152601160248201527006b7962657246656548616e646c6572203607c1b604482015290519081900360640190fd5b6001600160a01b0381166138ed576040805162461bcd60e51b815260206004820152601560248201527406b796265724d61746368696e67456e67696e65203605c1b604482015290519081900360640190fd5b6008546040805163c2eed5a360e01b81526001600160a01b0385811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561393b57600080fd5b505af115801561394f573d6000803e3d6000fd5b5050600a546040805163c2eed5a360e01b81526001600160a01b038681166004830152915191909216935063c2eed5a39250602480830192600092919082900301818387803b1580156139a157600080fd5b505af11580156128b8573d6000803e3d6000fd5b6139bd613e05565b6001600160a01b038116613a0d576040805162461bcd60e51b815260206004820152601260248201527107265626174652077616c6c657420697320360741b604482015290519081900360640190fd5b81613a4f576040805162461bcd60e51b815260206004820152600d60248201526c0726573657276654964203d203609c1b604482015290519081900360640190fd5b6000828152600d6020526040902054613aa5576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000828152600d6020526040812080548290613abd57fe5b6000918252602090912001546001600160a01b03161415613b1d576040805162461bcd60e51b81526020600482015260156024820152741b9bc81c995cd95c9d9948185cdcdbd8da585d1959605a1b604482015290519081900360640190fd5b6000828152600e602052604080822080546001600160a01b0319166001600160a01b0385169081179091559051909184917f42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b39190a35050565b60608167ffffffffffffffff81118015613b8f57600080fd5b50604051908082528060200260200182016040528015613bb9578160200160208202803683370190505b5060165490915060005b838110156115fc57600060186000878785818110613bdd57fe5b905060200201358152602001908152602001600020546001901b831611838281518110613c0657fe5b91151560209283029190910190910152600101613bc3565b6000818152600d6020908152604091829020805483518184028101840190945280845260609392830182828015611ba357602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613c605750505050509050919050565b6001600160a01b038082166000908152600f6020908152604080832054808452600e835281842054601890935290832054909391909116919081908190806007811115613cd257fe5b60165460175497999698509096600190921b908116151595911615159350915050565b6000546001600160a01b031681565b6060600c8054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b6000546001600160a01b03163314613db0576040805162461bcd60e51b815260206004820152600a60248201526937b7363c9030b236b4b760b11b604482015290519081900360640190fd5b565b601a546001600160a01b03163314613db0576040805162461bcd60e51b81526020600482015260116024820152706f6e6c79206b796265724e6574776f726b60781b604482015290519081900360640190fd5b3360009081526002602052604090205460ff16613db0576040805162461bcd60e51b815260206004820152600d60248201526c37b7363c9037b832b930ba37b960991b604482015290519081900360640190fd5b600081815260126020908152604091829020805483518184028101840190945280845260609392830182828015613eb957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613e9b575b50939450600093505050505b8151811015613ef957613ef183838381518110613ede57fe5b602002602001015160006001600061268b565b600101613ec5565b5060008281526013602090815260409182902080548351818402810184019094528084529091830182828015613f5857602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613f3a575b50939450600093505050505b8151811015613f9757613f8f83838381518110613f7d57fe5b6020026020010151600160008061268b565b600101613f64565b505050565b6001600160a01b0383166000818152601160209081526040808320888452601383528184209484526015909252822091929091851561400c575050506001600160a01b03841660008181526010602090815260408083208984526012835281842094845260149092529091209091905b600093505b82548410156140ae5782848154811061402657fe5b90600052602060002001548814156140a3578415614047575050505061420b565b82548390600019810190811061405957fe5b906000526020600020015483858154811061407057fe5b90600052602060002001819055508280548061408857fe5b600190038181906000526020600020016000905590556140ae565b600190930192614011565b841561411057825460018082018555600085815260208082209093018b9055845480830186558582528382200180546001600160a01b0319166001600160a01b038c161790558a8152918390526040909120805460ff19169091179055614206565b600093505b81548410156141ef5781848154811061412a57fe5b6000918252602090912001546001600160a01b03888116911614156141e45781548290600019810190811061415b57fe5b9060005260206000200160009054906101000a90046001600160a01b031682858154811061418557fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550818054806141bd57fe5b600082815260209020810160001990810180546001600160a01b03191690550190556141ef565b600190930192614115565b6000888152602082905260409020805460ff191690555b505050505b5050505056fe726573657276652773206578697374696e67207265736572766549642069732030a2646970667358221220e32f171e1496c770e07f7f08b75a84cc02c3e7de27a7be1f0714b170bbb3b85a64736f6c63430006060033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106102955760003560e01c806375829def11610167578063b78b842d116100ce578063d95c273011610087578063d95c273014610cc5578063e0fb275614610cf1578063e4b80c4d14610d5f578063f16e429b14610d7c578063f851a44014610dc7578063fa006d9314610dcf57610295565b8063b78b842d14610a98578063c3a2a93a14610aa0578063ce3a056414610bcb578063d589158214610bf7578063d84c19c714610c29578063d8952a4914610c9757610295565b8063a03bd93a11610120578063a03bd93a14610a00578063a59b60e414610a20578063aa1da48a14610a46578063aaaaa6c414610a62578063ac8a584a14610a6a578063b6cb51c214610a9057610295565b806375829def1461095857806377f50f971461097e5780637acc8678146109865780637c423f54146109ac578063803d58c8146109b45780639870d7fe146109da57610295565b8063338256531161020b5780634821ccfc116101c45780634821ccfc1461075057806350dceb7414610758578063599b9348146108c057806365a04d6d146108e65780636f795fa31461092a5780636ff277de1461093257610295565b8063338256531461055c5780633d3dc52c146105ca5780633d9036b4146105f05780633dfce895146106a6578063408ee7fe146106e357806345bd576c1461070957610295565b8063106e9a4b1161025d578063106e9a4b1461042057806313d47a8d146104585780631dd4c3ef1461049f5780632185340b1461050d578063267822471461053057806327a099d81461055457610295565b806301a12fd31461029a578063073c4c65146102c257806307f442e11461032e5780630902f1ac1461035a5780630a3cf98e146103b2575b600080fd5b6102c0600480360360208110156102b057600080fd5b50356001600160a01b0316610dd7565b005b6102df600480360360208110156102d857600080fd5b5035610f83565b604080516001600160a01b0380881682528616602082015290810184600781111561030657fe5b60ff168152921515602084015250151560408083019190915251908190036060019350915050f35b6102c06004803603604081101561034457600080fd5b506001600160a01b038135169060200135611078565b610362611173565b60408051602080825283518183015283519192839290830191858101910280838360005b8381101561039e578181015183820152602001610386565b505050509050019250505060405180910390f35b610362600480360360208110156103c857600080fd5b810190602081018135600160201b8111156103e257600080fd5b8201836020820111156103f457600080fd5b803590602001918460208302840111600160201b8311171561041557600080fd5b5090925090506111d5565b6104466004803603602081101561043657600080fd5b50356001600160a01b0316611293565b60408051918252519081900360200190f35b6102c0600480360360c081101561046e57600080fd5b508035151590602081013515159060408101351515906060810135151590608081013515159060a0013515156112ae565b610362600480360360208110156104b557600080fd5b810190602081018135600160201b8111156104cf57600080fd5b8201836020820111156104e157600080fd5b803590602001918460208302840111600160201b8311171561050257600080fd5b509092509050611554565b6102c06004803603604081101561052357600080fd5b5080359060200135611604565b610538611a23565b604080516001600160a01b039092168252519081900360200190f35b610362611a32565b6103626004803603602081101561057257600080fd5b810190602081018135600160201b81111561058c57600080fd5b82018360208201111561059e57600080fd5b803590602001918460208302840111600160201b831117156105bf57600080fd5b509092509050611a92565b610362600480360360208110156105e057600080fd5b50356001600160a01b0316611b43565b61060d6004803603602081101561060657600080fd5b5035611baf565b604051808060200180602001838103835285818151815260200191508051906020019060200280838360005b83811015610651578181015183820152602001610639565b50505050905001838103825284818151815260200191508051906020019060200280838360005b83811015610690578181015183820152602001610678565b5050505090500194505050505060405180910390f35b6102c0600480360360808110156106bc57600080fd5b506001600160a01b03813581169160208101359160ff604083013516916060013516611c93565b6102c0600480360360208110156106f957600080fd5b50356001600160a01b031661212f565b6102c0600480360360c081101561071f57600080fd5b508035151590602081013515159060408101351515906060810135151590608081013515159060a001351515612286565b6105386122d7565b6107d76004803603606081101561076e57600080fd5b810190602081018135600160201b81111561078857600080fd5b82018360208201111561079a57600080fd5b803590602001918460208302840111600160201b831117156107bb57600080fd5b91935091506001600160a01b03813581169160200135166122e6565b6040518085151515158152602001806020018060200180602001848103845287818151815260200191508051906020019060200280838360005b83811015610829578181015183820152602001610811565b50505050905001848103835286818151815260200191508051906020019060200280838360005b83811015610868578181015183820152602001610850565b50505050905001848103825285818151815260200191508051906020019060200280838360005b838110156108a757818101518382015260200161088f565b5050505090500197505050505050505060405180910390f35b6102c0600480360360208110156108d657600080fd5b50356001600160a01b0316612572565b6102c0600480360360a08110156108fc57600080fd5b508035906001600160a01b03602082013516906040810135151590606081013515159060800135151561268b565b6105386128c0565b6102c06004803603602081101561094857600080fd5b50356001600160a01b03166128cf565b6102c06004803603602081101561096e57600080fd5b50356001600160a01b0316612940565b6102c06129ef565b6102c06004803603602081101561099c57600080fd5b50356001600160a01b0316612aaf565b610362612ba2565b6102c0600480360360208110156109ca57600080fd5b50356001600160a01b0316612c02565b6102c0600480360360208110156109f057600080fd5b50356001600160a01b0316612d46565b61036260048036036020811015610a1657600080fd5b503560ff16612e9f565b61036260048036036020811015610a3657600080fd5b50356001600160a01b0316612f1e565b610a4e612f88565b604080519115158252519081900360200190f35b610538612f90565b6102c060048036036020811015610a8057600080fd5b50356001600160a01b0316612f9f565b610538613148565b610538613157565b610aa8613166565b6040518080602001806020018060200180602001858103855289818151815260200191508051906020019060200280838360005b83811015610af4578181015183820152602001610adc565b50505050905001858103845288818151815260200191508051906020019060200280838360005b83811015610b33578181015183820152602001610b1b565b50505050905001858103835287818151815260200191508051906020019060200280838360005b83811015610b72578181015183820152602001610b5a565b50505050905001858103825286818151815260200191508051906020019060200280838360005b83811015610bb1578181015183820152602001610b99565b505050509050019850505050505050505060405180910390f35b6102c060048036036040811015610be157600080fd5b506001600160a01b0381351690602001356135ce565b61036260048036036060811015610c0d57600080fd5b506001600160a01b0381351690602081013590604001356135ea565b61036260048036036020811015610c3f57600080fd5b810190602081018135600160201b811115610c5957600080fd5b820183602082011115610c6b57600080fd5b803590602001918460208302840111600160201b83111715610c8c57600080fd5b509092509050613777565b6102c060048036036040811015610cad57600080fd5b506001600160a01b0381358116916020013516613843565b6102c060048036036040811015610cdb57600080fd5b50803590602001356001600160a01b03166139b5565b61036260048036036020811015610d0757600080fd5b810190602081018135600160201b811115610d2157600080fd5b820183602082011115610d3357600080fd5b803590602001918460208302840111600160201b83111715610d5457600080fd5b509092509050613b76565b61036260048036036020811015610d7557600080fd5b5035613c1e565b610da260048036036020811015610d9257600080fd5b50356001600160a01b0316613c89565b604080518681526001600160a01b038616602082015290810184600781111561030657fe5b610538613cf5565b610362613d04565b610ddf613d64565b6001600160a01b03811660009081526003602052604090205460ff16610e3a576040805162461bcd60e51b815260206004820152600b60248201526a3737ba1030b632b93a32b960a91b604482015290519081900360640190fd5b6001600160a01b0381166000908152600360205260408120805460ff191690555b600554811015610f7f57816001600160a01b031660058281548110610e7c57fe5b6000918252602090912001546001600160a01b03161415610f7757600580546000198101908110610ea957fe5b600091825260209091200154600580546001600160a01b039092169183908110610ecf57fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b031602179055506005805480610f0857fe5b60008281526020808220830160001990810180546001600160a01b0319169055909201909255604080516001600160a01b03861681529182019290925281517f5611bf3e417d124f97bf2c788843ea8bb502b66079fbee02158ef30b172cb762929181900390910190a1610f7f565b600101610e5b565b5050565b6000818152600d6020908152604080832080548251818502810185019093528083528493849384938493606093830182828015610fe957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311610fcb575b50505050509050805160001461106e576000878152600d60205260408120805490919061101257fe5b6000918252602080832090910154898352600e82526040808420546018909352909220546001600160a01b0392831698509116955080600781111561105357fe5b601654601754919650600190921b9182161515945016151591505b5091939590929450565b611080613db2565b6001600160a01b0382166110ca576040805162461bcd60e51b815260206004820152600c60248201526b06b7962657250726f787920360a41b604482015290519081900360640190fd5b600c548111611120576040805162461bcd60e51b815260206004820152601e60248201527f6d6178206b7962657250726f78696573206c696d697420726561636865640000604482015290519081900360640190fd5b50600c80546001810182556000919091527fdf6966c971051c3d54ec59162606531493a51404a002842f56009d7e5cf4a8c70180546001600160a01b0319166001600160a01b0392909216919091179055565b6060600b8054806020026020016040519081016040528092919081815260200182805480156111cb57602002820191906000526020600020905b81546001600160a01b031681526001909101906020018083116111ad575b5050505050905090565b60608167ffffffffffffffff811180156111ee57600080fd5b50604051908082528060200260200182016040528015611218578160200160208202803683370190505b50905060005b815181101561128c57600e600085858481811061123757fe5b90506020020135815260200190815260200160002060009054906101000a90046001600160a01b031682828151811061126c57fe5b6001600160a01b039092166020928302919091019091015260010161121e565b5092915050565b6001600160a01b03166000908152600f602052604090205490565b6112b6613d64565b60165463ffffffff1415611311576040805162461bcd60e51b815260206004820152601a60248201527f666565206163636f756e7465642064617461206e6f7420736574000000000000604482015290519081900360640190fd5b6000861561136c57601654600216611368576040805162461bcd60e51b8152602060048201526015602482015274199c1c881b9bdd08199959481858d8dbdd5b9d1959605a1b604482015290519081900360640190fd5b6002175b85156113c5576016546004166113c1576040805162461bcd60e51b8152602060048201526015602482015274185c1c881b9bdd08199959481858d8dbdd5b9d1959605a1b604482015290519081900360640190fd5b6004175b841561142657601654600816611422576040805162461bcd60e51b815260206004820152601860248201527f627269646765206e6f7420666565206163636f756e7465640000000000000000604482015290519081900360640190fd5b6008175b831561148757601654601016611483576040805162461bcd60e51b815260206004820152601960248201527f7574696c697479206e6f7420666565206163636f756e74656400000000000000604482015290519081900360640190fd5b6010175b82156114e8576016546020166114e4576040805162461bcd60e51b815260206004820152601860248201527f637573746f6d206e6f7420666565206163636f756e7465640000000000000000604482015290519081900360640190fd5b6020175b811561154957601654604016611545576040805162461bcd60e51b815260206004820152601b60248201527f6f72646572626f6f6b206e6f7420666565206163636f756e7465640000000000604482015290519081900360640190fd5b6040175b601755505050505050565b60608167ffffffffffffffff8111801561156d57600080fd5b50604051908082528060200260200182016040528015611597578160200160208202803683370190505b5060175490915060005b838110156115fc576000601860008787858181106115bb57fe5b905060200201358152602001908152602001600020546001901b8316118382815181106115e457fe5b911515602092830291909101909101526001016115a1565b505092915050565b61160c613e05565b6000828152600d6020526040902054611662576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000828152600d602052604081208054829061167a57fe5b6000918252602090912001546001600160a01b0316905061169a83613e59565b600160ff1b825b600b548110156116ed57826001600160a01b0316600b82815481106116c257fe5b6000918252602090912001546001600160a01b031614156116e5578091506116ed565b6001016116a1565b5080600160ff1b141561173b576040805162461bcd60e51b81526020600482015260116024820152701c995cd95c9d99481b9bdd08199bdd5b99607a1b604482015290519081900360640190fd5b600b8054600019810190811061174d57fe5b600091825260209091200154600b80546001600160a01b03909216918390811061177357fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600b8054806117ac57fe5b60008281526020808220830160001990810180546001600160a01b03191690559092019092556001600160a01b0384168252600f905260409020546118225760405162461bcd60e51b81526004018080602001828103825260218152602001806142126021913960400191505060405180910390fd5b6001600160a01b0382166000908152600f6020908152604080832054808452600d9092528220805491965091829161185657fe5b6000918252602080832090910154835460018101855593835281832090930180546001600160a01b0319166001600160a01b0390941693909317909255858152600d90915260408120805482906118a957fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600060196000601860008881526020019081526020016000205460078111156118fc57fe5b600781111561190757fe5b600781111561191257fe5b8152602001908152602001600020905060008090505b81548110156119b35781818154811061193d57fe5b90600052602060002001548614156119ab5781548290600019810190811061196157fe5b906000526020600020015482828154811061197857fe5b90600052602060002001819055508180548061199057fe5b600190038181906000526020600020016000905590556119b3565b600101611928565b506001600160a01b0383166000818152600f6020908152604080832083905588835260188252808320839055600e90915280822080546001600160a01b0319169055518792917fa5cd88a226efb041d6bdc0ac32964affd749b8a7c4d9e0c4ffba575e7180b1c991a35050505050565b6001546001600160a01b031681565b606060048054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b60608167ffffffffffffffff81118015611aab57600080fd5b50604051908082528060200260200182016040528015611ad5578160200160208202803683370190505b50905060005b8281101561128c57600f6000858584818110611af357fe5b905060200201356001600160a01b03166001600160a01b03166001600160a01b0316815260200190815260200160002054828281518110611b3057fe5b6020908102919091010152600101611adb565b6001600160a01b038116600090815260106020908152604091829020805483518184028101840190945280845260609392830182828015611ba357602002820191906000526020600020905b815481526020019060010190808311611b8f575b50505050509050919050565b60608060126000848152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611c1957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611bfb575b5050505050915060136000848152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611c8757602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311611c69575b50505050509050915091565b611c9b613e05565b6001600160a01b0384166000908152600f602052604090205415611cf7576040805162461bcd60e51b815260206004820152600e60248201526d1c995cd95c9d99481a185cc81a5960921b604482015290519081900360640190fd5b82611d39576040805162461bcd60e51b815260206004820152600d60248201526c0726573657276654964203d203609c1b604482015290519081900360640190fd5b6000826007811115611d4757fe5b14158015611d6057506007826007811115611d5e57fe5b105b611da4576040805162461bcd60e51b815260206004820152601060248201526f6261642072657365727665207479706560801b604482015290519081900360640190fd5b60165463ffffffff1415611dff576040805162461bcd60e51b815260206004820152601a60248201527f666565206163636f756e7465642064617461206e6f7420736574000000000000604482015290519081900360640190fd5b60175463ffffffff1415611e5a576040805162461bcd60e51b815260206004820152601c60248201527f656e7469746c6564207265626174652064617461206e6f742073657400000000604482015290519081900360640190fd5b6001600160a01b038116611eaa576040805162461bcd60e51b815260206004820152601260248201527107265626174652077616c6c657420697320360741b604482015290519081900360640190fd5b6000838152600e6020908152604080832080546001600160a01b0319166001600160a01b038616179055600d909152902054611f1c576000838152600d602090815260408220805460018101825590835291200180546001600160a01b0319166001600160a01b038616179055611fd5565b6000838152600d6020526040812080548290611f3457fe5b6000918252602090912001546001600160a01b031614611f8d576040805162461bcd60e51b815260206004820152600f60248201526e3932b9b2b93b32a4b2103a30b5b2b760891b604482015290519081900360640190fd5b6000838152600d602052604081208054869290611fa657fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b031602179055505b600b805460018101825560009182527f0175b7a638427703f0dbe7bb9bbf987a2551717b34e79f33b5b1008d1fa01db90180546001600160a01b0319166001600160a01b03871617905560199083600781111561202e57fe5b600781111561203957fe5b8152602080820192909252604090810160009081208054600181018255908252838220018690556001600160a01b0387168152600f909252902083905581600781111561208257fe5b6018600085815260200190815260200160002081905550806001600160a01b031683856001600160a01b03167f50b2ce9e8f1a63ceaed262cc854dbf741b216e6429f7ba38403afbcdddc7f1ea85604051808260078111156120e057fe5b60ff16815260200191505060405180910390a46040516001600160a01b0382169084907f42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b390600090a350505050565b612137613d64565b6001600160a01b03811660009081526003602052604090205460ff1615612196576040805162461bcd60e51b815260206004820152600e60248201526d616c65727465722065786973747360901b604482015290519081900360640190fd5b6005546032116121dc576040805162461bcd60e51b815260206004820152600c60248201526b6d617820616c65727465727360a01b604482015290519081900360640190fd5b604080516001600160a01b03831681526001602082015281517f5611bf3e417d124f97bf2c788843ea8bb502b66079fbee02158ef30b172cb762929181900390910190a16001600160a01b03166000818152600360205260408120805460ff191660019081179091556005805491820181559091527f036b6384b5eca791c62761152d0c79bb0604c104a5fb6f4eb0703f3154bb3db00180546001600160a01b0319169091179055565b61228e613d64565b6000861561229a576002175b85156122a4576004175b84156122ae576008175b83156122b8576010175b82156122c2576020175b81156122cc576040175b601655505050505050565b600a546001600160a01b031681565b6000606080808667ffffffffffffffff8111801561230357600080fd5b5060405190808252806020026020018201604052801561232d578160200160208202803683370190505b5092508667ffffffffffffffff8111801561234757600080fd5b50604051908082528060200260200182016040528015612371578160200160208202803683370190505b5091508667ffffffffffffffff8111801561238b57600080fd5b506040519080825280602002602001820160405280156123b5578160200160208202803683370190505b50601754601654600196509192509060006001600160a01b03881673eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee14612407576001600160a01b0388166000908152601560205260409020612420565b6001600160a01b03891660009081526014602052604090205b905060005b8a811015612563576000601860008e8e8581811061243f57fe5b9050602002013581526020019081526020016000205490506000816001901b86161187838151811061246d57fe5b6020026020010190151590811515815250506000816001901b85161188838151811061249557fe5b91151560209283029190910190910152600d60008e8e858181106124b557fe5b9050602002013581526020019081526020016000206000815481106124d657fe5b9060005260206000200160009054906101000a90046001600160a01b031686838151811061250057fe5b60200260200101906001600160a01b031690816001600160a01b0316815250508260008e8e8581811061252f57fe5b602090810292909201358352508101919091526040016000205460ff1661255a576000985050612563565b50600101612425565b50505050945094509450949050565b61257a613d64565b6001600160a01b0381166125c6576040805162461bcd60e51b815260206004820152600e60248201526d06b796265724e6574776f726b20360941b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f18970d46ac8a7d7e0da90e1bebb0be3e87ffc7705fc09d3bba5373d59b7a12aa9181900360200190a16007546040805163c2eed5a360e01b81526001600160a01b0384811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561265057600080fd5b505af1158015612664573d6000803e3d6000fd5b5050601a80546001600160a01b0319166001600160a01b0394909416939093179092555050565b612693613e05565b6000858152600d60205260409020546126e9576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000858152600d602052604081208054829061270157fe5b6000918252602090912001546001600160a01b0316905080612758576040805162461bcd60e51b815260206004820152600b60248201526a072657365727665203d20360ac1b604482015290519081900360640190fd5b83156127ce5761276b8686600085613f9c565b604080516001600160a01b038381168252841515602083015282519088169273eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee928a927ffcdbd685961328a43b4aa133de257d3769cc01891b4ee00fd5058e5aa3564ca5929181900390910190a45b82156128b857601a54604080516332c8bd9f60e01b81526001600160a01b03848116600483015288811660248301528515156044830152915191909216916332c8bd9f91606480830192600092919082900301818387803b15801561283257600080fd5b505af1158015612846573d6000803e3d6000fd5b505050506128578686600185613f9c565b604080516001600160a01b0383811682528415156020830152825173eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee93918916928a927ffcdbd685961328a43b4aa133de257d3769cc01891b4ee00fd5058e5aa3564ca592918290030190a45b505050505050565b6007546001600160a01b031681565b6128d7613db2565b6009546040805163c2eed5a360e01b81526001600160a01b0384811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561292557600080fd5b505af1158015612939573d6000803e3d6000fd5b5050505050565b612948613d64565b6001600160a01b038116612991576040805162461bcd60e51b815260206004820152600b60248201526a06e65772061646d696e20360ac1b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f3b81caf78fa51ecbc8acb482fd7012a277b428d9b80f9d156e8a54107496cc409181900360200190a1600180546001600160a01b0319166001600160a01b0392909216919091179055565b6001546001600160a01b03163314612a3c576040805162461bcd60e51b815260206004820152600b60248201526a6e6f742070656e64696e6760a81b604482015290519081900360640190fd5b600154600054604080516001600160a01b03938416815292909116602083015280517f65da1cfc2c2e81576ad96afb24a581f8e109b7a403b35cbd3243a1c99efdb9ed9281900390910190a160018054600080546001600160a01b03199081166001600160a01b03841617909155169055565b612ab7613d64565b6001600160a01b038116612afc576040805162461bcd60e51b8152602060048201526007602482015266061646d696e20360cc1b604482015290519081900360640190fd5b604080516001600160a01b038316815290517f3b81caf78fa51ecbc8acb482fd7012a277b428d9b80f9d156e8a54107496cc409181900360200190a1600054604080516001600160a01b038085168252909216602083015280517f65da1cfc2c2e81576ad96afb24a581f8e109b7a403b35cbd3243a1c99efdb9ed9281900390910190a1600080546001600160a01b0319166001600160a01b0392909216919091179055565b606060058054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b612c0a613db2565b600160ff1b60005b600c54811015612c5e57826001600160a01b0316600c8281548110612c3357fe5b6000918252602090912001546001600160a01b03161415612c5657809150612c5e565b600101612c12565b5080600160ff1b1415612caf576040805162461bcd60e51b81526020600482015260146024820152731ade58995c941c9bde1e481b9bdd08199bdd5b9960621b604482015290519081900360640190fd5b600c80546000198101908110612cc157fe5b600091825260209091200154600c80546001600160a01b039092169183908110612ce757fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550600c805480612d2057fe5b600082815260209020810160001990810180546001600160a01b03191690550190555050565b612d4e613d64565b6001600160a01b03811660009081526002602052604090205460ff1615612dae576040805162461bcd60e51b815260206004820152600f60248201526e6f70657261746f722065786973747360881b604482015290519081900360640190fd5b600454603211612df5576040805162461bcd60e51b815260206004820152600d60248201526c6d6178206f70657261746f727360981b604482015290519081900360640190fd5b604080516001600160a01b03831681526001602082015281517f091a7a4b85135fdd7e8dbc18b12fabe5cc191ea867aa3c2e1a24a102af61d58b929181900390910190a16001600160a01b03166000818152600260205260408120805460ff191660019081179091556004805491820181559091527f8a35acfbc15ff81a39ae7d344fd709f28e8600b4aa8c65c6b64bfe7fe36bd19b0180546001600160a01b0319169091179055565b606060196000836007811115612eb157fe5b6007811115612ebc57fe5b8152602001908152602001600020805480602002602001604051908101604052809291908181526020018280548015611ba35760200282019190600052602060002090815481526020019060010190808311611b8f5750505050509050919050565b6001600160a01b038116600090815260116020908152604091829020805483518184028101840190945280845260609392830182828015611ba35760200282019190600052602060002090815481526020019060010190808311611b8f5750505050509050919050565b600c54151590565b6009546001600160a01b031681565b612fa7613d64565b6001600160a01b03811660009081526002602052604090205460ff16613003576040805162461bcd60e51b815260206004820152600c60248201526b3737ba1037b832b930ba37b960a11b604482015290519081900360640190fd5b6001600160a01b0381166000908152600260205260408120805460ff191690555b600454811015610f7f57816001600160a01b03166004828154811061304557fe5b6000918252602090912001546001600160a01b031614156131405760048054600019810190811061307257fe5b600091825260209091200154600480546001600160a01b03909216918390811061309857fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b0316021790555060048054806130d157fe5b60008281526020808220830160001990810180546001600160a01b0319169055909201909255604080516001600160a01b03861681529182019290925281517f091a7a4b85135fdd7e8dbc18b12fabe5cc191ea867aa3c2e1a24a102af61d58b929181900390910190a1610f7f565b600101613024565b6008546001600160a01b031681565b601a546001600160a01b031681565b606080606080600960009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156131ba57600080fd5b505afa1580156131ce573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f1916820160405260208110156131f757600080fd5b8101908080516040519392919084600160201b82111561321657600080fd5b90830190602082018581111561322b57600080fd5b82518660208202830111600160201b8211171561324757600080fd5b82525081516020918201928201910280838360005b8381101561327457818101518382015260200161325c565b505050509050016040525050509350600860009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156132d157600080fd5b505afa1580156132e5573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561330e57600080fd5b8101908080516040519392919084600160201b82111561332d57600080fd5b90830190602082018581111561334257600080fd5b82518660208202830111600160201b8211171561335e57600080fd5b82525081516020918201928201910280838360005b8381101561338b578181015183820152602001613373565b505050509050016040525050509250600a60009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156133e857600080fd5b505afa1580156133fc573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561342557600080fd5b8101908080516040519392919084600160201b82111561344457600080fd5b90830190602082018581111561345957600080fd5b82518660208202830111600160201b8211171561347557600080fd5b82525081516020918201928201910280838360005b838110156134a257818101518382015260200161348a565b505050509050016040525050509150600760009054906101000a90046001600160a01b03166001600160a01b031663c3a2a93a6040518163ffffffff1660e01b815260040160006040518083038186803b1580156134ff57600080fd5b505afa158015613513573d6000803e3d6000fd5b505050506040513d6000823e601f3d908101601f19168201604052602081101561353c57600080fd5b8101908080516040519392919084600160201b82111561355b57600080fd5b90830190602082018581111561357057600080fd5b82518660208202830111600160201b8211171561358c57600080fd5b82525081516020918201928201910280838360005b838110156135b95781810151838201526020016135a1565b50505050905001604052505050905090919293565b6001600160a01b039091166000908152600f6020526040902055565b60608060106000866001600160a01b03166001600160a01b0316815260200190815260200160002080548060200260200160405190810160405280929190818152602001828054801561365c57602002820191906000526020600020905b815481526020019060010190808311613648575b505050505090508051600014156136735750613770565b60008151841015613684578361368a565b60018251035b90508481101561369c57506137709050565b84810360010167ffffffffffffffff811180156136b857600080fd5b506040519080825280602002602001820160405280156136e2578160200160208202803683370190505b509250845b81811161376c57600d60008483815181106136fe57fe5b6020026020010151815260200190815260200160002060008154811061372057fe5b9060005260206000200160009054906101000a90046001600160a01b0316848783038151811061374c57fe5b6001600160a01b03909216602092830291909101909101526001016136e7565b5050505b9392505050565b60608167ffffffffffffffff8111801561379057600080fd5b506040519080825280602002602001820160405280156137ba578160200160208202803683370190505b50905060005b8281101561128c57600d60008585848181106137d857fe5b9050602002013581526020019081526020016000206000815481106137f957fe5b9060005260206000200160009054906101000a90046001600160a01b031682828151811061382357fe5b6001600160a01b03909216602092830291909101909101526001016137c0565b61384b613db2565b6001600160a01b03821661389a576040805162461bcd60e51b815260206004820152601160248201527006b7962657246656548616e646c6572203607c1b604482015290519081900360640190fd5b6001600160a01b0381166138ed576040805162461bcd60e51b815260206004820152601560248201527406b796265724d61746368696e67456e67696e65203605c1b604482015290519081900360640190fd5b6008546040805163c2eed5a360e01b81526001600160a01b0385811660048301529151919092169163c2eed5a391602480830192600092919082900301818387803b15801561393b57600080fd5b505af115801561394f573d6000803e3d6000fd5b5050600a546040805163c2eed5a360e01b81526001600160a01b038681166004830152915191909216935063c2eed5a39250602480830192600092919082900301818387803b1580156139a157600080fd5b505af11580156128b8573d6000803e3d6000fd5b6139bd613e05565b6001600160a01b038116613a0d576040805162461bcd60e51b815260206004820152601260248201527107265626174652077616c6c657420697320360741b604482015290519081900360640190fd5b81613a4f576040805162461bcd60e51b815260206004820152600d60248201526c0726573657276654964203d203609c1b604482015290519081900360640190fd5b6000828152600d6020526040902054613aa5576040805162461bcd60e51b81526020600482015260136024820152721c995cd95c9d995259081b9bdd08199bdd5b99606a1b604482015290519081900360640190fd5b6000828152600d6020526040812080548290613abd57fe5b6000918252602090912001546001600160a01b03161415613b1d576040805162461bcd60e51b81526020600482015260156024820152741b9bc81c995cd95c9d9948185cdcdbd8da585d1959605a1b604482015290519081900360640190fd5b6000828152600e602052604080822080546001600160a01b0319166001600160a01b0385169081179091559051909184917f42cac9e63e37f62d5689493d04887a67fe3c68e1d3763c3f0890e1620a0465b39190a35050565b60608167ffffffffffffffff81118015613b8f57600080fd5b50604051908082528060200260200182016040528015613bb9578160200160208202803683370190505b5060165490915060005b838110156115fc57600060186000878785818110613bdd57fe5b905060200201358152602001908152602001600020546001901b831611838281518110613c0657fe5b91151560209283029190910190910152600101613bc3565b6000818152600d6020908152604091829020805483518184028101840190945280845260609392830182828015611ba357602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613c605750505050509050919050565b6001600160a01b038082166000908152600f6020908152604080832054808452600e835281842054601890935290832054909391909116919081908190806007811115613cd257fe5b60165460175497999698509096600190921b908116151595911615159350915050565b6000546001600160a01b031681565b6060600c8054806020026020016040519081016040528092919081815260200182805480156111cb576020028201919060005260206000209081546001600160a01b031681526001909101906020018083116111ad575050505050905090565b6000546001600160a01b03163314613db0576040805162461bcd60e51b815260206004820152600a60248201526937b7363c9030b236b4b760b11b604482015290519081900360640190fd5b565b601a546001600160a01b03163314613db0576040805162461bcd60e51b81526020600482015260116024820152706f6e6c79206b796265724e6574776f726b60781b604482015290519081900360640190fd5b3360009081526002602052604090205460ff16613db0576040805162461bcd60e51b815260206004820152600d60248201526c37b7363c9037b832b930ba37b960991b604482015290519081900360640190fd5b600081815260126020908152604091829020805483518184028101840190945280845260609392830182828015613eb957602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613e9b575b50939450600093505050505b8151811015613ef957613ef183838381518110613ede57fe5b602002602001015160006001600061268b565b600101613ec5565b5060008281526013602090815260409182902080548351818402810184019094528084529091830182828015613f5857602002820191906000526020600020905b81546001600160a01b03168152600190910190602001808311613f3a575b50939450600093505050505b8151811015613f9757613f8f83838381518110613f7d57fe5b6020026020010151600160008061268b565b600101613f64565b505050565b6001600160a01b0383166000818152601160209081526040808320888452601383528184209484526015909252822091929091851561400c575050506001600160a01b03841660008181526010602090815260408083208984526012835281842094845260149092529091209091905b600093505b82548410156140ae5782848154811061402657fe5b90600052602060002001548814156140a3578415614047575050505061420b565b82548390600019810190811061405957fe5b906000526020600020015483858154811061407057fe5b90600052602060002001819055508280548061408857fe5b600190038181906000526020600020016000905590556140ae565b600190930192614011565b841561411057825460018082018555600085815260208082209093018b9055845480830186558582528382200180546001600160a01b0319166001600160a01b038c161790558a8152918390526040909120805460ff19169091179055614206565b600093505b81548410156141ef5781848154811061412a57fe5b6000918252602090912001546001600160a01b03888116911614156141e45781548290600019810190811061415b57fe5b9060005260206000200160009054906101000a90046001600160a01b031682858154811061418557fe5b9060005260206000200160006101000a8154816001600160a01b0302191690836001600160a01b03160217905550818054806141bd57fe5b600082815260209020810160001990810180546001600160a01b03191690550190556141ef565b600190930192614115565b6000888152602082905260409020805460ff191690555b505050505b5050505056fe726573657276652773206578697374696e67207265736572766549642069732030a2646970667358221220e32f171e1496c770e07f7f08b75a84cc02c3e7de27a7be1f0714b170bbb3b85a64736f6c63430006060033",
+  "immutableReferences": {},
+  "sourceMap": "56:580:86:-:0;;;1776:10:61;1737:49;;1833:10;1792:51;;99:408:86;5:9:-1;2:2;;;27:1;24;17:12;2:2;99:408:86;;;;;;;;;;;;;;;15:3:-1;10;7:12;4:2;;;32:1;29;22:12;4:2;-1:-1;99:408:86;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;640:20:105;;632:40;;;;;-1:-1:-1;;;632:40:105;;;;;;;;;;;;-1:-1:-1;;;632:40:105;;;;;;;;;;;;;;;682:5;:14;;-1:-1:-1;;;;;;682:14:105;-1:-1:-1;;;;;682:14:105;;;;;;2323:40:61;::::1;2315:74;;;::::0;;-1:-1:-1;;;2315:74:61;;::::1;;::::0;::::1;::::0;::::1;::::0;;;;::::1;::::0;;;;;;;;;;;;;::::1;;-1:-1:-1::0;;;;;2407:43:61;::::1;2399:80;;;::::0;;-1:-1:-1;;;2399:80:61;;::::1;;::::0;::::1;::::0;::::1;::::0;;;;::::1;::::0;;;;;;;;;;;;;::::1;;-1:-1:-1::0;;;;;2497:36:61;::::1;2489:66;;;::::0;;-1:-1:-1;;;2489:66:61;;::::1;;::::0;::::1;::::0;::::1;::::0;;;;-1:-1:-1;;;2489:66:61;;;;;;;;;;;;;::::1;;-1:-1:-1::0;;;;;2573:47:61;::::1;2565:88;;;::::0;;-1:-1:-1;;;2565:88:61;;::::1;;::::0;::::1;::::0;::::1;::::0;;;;::::1;::::0;;;;;;;;;;;;;::::1;;2664:19;:42:::0;;-1:-1:-1;;;;;2664:42:61;;::::1;-1:-1:-1::0;;;;;;2664:42:61;;::::1;;::::0;;;2716:22:::1;:48:::0;;;;::::1;::::0;;::::1;::::0;;;::::1;::::0;;;2774:15:::1;:34:::0;;;;::::1;::::0;;::::1;::::0;;;::::1;::::0;;;2818:26:::1;:56:::0;;;;;::::1;::::0;::::1;;::::0;;-1:-1:-1;;;;;;56:580:86;;;;;;",
+  "deployedSourceMap": "56:580:86:-:0;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;56:580:86;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;12:1:-1;9;2:12;1950:480:105;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;1950:480:105;-1:-1:-1;;;;;1950:480:105;;:::i;:::-;;18124:842:61;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;18124:842:61;;:::i;:::-;;;;-1:-1:-1;;;;;18124:842:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;18124:842:61;;;;;;;;;;;;;;;;;;-1:-1:-1;18124:842:61;-1:-1:-1;;18124:842:61;9869:357;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;;;;;;9869:357:61;;;;;;;;:::i;13231:102::-;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;8:100:-1;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;13231:102:61;;;;;;;;;;;;;;;;;14393:367;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;14393:367:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;14393:367:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;14393:367:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;-1:-1;14393:367:61;;-1:-1:-1;14393:367:61;-1:-1:-1;14393:367:61;:::i;13483:131::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;13483:131:61;-1:-1:-1;;;;;13483:131:61;;:::i;:::-;;;;;;;;;;;;;;;;11498:1643;;;;;;15:3:-1;10;7:12;4:2;;;32:1;29;22:12;4:2;-1:-1;11498:1643:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;20857:456::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;20857:456:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;20857:456:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;20857:456:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;-1:-1;20857:456:61;;-1:-1:-1;20857:456:61;-1:-1:-1;20857:456:61;:::i;6886:1727::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;6886:1727:61;;;;;;;:::i;94:27:105:-;;;:::i;:::-;;;;-1:-1:-1;;;;;94:27:105;;;;;;;;;;;;;;709:103;;;:::i;13620:381:61:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;13620:381:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;13620:381:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;13620:381:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;-1:-1;13620:381:61;;-1:-1:-1;13620:381:61;-1:-1:-1;13620:381:61;:::i;14766:201::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;14766:201:61;-1:-1:-1;;;;;14766:201:61;;:::i;20095:308::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;20095:308:61;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;20095:308:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;20095:308:61;;;;;;;;;;;;;;;;;;;5275:1397;;;;;;15:3:-1;10;7:12;4:2;;;32:1;29;22:12;4:2;-1:-1;;;;;;5275:1397:61;;;;;;;;;;;;;;;;;;;;;;:::i;925:351:105:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;925:351:105;-1:-1:-1;;;;;925:351:105;;:::i;10762:730:61:-;;;;;;15:3:-1;10;7:12;4:2;;;32:1;29;22:12;4:2;-1:-1;10762:730:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;906:47::-;;;:::i;21563:1378::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;21563:1378:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;21563:1378:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;21563:1378:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;21563:1378:61;;-1:-1:-1;21563:1378:61;-1:-1:-1;;;;;;21563:1378:61;;;;;;;;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;21563:1378:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;21563:1378:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;21563:1378:61;;;;;;;;;;;;;;;;;;;;;;3513:317;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;3513:317:61;-1:-1:-1;;;;;3513:317:61;;:::i;9010:809::-;;;;;;15:3:-1;10;7:12;4:2;;;32:1;29;22:12;4:2;-1:-1;9010:809:61;;;-1:-1:-1;;;;;9010:809:61;;;;;;;;;;;;;;;;;;;;;;;;;;:::i;769:40::-;;;:::i;4803:146::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;4803:146:61;-1:-1:-1;;;;;4803:146:61;;:::i;3069:210:105:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;3069:210:105;-1:-1:-1;;;;;3069:210:105;;:::i;1735:209::-;;;:::i;3440:250::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;3440:250:105;-1:-1:-1;;;;;3440:250:105;;:::i;818:101::-;;;:::i;10232:524:61:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;10232:524:61;-1:-1:-1;;;;;10232:524:61;;:::i;1282:364:105:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;1282:364:105;-1:-1:-1;;;;;1282:364:105;;:::i;13339:138:61:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;13339:138:61;;;;:::i;16056:203::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;16056:203:61;-1:-1:-1;;;;;16056:203:61;;:::i;17554:119::-;;;:::i;:::-;;;;;;;;;;;;;;;;;;864:36;;;:::i;2436:496:105:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;2436:496:105;-1:-1:-1;;;;;2436:496:105;;:::i;815:43:61:-;;;:::i;1998:33::-;;;:::i;16734:590::-;;;:::i;:::-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;16734:590:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;16734:590:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;16734:590:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;16734:590:61;;;;;;;;;;;;;;;;;;;;;;;513:121:86;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;;;;;;513:121:86;;;;;;;;:::i;15304:746:61:-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;;;;;;15304:746:61;;;;;;;;;;;;;:::i;14007:380::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;14007:380:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;14007:380:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;14007:380:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;-1:-1;14007:380:61;;-1:-1:-1;14007:380:61;-1:-1:-1;14007:380:61;:::i;4368:429::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;;;;;;4368:429:61;;;;;;;;;;:::i;3836:526::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;3836:526:61;;;;;;-1:-1:-1;;;;;3836:526:61;;:::i;20409:442::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;20409:442:61;;;;;;;;-1:-1:-1;;;11:28;;8:2;;;52:1;49;42:12;8:2;20409:442:61;;41:9:-1;34:4;18:14;14:25;11:40;8:2;;;64:1;61;54:12;8:2;20409:442:61;;;;;;101:9:-1;95:2;81:12;77:21;67:8;63:36;60:51;-1:-1;;;25:12;22:29;11:108;8:2;;;132:1;129;122:12;8:2;-1:-1;20409:442:61;;-1:-1:-1;20409:442:61;-1:-1:-1;20409:442:61;:::i;16265:229::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;16265:229:61;;:::i;19417:672::-;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;19417:672:61;-1:-1:-1;;;;;19417:672:61;;:::i;:::-;;;;;;;-1:-1:-1;;;;;19417:672:61;;;;;;;;;;;;;;;;;68:20:105;;;:::i;17421:127:61:-;;;:::i;1950:480:105:-;2007:11;:9;:11::i;:::-;-1:-1:-1;;;;;2036:17:105;;;;;;:8;:17;;;;;;;;2028:41;;;;;-1:-1:-1;;;2028:41:105;;;;;;;;;;;;-1:-1:-1;;;2028:41:105;;;;;;;;;;;;;;;-1:-1:-1;;;;;2086:17:105;;;;;;:8;:17;;;;;2079:24;;-1:-1:-1;;2079:24:105;;;2114:310;2138:13;:20;2134:24;;2114:310;;;2203:7;-1:-1:-1;;;;;2183:27:105;:13;2197:1;2183:16;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;2183:16:105;:27;2179:235;;;2249:13;2263:20;;-1:-1:-1;;2263:24:105;;;2249:39;;;;;;;;;;;;;;;;2230:13;:16;;-1:-1:-1;;;;;2249:39:105;;;;2244:1;;2230:16;;;;;;;;;;;;;;:58;;;;;-1:-1:-1;;;;;2230:58:105;;;;;-1:-1:-1;;;;;2230:58:105;;;;;;2306:13;:19;;;;;;;;;;;;;;;;;-1:-1:-1;;2306:19:105;;;;;-1:-1:-1;;;;;;2306:19:105;;;;;;;;;2348:28;;;-1:-1:-1;;;;;2348:28:105;;;;;;;;;;;;;;;;;;;;;;;;2394:5;;2179:235;2160:3;;2114:310;;;;1950:480;:::o;18124:842:61:-;18251:22;18477:31;;;:20;:31;;;;;;;;18441:67;;;;;;;;;;;;;;;;;18251:22;;;;;;;;18441:33;;:67;;18477:31;18441:67;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;18441:67:61;;;;;;;;;;;;;;;;;;;;;;;18523:16;:23;18550:1;18523:28;18519:441;;18584:31;;;;:20;:31;;;;;:34;;:31;;;:34;;;;;;;;;;;;;;;;18647:30;;;:19;:30;;;;;;;18713:11;:22;;;;;;;-1:-1:-1;;;;;18584:34:61;;;;-1:-1:-1;18647:30:61;;;-1:-1:-1;18713:22:61;18759:24;;;;;;;;18819:19;;18902:21;;18749:34;;-1:-1:-1;18842:1:61;:16;;;18819:40;;;18818:46;;;-1:-1:-1;18902:42:61;18901:48;;;-1:-1:-1;18519:441:61;18124:842;;;;;;;;:::o;9869:357::-;9988:13;:11;:13::i;:::-;-1:-1:-1;;;;;10019:24:61;;10011:49;;;;;-1:-1:-1;;;10011:49:61;;;;;;;;;;;;-1:-1:-1;;;10011:49:61;;;;;;;;;;;;;;;10078:15;:22;:43;-1:-1:-1;10070:86:61;;;;;-1:-1:-1;;;10070:86:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;10167:15:61;27:10:-1;;39:1;23:18;;45:23;;-1:-1;10167:52:61;;;;;;;;-1:-1:-1;;;;;;10167:52:61;-1:-1:-1;;;;;10167:52:61;;;;;;;;;;9869:357::o;13231:102::-;13277:22;13318:8;13311:15;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;13311:15:61;;;;;;;;;;;;;;;;;;;;;;;13231:102;:::o;14393:367::-;14521:30;14597:10;14583:32;;;2:2:-1;;;;27:1;24;17:12;2:2;14583:32:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;14583:32:61;-1:-1:-1;14567:48:61;-1:-1:-1;14630:9:61;14625:129;14649:13;:20;14645:1;:24;14625:129;;;14709:19;:34;14729:10;;14740:1;14729:13;;;;;;;;;;;;;14709:34;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;14709:34:61;14690:13;14704:1;14690:16;;;;;;;;-1:-1:-1;;;;;14690:53:61;;;:16;;;;;;;;;;;:53;14671:3;;14625:129;;;;14393:367;;;;:::o;13483:131::-;-1:-1:-1;;;;;13580:27:61;13554:7;13580:27;;;:18;:27;;;;;;;13483:131::o;11498:1643::-;11688:11;:9;:11::i;:::-;11717:19;;11740:10;11717:33;;11709:72;;;;;-1:-1:-1;;;11709:72:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;11791:26;11832:3;11828:190;;;11859:19;;11882:29;11859:53;11851:91;;;;;-1:-1:-1;;;11851:91:61;;;;;;;;;;;;-1:-1:-1;;;11851:91:61;;;;;;;;;;;;;;;11978:29;11956:51;11828:190;12032:3;12028:190;;;12059:19;;12082:29;12059:53;12051:91;;;;;-1:-1:-1;;;12051:91:61;;;;;;;;;;;;-1:-1:-1;;;12051:91:61;;;;;;;;;;;;;;;12178:29;12156:51;12028:190;12232:6;12228:202;;;12262:19;;12285:32;12262:56;12254:97;;;;;-1:-1:-1;;;12254:97:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;12387:32;12365:54;12228:202;12444:7;12440:206;;;12475:19;;12498:33;12475:57;12467:99;;;;;-1:-1:-1;;;12467:99:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;12602:33;12580:55;12440:206;12660:6;12656:202;;;12690:19;;12713:32;12690:56;12682:97;;;;;-1:-1:-1;;;12682:97:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;12815:32;12793:54;12656:202;12872:9;12868:214;;;12905:19;;12928:35;12905:59;12897:103;;;;;-1:-1:-1;;;12897:103:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;13036:35;13014:57;12868:214;13092:21;:42;-1:-1:-1;;;;;;11498:1643:61:o;20857:456::-;20983:31;21061:10;21050:29;;;2:2:-1;;;;27:1;24;17:12;2:2;21050:29:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;21050:29:61;-1:-1:-1;21119:21:61;;21030:49;;-1:-1:-1;21090:26:61;21151:156;21171:21;;;21151:156;;;21294:1;21264:11;:26;21276:10;;21287:1;21276:13;;;;;;;;;;;;;21264:26;;;;;;;;;;;;21259:1;:31;;21237:18;:54;:58;21213:17;21231:1;21213:20;;;;;;;;:83;;;:20;;;;;;;;;;;:83;21194:3;;21151:156;;;;20857:456;;;;;:::o;6886:1727::-;6979:14;:12;:14::i;:::-;7052:1;7011:31;;;:20;:31;;;;;:38;7003:74;;;;;-1:-1:-1;;;7003:74:61;;;;;;;;;;;;-1:-1:-1;;;7003:74:61;;;;;;;;;;;;;;;7087:15;7105:31;;;:20;:31;;;;;:34;;7087:15;;7105:34;;;;;;;;;;;;;;-1:-1:-1;;;;;7105:34:61;;-1:-1:-1;7196:32:61;7218:9;7196:21;:32::i;:::-;-1:-1:-1;;;7295:10:61;7278:194;7311:8;:15;7307:19;;7278:194;;;7380:7;-1:-1:-1;;;;;7351:37:61;:8;7360:1;7351:11;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;7351:11:61;:37;7347:115;;;7423:1;7408:16;;7442:5;;7347:115;7328:3;;7278:194;;;;7489:12;-1:-1:-1;;;7489:22:61;;7481:52;;;;;-1:-1:-1;;;7481:52:61;;;;;;;;;;;;-1:-1:-1;;;7481:52:61;;;;;;;;;;;;;;;7568:8;7577:15;;-1:-1:-1;;7577:19:61;;;7568:29;;;;;;;;;;;;;;;;7543:8;:22;;-1:-1:-1;;;;;7568:29:61;;;;7552:12;;7543:22;;;;;;;;;;;;;;:54;;;;;-1:-1:-1;;;;;7543:54:61;;;;;-1:-1:-1;;;;;7543:54:61;;;;;;7607:8;:14;;;;;;;;;;;;;;;;;-1:-1:-1;;7607:14:61;;;;;-1:-1:-1;;;;;;7607:14:61;;;;;;;;;-1:-1:-1;;;;;7689:27:61;;;;:18;:27;;;;;;7681:87;;;;-1:-1:-1;;;7681:87:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;7790:27:61;;;;;;:18;:27;;;;;;;;;7863:31;;;:20;:31;;;;;7900:34;;7790:27;;-1:-1:-1;7863:31:61;;;7900:34;;;;;;;;;;;;;;;;27:10:-1;;7900:34:61;23:18:-1;;45:23;;7863:72:61;;;;;;;;;;;-1:-1:-1;;;;;;7863:72:61;-1:-1:-1;;;;;7900:34:61;;;7863:72;;;;;;;7945:31;;;:20;:31;;;;;;:34;;7900;;7945;;;;;;;;;;;;:47;;;;;-1:-1:-1;;;;;7945:47:61;;;;;-1:-1:-1;;;;;7945:47:61;;;;;;8052:32;8087:15;:52;8115:11;:22;8127:9;8115:22;;;;;;;;;;;;8103:35;;;;;;;;8087:52;;;;;;;;;;;;;;;;;;;;;;;;;;;8052:87;;8154:9;8166:1;8154:13;;8149:267;8173:21;;8169:25;;8149:267;;;8232:14;8247:1;8232:17;;;;;;;;;;;;;;;;8219:9;:30;8215:191;;;8304:21;;8289:14;;-1:-1:-1;;8304:25:61;;;8289:41;;;;;;;;;;;;;;8269:14;8284:1;8269:17;;;;;;;;;;;;;;;:61;;;;8348:14;:20;;;;;;;;;;;;;;;;;;;;;;;;8386:5;;8215:191;8196:3;;8149:267;;;-1:-1:-1;;;;;;8433:27:61;;;;;;:18;:27;;;;;;;;8426:34;;;8477:22;;;:11;:22;;;;;8470:29;;;8516:19;:30;;;;;;8509:37;;-1:-1:-1;;;;;;8509:37:61;;;8562:44;8489:9;;8433:27;8562:44;;;6886:1727;;;;;:::o;94:27:105:-;;;-1:-1:-1;;;;;94:27:105;;:::o;709:103::-;756:16;791:14;784:21;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;784:21:105;;;;;;;;;;;;;;;;;;;;;;709:103;:::o;13620:381:61:-;13757:27;13827:16;13813:38;;;2:2:-1;;;;27:1;24;17:12;2:2;13813:38:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;13813:38:61;-1:-1:-1;13800:51:61;-1:-1:-1;13866:9:61;13861:134;13881:27;;;13861:134;;;13945:18;:39;13964:16;;13981:1;13964:19;;;;;;;;;;;;;-1:-1:-1;;;;;13964:19:61;-1:-1:-1;;;;;13945:39:61;-1:-1:-1;;;;;13945:39:61;;;;;;;;;;;;;13929:10;13940:1;13929:13;;;;;;;;;;;;;;;;;:55;13910:3;;13861:134;;14766:201;-1:-1:-1;;;;;14934:26:61;;;;;;:19;:26;;;;;;;;;14921:39;;;;;;;;;;;;;;;;;14878:27;;14921:39;;;14934:26;14921:39;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;14766:201;;;:::o;20095:308::-;20210:25;20249:26;20312:19;:30;20332:9;20312:30;;;;;;;;;;;20300:42;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;20300:42:61;;;;;;;;;;;;;;;;;;;;;;;20365:20;:31;20386:9;20365:31;;;;;;;;;;;20352:44;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;20352:44:61;;;;;;;;;;;;;;;;;;;;;;;20095:308;;;:::o;5275:1397::-;5439:14;:12;:14::i;:::-;-1:-1:-1;;;;;5471:27:61;;5510:1;5471:27;;;:18;:27;;;;;;:41;5463:68;;;;;-1:-1:-1;;;5463:68:61;;;;;;;;;;;;-1:-1:-1;;;5463:68:61;;;;;;;;;;;;;;;5549:23;5541:49;;;;;-1:-1:-1;;;5541:49:61;;;;;;;;;;;;-1:-1:-1;;;5541:49:61;;;;;;;;;;;;;;;5633:16;5622:7;:27;;;;;;;;;;5621:79;;;;-1:-1:-1;5682:16:61;5663:7;5655:16;;;;;;;;:44;5621:79;5600:142;;;;;-1:-1:-1;;;5600:142:61;;;;;;;;;;;;-1:-1:-1;;;5600:142:61;;;;;;;;;;;;;;;5760:19;;5783:10;5760:33;;5752:72;;;;;-1:-1:-1;;;5752:72:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;5842:21;;5867:10;5842:35;;5834:76;;;;;-1:-1:-1;;;5834:76:61;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;5928:26:61;;5920:57;;;;;-1:-1:-1;;;5920:57:61;;;;;;;;;;;;-1:-1:-1;;;5920:57:61;;;;;;;;;;;;;;;5988:30;;;;:19;:30;;;;;;;;:45;;-1:-1:-1;;;;;;5988:45:61;-1:-1:-1;;;;;5988:45:61;;;;;6048:20;:31;;;;;:38;6044:284;;6107:31;;;;:20;:31;;;;;;;27:10:-1;;39:1;23:18;;45:23;;6107:45:61;;;;;;;;-1:-1:-1;;;;;;6107:45:61;-1:-1:-1;;;;;6107:45:61;;;;;6044:284;;;6237:1;6191:31;;;:20;:31;;;;;:34;;6237:1;;6191:34;;;;;;;;;;;;;;-1:-1:-1;;;;;6191:34:61;:48;6183:76;;;;;-1:-1:-1;;;6183:76:61;;;;;;;;;;;;-1:-1:-1;;;6183:76:61;;;;;;;;;;;;;;;6273:31;;;;:20;:31;;;;;:34;;6310:7;;6273:31;:34;;;;;;;;;;;;:44;;;;;-1:-1:-1;;;;;6273:44:61;;;;;-1:-1:-1;;;;;6273:44:61;;;;;;6044:284;6338:8;27:10:-1;;39:1;23:18;;45:23;;-1:-1;6338:37:61;;;;;;;-1:-1:-1;;;;;;6338:37:61;-1:-1:-1;;;;;6338:37:61;;;;;6385:15;;6401:7;6385:24;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;6385:24:61;;;27:10:-1;;39:1;23:18;;45:23;;6385:40:61;;;;;;;;;;-1:-1:-1;;;;;6435:27:61;;;;:18;:27;;;;;:39;;;6517:7;6509:16;;;;;;;;6484:11;:22;6496:9;6484:22;;;;;;;;;;;:41;;;;6590:12;-1:-1:-1;;;;;6541:62:61;6570:9;6561:7;-1:-1:-1;;;;;6541:62:61;;6581:7;6541:62;;;;;;;;;;;;;;;;;;;;;;;;;;;;6618:47;;-1:-1:-1;;;;;6618:47:61;;;6641:9;;6618:47;;;;;5275:1397;;;;:::o;925:351:105:-;982:11;:9;:11::i;:::-;-1:-1:-1;;;;;1012:20:105;;;;;;:8;:20;;;;;;;;1011:21;1003:48;;;;;-1:-1:-1;;;1003:48:105;;;;;;;;;;;;-1:-1:-1;;;1003:48:105;;;;;;;;;;;;;;;1092:13;:20;344:2;-1:-1:-1;1084:62:105;;;;;-1:-1:-1;;;1084:62:105;;;;;;;;;;;;-1:-1:-1;;;1084:62:105;;;;;;;;;;;;;;;1162:30;;;-1:-1:-1;;;;;1162:30:105;;;;1187:4;1162:30;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1202:20:105;;;;;:8;:20;;;;;:27;;-1:-1:-1;;1202:27:105;1225:4;1202:27;;;;;;1239:13;27:10:-1;;23:18;;;45:23;;1239:30:105;;;;;;;-1:-1:-1;;;;;;1239:30:105;;;;;;925:351::o;10762:730:61:-;10950:11;:9;:11::i;:::-;10971:24;11010:3;11006:58;;;11035:29;11015:49;11006:58;11078:3;11074:58;;;11103:29;11083:49;11074:58;11146:6;11142:64;;;11174:32;11154:52;11142:64;11220:7;11216:66;;;11249:33;11229:53;11216:66;11296:6;11292:64;;;11324:32;11304:52;11292:64;11370:9;11366:70;;;11401:35;11381:55;11366:70;11447:19;:38;-1:-1:-1;;;;;;10762:730:61:o;906:47::-;;;-1:-1:-1;;;;;906:47:61;;:::o;21563:1378::-;21721:25;21760:29;;;21932:10;21921:29;;;2:2:-1;;;;27:1;24;17:12;2:2;21921:29:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;21921:29:61;-1:-1:-1;21903:47:61;-1:-1:-1;21991:10:61;21980:29;;;2:2:-1;;;;27:1;24;17:12;2:2;21980:29:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;21980:29:61;-1:-1:-1;21960:49:61;-1:-1:-1;22058:10:61;22038:38;;;2:2:-1;;;;27:1;24;17:12;2:2;22038:38:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;22038:38:61;-1:-1:-1;22153:21:61;;22211:19;;22109:4;;-1:-1:-1;22019:57:61;;-1:-1:-1;22153:21:61;22124:26;-1:-1:-1;;;;;22302:25:61;;337:42:106;22302:25:61;22301:122;;-1:-1:-1;;;;;22389:34:61;;;;;;:28;:34;;;;;22301:122;;;-1:-1:-1;;;;;22343:32:61;;;;;;:27;:32;;;;;22301:122;22241:182;-1:-1:-1;22439:9:61;22434:501;22454:21;;;22434:501;;;22496:15;22514:11;:26;22526:10;;22537:1;22526:13;;;;;;;;;;;;;22514:26;;;;;;;;;;;;22496:44;;22616:1;22605:7;22600:1;:12;;22578:18;:35;:39;22554:17;22572:1;22554:20;;;;;;;;;;;;;:64;;;;;;;;;;;22690:1;22679:7;22674:1;:12;;22654:16;:33;:37;22632:15;22648:1;22632:18;;;;;;;;:60;;;:18;;;;;;;;;;;:60;22742:20;:35;22763:10;;22774:1;22763:13;;;;;;;;;;;;;22742:35;;;;;;;;;;;22778:1;22742:38;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;22742:38:61;22706:16;22723:1;22706:19;;;;;;;;;;;;;:75;-1:-1:-1;;;;;22706:75:61;;;-1:-1:-1;;;;;22706:75:61;;;;;22801:24;:39;22826:10;;22837:1;22826:13;;;;;;;;;;;;;;;;22801:39;;-1:-1:-1;22801:39:61;;;;;;;;-1:-1:-1;22801:39:61;;;;22796:129;;22882:5;22859:28;;22905:5;;;22796:129;-1:-1:-1;22477:3:61;;22434:501;;;;21563:1378;;;;;;;;;;;;:::o;3513:317::-;3589:11;:9;:11::i;:::-;-1:-1:-1;;;;;3618:33:61;;3610:60;;;;;-1:-1:-1;;;3610:60:61;;;;;;;;;;;;-1:-1:-1;;;3610:60:61;;;;;;;;;;;;;;;3685:34;;;-1:-1:-1;;;;;3685:34:61;;;;;;;;;;;;;;;3729:19;;:56;;;-1:-1:-1;;;3729:56:61;;-1:-1:-1;;;;;3729:56:61;;;;;;;;;:19;;;;;:32;;:56;;;;;:19;;:56;;;;;;;:19;;:56;;;2:2:-1;;;;27:1;24;17:12;2:2;3729:56:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;-1:-1;;3795:12:61;:28;;-1:-1:-1;;;;;;3795:28:61;-1:-1:-1;;;;;3795:28:61;;;;;;;;;;;-1:-1:-1;;3513:317:61:o;9010:809::-;9178:14;:12;:14::i;:::-;9252:1;9211:31;;;:20;:31;;;;;:38;9203:74;;;;;-1:-1:-1;;;9203:74:61;;;;;;;;;;;;-1:-1:-1;;;9203:74:61;;;;;;;;;;;;;;;9287:15;9305:31;;;:20;:31;;;;;:34;;9287:15;;9305:34;;;;;;;;;;;;;;-1:-1:-1;;;;;9305:34:61;;-1:-1:-1;9357:21:61;9349:45;;;;;-1:-1:-1;;;9349:45:61;;;;;;;;;;;;-1:-1:-1;;;9349:45:61;;;;;;;;;;;;;;;9409:10;9405:166;;;9435:39;9445:9;9456:5;9463;9470:3;9435:9;:39::i;:::-;9493:67;;;-1:-1:-1;;;;;9493:67:61;;;;;;;;;;;;;;;;;;337:42:106;;9510:9:61;;9493:67;;;;;;;;;;;9405:166;9585:10;9581:232;;;9611:12;;:53;;;-1:-1:-1;;;9611:53:61;;-1:-1:-1;;;;;9611:53:61;;;;;;;;;;;;;;;;;;;;;;;:12;;;;;:32;;:53;;;;;:12;;:53;;;;;;;:12;;:53;;;2:2:-1;;;;27:1;24;17:12;2:2;9611:53:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;9611:53:61;;;;9678:38;9688:9;9699:5;9706:4;9712:3;9678:9;:38::i;:::-;9735:67;;;-1:-1:-1;;;;;9735:67:61;;;;;;;;;;;;;;337:42:106;;9735:67:61;;;;9752:9;;9735:67;;;;;;;;;9581:232;9010:809;;;;;;:::o;769:40::-;;;-1:-1:-1;;;;;769:40:61;;:::o;4803:146::-;4879:13;:11;:13::i;:::-;4903:15;;:39;;;-1:-1:-1;;;4903:39:61;;-1:-1:-1;;;;;4903:39:61;;;;;;;;;:15;;;;;:28;;:39;;;;;:15;;:39;;;;;;;:15;;:39;;;2:2:-1;;;;27:1;24;17:12;2:2;4903:39:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;4903:39:61;;;;4803:146;:::o;3069:210:105:-;3127:11;:9;:11::i;:::-;-1:-1:-1;;;;;3156:22:105;;3148:46;;;;;-1:-1:-1;;;3148:46:105;;;;;;;;;;;;-1:-1:-1;;;3148:46:105;;;;;;;;;;;;;;;3209:30;;;-1:-1:-1;;;;;3209:30:105;;;;;;;;;;;;;;;3249:12;:23;;-1:-1:-1;;;;;;3249:23:105;-1:-1:-1;;;;;3249:23:105;;;;;;;;;;3069:210::o;1735:209::-;1782:12;;-1:-1:-1;;;;;1782:12:105;1798:10;1782:26;1774:50;;;;;-1:-1:-1;;;1774:50:105;;;;;;;;;;;;-1:-1:-1;;;1774:50:105;;;;;;;;;;;;;;;1852:12;;;1866:5;1839:33;;;-1:-1:-1;;;;;1852:12:105;;;1839:33;;1866:5;;;;1839:33;;;;;;;;;;;;;;;;1890:12;;;;1882:20;;-1:-1:-1;;;;;;1882:20:105;;;-1:-1:-1;;;;;1890:12:105;;1882:20;;;;1912:25;;;1735:209::o;3440:250::-;3505:11;:9;:11::i;:::-;-1:-1:-1;;;;;3534:22:105;;3526:42;;;;;-1:-1:-1;;;3526:42:105;;;;;;;;;;;;-1:-1:-1;;;3526:42:105;;;;;;;;;;;;;;;3583:30;;;-1:-1:-1;;;;;3583:30:105;;;;;;;;;;;;;;;3651:5;;3628:29;;;-1:-1:-1;;;;;3628:29:105;;;;;3651:5;;;3628:29;;;;;;;;;;;;;;;;3667:5;:16;;-1:-1:-1;;;;;;3667:16:105;-1:-1:-1;;;;;3667:16:105;;;;;;;;;;3440:250::o;818:101::-;864:16;899:13;892:20;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;892:20:105;;;;;;;;;;;;;;;;;;;;;;818:101;:::o;10232:524:61:-;10306:13;:11;:13::i;:::-;-1:-1:-1;;;10329:18:61;10367:205;10391:15;:22;10387:26;;10367:205;;;10479:10;-1:-1:-1;;;;;10438:52:61;:15;10454:1;10438:18;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;10438:18:61;:52;10434:128;;;10523:1;10510:14;;10542:5;;10434:128;10415:3;;10367:205;;;;10590:10;-1:-1:-1;;;10590:20:61;;10582:53;;;;;-1:-1:-1;;;10582:53:61;;;;;;;;;;;;-1:-1:-1;;;10582:53:61;;;;;;;;;;;;;;;10675:15;10691:22;;-1:-1:-1;;10691:26:61;;;10675:43;;;;;;;;;;;;;;;;10645:15;:27;;-1:-1:-1;;;;;10675:43:61;;;;10661:10;;10645:27;;;;;;;;;;;;;;:73;;;;;-1:-1:-1;;;;;10645:73:61;;;;;-1:-1:-1;;;;;10645:73:61;;;;;;10728:15;:21;;;;;;;;;;;;;;;;-1:-1:-1;;10728:21:61;;;;;-1:-1:-1;;;;;;10728:21:61;;;;;;-1:-1:-1;;10232:524:61:o;1282:364:105:-;1341:11;:9;:11::i;:::-;-1:-1:-1;;;;;1371:22:105;;;;;;:9;:22;;;;;;;;1370:23;1362:51;;;;;-1:-1:-1;;;1362:51:105;;;;;;;;;;;;-1:-1:-1;;;1362:51:105;;;;;;;;;;;;;;;1454:14;:21;344:2;-1:-1:-1;1446:64:105;;;;;-1:-1:-1;;;1446:64:105;;;;;;;;;;;;-1:-1:-1;;;1446:64:105;;;;;;;;;;;;;;;1526:32;;;-1:-1:-1;;;;;1526:32:105;;;;1553:4;1526:32;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;1568:22:105;;;;;:9;:22;;;;;:29;;-1:-1:-1;;1568:29:105;1593:4;1568:29;;;;;;1607:14;27:10:-1;;23:18;;;45:23;;1607:32:105;;;;;;;-1:-1:-1;;;;;;1607:32:105;;;;;;1282:364::o;13339:138:61:-;13411:16;13446:15;:24;13462:7;13446:24;;;;;;;;;;;;;;;;;;;;;;;;;;;13439:31;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;13339:138;;;:::o;16056:203::-;-1:-1:-1;;;;;16225:27:61;;;;;;:20;:27;;;;;;;;;16212:40;;;;;;;;;;;;;;;;;16169:27;;16212:40;;;16225:27;16212:40;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;16056:203;;;:::o;17554:119::-;17639:15;:22;:26;;17554:119;:::o;864:36::-;;;-1:-1:-1;;;;;864:36:61;;:::o;2436:496:105:-;2495:11;:9;:11::i;:::-;-1:-1:-1;;;;;2524:19:105;;;;;;:9;:19;;;;;;;;2516:44;;;;;-1:-1:-1;;;2516:44:105;;;;;;;;;;;;-1:-1:-1;;;2516:44:105;;;;;;;;;;;;;;;-1:-1:-1;;;;;2577:19:105;;;;;;:9;:19;;;;;2570:26;;-1:-1:-1;;2570:26:105;;;2607:319;2631:14;:21;2627:25;;2607:319;;;2698:8;-1:-1:-1;;;;;2677:29:105;:14;2692:1;2677:17;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;2677:17:105;:29;2673:243;;;2746:14;2761:21;;-1:-1:-1;;2761:25:105;;;2746:41;;;;;;;;;;;;;;;;2726:14;:17;;-1:-1:-1;;;;;2746:41:105;;;;2741:1;;2726:17;;;;;;;;;;;;;;:61;;;;;-1:-1:-1;;;;;2726:61:105;;;;;-1:-1:-1;;;;;2726:61:105;;;;;;2805:14;:20;;;;;;;;;;;;;;;;;-1:-1:-1;;2805:20:105;;;;;-1:-1:-1;;;;;;2805:20:105;;;;;;;;;2848:30;;;-1:-1:-1;;;;;2848:30:105;;;;;;;;;;;;;;;;;;;;;;;;2896:5;;2673:243;2654:3;;2607:319;;815:43:61;;;-1:-1:-1;;;;;815:43:61;;:::o;1998:33::-;;;-1:-1:-1;;;;;1998:33:61;;:::o;16734:590::-;16818:34;16866:41;16921:45;16980:38;17063:15;;;;;;;;;-1:-1:-1;;;;;17063:15:61;-1:-1:-1;;;;;17063:28:61;;:30;;;;;;;;;;;;;;;;;;;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;17063:30:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;17063:30:61;;;;;;39:16:-1;36:1;17:17;2:54;101:4;17063:30:61;80:15:-1;;;-1:-1;;76:31;65:43;;120:4;113:20;15:2;7:11;;4:2;;;31:1;28;21:12;4:2;17063:30:61;;;;;;;;;;;;;-1:-1:-1;;;14:3;11:20;8:2;;;44:1;41;34:12;8:2;62:21;;;;123:4;114:14;;138:31;;;135:2;;;182:1;179;172:12;135:2;219:3;213:10;331:9;325:2;311:12;307:21;289:16;285:44;282:59;-1:-1;;;247:12;244:29;233:116;230:2;;;362:1;359;352:12;230:2;373:25;;-1:-1;17063:30:61;;421:4:-1;412:14;;;;17063:30:61;;;;;412:14:-1;17063:30:61;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;17063:30:61;;;;;;;;;;;17043:50;;17130:22;;;;;;;;;-1:-1:-1;;;;;17130:22:61;-1:-1:-1;;;;;17130:35:61;;:37;;;;;;;;;;;;;;;;;;;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;17130:37:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;17130:37:61;;;;;;39:16:-1;36:1;17:17;2:54;101:4;17130:37:61;80:15:-1;;;-1:-1;;76:31;65:43;;120:4;113:20;15:2;7:11;;4:2;;;31:1;28;21:12;4:2;17130:37:61;;;;;;;;;;;;;-1:-1:-1;;;14:3;11:20;8:2;;;44:1;41;34:12;8:2;62:21;;;;123:4;114:14;;138:31;;;135:2;;;182:1;179;172:12;135:2;219:3;213:10;331:9;325:2;311:12;307:21;289:16;285:44;282:59;-1:-1;;;247:12;244:29;233:116;230:2;;;362:1;359;352:12;230:2;373:25;;-1:-1;17130:37:61;;421:4:-1;412:14;;;;17130:37:61;;;;;412:14:-1;17130:37:61;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;17130:37:61;;;;;;;;;;;17103:64;;17208:26;;;;;;;;;-1:-1:-1;;;;;17208:26:61;-1:-1:-1;;;;;17208:39:61;;:41;;;;;;;;;;;;;;;;;;;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;17208:41:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;17208:41:61;;;;;;39:16:-1;36:1;17:17;2:54;101:4;17208:41:61;80:15:-1;;;-1:-1;;76:31;65:43;;120:4;113:20;15:2;7:11;;4:2;;;31:1;28;21:12;4:2;17208:41:61;;;;;;;;;;;;;-1:-1:-1;;;14:3;11:20;8:2;;;44:1;41;34:12;8:2;62:21;;;;123:4;114:14;;138:31;;;135:2;;;182:1;179;172:12;135:2;219:3;213:10;331:9;325:2;311:12;307:21;289:16;285:44;282:59;-1:-1;;;247:12;244:29;233:116;230:2;;;362:1;359;352:12;230:2;373:25;;-1:-1;17208:41:61;;421:4:-1;412:14;;;;17208:41:61;;;;;412:14:-1;17208:41:61;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;17208:41:61;;;;;;;;;;;17177:72;;17283:19;;;;;;;;;-1:-1:-1;;;;;17283:19:61;-1:-1:-1;;;;;17283:32:61;;:34;;;;;;;;;;;;;;;;;;;;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;17283:34:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;17283:34:61;;;;;;39:16:-1;36:1;17:17;2:54;101:4;17283:34:61;80:15:-1;;;-1:-1;;76:31;65:43;;120:4;113:20;15:2;7:11;;4:2;;;31:1;28;21:12;4:2;17283:34:61;;;;;;;;;;;;;-1:-1:-1;;;14:3;11:20;8:2;;;44:1;41;34:12;8:2;62:21;;;;123:4;114:14;;138:31;;;135:2;;;182:1;179;172:12;135:2;219:3;213:10;331:9;325:2;311:12;307:21;289:16;285:44;282:59;-1:-1;;;247:12;244:29;233:116;230:2;;;362:1;359;352:12;230:2;373:25;;-1:-1;17283:34:61;;421:4:-1;412:14;;;;17283:34:61;;;;;412:14:-1;17283:34:61;23:1:-1;8:100;33:3;30:1;27:10;8:100;;;90:11;;;84:18;71:11;;;64:39;52:2;45:10;8:100;;;12:14;17283:34:61;;;;;;;;;;;17259:58;;16734:590;;;;:::o;513:121:86:-;-1:-1:-1;;;;;588:27:86;;;;;;;:18;:27;;;;;:39;513:121::o;15304:746:61:-;15460:33;15509:27;15539:19;:26;15559:5;-1:-1:-1;;;;;15539:26:61;-1:-1:-1;;;;;15539:26:61;;;;;;;;;;;;15509:56;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;15579:10;:17;15600:1;15579:22;15575:76;;;-1:-1:-1;15617:23:61;;15575:76;15660:13;15689:10;:17;15677:8;:29;;15676:68;;15736:8;15676:68;;;15731:1;15711:10;:17;:21;15676:68;15660:84;;15766:10;15758:5;:18;15754:72;;;-1:-1:-1;15792:23:61;;-1:-1:-1;15792:23:61;15754:72;15876:10;15868:5;:18;15889:1;15868:22;15854:37;;;5:9:-1;2:2;;;27:1;24;17:12;2:2;15854:37:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;15854:37:61;-1:-1:-1;15835:56:61;-1:-1:-1;15917:10:61;15901:143;15934:5;15929:1;:10;15901:143;;15995:20;:35;16016:10;16027:1;16016:13;;;;;;;;;;;;;;15995:35;;;;;;;;;;;16031:1;15995:38;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;15995:38:61;15960:16;15981:10;15977:1;:14;15960:32;;;;;;;;-1:-1:-1;;;;;15960:73:61;;;:32;;;;;;;;;;;:73;15941:3;;15901:143;;;;15304:746;;;;;;;;:::o;14007:380::-;14138:33;14220:10;14206:32;;;2:2:-1;;;;27:1;24;17:12;2:2;14206:32:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;14206:32:61;-1:-1:-1;14187:51:61;-1:-1:-1;14253:9:61;14248:133;14268:21;;;14248:133;;;14332:20;:35;14353:10;;14364:1;14353:13;;;;;;;;;;;;;14332:35;;;;;;;;;;;14368:1;14332:38;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;14332:38:61;14310:16;14327:1;14310:19;;;;;;;;-1:-1:-1;;;;;14310:60:61;;;:19;;;;;;;;;;;:60;14291:3;;14248:133;;4368:429;4494:13;:11;:13::i;:::-;-1:-1:-1;;;;;4525:30:61;;4517:60;;;;;-1:-1:-1;;;4517:60:61;;;;;;;;;;;;-1:-1:-1;;;4517:60:61;;;;;;;;;;;;;;;-1:-1:-1;;;;;4595:34:61;;4587:68;;;;;-1:-1:-1;;;4587:68:61;;;;;;;;;;;;-1:-1:-1;;;4587:68:61;;;;;;;;;;;;;;;4666:22;;:53;;;-1:-1:-1;;;4666:53:61;;-1:-1:-1;;;;;4666:53:61;;;;;;;;;:22;;;;;:35;;:53;;;;;:22;;:53;;;;;;;:22;;:53;;;2:2:-1;;;;27:1;24;17:12;2:2;4666:53:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;-1:-1;;4729:26:61;;:61;;;-1:-1:-1;;;4729:61:61;;-1:-1:-1;;;;;4729:61:61;;;;;;;;;:26;;;;;-1:-1:-1;4729:39:61;;-1:-1:-1;4729:61:61;;;;;:26;;:61;;;;;;;:26;;:61;;;2:2:-1;;;;27:1;24;17:12;2:2;4729:61:61;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;3836:526:61;3921:14;:12;:14::i;:::-;-1:-1:-1;;;;;3953:26:61;;3945:57;;;;;-1:-1:-1;;;3945:57:61;;;;;;;;;;;;-1:-1:-1;;;3945:57:61;;;;;;;;;;;;;;;4020:23;4012:49;;;;;-1:-1:-1;;;4012:49:61;;;;;;;;;;;;-1:-1:-1;;;4012:49:61;;;;;;;;;;;;;;;4120:1;4079:31;;;:20;:31;;;;;:38;4071:74;;;;;-1:-1:-1;;;4071:74:61;;;;;;;;;;;;-1:-1:-1;;;4071:74:61;;;;;;;;;;;;;;;4209:1;4163:31;;;:20;:31;;;;;:34;;4209:1;;4163:34;;;;;;;;;;;;;;-1:-1:-1;;;;;4163:34:61;:48;;4155:82;;;;;-1:-1:-1;;;4155:82:61;;;;;;;;;;;;-1:-1:-1;;;4155:82:61;;;;;;;;;;;;;;;4248:30;;;;:19;:30;;;;;;:45;;-1:-1:-1;;;;;;4248:45:61;-1:-1:-1;;;;;4248:45:61;;;;;;;;4308:47;;4248:45;;:30;;4308:47;;4248:30;4308:47;3836:526;;:::o;20409:442::-;20533:29;20607:10;20596:29;;;2:2:-1;;;;27:1;24;17:12;2:2;20596:29:61;;;;;;;;;;;;;;;;;;;;;;;29:2:-1;21:6;17:15;125:4;109:14;101:6;88:42;144:17;;-1:-1;20596:29:61;-1:-1:-1;20663:19:61;;20578:47;;-1:-1:-1;20636:24:61;20693:152;20713:21;;;20693:152;;;20832:1;20802:11;:26;20814:10;;20825:1;20814:13;;;;;;;;;;;;;20802:26;;;;;;;;;;;;20797:1;:31;;20777:16;:52;:56;20755:15;20771:1;20755:18;;;;;;;;:79;;;:18;;;;;;;;;;;:79;20736:3;;20693:152;;16265:229;16456:31;;;;:20;:31;;;;;;;;;16437:50;;;;;;;;;;;;;;;;;16388:33;;16437:50;;;16456:31;16437:50;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;16437:50:61;;;;;;;;;;;;;;;;;;;;;;16265:229;;;:::o;19417:672::-;-1:-1:-1;;;;;19744:27:61;;;19547:17;19744:27;;;:18;:27;;;;;;;;;19796:30;;;:19;:30;;;;;;19858:11;:22;;;;;;;19744:27;;19796:30;;;;;19547:17;;;;;19858:22;19900:24;;;;;;;;19956:19;;20035:21;;19417:672;;;;-1:-1:-1;19890:34:61;;19979:1;:16;;;19956:40;;;19955:46;;;20035:42;;20034:48;;;-1:-1:-1;19417:672:61;-1:-1:-1;;19417:672:61:o;68:20:105:-;;;-1:-1:-1;;;;;68:20:105;;:::o;17421:127:61:-;17480:27;17526:15;17519:22;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;17519:22:61;;;;;;;;;;;;;;;;;;;;;;17421:127;:::o;3696:94:105:-;3763:5;;-1:-1:-1;;;;;3763:5:105;3749:10;:19;3741:42;;;;;-1:-1:-1;;;3741:42:105;;;;;;;;;;;;-1:-1:-1;;;3741:42:105;;;;;;;;;;;;;;;3696:94::o;25276:119:61:-;25353:12;;-1:-1:-1;;;;;25353:12:61;25331:10;:35;25323:65;;;;;-1:-1:-1;;;25323:65:61;;;;;;;;;;;;-1:-1:-1;;;25323:65:61;;;;;;;;;;;;;;3901:102:105;3967:10;3957:21;;;;:9;:21;;;;;;;;3949:47;;;;;-1:-1:-1;;;3949:47:105;;;;;;;;;;;;-1:-1:-1;;;3949:47:105;;;;;;;;;;;;;;22947:620:61;23162:30;;;;:19;:30;;;;;;;;;23134:58;;;;;;;;;;;;;;;;;:25;;:58;;;23162:30;23134:58;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;23134:58:61;;;;;;;;;;;;;;;;-1:-1:-1;23134:58:61;;-1:-1:-1;23207:9:61;;-1:-1:-1;;;;23202:135:61;23226:9;:16;23222:1;:20;23202:135;;;23263:63;23282:9;23293;23303:1;23293:12;;;;;;;;;;;;;;23307:5;23314:4;23320:5;23263:18;:63::i;:::-;23244:3;;23202:135;;;-1:-1:-1;23385:31:61;;;;:20;:31;;;;;;;;;23373:43;;;;;;;;;;;;;;;;;23385:31;;23373:43;;23385:31;23373:43;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;23373:43:61;;;;;;;;;;;;;;;;-1:-1:-1;23373:43:61;;-1:-1:-1;23431:9:61;;-1:-1:-1;;;;23426:135:61;23450:9;:16;23446:1;:20;23426:135;;;23487:63;23506:9;23517;23527:1;23517:12;;;;;;;;;;;;;;23531:4;23537:5;23544;23487:18;:63::i;:::-;23468:3;;23426:135;;;;22947:620;;:::o;23573:1697::-;-1:-1:-1;;;;;23761:27:61;;23711:9;23761:27;;;:20;:27;;;;;;;;23827:31;;;:20;:31;;;;;23928:35;;;:28;:35;;;;;23711:9;;23761:27;;23974:213;;;;-1:-1:-1;;;;;;;;24019:26:61;;;;;;:19;:26;;;;;;;;24071:30;;;:19;:30;;;;;24142:34;;;:27;:34;;;;;;24019:26;;24071:30;23974:213;24206:1;24202:5;;24197:451;24213:17;;24209:21;;24197:451;;;24268:10;24279:1;24268:13;;;;;;;;;;;;;;;;24255:9;:26;24251:387;;;24305:3;24301:323;;;24332:7;;;;;;24301:323;24517:17;;24506:10;;-1:-1:-1;;24517:21:61;;;24506:33;;;;;;;;;;;;;;24490:10;24501:1;24490:13;;;;;;;;;;;;;;;:49;;;;24561:10;:16;;;;;;;;;;;;;;;;;;;;;;;;24600:5;;24301:323;24232:3;;;;;24197:451;;;24662:3;24658:606;;;27:10:-1;;39:1;23:18;;;45:23;;-1:-1;24759:26:61;;;;;;;;;;;;;27:10:-1;;23:18;;;45:23;;24799:21:61;;;;;;;;;-1:-1:-1;;;;;;24799:21:61;-1:-1:-1;;;;;24799:21:61;;;;;24834:35;;;;;;;;;;;:42;;-1:-1:-1;;24834:42:61;;;;;;24658:606;;;24958:1;24954:5;;24949:249;24965:16;;24961:20;;24949:249;;;25019:9;25029:1;25019:12;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;25010:21:61;;;25019:12;;25010:21;25006:178;;;25080:16;;25070:9;;-1:-1:-1;;25080:20:61;;;25070:31;;;;;;;;;;;;;;;;;;;;;-1:-1:-1;;;;;25070:31:61;25055:9;25065:1;25055:12;;;;;;;;;;;;;;;;:46;;;;;-1:-1:-1;;;;;25055:46:61;;;;;-1:-1:-1;;;;;25055:46:61;;;;;;25123:9;:15;;;;;;;;;;;;;;;;-1:-1:-1;;25123:15:61;;;;;-1:-1:-1;;;;;;25123:15:61;;;;;;25160:5;;25006:178;24983:3;;;;;24949:249;;;25218:35;;;;;;;;;;;25211:42;;-1:-1:-1;;25211:42:61;;;24658:606;23573:1697;;;;;;;;;:::o",
+  "source": "pragma solidity 0.6.6;\n\nimport \"../KyberStorage.sol\";\n\n\ncontract MockStorage is KyberStorage {\n    constructor(\n        address _admin,\n        IKyberHistory _networkHistory,\n        IKyberHistory _feeHandlerHistory,\n        IKyberHistory _kyberDaoHistory,\n        IKyberHistory _matchingEngineHistory\n    )\n        public\n        KyberStorage(\n            _admin,\n            _networkHistory,\n            _feeHandlerHistory,\n            _kyberDaoHistory,\n            _matchingEngineHistory\n        )\n    {}\n\n    function setReserveId(address reserve, bytes32 reserveId) public {\n        reserveAddressToId[reserve] = reserveId;\n    }\n}\n",
+  "sourcePath": "D:\\Code\\kyber-verified\\contracts\\sol6\\mock\\MockStorage.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/sol6/mock/MockStorage.sol",
+    "exportedSymbols": {
+      "MockStorage": [
+        29174
+      ]
+    },
+    "id": 29175,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 29135,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:22:86"
+      },
+      {
+        "absolutePath": "project:/contracts/sol6/KyberStorage.sol",
+        "file": "../KyberStorage.sol",
+        "id": 29136,
+        "nodeType": "ImportDirective",
+        "scope": 29175,
+        "sourceUnit": 24226,
+        "src": "24:29:86",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [
+          {
+            "arguments": null,
+            "baseName": {
+              "contractScope": null,
+              "id": 29137,
+              "name": "KyberStorage",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 24225,
+              "src": "80:12:86",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_KyberStorage_$24225",
+                "typeString": "contract KyberStorage"
+              }
+            },
+            "id": 29138,
+            "nodeType": "InheritanceSpecifier",
+            "src": "80:12:86"
+          }
+        ],
+        "contractDependencies": [
+          15792,
+          24225,
+          33962,
+          34486
+        ],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 29174,
+        "linearizedBaseContracts": [
+          29174,
+          24225,
+          34486,
+          33962,
+          15792
+        ],
+        "name": "MockStorage",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": {
+              "id": 29158,
+              "nodeType": "Block",
+              "src": "505:2:86",
+              "statements": []
+            },
+            "documentation": null,
+            "id": 29159,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [
+              {
+                "arguments": [
+                  {
+                    "argumentTypes": null,
+                    "id": 29151,
+                    "name": "_admin",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 29140,
+                    "src": "357:6:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 29152,
+                    "name": "_networkHistory",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 29142,
+                    "src": "377:15:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 29153,
+                    "name": "_feeHandlerHistory",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 29144,
+                    "src": "406:18:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 29154,
+                    "name": "_kyberDaoHistory",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 29146,
+                    "src": "438:16:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  {
+                    "argumentTypes": null,
+                    "id": 29155,
+                    "name": "_matchingEngineHistory",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 29148,
+                    "src": "468:22:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  }
+                ],
+                "id": 29156,
+                "modifierName": {
+                  "argumentTypes": null,
+                  "id": 29150,
+                  "name": "KyberStorage",
+                  "nodeType": "Identifier",
+                  "overloadedDeclarations": [],
+                  "referencedDeclaration": 24225,
+                  "src": "331:12:86",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_type$_t_contract$_KyberStorage_$24225_$",
+                    "typeString": "type(contract KyberStorage)"
+                  }
+                },
+                "nodeType": "ModifierInvocation",
+                "src": "331:169:86"
+              }
+            ],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 29149,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29140,
+                  "mutability": "mutable",
+                  "name": "_admin",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29159,
+                  "src": "120:14:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29139,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "120:7:86",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29142,
+                  "mutability": "mutable",
+                  "name": "_networkHistory",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29159,
+                  "src": "144:29:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                    "typeString": "contract IKyberHistory"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 29141,
+                    "name": "IKyberHistory",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 15276,
+                    "src": "144:13:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29144,
+                  "mutability": "mutable",
+                  "name": "_feeHandlerHistory",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29159,
+                  "src": "183:32:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                    "typeString": "contract IKyberHistory"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 29143,
+                    "name": "IKyberHistory",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 15276,
+                    "src": "183:13:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29146,
+                  "mutability": "mutable",
+                  "name": "_kyberDaoHistory",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29159,
+                  "src": "225:30:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                    "typeString": "contract IKyberHistory"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 29145,
+                    "name": "IKyberHistory",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 15276,
+                    "src": "225:13:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29148,
+                  "mutability": "mutable",
+                  "name": "_matchingEngineHistory",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29159,
+                  "src": "265:36:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                    "typeString": "contract IKyberHistory"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 29147,
+                    "name": "IKyberHistory",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 15276,
+                    "src": "265:13:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberHistory_$15276",
+                      "typeString": "contract IKyberHistory"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "110:197:86"
+            },
+            "returnParameters": {
+              "id": 29157,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "505:0:86"
+            },
+            "scope": 29174,
+            "src": "99:408:86",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 29172,
+              "nodeType": "Block",
+              "src": "578:56:86",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 29170,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "baseExpression": {
+                        "argumentTypes": null,
+                        "id": 29166,
+                        "name": "reserveAddressToId",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 21976,
+                        "src": "588:18:86",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_mapping$_t_address_$_t_bytes32_$",
+                          "typeString": "mapping(address => bytes32)"
+                        }
+                      },
+                      "id": 29168,
+                      "indexExpression": {
+                        "argumentTypes": null,
+                        "id": 29167,
+                        "name": "reserve",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 29161,
+                        "src": "607:7:86",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_address",
+                          "typeString": "address"
+                        }
+                      },
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": true,
+                      "nodeType": "IndexAccess",
+                      "src": "588:27:86",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 29169,
+                      "name": "reserveId",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 29163,
+                      "src": "618:9:86",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "src": "588:39:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "id": 29171,
+                  "nodeType": "ExpressionStatement",
+                  "src": "588:39:86"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "ce3a0564",
+            "id": 29173,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setReserveId",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 29164,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 29161,
+                  "mutability": "mutable",
+                  "name": "reserve",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29173,
+                  "src": "535:15:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 29160,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "535:7:86",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 29163,
+                  "mutability": "mutable",
+                  "name": "reserveId",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 29173,
+                  "src": "552:17:86",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 29162,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "552:7:86",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "534:36:86"
+            },
+            "returnParameters": {
+              "id": 29165,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "578:0:86"
+            },
+            "scope": 29174,
+            "src": "513:121:86",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 29175,
+        "src": "56:580:86"
+      }
+    ],
+    "src": "0:637:86"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/sol6/mock/MockStorage.sol",
+      "exportedSymbols": {
+        "MockStorage": [
+          29174
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.6",
+            ".6"
+          ]
+        },
+        "id": 29135,
+        "name": "PragmaDirective",
+        "src": "0:22:86"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 24226,
+          "absolutePath": "project:/contracts/sol6/KyberStorage.sol",
+          "file": "../KyberStorage.sol",
+          "scope": 29175,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 29136,
+        "name": "ImportDirective",
+        "src": "24:29:86"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "contractDependencies": [
+            15792,
+            24225,
+            33962,
+            34486
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            29174,
+            24225,
+            34486,
+            33962,
+            15792
+          ],
+          "name": "MockStorage",
+          "scope": 29175
+        },
+        "children": [
+          {
+            "attributes": {
+              "arguments": null
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "KyberStorage",
+                  "referencedDeclaration": 24225,
+                  "type": "contract KyberStorage"
+                },
+                "id": 29137,
+                "name": "UserDefinedTypeName",
+                "src": "80:12:86"
+              }
+            ],
+            "id": 29138,
+            "name": "InheritanceSpecifier",
+            "src": "80:12:86"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "name": "",
+              "overrides": null,
+              "scope": 29174,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_admin",
+                      "overrides": null,
+                      "scope": 29159,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 29139,
+                        "name": "ElementaryTypeName",
+                        "src": "120:7:86"
+                      }
+                    ],
+                    "id": 29140,
+                    "name": "VariableDeclaration",
+                    "src": "120:14:86"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_networkHistory",
+                      "overrides": null,
+                      "scope": 29159,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IKyberHistory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IKyberHistory",
+                          "referencedDeclaration": 15276,
+                          "type": "contract IKyberHistory"
+                        },
+                        "id": 29141,
+                        "name": "UserDefinedTypeName",
+                        "src": "144:13:86"
+                      }
+                    ],
+                    "id": 29142,
+                    "name": "VariableDeclaration",
+                    "src": "144:29:86"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_feeHandlerHistory",
+                      "overrides": null,
+                      "scope": 29159,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IKyberHistory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IKyberHistory",
+                          "referencedDeclaration": 15276,
+                          "type": "contract IKyberHistory"
+                        },
+                        "id": 29143,
+                        "name": "UserDefinedTypeName",
+                        "src": "183:13:86"
+                      }
+                    ],
+                    "id": 29144,
+                    "name": "VariableDeclaration",
+                    "src": "183:32:86"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_kyberDaoHistory",
+                      "overrides": null,
+                      "scope": 29159,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IKyberHistory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IKyberHistory",
+                          "referencedDeclaration": 15276,
+                          "type": "contract IKyberHistory"
+                        },
+                        "id": 29145,
+                        "name": "UserDefinedTypeName",
+                        "src": "225:13:86"
+                      }
+                    ],
+                    "id": 29146,
+                    "name": "VariableDeclaration",
+                    "src": "225:30:86"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_matchingEngineHistory",
+                      "overrides": null,
+                      "scope": 29159,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IKyberHistory",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IKyberHistory",
+                          "referencedDeclaration": 15276,
+                          "type": "contract IKyberHistory"
+                        },
+                        "id": 29147,
+                        "name": "UserDefinedTypeName",
+                        "src": "265:13:86"
+                      }
+                    ],
+                    "id": 29148,
+                    "name": "VariableDeclaration",
+                    "src": "265:36:86"
+                  }
+                ],
+                "id": 29149,
+                "name": "ParameterList",
+                "src": "110:197:86"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 29157,
+                "name": "ParameterList",
+                "src": "505:0:86"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 24225,
+                      "type": "type(contract KyberStorage)",
+                      "value": "KyberStorage"
+                    },
+                    "id": 29150,
+                    "name": "Identifier",
+                    "src": "331:12:86"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 29140,
+                      "type": "address",
+                      "value": "_admin"
+                    },
+                    "id": 29151,
+                    "name": "Identifier",
+                    "src": "357:6:86"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 29142,
+                      "type": "contract IKyberHistory",
+                      "value": "_networkHistory"
+                    },
+                    "id": 29152,
+                    "name": "Identifier",
+                    "src": "377:15:86"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 29144,
+                      "type": "contract IKyberHistory",
+                      "value": "_feeHandlerHistory"
+                    },
+                    "id": 29153,
+                    "name": "Identifier",
+                    "src": "406:18:86"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 29146,
+                      "type": "contract IKyberHistory",
+                      "value": "_kyberDaoHistory"
+                    },
+                    "id": 29154,
+                    "name": "Identifier",
+                    "src": "438:16:86"
+                  },
+                  {
+                    "attributes": {
+                      "argumentTypes": null,
+                      "overloadedDeclarations": [
+                        null
+                      ],
+                      "referencedDeclaration": 29148,
+                      "type": "contract IKyberHistory",
+                      "value": "_matchingEngineHistory"
+                    },
+                    "id": 29155,
+                    "name": "Identifier",
+                    "src": "468:22:86"
+                  }
+                ],
+                "id": 29156,
+                "name": "ModifierInvocation",
+                "src": "331:169:86"
+              },
+              {
+                "attributes": {
+                  "statements": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 29158,
+                "name": "Block",
+                "src": "505:2:86"
+              }
+            ],
+            "id": 29159,
+            "name": "FunctionDefinition",
+            "src": "99:408:86"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "functionSelector": "ce3a0564",
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "setReserveId",
+              "overrides": null,
+              "scope": 29174,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "reserve",
+                      "overrides": null,
+                      "scope": 29173,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 29160,
+                        "name": "ElementaryTypeName",
+                        "src": "535:7:86"
+                      }
+                    ],
+                    "id": 29161,
+                    "name": "VariableDeclaration",
+                    "src": "535:15:86"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "reserveId",
+                      "overrides": null,
+                      "scope": 29173,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bytes32",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bytes32",
+                          "type": "bytes32"
+                        },
+                        "id": 29162,
+                        "name": "ElementaryTypeName",
+                        "src": "552:7:86"
+                      }
+                    ],
+                    "id": 29163,
+                    "name": "VariableDeclaration",
+                    "src": "552:17:86"
+                  }
+                ],
+                "id": 29164,
+                "name": "ParameterList",
+                "src": "534:36:86"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 29165,
+                "name": "ParameterList",
+                "src": "578:0:86"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "bytes32"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "isConstant": false,
+                              "isLValue": true,
+                              "isPure": false,
+                              "lValueRequested": true,
+                              "type": "bytes32"
+                            },
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 21976,
+                                  "type": "mapping(address => bytes32)",
+                                  "value": "reserveAddressToId"
+                                },
+                                "id": 29166,
+                                "name": "Identifier",
+                                "src": "588:18:86"
+                              },
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "overloadedDeclarations": [
+                                    null
+                                  ],
+                                  "referencedDeclaration": 29161,
+                                  "type": "address",
+                                  "value": "reserve"
+                                },
+                                "id": 29167,
+                                "name": "Identifier",
+                                "src": "607:7:86"
+                              }
+                            ],
+                            "id": 29168,
+                            "name": "IndexAccess",
+                            "src": "588:27:86"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 29163,
+                              "type": "bytes32",
+                              "value": "reserveId"
+                            },
+                            "id": 29169,
+                            "name": "Identifier",
+                            "src": "618:9:86"
+                          }
+                        ],
+                        "id": 29170,
+                        "name": "Assignment",
+                        "src": "588:39:86"
+                      }
+                    ],
+                    "id": 29171,
+                    "name": "ExpressionStatement",
+                    "src": "588:39:86"
+                  }
+                ],
+                "id": 29172,
+                "name": "Block",
+                "src": "578:56:86"
+              }
+            ],
+            "id": 29173,
+            "name": "FunctionDefinition",
+            "src": "513:121:86"
+          }
+        ],
+        "id": 29174,
+        "name": "ContractDefinition",
+        "src": "56:580:86"
+      }
+    ],
+    "id": 29175,
+    "name": "SourceUnit",
+    "src": "0:637:86"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.6+commit.6c089d02.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-08-07T13:46:18.011Z",
+  "devdoc": {
+    "methods": {
+      "addKyberProxy(address,uint256)": {
+        "details": "No. of kyberProxies are capped"
+      },
+      "addReserve(address,bytes32,uint8,address)": {
+        "details": "Adds a reserve to the storage",
+        "params": {
+          "rebateWallet": "Rebate wallet address for this reserve",
+          "resType": "Type of the reserve out of enum ReserveType",
+          "reserve": "The reserve address",
+          "reserveId": "The reserve ID in 32 bytes."
+        }
+      },
+      "claimAdmin()": {
+        "details": "Allows the pendingAdmin address to finalize the change admin process."
+      },
+      "getContracts()": {
+        "details": "Returns list of kyberDao, kyberFeeHandler, kyberMatchingEngine and kyberNetwork contractsIndex 0 is currently used contract address, indexes > 0 are older versions"
+      },
+      "getReserveAddressesPerTokenSrc(address,uint256,uint256)": {
+        "details": "kyberNetwork is calling this function to approve (allowance) for list of reserves for a token      in case we have a long list of reserves, approving all of them could run out of gas      using startIndex and endIndex to prevent above scenario      also enable us to approve reserve one by one"
+      },
+      "getReservesData(bytes32[],address,address)": {
+        "details": "Returns information about reserves given their reserve IDs      Also check if these reserve IDs are listed for token      Network calls this function to retrive information about fee, address and rebate information"
+      },
+      "listPairForReserve(bytes32,address,bool,bool,bool)": {
+        "details": "Allow or prevent a specific reserve to trade a pair of tokens",
+        "params": {
+          "add": "If true then list this pair, otherwise unlist it",
+          "ethToToken": "Will it support ether to token trade",
+          "reserveId": "The reserve id",
+          "token": "Token address",
+          "tokenToEth": "Will it support token to ether trade"
+        }
+      },
+      "removeReserve(bytes32,uint256)": {
+        "details": "Removes a reserve from the storage",
+        "params": {
+          "reserveId": "The reserve id",
+          "startIndex": "Index to start searching from in reserve array"
+        }
+      },
+      "transferAdmin(address)": {
+        "details": "Allows the current admin to set the pendingAdmin address",
+        "params": {
+          "newAdmin": "The address to transfer ownership to"
+        }
+      },
+      "transferAdminQuickly(address)": {
+        "details": "Allows the current admin to set the admin in one tx. Useful initial deployment.",
+        "params": {
+          "newAdmin": "The address to transfer ownership to."
+        }
+      }
+    }
+  },
+  "userdoc": {
+    "methods": {
+      "addReserve(address,bytes32,uint8,address)": {
+        "notice": "Can be called only by operator"
+      },
+      "getContracts()": {
+        "notice": "Should be called off chain"
+      },
+      "getKyberProxies()": {
+        "notice": "Should be called off chain"
+      },
+      "getReserveDetailsByAddress(address)": {
+        "notice": "Returns information about a reserve given its reserve ID"
+      },
+      "getReserveDetailsById(bytes32)": {
+        "notice": "Returns information about a reserve given its reserve ID"
+      },
+      "getReserves()": {
+        "notice": "Should be called off chain"
+      },
+      "listPairForReserve(bytes32,address,bool,bool,bool)": {
+        "notice": "Can be called only by operator"
+      },
+      "removeReserve(bytes32,uint256)": {
+        "notice": "Can be called only by operator"
+      }
+    }
+  }
+}

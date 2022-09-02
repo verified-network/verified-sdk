@@ -1,0 +1,2325 @@
+{
+  "contractName": "IKyberFeeHandler",
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "kncTWei",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "KncBurned",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "platformWallet",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "PlatformFeePaid",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "RebatePaid",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "staker",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "epoch",
+          "type": "uint256"
+        },
+        {
+          "indexed": true,
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "RewardPaid",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "contract IERC20",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "eligibleWallets",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "rebatePercentages",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address",
+          "name": "platformWallet",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "platformFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "networkFee",
+          "type": "uint256"
+        }
+      ],
+      "name": "handleFees",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "rebateWallet",
+          "type": "address"
+        }
+      ],
+      "name": "claimReserveRebate",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "platformWallet",
+          "type": "address"
+        }
+      ],
+      "name": "claimPlatformFee",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "staker",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "epoch",
+          "type": "uint256"
+        }
+      ],
+      "name": "claimStakerReward",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"kncTWei\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"KncBurned\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"platformWallet\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"PlatformFeePaid\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"RebatePaid\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"staker\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"epoch\",\"type\":\"uint256\"},{\"indexed\":true,\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"RewardPaid\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"platformWallet\",\"type\":\"address\"}],\"name\":\"claimPlatformFee\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"rebateWallet\",\"type\":\"address\"}],\"name\":\"claimReserveRebate\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"staker\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"epoch\",\"type\":\"uint256\"}],\"name\":\"claimStakerReward\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"contract IERC20\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"eligibleWallets\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"rebatePercentages\",\"type\":\"uint256[]\"},{\"internalType\":\"address\",\"name\":\"platformWallet\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"platformFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"networkFee\",\"type\":\"uint256\"}],\"name\":\"handleFees\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/sol6/IKyberFeeHandler.sol\":\"IKyberFeeHandler\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/sol6/IERC20.sol\":{\"keccak256\":\"0xf4041129837399d72f0765fe8699b395dd20c9b28dc3ffb0b3ab1477f587a105\",\"urls\":[\"bzz-raw://0ac2ff9c6a013de9ff092a34b0cb8abace10db335fd4f5d12b594dbbb28de418\",\"dweb:/ipfs/QmSrLhkHzmAP6PZZ9K3EuvAQNiK4Npnq1YahwkAH5VxWX3\"]},\"project:/contracts/sol6/IKyberFeeHandler.sol\":{\"keccak256\":\"0xa5c7725aa0817a543b58b76037a1e106f1f18ef793e54613bb7fa5d8726ac180\",\"urls\":[\"bzz-raw://402a9bcf00f51cc3e4aeda0a6210f79906a1cdb69adf53a47d2210f6936f45fa\",\"dweb:/ipfs/QmTHa4gxWQrQ6NZ8BHWheeuTKhZQWPkEVod9uEyGNeVLAL\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity 0.6.6;\n\nimport \"./IERC20.sol\";\n\n\ninterface IKyberFeeHandler {\n    event RewardPaid(address indexed staker, uint256 indexed epoch, IERC20 indexed token, uint256 amount);\n    event RebatePaid(address indexed rebateWallet, IERC20 indexed token, uint256 amount);\n    event PlatformFeePaid(address indexed platformWallet, IERC20 indexed token, uint256 amount);\n    event KncBurned(uint256 kncTWei, IERC20 indexed token, uint256 amount);\n\n    function handleFees(\n        IERC20 token,\n        address[] calldata eligibleWallets,\n        uint256[] calldata rebatePercentages,\n        address platformWallet,\n        uint256 platformFee,\n        uint256 networkFee\n    ) external payable;\n\n    function claimReserveRebate(address rebateWallet) external returns (uint256);\n\n    function claimPlatformFee(address platformWallet) external returns (uint256);\n\n    function claimStakerReward(\n        address staker,\n        uint256 epoch\n    ) external returns(uint amount);\n}\n",
+  "sourcePath": "D:\\Code\\kyber-verified\\contracts\\sol6\\IKyberFeeHandler.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/sol6/IKyberFeeHandler.sol",
+    "exportedSymbols": {
+      "IKyberFeeHandler": [
+        15120
+      ]
+    },
+    "id": 15121,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 15044,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:22:46"
+      },
+      {
+        "absolutePath": "project:/contracts/sol6/IERC20.sol",
+        "file": "./IERC20.sol",
+        "id": 15045,
+        "nodeType": "ImportDirective",
+        "scope": 15121,
+        "sourceUnit": 14940,
+        "src": "24:22:46",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 15120,
+        "linearizedBaseContracts": [
+          15120
+        ],
+        "name": "IKyberFeeHandler",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15055,
+            "name": "RewardPaid",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 15054,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15047,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "staker",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15055,
+                  "src": "99:22:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15046,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "99:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15049,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "epoch",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15055,
+                  "src": "123:21:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15048,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "123:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15051,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15055,
+                  "src": "146:20:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IERC20_$14936",
+                    "typeString": "contract IERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 15050,
+                    "name": "IERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 14936,
+                    "src": "146:6:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$14936",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15053,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15055,
+                  "src": "168:14:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15052,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "168:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "98:85:46"
+            },
+            "src": "82:102:46"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15063,
+            "name": "RebatePaid",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 15062,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15057,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "rebateWallet",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15063,
+                  "src": "206:28:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15056,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "206:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15059,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15063,
+                  "src": "236:20:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IERC20_$14936",
+                    "typeString": "contract IERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 15058,
+                    "name": "IERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 14936,
+                    "src": "236:6:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$14936",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15061,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15063,
+                  "src": "258:14:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15060,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "258:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "205:68:46"
+            },
+            "src": "189:85:46"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15071,
+            "name": "PlatformFeePaid",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 15070,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15065,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "platformWallet",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15071,
+                  "src": "301:30:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15064,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "301:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15067,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15071,
+                  "src": "333:20:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IERC20_$14936",
+                    "typeString": "contract IERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 15066,
+                    "name": "IERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 14936,
+                    "src": "333:6:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$14936",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15069,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15071,
+                  "src": "355:14:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15068,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "355:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "300:70:46"
+            },
+            "src": "279:92:46"
+          },
+          {
+            "anonymous": false,
+            "documentation": null,
+            "id": 15079,
+            "name": "KncBurned",
+            "nodeType": "EventDefinition",
+            "parameters": {
+              "id": 15078,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15073,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "kncTWei",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15079,
+                  "src": "392:15:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15072,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "392:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15075,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15079,
+                  "src": "409:20:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IERC20_$14936",
+                    "typeString": "contract IERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 15074,
+                    "name": "IERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 14936,
+                    "src": "409:6:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$14936",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15077,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15079,
+                  "src": "431:14:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15076,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "431:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "391:55:46"
+            },
+            "src": "376:71:46"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "b7c5ab41",
+            "id": 15096,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "handleFees",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 15094,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15081,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "482:12:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IERC20_$14936",
+                    "typeString": "contract IERC20"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 15080,
+                    "name": "IERC20",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 14936,
+                    "src": "482:6:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IERC20_$14936",
+                      "typeString": "contract IERC20"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15084,
+                  "mutability": "mutable",
+                  "name": "eligibleWallets",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "504:34:46",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 15082,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "504:7:46",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 15083,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "504:9:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15087,
+                  "mutability": "mutable",
+                  "name": "rebatePercentages",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "548:36:46",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 15085,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "548:7:46",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 15086,
+                    "length": null,
+                    "nodeType": "ArrayTypeName",
+                    "src": "548:9:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15089,
+                  "mutability": "mutable",
+                  "name": "platformWallet",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "594:22:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15088,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "594:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15091,
+                  "mutability": "mutable",
+                  "name": "platformFee",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "626:19:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15090,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "626:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15093,
+                  "mutability": "mutable",
+                  "name": "networkFee",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15096,
+                  "src": "655:18:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15092,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "655:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "472:207:46"
+            },
+            "returnParameters": {
+              "id": 15095,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "696:0:46"
+            },
+            "scope": 15120,
+            "src": "453:244:46",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "c01bdf04",
+            "id": 15103,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "claimReserveRebate",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 15099,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15098,
+                  "mutability": "mutable",
+                  "name": "rebateWallet",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15103,
+                  "src": "731:20:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15097,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "731:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "730:22:46"
+            },
+            "returnParameters": {
+              "id": 15102,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15101,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15103,
+                  "src": "771:7:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15100,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "771:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "770:9:46"
+            },
+            "scope": 15120,
+            "src": "703:77:46",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "9907672a",
+            "id": 15110,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "claimPlatformFee",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 15106,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15105,
+                  "mutability": "mutable",
+                  "name": "platformWallet",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15110,
+                  "src": "812:22:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15104,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "812:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "811:24:46"
+            },
+            "returnParameters": {
+              "id": 15109,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15108,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15110,
+                  "src": "854:7:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15107,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "854:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "853:9:46"
+            },
+            "scope": 15120,
+            "src": "786:77:46",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "53fa2eb7",
+            "id": 15119,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "claimStakerReward",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 15115,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15112,
+                  "mutability": "mutable",
+                  "name": "staker",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15119,
+                  "src": "905:14:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 15111,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "905:7:46",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 15114,
+                  "mutability": "mutable",
+                  "name": "epoch",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15119,
+                  "src": "929:13:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15113,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "929:7:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "895:53:46"
+            },
+            "returnParameters": {
+              "id": 15118,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 15117,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 15119,
+                  "src": "966:11:46",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 15116,
+                    "name": "uint",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "966:4:46",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "965:13:46"
+            },
+            "scope": 15120,
+            "src": "869:110:46",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 15121,
+        "src": "49:932:46"
+      }
+    ],
+    "src": "0:982:46"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/sol6/IKyberFeeHandler.sol",
+      "exportedSymbols": {
+        "IKyberFeeHandler": [
+          15120
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.6",
+            ".6"
+          ]
+        },
+        "id": 15044,
+        "name": "PragmaDirective",
+        "src": "0:22:46"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 14940,
+          "absolutePath": "project:/contracts/sol6/IERC20.sol",
+          "file": "./IERC20.sol",
+          "scope": 15121,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 15045,
+        "name": "ImportDirective",
+        "src": "24:22:46"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "interface",
+          "documentation": null,
+          "fullyImplemented": false,
+          "linearizedBaseContracts": [
+            15120
+          ],
+          "name": "IKyberFeeHandler",
+          "scope": 15121
+        },
+        "children": [
+          {
+            "attributes": {
+              "anonymous": false,
+              "documentation": null,
+              "name": "RewardPaid"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "staker",
+                      "overrides": null,
+                      "scope": 15055,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15046,
+                        "name": "ElementaryTypeName",
+                        "src": "99:7:46"
+                      }
+                    ],
+                    "id": 15047,
+                    "name": "VariableDeclaration",
+                    "src": "99:22:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "epoch",
+                      "overrides": null,
+                      "scope": 15055,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15048,
+                        "name": "ElementaryTypeName",
+                        "src": "123:7:46"
+                      }
+                    ],
+                    "id": 15049,
+                    "name": "VariableDeclaration",
+                    "src": "123:21:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "token",
+                      "overrides": null,
+                      "scope": 15055,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IERC20",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IERC20",
+                          "referencedDeclaration": 14936,
+                          "type": "contract IERC20"
+                        },
+                        "id": 15050,
+                        "name": "UserDefinedTypeName",
+                        "src": "146:6:46"
+                      }
+                    ],
+                    "id": 15051,
+                    "name": "VariableDeclaration",
+                    "src": "146:20:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "overrides": null,
+                      "scope": 15055,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15052,
+                        "name": "ElementaryTypeName",
+                        "src": "168:7:46"
+                      }
+                    ],
+                    "id": 15053,
+                    "name": "VariableDeclaration",
+                    "src": "168:14:46"
+                  }
+                ],
+                "id": 15054,
+                "name": "ParameterList",
+                "src": "98:85:46"
+              }
+            ],
+            "id": 15055,
+            "name": "EventDefinition",
+            "src": "82:102:46"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "documentation": null,
+              "name": "RebatePaid"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "rebateWallet",
+                      "overrides": null,
+                      "scope": 15063,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15056,
+                        "name": "ElementaryTypeName",
+                        "src": "206:7:46"
+                      }
+                    ],
+                    "id": 15057,
+                    "name": "VariableDeclaration",
+                    "src": "206:28:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "token",
+                      "overrides": null,
+                      "scope": 15063,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IERC20",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IERC20",
+                          "referencedDeclaration": 14936,
+                          "type": "contract IERC20"
+                        },
+                        "id": 15058,
+                        "name": "UserDefinedTypeName",
+                        "src": "236:6:46"
+                      }
+                    ],
+                    "id": 15059,
+                    "name": "VariableDeclaration",
+                    "src": "236:20:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "overrides": null,
+                      "scope": 15063,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15060,
+                        "name": "ElementaryTypeName",
+                        "src": "258:7:46"
+                      }
+                    ],
+                    "id": 15061,
+                    "name": "VariableDeclaration",
+                    "src": "258:14:46"
+                  }
+                ],
+                "id": 15062,
+                "name": "ParameterList",
+                "src": "205:68:46"
+              }
+            ],
+            "id": 15063,
+            "name": "EventDefinition",
+            "src": "189:85:46"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "documentation": null,
+              "name": "PlatformFeePaid"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "platformWallet",
+                      "overrides": null,
+                      "scope": 15071,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15064,
+                        "name": "ElementaryTypeName",
+                        "src": "301:7:46"
+                      }
+                    ],
+                    "id": 15065,
+                    "name": "VariableDeclaration",
+                    "src": "301:30:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "token",
+                      "overrides": null,
+                      "scope": 15071,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IERC20",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IERC20",
+                          "referencedDeclaration": 14936,
+                          "type": "contract IERC20"
+                        },
+                        "id": 15066,
+                        "name": "UserDefinedTypeName",
+                        "src": "333:6:46"
+                      }
+                    ],
+                    "id": 15067,
+                    "name": "VariableDeclaration",
+                    "src": "333:20:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "overrides": null,
+                      "scope": 15071,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15068,
+                        "name": "ElementaryTypeName",
+                        "src": "355:7:46"
+                      }
+                    ],
+                    "id": 15069,
+                    "name": "VariableDeclaration",
+                    "src": "355:14:46"
+                  }
+                ],
+                "id": 15070,
+                "name": "ParameterList",
+                "src": "300:70:46"
+              }
+            ],
+            "id": 15071,
+            "name": "EventDefinition",
+            "src": "279:92:46"
+          },
+          {
+            "attributes": {
+              "anonymous": false,
+              "documentation": null,
+              "name": "KncBurned"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "mutability": "mutable",
+                      "name": "kncTWei",
+                      "overrides": null,
+                      "scope": 15079,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15072,
+                        "name": "ElementaryTypeName",
+                        "src": "392:7:46"
+                      }
+                    ],
+                    "id": 15073,
+                    "name": "VariableDeclaration",
+                    "src": "392:15:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": true,
+                      "mutability": "mutable",
+                      "name": "token",
+                      "overrides": null,
+                      "scope": 15079,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IERC20",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IERC20",
+                          "referencedDeclaration": 14936,
+                          "type": "contract IERC20"
+                        },
+                        "id": 15074,
+                        "name": "UserDefinedTypeName",
+                        "src": "409:6:46"
+                      }
+                    ],
+                    "id": 15075,
+                    "name": "VariableDeclaration",
+                    "src": "409:20:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "indexed": false,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "overrides": null,
+                      "scope": 15079,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15076,
+                        "name": "ElementaryTypeName",
+                        "src": "431:7:46"
+                      }
+                    ],
+                    "id": 15077,
+                    "name": "VariableDeclaration",
+                    "src": "431:14:46"
+                  }
+                ],
+                "id": 15078,
+                "name": "ParameterList",
+                "src": "391:55:46"
+              }
+            ],
+            "id": 15079,
+            "name": "EventDefinition",
+            "src": "376:71:46"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "b7c5ab41",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "handleFees",
+              "overrides": null,
+              "scope": 15120,
+              "stateMutability": "payable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "token",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IERC20",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IERC20",
+                          "referencedDeclaration": 14936,
+                          "type": "contract IERC20"
+                        },
+                        "id": 15080,
+                        "name": "UserDefinedTypeName",
+                        "src": "482:6:46"
+                      }
+                    ],
+                    "id": 15081,
+                    "name": "VariableDeclaration",
+                    "src": "482:12:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "eligibleWallets",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "address[]",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "length": null,
+                          "type": "address[]"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "address",
+                              "stateMutability": "nonpayable",
+                              "type": "address"
+                            },
+                            "id": 15082,
+                            "name": "ElementaryTypeName",
+                            "src": "504:7:46"
+                          }
+                        ],
+                        "id": 15083,
+                        "name": "ArrayTypeName",
+                        "src": "504:9:46"
+                      }
+                    ],
+                    "id": 15084,
+                    "name": "VariableDeclaration",
+                    "src": "504:34:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "rebatePercentages",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "calldata",
+                      "type": "uint256[]",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "length": null,
+                          "type": "uint256[]"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "name": "uint256",
+                              "type": "uint256"
+                            },
+                            "id": 15085,
+                            "name": "ElementaryTypeName",
+                            "src": "548:7:46"
+                          }
+                        ],
+                        "id": 15086,
+                        "name": "ArrayTypeName",
+                        "src": "548:9:46"
+                      }
+                    ],
+                    "id": 15087,
+                    "name": "VariableDeclaration",
+                    "src": "548:36:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "platformWallet",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15088,
+                        "name": "ElementaryTypeName",
+                        "src": "594:7:46"
+                      }
+                    ],
+                    "id": 15089,
+                    "name": "VariableDeclaration",
+                    "src": "594:22:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "platformFee",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15090,
+                        "name": "ElementaryTypeName",
+                        "src": "626:7:46"
+                      }
+                    ],
+                    "id": 15091,
+                    "name": "VariableDeclaration",
+                    "src": "626:19:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "networkFee",
+                      "overrides": null,
+                      "scope": 15096,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15092,
+                        "name": "ElementaryTypeName",
+                        "src": "655:7:46"
+                      }
+                    ],
+                    "id": 15093,
+                    "name": "VariableDeclaration",
+                    "src": "655:18:46"
+                  }
+                ],
+                "id": 15094,
+                "name": "ParameterList",
+                "src": "472:207:46"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 15095,
+                "name": "ParameterList",
+                "src": "696:0:46"
+              }
+            ],
+            "id": 15096,
+            "name": "FunctionDefinition",
+            "src": "453:244:46"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "c01bdf04",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "claimReserveRebate",
+              "overrides": null,
+              "scope": 15120,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "rebateWallet",
+                      "overrides": null,
+                      "scope": 15103,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15097,
+                        "name": "ElementaryTypeName",
+                        "src": "731:7:46"
+                      }
+                    ],
+                    "id": 15098,
+                    "name": "VariableDeclaration",
+                    "src": "731:20:46"
+                  }
+                ],
+                "id": 15099,
+                "name": "ParameterList",
+                "src": "730:22:46"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "",
+                      "overrides": null,
+                      "scope": 15103,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15100,
+                        "name": "ElementaryTypeName",
+                        "src": "771:7:46"
+                      }
+                    ],
+                    "id": 15101,
+                    "name": "VariableDeclaration",
+                    "src": "771:7:46"
+                  }
+                ],
+                "id": 15102,
+                "name": "ParameterList",
+                "src": "770:9:46"
+              }
+            ],
+            "id": 15103,
+            "name": "FunctionDefinition",
+            "src": "703:77:46"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "9907672a",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "claimPlatformFee",
+              "overrides": null,
+              "scope": 15120,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "platformWallet",
+                      "overrides": null,
+                      "scope": 15110,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15104,
+                        "name": "ElementaryTypeName",
+                        "src": "812:7:46"
+                      }
+                    ],
+                    "id": 15105,
+                    "name": "VariableDeclaration",
+                    "src": "812:22:46"
+                  }
+                ],
+                "id": 15106,
+                "name": "ParameterList",
+                "src": "811:24:46"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "",
+                      "overrides": null,
+                      "scope": 15110,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15107,
+                        "name": "ElementaryTypeName",
+                        "src": "854:7:46"
+                      }
+                    ],
+                    "id": 15108,
+                    "name": "VariableDeclaration",
+                    "src": "854:7:46"
+                  }
+                ],
+                "id": 15109,
+                "name": "ParameterList",
+                "src": "853:9:46"
+              }
+            ],
+            "id": 15110,
+            "name": "FunctionDefinition",
+            "src": "786:77:46"
+          },
+          {
+            "attributes": {
+              "body": null,
+              "documentation": null,
+              "functionSelector": "53fa2eb7",
+              "implemented": false,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "claimStakerReward",
+              "overrides": null,
+              "scope": 15120,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "staker",
+                      "overrides": null,
+                      "scope": 15119,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "address",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "address",
+                          "stateMutability": "nonpayable",
+                          "type": "address"
+                        },
+                        "id": 15111,
+                        "name": "ElementaryTypeName",
+                        "src": "905:7:46"
+                      }
+                    ],
+                    "id": 15112,
+                    "name": "VariableDeclaration",
+                    "src": "905:14:46"
+                  },
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "epoch",
+                      "overrides": null,
+                      "scope": 15119,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint256",
+                          "type": "uint256"
+                        },
+                        "id": 15113,
+                        "name": "ElementaryTypeName",
+                        "src": "929:7:46"
+                      }
+                    ],
+                    "id": 15114,
+                    "name": "VariableDeclaration",
+                    "src": "929:13:46"
+                  }
+                ],
+                "id": 15115,
+                "name": "ParameterList",
+                "src": "895:53:46"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "amount",
+                      "overrides": null,
+                      "scope": 15119,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "uint256",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "uint",
+                          "type": "uint256"
+                        },
+                        "id": 15116,
+                        "name": "ElementaryTypeName",
+                        "src": "966:4:46"
+                      }
+                    ],
+                    "id": 15117,
+                    "name": "VariableDeclaration",
+                    "src": "966:11:46"
+                  }
+                ],
+                "id": 15118,
+                "name": "ParameterList",
+                "src": "965:13:46"
+              }
+            ],
+            "id": 15119,
+            "name": "FunctionDefinition",
+            "src": "869:110:46"
+          }
+        ],
+        "id": 15120,
+        "name": "ContractDefinition",
+        "src": "49:932:46"
+      }
+    ],
+    "id": 15121,
+    "name": "SourceUnit",
+    "src": "0:982:46"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.6+commit.6c089d02.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-08-07T13:46:17.696Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

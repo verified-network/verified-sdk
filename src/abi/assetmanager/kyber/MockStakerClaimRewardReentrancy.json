@@ -1,0 +1,1259 @@
+{
+  "contractName": "MockStakerClaimRewardReentrancy",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "contract IKyberFeeHandler",
+          "name": "_feeHandler",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "inputs": [],
+      "name": "feeHandler",
+      "outputs": [
+        {
+          "internalType": "contract IKyberFeeHandler",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "isTestingReentrant",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "stateMutability": "payable",
+      "type": "receive"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "isTesting",
+          "type": "bool"
+        }
+      ],
+      "name": "setIsTestingReentrancy",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.6+commit.6c089d02\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract IKyberFeeHandler\",\"name\":\"_feeHandler\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[],\"name\":\"feeHandler\",\"outputs\":[{\"internalType\":\"contract IKyberFeeHandler\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"isTestingReentrant\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"isTesting\",\"type\":\"bool\"}],\"name\":\"setIsTestingReentrancy\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"stateMutability\":\"payable\",\"type\":\"receive\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/sol6/Dao/mock/MockStakerClaimRewardReentrancy.sol\":\"MockStakerClaimRewardReentrancy\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/sol6/Dao/mock/MockStakerClaimRewardReentrancy.sol\":{\"keccak256\":\"0x510325ad6621a165cb38d2a307f0071be334bb1afbb7d918055455c33b2f4d36\",\"urls\":[\"bzz-raw://a92fb70a663e780f96e8a180da2bedc0cb70a402a22dcc83311156ab860a09ff\",\"dweb:/ipfs/QmdSUo9JcJNYkKmCSC6gMaPFhrGytLwKrGzwSqfD6TPLRS\"]},\"project:/contracts/sol6/IERC20.sol\":{\"keccak256\":\"0xf4041129837399d72f0765fe8699b395dd20c9b28dc3ffb0b3ab1477f587a105\",\"urls\":[\"bzz-raw://0ac2ff9c6a013de9ff092a34b0cb8abace10db335fd4f5d12b594dbbb28de418\",\"dweb:/ipfs/QmSrLhkHzmAP6PZZ9K3EuvAQNiK4Npnq1YahwkAH5VxWX3\"]},\"project:/contracts/sol6/IKyberFeeHandler.sol\":{\"keccak256\":\"0xa5c7725aa0817a543b58b76037a1e106f1f18ef793e54613bb7fa5d8726ac180\",\"urls\":[\"bzz-raw://402a9bcf00f51cc3e4aeda0a6210f79906a1cdb69adf53a47d2210f6936f45fa\",\"dweb:/ipfs/QmTHa4gxWQrQ6NZ8BHWheeuTKhZQWPkEVod9uEyGNeVLAL\"]}},\"version\":1}",
+  "bytecode": "0x60806040526000805460ff60a01b1916600160a01b17905534801561002357600080fd5b506040516102493803806102498339818101604052602081101561004657600080fd5b5051600080546001600160a01b039092166001600160a01b03199092169190911790556101d1806100786000396000f3fe6080604052600436106100385760003560e01c80633c93adee146100d8578063d7afa91114610109578063e98fda3a14610135576100d3565b366100d357600054600160a01b900460ff16156100d15760008054604080516353fa2eb760e01b81523060048201526024810184905290516001600160a01b03909216926353fa2eb7926044808401936020939083900390910190829087803b1580156100a457600080fd5b505af11580156100b8573d6000803e3d6000fd5b505050506040513d60208110156100ce57600080fd5b50505b005b600080fd5b3480156100e457600080fd5b506100ed61015e565b604080516001600160a01b039092168252519081900360200190f35b34801561011557600080fd5b506100d16004803603602081101561012c57600080fd5b5035151561016d565b34801561014157600080fd5b5061014a61018b565b604080519115158252519081900360200190f35b6000546001600160a01b031681565b60008054911515600160a01b0260ff60a01b19909216919091179055565b600054600160a01b900460ff168156fea2646970667358221220cbb39bfd1e37c71ee1918812c1fde37d7b56da451d0855c0e9babb323fb58a5164736f6c63430006060033",
+  "deployedBytecode": "0x6080604052600436106100385760003560e01c80633c93adee146100d8578063d7afa91114610109578063e98fda3a14610135576100d3565b366100d357600054600160a01b900460ff16156100d15760008054604080516353fa2eb760e01b81523060048201526024810184905290516001600160a01b03909216926353fa2eb7926044808401936020939083900390910190829087803b1580156100a457600080fd5b505af11580156100b8573d6000803e3d6000fd5b505050506040513d60208110156100ce57600080fd5b50505b005b600080fd5b3480156100e457600080fd5b506100ed61015e565b604080516001600160a01b039092168252519081900360200190f35b34801561011557600080fd5b506100d16004803603602081101561012c57600080fd5b5035151561016d565b34801561014157600080fd5b5061014a61018b565b604080519115158252519081900360200190f35b6000546001600160a01b031681565b60008054911515600160a01b0260ff60a01b19909216919091179055565b600054600160a01b900460ff168156fea2646970667358221220cbb39bfd1e37c71ee1918812c1fde37d7b56da451d0855c0e9babb323fb58a5164736f6c63430006060033",
+  "immutableReferences": {},
+  "sourceMap": "63:503:41:-:0;;;150:37;;;-1:-1:-1;;;;150:37:41;-1:-1:-1;;;150:37:41;;;194:116;2:2:-1;;;;27:1;24;17:12;2:2;194:116:41;;;;;;;;;;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;194:116:41;279:10;:24;;-1:-1:-1;;;;;279:24:41;;;-1:-1:-1;;;;;;279:24:41;;;;;;;;;63:503;;;;;;",
+  "deployedSourceMap": "63:503:41:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;357:18;;-1:-1:-1;;;357:18:41;;;;353:95;;;391:10;;;:46;;;-1:-1:-1;;;391:46:41;;428:4;391:46;;;;;;;;;;;;-1:-1:-1;;;;;391:10:41;;;;:28;;:46;;;;;;;;;;;;;;;;;:10;:46;;;2:2:-1;;;;27:1;24;17:12;2:2;391:46:41;;;;8:9:-1;5:2;;;45:16;42:1;39;24:38;77:16;74:1;67:27;5:2;391:46:41;;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;;353:95:41;63:503;;12:1:-1;9;2:12;110:34:41;;5:9:-1;2:2;;;27:1;24;17:12;2:2;110:34:41;;;:::i;:::-;;;;-1:-1:-1;;;;;110:34:41;;;;;;;;;;;;;;460:104;;5:9:-1;2:2;;;27:1;24;17:12;2:2;460:104:41;;;;;;15:2:-1;10:3;7:11;4:2;;;31:1;28;21:12;4:2;-1:-1;460:104:41;;;;:::i;150:37::-;;5:9:-1;2:2;;;27:1;24;17:12;2:2;150:37:41;;;:::i;:::-;;;;;;;;;;;;;;;;;;110:34;;;-1:-1:-1;;;;;110:34:41;;:::o;460:104::-;527:18;:30;;;;;-1:-1:-1;;;527:30:41;-1:-1:-1;;;;527:30:41;;;;;;;;;460:104::o;150:37::-;;;-1:-1:-1;;;150:37:41;;;;;:::o",
+  "source": "pragma solidity 0.6.6;\n\nimport \"../../IKyberFeeHandler.sol\";\n\n\ncontract MockStakerClaimRewardReentrancy {\n    IKyberFeeHandler public feeHandler;\n    bool public isTestingReentrant = true;\n\n    constructor(\n        IKyberFeeHandler _feeHandler\n    )\n        public\n    {\n        feeHandler = _feeHandler;\n    }\n\n    receive() external payable {\n        if (isTestingReentrant) {\n            feeHandler.claimStakerReward(address(this), 0);\n        }\n    }\n\n    function setIsTestingReentrancy(bool isTesting) external {\n        isTestingReentrant = isTesting;\n    }\n}\n",
+  "sourcePath": "D:\\Code\\kyber-verified\\contracts\\sol6\\Dao\\mock\\MockStakerClaimRewardReentrancy.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/sol6/Dao/mock/MockStakerClaimRewardReentrancy.sol",
+    "exportedSymbols": {
+      "MockStakerClaimRewardReentrancy": [
+        14860
+      ]
+    },
+    "id": 14861,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 14816,
+        "literals": [
+          "solidity",
+          "0.6",
+          ".6"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:22:41"
+      },
+      {
+        "absolutePath": "project:/contracts/sol6/IKyberFeeHandler.sol",
+        "file": "../../IKyberFeeHandler.sol",
+        "id": 14817,
+        "nodeType": "ImportDirective",
+        "scope": 14861,
+        "sourceUnit": 15121,
+        "src": "24:36:41",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "documentation": null,
+        "fullyImplemented": true,
+        "id": 14860,
+        "linearizedBaseContracts": [
+          14860
+        ],
+        "name": "MockStakerClaimRewardReentrancy",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "constant": false,
+            "functionSelector": "3c93adee",
+            "id": 14819,
+            "mutability": "mutable",
+            "name": "feeHandler",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 14860,
+            "src": "110:34:41",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+              "typeString": "contract IKyberFeeHandler"
+            },
+            "typeName": {
+              "contractScope": null,
+              "id": 14818,
+              "name": "IKyberFeeHandler",
+              "nodeType": "UserDefinedTypeName",
+              "referencedDeclaration": 15120,
+              "src": "110:16:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                "typeString": "contract IKyberFeeHandler"
+              }
+            },
+            "value": null,
+            "visibility": "public"
+          },
+          {
+            "constant": false,
+            "functionSelector": "e98fda3a",
+            "id": 14822,
+            "mutability": "mutable",
+            "name": "isTestingReentrant",
+            "nodeType": "VariableDeclaration",
+            "overrides": null,
+            "scope": 14860,
+            "src": "150:37:41",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_bool",
+              "typeString": "bool"
+            },
+            "typeName": {
+              "id": 14820,
+              "name": "bool",
+              "nodeType": "ElementaryTypeName",
+              "src": "150:4:41",
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              }
+            },
+            "value": {
+              "argumentTypes": null,
+              "hexValue": "74727565",
+              "id": 14821,
+              "isConstant": false,
+              "isLValue": false,
+              "isPure": true,
+              "kind": "bool",
+              "lValueRequested": false,
+              "nodeType": "Literal",
+              "src": "183:4:41",
+              "subdenomination": null,
+              "typeDescriptions": {
+                "typeIdentifier": "t_bool",
+                "typeString": "bool"
+              },
+              "value": "true"
+            },
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 14831,
+              "nodeType": "Block",
+              "src": "269:41:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 14829,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 14827,
+                      "name": "feeHandler",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 14819,
+                      "src": "279:10:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                        "typeString": "contract IKyberFeeHandler"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 14828,
+                      "name": "_feeHandler",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 14824,
+                      "src": "292:11:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                        "typeString": "contract IKyberFeeHandler"
+                      }
+                    },
+                    "src": "279:24:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                      "typeString": "contract IKyberFeeHandler"
+                    }
+                  },
+                  "id": 14830,
+                  "nodeType": "ExpressionStatement",
+                  "src": "279:24:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 14832,
+            "implemented": true,
+            "kind": "constructor",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 14825,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14824,
+                  "mutability": "mutable",
+                  "name": "_feeHandler",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 14832,
+                  "src": "215:28:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                    "typeString": "contract IKyberFeeHandler"
+                  },
+                  "typeName": {
+                    "contractScope": null,
+                    "id": 14823,
+                    "name": "IKyberFeeHandler",
+                    "nodeType": "UserDefinedTypeName",
+                    "referencedDeclaration": 15120,
+                    "src": "215:16:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                      "typeString": "contract IKyberFeeHandler"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "205:44:41"
+            },
+            "returnParameters": {
+              "id": 14826,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "269:0:41"
+            },
+            "scope": 14860,
+            "src": "194:116:41",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          },
+          {
+            "body": {
+              "id": 14848,
+              "nodeType": "Block",
+              "src": "343:111:41",
+              "statements": [
+                {
+                  "condition": {
+                    "argumentTypes": null,
+                    "id": 14835,
+                    "name": "isTestingReentrant",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 14822,
+                    "src": "357:18:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "falseBody": null,
+                  "id": 14847,
+                  "nodeType": "IfStatement",
+                  "src": "353:95:41",
+                  "trueBody": {
+                    "id": 14846,
+                    "nodeType": "Block",
+                    "src": "377:71:41",
+                    "statements": [
+                      {
+                        "expression": {
+                          "argumentTypes": null,
+                          "arguments": [
+                            {
+                              "argumentTypes": null,
+                              "arguments": [
+                                {
+                                  "argumentTypes": null,
+                                  "id": 14841,
+                                  "name": "this",
+                                  "nodeType": "Identifier",
+                                  "overloadedDeclarations": [],
+                                  "referencedDeclaration": -28,
+                                  "src": "428:4:41",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": "t_contract$_MockStakerClaimRewardReentrancy_$14860",
+                                    "typeString": "contract MockStakerClaimRewardReentrancy"
+                                  }
+                                }
+                              ],
+                              "expression": {
+                                "argumentTypes": [
+                                  {
+                                    "typeIdentifier": "t_contract$_MockStakerClaimRewardReentrancy_$14860",
+                                    "typeString": "contract MockStakerClaimRewardReentrancy"
+                                  }
+                                ],
+                                "id": 14840,
+                                "isConstant": false,
+                                "isLValue": false,
+                                "isPure": true,
+                                "lValueRequested": false,
+                                "nodeType": "ElementaryTypeNameExpression",
+                                "src": "420:7:41",
+                                "typeDescriptions": {
+                                  "typeIdentifier": "t_type$_t_address_$",
+                                  "typeString": "type(address)"
+                                },
+                                "typeName": {
+                                  "id": 14839,
+                                  "name": "address",
+                                  "nodeType": "ElementaryTypeName",
+                                  "src": "420:7:41",
+                                  "typeDescriptions": {
+                                    "typeIdentifier": null,
+                                    "typeString": null
+                                  }
+                                }
+                              },
+                              "id": 14842,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": false,
+                              "kind": "typeConversion",
+                              "lValueRequested": false,
+                              "names": [],
+                              "nodeType": "FunctionCall",
+                              "src": "420:13:41",
+                              "tryCall": false,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_address_payable",
+                                "typeString": "address payable"
+                              }
+                            },
+                            {
+                              "argumentTypes": null,
+                              "hexValue": "30",
+                              "id": 14843,
+                              "isConstant": false,
+                              "isLValue": false,
+                              "isPure": true,
+                              "kind": "number",
+                              "lValueRequested": false,
+                              "nodeType": "Literal",
+                              "src": "435:1:41",
+                              "subdenomination": null,
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              },
+                              "value": "0"
+                            }
+                          ],
+                          "expression": {
+                            "argumentTypes": [
+                              {
+                                "typeIdentifier": "t_address_payable",
+                                "typeString": "address payable"
+                              },
+                              {
+                                "typeIdentifier": "t_rational_0_by_1",
+                                "typeString": "int_const 0"
+                              }
+                            ],
+                            "expression": {
+                              "argumentTypes": null,
+                              "id": 14836,
+                              "name": "feeHandler",
+                              "nodeType": "Identifier",
+                              "overloadedDeclarations": [],
+                              "referencedDeclaration": 14819,
+                              "src": "391:10:41",
+                              "typeDescriptions": {
+                                "typeIdentifier": "t_contract$_IKyberFeeHandler_$15120",
+                                "typeString": "contract IKyberFeeHandler"
+                              }
+                            },
+                            "id": 14838,
+                            "isConstant": false,
+                            "isLValue": false,
+                            "isPure": false,
+                            "lValueRequested": false,
+                            "memberName": "claimStakerReward",
+                            "nodeType": "MemberAccess",
+                            "referencedDeclaration": 15119,
+                            "src": "391:28:41",
+                            "typeDescriptions": {
+                              "typeIdentifier": "t_function_external_nonpayable$_t_address_$_t_uint256_$returns$_t_uint256_$",
+                              "typeString": "function (address,uint256) external returns (uint256)"
+                            }
+                          },
+                          "id": 14844,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "kind": "functionCall",
+                          "lValueRequested": false,
+                          "names": [],
+                          "nodeType": "FunctionCall",
+                          "src": "391:46:41",
+                          "tryCall": false,
+                          "typeDescriptions": {
+                            "typeIdentifier": "t_uint256",
+                            "typeString": "uint256"
+                          }
+                        },
+                        "id": 14845,
+                        "nodeType": "ExpressionStatement",
+                        "src": "391:46:41"
+                      }
+                    ]
+                  }
+                }
+              ]
+            },
+            "documentation": null,
+            "id": 14849,
+            "implemented": true,
+            "kind": "receive",
+            "modifiers": [],
+            "name": "",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 14833,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "323:2:41"
+            },
+            "returnParameters": {
+              "id": 14834,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "343:0:41"
+            },
+            "scope": 14860,
+            "src": "316:138:41",
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "body": {
+              "id": 14858,
+              "nodeType": "Block",
+              "src": "517:47:41",
+              "statements": [
+                {
+                  "expression": {
+                    "argumentTypes": null,
+                    "id": 14856,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "lValueRequested": false,
+                    "leftHandSide": {
+                      "argumentTypes": null,
+                      "id": 14854,
+                      "name": "isTestingReentrant",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 14822,
+                      "src": "527:18:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "nodeType": "Assignment",
+                    "operator": "=",
+                    "rightHandSide": {
+                      "argumentTypes": null,
+                      "id": 14855,
+                      "name": "isTesting",
+                      "nodeType": "Identifier",
+                      "overloadedDeclarations": [],
+                      "referencedDeclaration": 14851,
+                      "src": "548:9:41",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bool",
+                        "typeString": "bool"
+                      }
+                    },
+                    "src": "527:30:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "id": 14857,
+                  "nodeType": "ExpressionStatement",
+                  "src": "527:30:41"
+                }
+              ]
+            },
+            "documentation": null,
+            "functionSelector": "d7afa911",
+            "id": 14859,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setIsTestingReentrancy",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 14852,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 14851,
+                  "mutability": "mutable",
+                  "name": "isTesting",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 14859,
+                  "src": "492:14:41",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 14850,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "492:4:41",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "491:16:41"
+            },
+            "returnParameters": {
+              "id": 14853,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "517:0:41"
+            },
+            "scope": 14860,
+            "src": "460:104:41",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 14861,
+        "src": "63:503:41"
+      }
+    ],
+    "src": "0:567:41"
+  },
+  "legacyAST": {
+    "attributes": {
+      "absolutePath": "project:/contracts/sol6/Dao/mock/MockStakerClaimRewardReentrancy.sol",
+      "exportedSymbols": {
+        "MockStakerClaimRewardReentrancy": [
+          14860
+        ]
+      }
+    },
+    "children": [
+      {
+        "attributes": {
+          "literals": [
+            "solidity",
+            "0.6",
+            ".6"
+          ]
+        },
+        "id": 14816,
+        "name": "PragmaDirective",
+        "src": "0:22:41"
+      },
+      {
+        "attributes": {
+          "SourceUnit": 15121,
+          "absolutePath": "project:/contracts/sol6/IKyberFeeHandler.sol",
+          "file": "../../IKyberFeeHandler.sol",
+          "scope": 14861,
+          "symbolAliases": [
+            null
+          ],
+          "unitAlias": ""
+        },
+        "id": 14817,
+        "name": "ImportDirective",
+        "src": "24:36:41"
+      },
+      {
+        "attributes": {
+          "abstract": false,
+          "baseContracts": [
+            null
+          ],
+          "contractDependencies": [
+            null
+          ],
+          "contractKind": "contract",
+          "documentation": null,
+          "fullyImplemented": true,
+          "linearizedBaseContracts": [
+            14860
+          ],
+          "name": "MockStakerClaimRewardReentrancy",
+          "scope": 14861
+        },
+        "children": [
+          {
+            "attributes": {
+              "constant": false,
+              "functionSelector": "3c93adee",
+              "mutability": "mutable",
+              "name": "feeHandler",
+              "overrides": null,
+              "scope": 14860,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "contract IKyberFeeHandler",
+              "value": null,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "contractScope": null,
+                  "name": "IKyberFeeHandler",
+                  "referencedDeclaration": 15120,
+                  "type": "contract IKyberFeeHandler"
+                },
+                "id": 14818,
+                "name": "UserDefinedTypeName",
+                "src": "110:16:41"
+              }
+            ],
+            "id": 14819,
+            "name": "VariableDeclaration",
+            "src": "110:34:41"
+          },
+          {
+            "attributes": {
+              "constant": false,
+              "functionSelector": "e98fda3a",
+              "mutability": "mutable",
+              "name": "isTestingReentrant",
+              "overrides": null,
+              "scope": 14860,
+              "stateVariable": true,
+              "storageLocation": "default",
+              "type": "bool",
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "name": "bool",
+                  "type": "bool"
+                },
+                "id": 14820,
+                "name": "ElementaryTypeName",
+                "src": "150:4:41"
+              },
+              {
+                "attributes": {
+                  "argumentTypes": null,
+                  "hexvalue": "74727565",
+                  "isConstant": false,
+                  "isLValue": false,
+                  "isPure": true,
+                  "lValueRequested": false,
+                  "subdenomination": null,
+                  "token": "bool",
+                  "type": "bool",
+                  "value": "true"
+                },
+                "id": 14821,
+                "name": "Literal",
+                "src": "183:4:41"
+              }
+            ],
+            "id": 14822,
+            "name": "VariableDeclaration",
+            "src": "150:37:41"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": true,
+              "kind": "constructor",
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "overrides": null,
+              "scope": 14860,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "public"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "_feeHandler",
+                      "overrides": null,
+                      "scope": 14832,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "contract IKyberFeeHandler",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "contractScope": null,
+                          "name": "IKyberFeeHandler",
+                          "referencedDeclaration": 15120,
+                          "type": "contract IKyberFeeHandler"
+                        },
+                        "id": 14823,
+                        "name": "UserDefinedTypeName",
+                        "src": "215:16:41"
+                      }
+                    ],
+                    "id": 14824,
+                    "name": "VariableDeclaration",
+                    "src": "215:28:41"
+                  }
+                ],
+                "id": 14825,
+                "name": "ParameterList",
+                "src": "205:44:41"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 14826,
+                "name": "ParameterList",
+                "src": "269:0:41"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "contract IKyberFeeHandler"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 14819,
+                              "type": "contract IKyberFeeHandler",
+                              "value": "feeHandler"
+                            },
+                            "id": 14827,
+                            "name": "Identifier",
+                            "src": "279:10:41"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 14824,
+                              "type": "contract IKyberFeeHandler",
+                              "value": "_feeHandler"
+                            },
+                            "id": 14828,
+                            "name": "Identifier",
+                            "src": "292:11:41"
+                          }
+                        ],
+                        "id": 14829,
+                        "name": "Assignment",
+                        "src": "279:24:41"
+                      }
+                    ],
+                    "id": 14830,
+                    "name": "ExpressionStatement",
+                    "src": "279:24:41"
+                  }
+                ],
+                "id": 14831,
+                "name": "Block",
+                "src": "269:41:41"
+              }
+            ],
+            "id": 14832,
+            "name": "FunctionDefinition",
+            "src": "194:116:41"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "receive",
+              "modifiers": [
+                null
+              ],
+              "name": "",
+              "overrides": null,
+              "scope": 14860,
+              "stateMutability": "payable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 14833,
+                "name": "ParameterList",
+                "src": "323:2:41"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 14834,
+                "name": "ParameterList",
+                "src": "343:0:41"
+              },
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "falseBody": null
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "overloadedDeclarations": [
+                            null
+                          ],
+                          "referencedDeclaration": 14822,
+                          "type": "bool",
+                          "value": "isTestingReentrant"
+                        },
+                        "id": 14835,
+                        "name": "Identifier",
+                        "src": "357:18:41"
+                      },
+                      {
+                        "children": [
+                          {
+                            "children": [
+                              {
+                                "attributes": {
+                                  "argumentTypes": null,
+                                  "isConstant": false,
+                                  "isLValue": false,
+                                  "isPure": false,
+                                  "isStructConstructorCall": false,
+                                  "lValueRequested": false,
+                                  "names": [
+                                    null
+                                  ],
+                                  "tryCall": false,
+                                  "type": "uint256",
+                                  "type_conversion": false
+                                },
+                                "children": [
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": [
+                                        {
+                                          "typeIdentifier": "t_address_payable",
+                                          "typeString": "address payable"
+                                        },
+                                        {
+                                          "typeIdentifier": "t_rational_0_by_1",
+                                          "typeString": "int_const 0"
+                                        }
+                                      ],
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "lValueRequested": false,
+                                      "member_name": "claimStakerReward",
+                                      "referencedDeclaration": 15119,
+                                      "type": "function (address,uint256) external returns (uint256)"
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": 14819,
+                                          "type": "contract IKyberFeeHandler",
+                                          "value": "feeHandler"
+                                        },
+                                        "id": 14836,
+                                        "name": "Identifier",
+                                        "src": "391:10:41"
+                                      }
+                                    ],
+                                    "id": 14838,
+                                    "name": "MemberAccess",
+                                    "src": "391:28:41"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": false,
+                                      "isStructConstructorCall": false,
+                                      "lValueRequested": false,
+                                      "names": [
+                                        null
+                                      ],
+                                      "tryCall": false,
+                                      "type": "address payable",
+                                      "type_conversion": true
+                                    },
+                                    "children": [
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": [
+                                            {
+                                              "typeIdentifier": "t_contract$_MockStakerClaimRewardReentrancy_$14860",
+                                              "typeString": "contract MockStakerClaimRewardReentrancy"
+                                            }
+                                          ],
+                                          "isConstant": false,
+                                          "isLValue": false,
+                                          "isPure": true,
+                                          "lValueRequested": false,
+                                          "type": "type(address)"
+                                        },
+                                        "children": [
+                                          {
+                                            "attributes": {
+                                              "name": "address",
+                                              "type": null
+                                            },
+                                            "id": 14839,
+                                            "name": "ElementaryTypeName",
+                                            "src": "420:7:41"
+                                          }
+                                        ],
+                                        "id": 14840,
+                                        "name": "ElementaryTypeNameExpression",
+                                        "src": "420:7:41"
+                                      },
+                                      {
+                                        "attributes": {
+                                          "argumentTypes": null,
+                                          "overloadedDeclarations": [
+                                            null
+                                          ],
+                                          "referencedDeclaration": -28,
+                                          "type": "contract MockStakerClaimRewardReentrancy",
+                                          "value": "this"
+                                        },
+                                        "id": 14841,
+                                        "name": "Identifier",
+                                        "src": "428:4:41"
+                                      }
+                                    ],
+                                    "id": 14842,
+                                    "name": "FunctionCall",
+                                    "src": "420:13:41"
+                                  },
+                                  {
+                                    "attributes": {
+                                      "argumentTypes": null,
+                                      "hexvalue": "30",
+                                      "isConstant": false,
+                                      "isLValue": false,
+                                      "isPure": true,
+                                      "lValueRequested": false,
+                                      "subdenomination": null,
+                                      "token": "number",
+                                      "type": "int_const 0",
+                                      "value": "0"
+                                    },
+                                    "id": 14843,
+                                    "name": "Literal",
+                                    "src": "435:1:41"
+                                  }
+                                ],
+                                "id": 14844,
+                                "name": "FunctionCall",
+                                "src": "391:46:41"
+                              }
+                            ],
+                            "id": 14845,
+                            "name": "ExpressionStatement",
+                            "src": "391:46:41"
+                          }
+                        ],
+                        "id": 14846,
+                        "name": "Block",
+                        "src": "377:71:41"
+                      }
+                    ],
+                    "id": 14847,
+                    "name": "IfStatement",
+                    "src": "353:95:41"
+                  }
+                ],
+                "id": 14848,
+                "name": "Block",
+                "src": "343:111:41"
+              }
+            ],
+            "id": 14849,
+            "name": "FunctionDefinition",
+            "src": "316:138:41"
+          },
+          {
+            "attributes": {
+              "documentation": null,
+              "functionSelector": "d7afa911",
+              "implemented": true,
+              "isConstructor": false,
+              "kind": "function",
+              "modifiers": [
+                null
+              ],
+              "name": "setIsTestingReentrancy",
+              "overrides": null,
+              "scope": 14860,
+              "stateMutability": "nonpayable",
+              "virtual": false,
+              "visibility": "external"
+            },
+            "children": [
+              {
+                "children": [
+                  {
+                    "attributes": {
+                      "constant": false,
+                      "mutability": "mutable",
+                      "name": "isTesting",
+                      "overrides": null,
+                      "scope": 14859,
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "type": "bool",
+                      "value": null,
+                      "visibility": "internal"
+                    },
+                    "children": [
+                      {
+                        "attributes": {
+                          "name": "bool",
+                          "type": "bool"
+                        },
+                        "id": 14850,
+                        "name": "ElementaryTypeName",
+                        "src": "492:4:41"
+                      }
+                    ],
+                    "id": 14851,
+                    "name": "VariableDeclaration",
+                    "src": "492:14:41"
+                  }
+                ],
+                "id": 14852,
+                "name": "ParameterList",
+                "src": "491:16:41"
+              },
+              {
+                "attributes": {
+                  "parameters": [
+                    null
+                  ]
+                },
+                "children": [],
+                "id": 14853,
+                "name": "ParameterList",
+                "src": "517:0:41"
+              },
+              {
+                "children": [
+                  {
+                    "children": [
+                      {
+                        "attributes": {
+                          "argumentTypes": null,
+                          "isConstant": false,
+                          "isLValue": false,
+                          "isPure": false,
+                          "lValueRequested": false,
+                          "operator": "=",
+                          "type": "bool"
+                        },
+                        "children": [
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 14822,
+                              "type": "bool",
+                              "value": "isTestingReentrant"
+                            },
+                            "id": 14854,
+                            "name": "Identifier",
+                            "src": "527:18:41"
+                          },
+                          {
+                            "attributes": {
+                              "argumentTypes": null,
+                              "overloadedDeclarations": [
+                                null
+                              ],
+                              "referencedDeclaration": 14851,
+                              "type": "bool",
+                              "value": "isTesting"
+                            },
+                            "id": 14855,
+                            "name": "Identifier",
+                            "src": "548:9:41"
+                          }
+                        ],
+                        "id": 14856,
+                        "name": "Assignment",
+                        "src": "527:30:41"
+                      }
+                    ],
+                    "id": 14857,
+                    "name": "ExpressionStatement",
+                    "src": "527:30:41"
+                  }
+                ],
+                "id": 14858,
+                "name": "Block",
+                "src": "517:47:41"
+              }
+            ],
+            "id": 14859,
+            "name": "FunctionDefinition",
+            "src": "460:104:41"
+          }
+        ],
+        "id": 14860,
+        "name": "ContractDefinition",
+        "src": "63:503:41"
+      }
+    ],
+    "id": 14861,
+    "name": "SourceUnit",
+    "src": "0:567:41"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.6+commit.6c089d02.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2022-08-07T13:46:17.678Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}
