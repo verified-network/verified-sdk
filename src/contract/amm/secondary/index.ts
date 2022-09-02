@@ -12,7 +12,7 @@ enum FUNCTIONS {
     SETSETTLEMENTSTATUS = 'setSettlementStatus'
 }
 
-export default class BalancerSecondaryIssueManager extends VerifiedContract {
+export default class SecondaryIssueManager extends VerifiedContract {
     public contractAddress: string
     constructor(signer: VerifiedWallet, platformAddress: string) {
 

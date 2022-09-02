@@ -120,8 +120,8 @@ export default class PreTradeContract extends VerifiedContract {
                                 uint256 faceValue;
                             } )
   */
-  public async getConfirmationRequest(_ref: string, options?: { gasPrice: number, gasLimit: number }): any {
-    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, _ref, options)
+  public async getConfirmationRequest(_currencyCode: string, options?: { gasPrice: number, gasLimit: number }): any {
+    return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, _currencyCode, options)
   }
 
 

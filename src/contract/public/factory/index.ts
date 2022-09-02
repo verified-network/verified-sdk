@@ -10,6 +10,7 @@ enum FUNCTIONS {
     GETTYPE = 'getType',
     GETTOKENBYNAMETYPE = 'getTokenByNameType',
     GETISSUER = 'getIssuer',
+    GETISSUES = 'getIssues',
     GETTOKENCOUNT = 'getTokenCount',
     GETTOKEN = 'getToken',
     GETNAMEANDTYPE = 'getNameAndType',
@@ -114,6 +115,15 @@ export default class VerifiedFactory extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, tokenName)
         await this.validateInput(DATATYPES.STRING, tokenType)
         return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(DATATYPES.BYTE32, tokenType), this.sanitiseInput(DATATYPES.BYTE32, tokenName), options)
+    }
+
+    /**
+     * Get issued security token addresses
+     * @param
+     * @returns returns array of addresses
+     */
+     public async getIssues() {
+        return this.callContract(FUNCTIONS.GETISSUES)
     }
 
     public async issueSecurity(_security: string,

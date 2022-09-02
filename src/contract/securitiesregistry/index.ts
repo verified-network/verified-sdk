@@ -15,7 +15,9 @@ enum FUNCTIONS {
   GETINVESTEDSECURITIES = 'getSecuritiesInvested',
   GETSECURITYDETAILS = 'getSecurityDetails',
   CREATESECURITY = 'createSecurity',
-  GETISSUEDSECURITIES = 'getSecuritiesIssued'
+  GETISSUEDSECURITIES = 'getSecuritiesIssued',
+  SUPPORTTOKENS = 'supportTokens',
+  CHECKSUPPORTFORTOKEN = 'checkSupportForToken'
 }
 
 export default class SecuritiesRegistryContract extends VerifiedContract {
@@ -29,6 +31,18 @@ export default class SecuritiesRegistryContract extends VerifiedContract {
     super(address, JSON.stringify(abi), signer)
 
     this.contractAddress = address
+  }
+
+  public async supportToken(_token: string, _name: string, _network: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.ADDRESS, _token)
+    await this.validateInput(DATATYPES.STRING, _name)
+    await this.validateInput(DATATYPES.STRING, _network)
+    return this.callContract(FUNCTIONS.SUPPORTTOKENS, _token, this.sanitiseInput(DATATYPES.BYTE32, _name), this.sanitiseInput(DATATYPES.BYTE32, _network), options)
+  }
+
+  public async checkSupportForToken(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
+    await this.validateInput(DATATYPES.STRING, _token)
+    return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, this.sanitiseInput(DATATYPES.BYTE32, _token), options)
   }
 
   /**

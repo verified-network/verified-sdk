@@ -12,6 +12,8 @@ enum FUNCTIONS {
     GETALLOTTEDSTAKE = 'getAllotedStake',
     GETLIQUIDITYPROVIDERS = 'getLiquidityProviders',
     ISSUE = 'issue',
+    ONSUBSCRIPTION = 'onSubscription',
+    SUBSCRIBE = 'subscribe',
     GETSUBSCRIBERS = 'getSubscribers',
     CLOSE = 'close',
     ACCEPT = 'accept',
@@ -19,7 +21,7 @@ enum FUNCTIONS {
     SETTLE = 'settle'
 }
 
-export default class BalancerPrimaryIssueManager extends VerifiedContract {
+export default class PrimaryIssueManager extends VerifiedContract {
     public contractAddress: string
     constructor(signer: VerifiedWallet, platformAddress: string) {
 
@@ -117,6 +119,38 @@ export default class BalancerPrimaryIssueManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.ISSUE, security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options);
     }
 
+    public async onSubscription( pool: string, 
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, pool);
+        return this.callContract(FUNCTIONS.ONSUBSCRIPTION, pool, _hashedMessage, _v, _r, _s, options);
+    }
+
+    public async subscribe( security: string, 
+                            asset: string, 
+                            assetName : string, 
+                            amount: string, 
+                            investor: string, 
+                            price: string, 
+                            paidIn: string, 
+                            _hashedMessage: string, 
+                            _v: string, 
+                            _r: string, 
+                            _s: string,
+                            options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        await this.validateInput(DATATYPES.ADDRESS, asset);
+        await this.validateInput(DATATYPES.STRING, assetName);
+        await this.validateInput(DATATYPES.ADDRESS, investor);
+        await this.validateInput(DATATYPES.NUMBER, amount);
+        await this.validateInput(DATATYPES.NUMBER, price);
+        await this.validateInput(DATATYPES.STRING, paidIn);
+        return this.callContract(FUNCTIONS.SUBSCRIBE, security, asset, assetName, amount, investor, price, paidIn, _hashedMessage, _v, _r, _s, options);
+    }
+
     public async getSubscribers(poolId: string, 
                                 _hashedMessage: string,
                                 _v: string,
@@ -128,13 +162,14 @@ export default class BalancerPrimaryIssueManager extends VerifiedContract {
     }
 
     public async close( security: string, 
+                        redeem: string,
                         _hashedMessage: string,
                         _v: string,
                         _r: string,
                         _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.CLOSE, security, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.CLOSE, security, redeem, _hashedMessage, _v, _r, _s, options);
     }
 
     public async accept(poolid: string, 

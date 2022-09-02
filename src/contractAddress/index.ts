@@ -62,8 +62,8 @@ const contractAddress: Object = {
         'Bonds': '0xb3D8BB812cC4F7680995B03dFF7c8A2168DCB9A4',
         'Liquidity': '',
         'Distribution': '0xc5c2Aeb737C016FDB2655Ff7B748667f5ab6A7f1',
-        'BalancerManager': '',
-        'PrimaryIssuePoolFactory' : '',
+        'BalancerPrimaryIssueManager': '',
+        'BalancerSecondaryIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '0x7817ee8Ed70aE456d220Ac56c625074799A7fE1d',
