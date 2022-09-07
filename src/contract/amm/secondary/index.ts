@@ -27,17 +27,17 @@ export default class SecondaryIssueManager extends VerifiedContract {
                         currency:string, 
                         amount:string, 
                         id:string, 
-                        //_hashedMessage: string,
-                        //_v: string,
-                        //_r: string,
-                        //_s: string,
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
         await this.validateInput(DATATYPES.STRING, id);
         await this.validateInput(DATATYPES.NUMBER, amount);
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, amount, this.sanitiseInput(DATATYPES.BYTE32, id),
-                                    /*_hashedMessage, _v, _r, _s,*/ options);
+                                    _hashedMessage, _v, _r, _s, options);
     }
 
     public async getSettlementRequests(dpid: string, options?: { gasPrice, gasLimit }): any {
