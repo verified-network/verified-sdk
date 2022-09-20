@@ -16,6 +16,8 @@ var FUNCTIONS;
     FUNCTIONS["GETSECURITYDETAILS"] = "getSecurityDetails";
     FUNCTIONS["CREATESECURITY"] = "createSecurity";
     FUNCTIONS["GETISSUEDSECURITIES"] = "getSecuritiesIssued";
+    FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
+    FUNCTIONS["CHECKSUPPORTFORTOKEN"] = "checkSupportForToken";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class SecuritiesRegistryContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -23,6 +25,16 @@ class SecuritiesRegistryContract extends index_1.VerifiedContract {
         const address = SecuritiesRegistry_json_1.networks[chainId].address;
         super(address, JSON.stringify(SecuritiesRegistry_json_1.abi), signer);
         this.contractAddress = address;
+    }
+    async supportToken(_token, _name, _network, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        await this.validateInput(index_1.DATATYPES.STRING, _name);
+        await this.validateInput(index_1.DATATYPES.STRING, _network);
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _token, this.sanitiseInput(index_1.DATATYPES.BYTE32, _name), this.sanitiseInput(index_1.DATATYPES.BYTE32, _network), options);
+    }
+    async checkSupportForToken(_token, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, _token);
+        return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, this.sanitiseInput(index_1.DATATYPES.BYTE32, _token), options);
     }
     /**
      * Register demat account [sent by user on PreTrade.sol]

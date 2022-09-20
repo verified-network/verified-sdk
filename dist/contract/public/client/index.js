@@ -10,6 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["GETROLE"] = "getRole";
     FUNCTIONS["REMOVEROLE"] = "removeRole";
     FUNCTIONS["ADDROLE"] = "addRole";
+    FUNCTIONS["UPDATEKYC"] = "KycUpdate";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedClient extends index_1.VerifiedContract {
     constructor(signer) {
@@ -54,6 +55,14 @@ class VerifiedClient extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _role);
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         return this.callContract(FUNCTIONS.ADDROLE, _manager, _submanager, this.sanitiseInput(index_1.DATATYPES.BYTE32, _country), this.sanitiseInput(index_1.DATATYPES.BYTE32, _role), this.sanitiseInput(index_1.DATATYPES.BYTE32, _id), _hashedMessage, _v, _r, _s, options);
+    }
+    async KycUpdate(client, name, surname, country, status, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, client);
+        await this.validateInput(index_1.DATATYPES.STRING, name);
+        await this.validateInput(index_1.DATATYPES.STRING, surname);
+        await this.validateInput(index_1.DATATYPES.STRING, country);
+        await this.validateInput(index_1.DATATYPES.NUMBER, status);
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, name), this.sanitiseInput(index_1.DATATYPES.BYTE32, surname), this.sanitiseInput(index_1.DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = VerifiedClient;

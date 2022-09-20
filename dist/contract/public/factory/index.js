@@ -10,6 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["GETTYPE"] = "getType";
     FUNCTIONS["GETTOKENBYNAMETYPE"] = "getTokenByNameType";
     FUNCTIONS["GETISSUER"] = "getIssuer";
+    FUNCTIONS["GETISSUES"] = "getIssues";
     FUNCTIONS["GETTOKENCOUNT"] = "getTokenCount";
     FUNCTIONS["GETTOKEN"] = "getToken";
     FUNCTIONS["GETNAMEANDTYPE"] = "getNameAndType";
@@ -100,6 +101,14 @@ class VerifiedFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, tokenName);
         await this.validateInput(index_1.DATATYPES.STRING, tokenType);
         return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(index_1.DATATYPES.BYTE32, tokenType), this.sanitiseInput(index_1.DATATYPES.BYTE32, tokenName), options);
+    }
+    /**
+     * Get issued security token addresses
+     * @param
+     * @returns returns array of addresses
+     */
+    async getIssues() {
+        return this.callContract(FUNCTIONS.GETISSUES);
     }
     async issueSecurity(_security, _company, _isin, _currency, _issuer, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);

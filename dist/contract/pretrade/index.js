@@ -104,8 +104,8 @@ class PreTradeContract extends index_1.VerifiedContract {
                                   uint256 faceValue;
                               } )
     */
-    async getConfirmationRequest(_ref, options) {
-        return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, _ref, options);
+    async getConfirmationRequest(_currencyCode, options) {
+        return this.callContract(FUNCTIONS.GETCONFIRMATIONREQUEST, _currencyCode, options);
     }
     /**
      * Confirm security registration request [sent by manager on PreTrade.sol, only works if manager’s role is DP]
