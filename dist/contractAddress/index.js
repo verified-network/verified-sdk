@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     'L1-ropsten': {
-        'Client': '0x2d9B82282aaA09Efae05b89E5d48C595f3ce8dBa',
+        'Client': '0x2b64db86d487c2A11800572e5E4d9dD36D53e92f',
         'KYC': '',
         'System': '',
         'Holder': '',
@@ -27,7 +27,7 @@ const contractAddress = {
         'Distribution': '0x16e333ea69bFb67b8161eeaEA7d4ea7553a0F5B9',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager': '',
-        'KyberPrimaryIssueManager': '0xDE15b0261d057915cC9434A968bD8A2817984460',
+        'KyberPrimaryIssueManager': '0x19f0145703F3BfEcCe7c8ce7028d68b56289112d',
         'Custody': '0x7436eB550F7C7173F2f300ae24F88c3585bB27FB',
         'CASH': {
             'VCUSD': '0xc64c9587F5BdCbe8A4F21dD1f93fC9964331C301',
