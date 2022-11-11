@@ -73,8 +73,9 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
      * @param options
      * @returns         amount of available liquidity for caller (asset manager)
      */
-    async getAllotedStake() {
-        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE);
+    async getAllotedStake(offered, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, offered);
+        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE, offered, options);
     }
     /**
      * Gets liquidity providers for a security token offering

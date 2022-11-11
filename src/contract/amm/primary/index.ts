@@ -87,8 +87,9 @@ export default class PrimaryIssueManager extends VerifiedContract {
      * @param options 
      * @returns         amount of available liquidity for caller (asset manager)
      */
-    public async getAllotedStake() {
-        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE);
+    public async getAllotedStake(offered: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, offered);
+        return this.callContract(FUNCTIONS.GETALLOTTEDSTAKE, offered, options);
     }
 
     /**
