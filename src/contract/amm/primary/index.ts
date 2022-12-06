@@ -3,8 +3,8 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abiBalancer, networks } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
-import { abiKyber, networks } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
+import { abiBalancer } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
+import { abiKyber } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
 
 enum FUNCTIONS {
     OFFER = 'offer',

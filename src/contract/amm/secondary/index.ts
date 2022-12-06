@@ -14,9 +14,10 @@ enum FUNCTIONS {
 
 export default class SecondaryIssueManager extends VerifiedContract {
     public contractAddress: string
-    constructor(signer: VerifiedWallet, platformAddress: string) {
+    constructor(signer: VerifiedWallet) {
 
-        const address = platformAddress
+        const chainId: string = Object.keys(networks)
+        const address = networks[chainId].address
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
