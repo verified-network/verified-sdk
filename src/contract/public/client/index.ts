@@ -10,7 +10,8 @@ enum FUNCTIONS {
     GETROLE = 'getRole',
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
-    UPDATEKYC = 'KycUpdate'
+    UPDATEKYC = 'KycUpdate',
+    GETCLIENTKYC = 'getClientKYC'
 }
 
 export default class VerifiedClient extends VerifiedContract {
@@ -87,6 +88,11 @@ export default class VerifiedClient extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, country)
         await this.validateInput(DATATYPES.NUMBER, status)
         return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options)
+    }
+
+    public async getClientKYC(_client: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options)
     }
 
 }

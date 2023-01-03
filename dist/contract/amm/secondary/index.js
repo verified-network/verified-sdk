@@ -18,12 +18,11 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
         super(address, JSON.stringify(SecondaryIssueManager_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async issueSecondary(security, currency, amount, id, _hashedMessage, _v, _r, _s, options) {
+    async issueSecondary(security, currency, amount, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
-        await this.validateInput(index_1.DATATYPES.STRING, id);
         await this.validateInput(index_1.DATATYPES.NUMBER, amount);
-        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, amount, this.sanitiseInput(index_1.DATATYPES.BYTE32, id), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, amount, _hashedMessage, _v, _r, _s, options);
     }
     async getSettlementRequests(dpid, options) {
         await this.validateInput(index_1.DATATYPES.STRING, dpid);

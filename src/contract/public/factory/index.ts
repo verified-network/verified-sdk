@@ -18,7 +18,9 @@ enum FUNCTIONS {
     ADDBALANCE = 'addBalance',
     ISSUESECURITY = 'issueSecurity',
     SECURITIESADDED = 'securitiesAdded',
-    GETSECURITYTOKEN = 'getSecurityToken'
+    GETSECURITYTOKEN = 'getSecurityToken',
+    GETHOLDER = 'getHolder',
+    GETSECURITY = 'getSecurity'
 }
 
 export default class VerifiedFactory extends VerifiedContract {
@@ -124,6 +126,16 @@ export default class VerifiedFactory extends VerifiedContract {
      */
      public async getIssues() {
         return this.callContract(FUNCTIONS.GETISSUES)
+    }
+
+    public async getHolder(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.GETHOLDER, _token, options)
+    }
+
+    public async getSecurity(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.GETSECURITY, _token, options)
     }
 
     public async issueSecurity(_security: string,

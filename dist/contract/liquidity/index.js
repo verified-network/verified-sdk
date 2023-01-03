@@ -54,7 +54,7 @@ class LiquidityContract extends index_1.VerifiedContract {
     async supportTokens(_tokens, _name, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _tokens);
         await this.validateInput(index_1.DATATYPES.STRING, _name);
-        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, this.sanitiseInput(index_1.DATATYPES.BYTE32, _name), options);
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, _name, options);
     }
     /**
         Checks if a specified token is supported for investing in the Verified Liquidity token

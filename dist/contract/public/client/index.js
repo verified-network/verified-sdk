@@ -11,6 +11,7 @@ var FUNCTIONS;
     FUNCTIONS["REMOVEROLE"] = "removeRole";
     FUNCTIONS["ADDROLE"] = "addRole";
     FUNCTIONS["UPDATEKYC"] = "KycUpdate";
+    FUNCTIONS["GETCLIENTKYC"] = "getClientKYC";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedClient extends index_1.VerifiedContract {
     constructor(signer) {
@@ -63,6 +64,10 @@ class VerifiedClient extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, country);
         await this.validateInput(index_1.DATATYPES.NUMBER, status);
         return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, name), this.sanitiseInput(index_1.DATATYPES.BYTE32, surname), this.sanitiseInput(index_1.DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options);
+    }
+    async getClientKYC(_client, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
+        return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options);
     }
 }
 exports.default = VerifiedClient;

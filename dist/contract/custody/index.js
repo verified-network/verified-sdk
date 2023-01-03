@@ -7,6 +7,8 @@ const Vault_json_1 = require("../../abi/custody/Vault.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["CREATEVAULT"] = "createVault";
+    FUNCTIONS["GETVAULTS"] = "getVaults";
+    FUNCTIONS["TRANSFERVAULT"] = "transferVault";
     FUNCTIONS["GETCREATOR"] = "getCreator";
     FUNCTIONS["ADDPARTICIPANT"] = "addParticipant";
     FUNCTIONS["REMOVEPARTICIPANT"] = "removeParticipant";
@@ -31,6 +33,14 @@ class CustodyContract extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         return this.callContract(FUNCTIONS.CREATEVAULT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, options);
+    }
+    async getVaults() {
+        return this.callContract(FUNCTIONS.GETVAULTS);
+    }
+    async transferVault(_creator, _transferee, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, _creator);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
+        return this.callContract(FUNCTIONS.TRANSFERVAULT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _transferee, options);
     }
     async getCreator(_creator, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);

@@ -7,6 +7,8 @@ import { abi, networks } from '../../abi/custody/Vault.json';
 
 enum FUNCTIONS {
     CREATEVAULT = 'createVault',
+    GETVAULTS = 'getVaults',
+    TRANSFERVAULT = 'transferVault',
     GETCREATOR = 'getCreator',
     ADDPARTICIPANT = 'addParticipant',
     REMOVEPARTICIPANT = 'removeParticipant',
@@ -38,6 +40,16 @@ export default class CustodyContract extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _id)
         return this.callContract(FUNCTIONS.CREATEVAULT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, options)
+    }
+
+    public async getVaults() {
+        return this.callContract(FUNCTIONS.GETVAULTS)
+    }
+
+    public async transferVault(_creator: string, _transferee: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _creator)
+        await this.validateInput(DATATYPES.ADDRESS, _transferee)
+        return this.callContract(FUNCTIONS.TRANSFERVAULT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _transferee, options)
     }
 
     public async getCreator(_creator: string, options?: { gasPrice: number, gasLimit: number }): any {

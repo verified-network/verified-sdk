@@ -19,6 +19,8 @@ var FUNCTIONS;
     FUNCTIONS["ISSUESECURITY"] = "issueSecurity";
     FUNCTIONS["SECURITIESADDED"] = "securitiesAdded";
     FUNCTIONS["GETSECURITYTOKEN"] = "getSecurityToken";
+    FUNCTIONS["GETHOLDER"] = "getHolder";
+    FUNCTIONS["GETSECURITY"] = "getSecurity";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedFactory extends index_1.VerifiedContract {
     constructor(signer) {
@@ -109,6 +111,14 @@ class VerifiedFactory extends index_1.VerifiedContract {
      */
     async getIssues() {
         return this.callContract(FUNCTIONS.GETISSUES);
+    }
+    async getHolder(_token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETHOLDER, _token, options);
+    }
+    async getSecurity(_token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETSECURITY, _token, options);
     }
     async issueSecurity(_security, _company, _isin, _currency, _issuer, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);

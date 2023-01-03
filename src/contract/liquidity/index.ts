@@ -62,7 +62,7 @@ export default class LiquidityContract extends VerifiedContract {
     public async supportTokens(_tokens: string, _name: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _tokens)
         await this.validateInput(DATATYPES.STRING, _name)
-        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, this.sanitiseInput(DATATYPES.BYTE32, _name), options)
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, _name, options)
     }
 
     /**
