@@ -25,25 +25,26 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
     constructor(signer, platformAddress, platform) {
         const address = platformAddress;
         if (platform == "balancer")
-            super(address, JSON.stringify(PrimaryIssueManager_json_1.abiBalancer), signer);
+            super(address, JSON.stringify(PrimaryIssueManager_json_1.abi), signer);
         else if (platform == "kyber")
-            super(address, JSON.stringify(PrimaryIssueManager_json_2.abiKyber), signer);
+            super(address, JSON.stringify(PrimaryIssueManager_json_2.abi), signer);
         this.contractAddress = address;
     }
-    async offer(owned, isin, offered, tomatch, desired, min, issuer, 
-    //_hashedMessage: string,
-    //_v: string,
-    //_r: string,
-    //_s: string,
+    async offer(owned, isin, offered, tomatch, desired, min, issuer, docs, 
+    // _hashedMessage: string,
+    // _v: string,
+    // _r: string,
+    // _s: string,
     options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, owned);
         await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
         await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
         await this.validateInput(index_1.DATATYPES.STRING, isin);
+        await this.validateInput(index_1.DATATYPES.STRING, docs);
         await this.validateInput(index_1.DATATYPES.NUMBER, offered);
         await this.validateInput(index_1.DATATYPES.NUMBER, desired);
         await this.validateInput(index_1.DATATYPES.NUMBER, min);
-        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, 
+        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, docs, 
         /*_hashedMessage, _v, _r, _s,*/ options);
     }
     /**

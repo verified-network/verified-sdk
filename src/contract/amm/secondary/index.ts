@@ -24,18 +24,20 @@ export default class SecondaryIssueManager extends VerifiedContract {
     }
 
     public async issueSecondary( 
-                        security: string, 
-                        currency:string, 
-                        amount:string, 
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
-                        options?: { gasPrice, gasLimit }): any {
+        security: string, 
+        currency:string, 
+        securityAmount:string, 
+        currencyAmount:string,
+        _hashedMessage: string,
+        _v: string,
+        _r: string,
+        _s: string,
+        options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
-        await this.validateInput(DATATYPES.NUMBER, amount);
-        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, amount, _hashedMessage, _v, _r, _s, options);
+        await this.validateInput(DATATYPES.NUMBER, securityAmount);
+        await this.validateInput(DATATYPES.NUMBER, currencyAmount);
+        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, currencyAmount, _hashedMessage, _v, _r, _s, options);
     }
 
     public async getSettlementRequests(dpid: string, options?: { gasPrice, gasLimit }): any {
@@ -55,5 +57,4 @@ export default class SecondaryIssueManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(DATATYPES.BYTE32, ref), 
             this.sanitiseInput(DATATYPES.BYTE32, status), this.sanitiseInput(DATATYPES.BYTE32, id), options);
     }
-
 }

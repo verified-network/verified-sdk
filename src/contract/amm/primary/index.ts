@@ -3,8 +3,8 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abiBalancer } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
-import { abiKyber } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
+import { abi as abiBalancer } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
+import { abi as abiKyber } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
 
 enum FUNCTIONS {
     OFFER = 'offer',
@@ -42,19 +42,21 @@ export default class PrimaryIssueManager extends VerifiedContract {
                         desired:string, 
                         min:string, 
                         issuer: string,
-                        //_hashedMessage: string,
-                        //_v: string,
-                        //_r: string,
-                        //_s: string,
+                        docs: string,
+                        // _hashedMessage: string,
+                        // _v: string,
+                        // _r: string,
+                        // _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, owned);
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
         await this.validateInput(DATATYPES.ADDRESS, issuer);
         await this.validateInput(DATATYPES.STRING, isin);
+        await this.validateInput(DATATYPES.STRING, docs);
         await this.validateInput(DATATYPES.NUMBER, offered);
         await this.validateInput(DATATYPES.NUMBER, desired);
         await this.validateInput(DATATYPES.NUMBER, min);
-        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer,
+        return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, docs,
                                     /*_hashedMessage, _v, _r, _s,*/ options);
     }
 
@@ -98,7 +100,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
      * @param options 
      * @returns         array of structs of liquidity providers 
      */
-     public async getLiquidityProviders(security: string, 
+    public async getLiquidityProviders(security: string, 
                                         //_hashedMessage: string,
                                         //_v: string,
                                         //_r: string,
@@ -109,7 +111,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
                                 //_hashedMessage, _v, _r, _s, 
                                 options);
     }
-    
+
     public async issue( security: string, 
                         cutoffTime: string,
                         issuer: string,
@@ -214,5 +216,4 @@ export default class PrimaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.SETTLE, this.sanitiseInput(DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
     }
-
 }
