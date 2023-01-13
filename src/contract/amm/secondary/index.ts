@@ -45,9 +45,10 @@ export default class SecondaryIssueManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, dpid), options);
     }
 
-    public async getSettlementRequest(ref: string, options?: { gasPrice, gasLimit }): any {
+    public async getSettlementRequest(ref: string, poolid: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, ref);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, ref), options);
+        await this.validateInput(DATATYPES.STRING, poolid);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, ref), this.sanitiseInput(DATATYPES.BYTE32, poolid),options);
     }
 
     public async setSettlementStatus(ref: string, status: string, id: string, options?: { gasPrice, gasLimit }): any {

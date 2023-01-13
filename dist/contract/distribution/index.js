@@ -11,6 +11,9 @@ var FUNCTIONS;
     FUNCTIONS["GETPAYMENTFEECOLLECTED"] = "getPaymentFeeCollected";
     FUNCTIONS["GETLOANFEECOLLECTED"] = "getLoanFeeCollected";
     FUNCTIONS["SHAREFEE"] = "shareFee";
+    FUNCTIONS["GETISSUINGFEECOLLECTED"] = "getIssuingFeeCollected";
+    FUNCTIONS["GETTRADINGFEECOLLECTED"] = "getTradingFeeCollected";
+    FUNCTIONS["SHARECOLLECTEDFEE"] = "shareCollection";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class DistributionContract extends index_1.VerifiedContract {
     constructor(signer) {
@@ -24,6 +27,12 @@ class DistributionContract extends index_1.VerifiedContract {
      */
     async shareFee() {
         return this.callContract(FUNCTIONS.SHAREFEE);
+    }
+    /**
+        Shares issuing and trading fee collected with shareholders
+     */
+    async shareCollection() {
+        return this.callContract(FUNCTIONS.SHARECOLLECTEDFEE);
     }
     /**
         Gets payment fee collected
@@ -40,6 +49,26 @@ class DistributionContract extends index_1.VerifiedContract {
     async getLoanFeeCollected(_currency, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _currency);
         return this.callContract(FUNCTIONS.GETLOANFEECOLLECTED, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+    }
+    /**
+        Gets issuing fee collected
+        @param  _platform   address of platform from which fee needs to be collected
+        @param  _token      address of token for which fee needs to be collected
+     */
+    async getIssuingFeeCollected(_platform, _token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETISSUINGFEECOLLECTED, _platform, _token, options);
+    }
+    /**
+        Gets trading fee collected
+        @param  _platform   address of platform from which fee needs to be collected
+        @param  _token      address of token for which fee needs to be collected
+     */
+    async getTradingFeeCollected(_platform, _token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETTRADINGFEECOLLECTED, _platform, _token, options);
     }
     /**
         Get revenue shareholders
