@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     'L1-goerli': {
-        'Client': '0xeBF5A45dF7A930354E888fF67D481BCd9FBA5e4a',
+        'Client': '0x6aDc4f25eC475bC625F837c0B8BF8a2290bDcC4b',
         'KYC': '',
         'System': '',
         'Holder': '',
@@ -26,8 +26,8 @@ const contractAddress = {
         'Liquidity': '0x9Ab60Ce0ae460Cfa7961858c0065034e35e009FD',
         'Vitta': '0xB40716004C92C8B6C65DA47b8073089027C189D1',
         'Distribution': '0x721965FAf93C94EeB1479F649f3c6ce67b0108D2',
-        'BalancerPrimaryIssueManager': '0x11eA43B6C6a9feeD98DBfFdc75dfAea3a1b2397C',
-        'BalancerSecondaryIssueManager': '0x8cbeF97779c427C6D0E1347D4bD6cE490feF6bBB',
+        'BalancerPrimaryIssueManager': '0x0C832Cf63D58Ed48330BC68aE98D10B4B4bB8Fad',
+        'BalancerSecondaryIssueManager': '0x84A2395289a745D9d2902BbB5C3da7B23E5F01F6',
         'Custody': '0xF6ebB33E758eC36A2D3065F4633131DFF8307A07',
         'CASH': {
             'VCUSD': '0x441059c70c8294BecC1796275507C93Ea61db12B',
