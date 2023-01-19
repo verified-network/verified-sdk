@@ -25,20 +25,19 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, currencyAmount);
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, currencyAmount, _hashedMessage, _v, _r, _s, options);
     }
-    async getSettlementRequests(dpid, options) {
+    async getSettlementRequests(dpid, poolid, options) {
         await this.validateInput(index_1.DATATYPES.STRING, dpid);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(index_1.DATATYPES.BYTE32, dpid), options);
-    }
-    async getSettlementRequest(ref, poolid, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, ref);
         await this.validateInput(index_1.DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, poolid), options);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(index_1.DATATYPES.BYTE32, dpid), this.sanitiseInput(index_1.DATATYPES.BYTE32, poolid), options);
     }
-    async setSettlementStatus(ref, status, id, options) {
+    async getSettlementRequest(ref, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, ref);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), options);
+    }
+    async setSettlementStatus(ref, status, options) {
         await this.validateInput(index_1.DATATYPES.STRING, ref);
         await this.validateInput(index_1.DATATYPES.STRING, status);
-        await this.validateInput(index_1.DATATYPES.STRING, id);
-        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, status), this.sanitiseInput(index_1.DATATYPES.BYTE32, id), options);
+        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, status), options);
     }
 }
 exports.default = SecondaryIssueManager;

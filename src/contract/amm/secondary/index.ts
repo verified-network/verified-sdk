@@ -40,22 +40,21 @@ export default class SecondaryIssueManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, currencyAmount, _hashedMessage, _v, _r, _s, options);
     }
 
-    public async getSettlementRequests(dpid: string, options?: { gasPrice, gasLimit }): any {
+    public async getSettlementRequests(dpid: string, poolid: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, dpid);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, dpid), options);
-    }
-
-    public async getSettlementRequest(ref: string, poolid: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, ref);
         await this.validateInput(DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, ref), this.sanitiseInput(DATATYPES.BYTE32, poolid),options);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(DATATYPES.BYTE32, dpid), this.sanitiseInput(DATATYPES.BYTE32, poolid), options);
     }
 
-    public async setSettlementStatus(ref: string, status: string, id: string, options?: { gasPrice, gasLimit }): any {
+    public async getSettlementRequest(ref: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, ref);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, ref), options);
+    }
+
+    public async setSettlementStatus(ref: string, status: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, ref);
         await this.validateInput(DATATYPES.STRING, status);
-        await this.validateInput(DATATYPES.STRING, id);
         return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(DATATYPES.BYTE32, ref), 
-            this.sanitiseInput(DATATYPES.BYTE32, status), this.sanitiseInput(DATATYPES.BYTE32, id), options);
+            this.sanitiseInput(DATATYPES.BYTE32, status), options);
     }
 }
