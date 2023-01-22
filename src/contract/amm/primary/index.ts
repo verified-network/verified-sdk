@@ -8,6 +8,7 @@ import { abi as abiKyber } from '../../../abi/assetmanager/kyber/PrimaryIssueMan
 
 enum FUNCTIONS {
     OFFER = 'offer',
+    OFFERTERMS = 'setOfferTerms',
     GETOFFERED = 'getOffered',
     GETOFFERMADE = 'getOfferMade',
     GETALLOTTEDSTAKE = 'getAllotedStake',
@@ -58,6 +59,28 @@ export default class PrimaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, min);
         return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, docs,
                                     /*_hashedMessage, _v, _r, _s,*/ options);
+    }
+
+    /**
+     * Lets issuer or manager set minimum order size for issue
+     * @param owner         address of issuer
+     * @param offered       address of security issued
+     * @param tomatch       address of currency paired
+     * @param ordersize     minimum order value
+     * @param options       
+     * @returns 
+     */
+    public async setOfferTerms(owner: string, offered: string, tomatch: string, ordersize: string, 
+                                _hashedMessage: string,
+                                _v: string,
+                                _r: string,
+                                _s: string,
+                                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, owner);
+        await this.validateInput(DATATYPES.ADDRESS, offered);
+        await this.validateInput(DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(DATATYPES.NUMBER, ordersize);
+        return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, _hashedMessage, _v, _r, _s, options);
     }
 
     /**

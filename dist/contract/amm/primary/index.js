@@ -8,6 +8,7 @@ const PrimaryIssueManager_json_2 = require("../../../abi/assetmanager/kyber/Prim
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["OFFER"] = "offer";
+    FUNCTIONS["OFFERTERMS"] = "setOfferTerms";
     FUNCTIONS["GETOFFERED"] = "getOffered";
     FUNCTIONS["GETOFFERMADE"] = "getOfferMade";
     FUNCTIONS["GETALLOTTEDSTAKE"] = "getAllotedStake";
@@ -46,6 +47,22 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, min);
         return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(index_1.DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, docs, 
         /*_hashedMessage, _v, _r, _s,*/ options);
+    }
+    /**
+     * Lets issuer or manager set minimum order size for issue
+     * @param owner         address of issuer
+     * @param offered       address of security issued
+     * @param tomatch       address of currency paired
+     * @param ordersize     minimum order value
+     * @param options
+     * @returns
+     */
+    async setOfferTerms(owner, offered, tomatch, ordersize, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, owner);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, offered);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(index_1.DATATYPES.NUMBER, ordersize);
+        return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, _hashedMessage, _v, _r, _s, options);
     }
     /**
      * Gets security tokens offered for passed token parameter

@@ -1,6 +1,6 @@
 const contractAddress: Object = {
     'L1-goerli': {
-        'Client': '0x64F0Baa3D7576275C68Bc972F3E71eb4a44503ad',
+        'Client': '0x933D1170FcD7b4A78F8b5fFB7c0Cb302edFD833F',
         'KYC': '',
         'System': '',
         'Holder': '',
@@ -24,8 +24,8 @@ const contractAddress: Object = {
         'Liquidity': '0x9Ab60Ce0ae460Cfa7961858c0065034e35e009FD',
         'Vitta': '0xB40716004C92C8B6C65DA47b8073089027C189D1',
         'Distribution': '0x721965FAf93C94EeB1479F649f3c6ce67b0108D2',
-        'BalancerPrimaryIssueManager': '0x4A623D051934DD55b08F6107C31b3839c323E9cf',
-        'BalancerSecondaryIssueManager' : '0x20311227adeF8F28DEa90C3Ffe0d036afAE2b8df',
+        'BalancerPrimaryIssueManager': '0x58812451877775E360C14Cd216B771f58392Fd0f',
+        'BalancerSecondaryIssueManager' : '0xbb59eBa91F3819c8CDD624F5b5C77ec1BF175b58',
         'Custody': '0xF6ebB33E758eC36A2D3065F4633131DFF8307A07',
         'CASH': {
             'VCUSD': '0x441059c70c8294BecC1796275507C93Ea61db12B',
