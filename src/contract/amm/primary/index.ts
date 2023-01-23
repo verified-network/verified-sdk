@@ -188,7 +188,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
                                 _s: string,
                                 options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, _hashedMessage, _v, _r, _s, options);
     }
 
     public async close( security: string, 

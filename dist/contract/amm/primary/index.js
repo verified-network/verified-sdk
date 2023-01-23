@@ -134,7 +134,7 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
     }
     async getSubscribers(poolId, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, _hashedMessage, _v, _r, _s, options);
     }
     async close(security, redeem, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
