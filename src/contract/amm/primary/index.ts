@@ -215,7 +215,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, asset);
         await this.validateInput(DATATYPES.NUMBER, amnt);
         await this.validateInput(DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.ACCEPT, this.sanitiseInput(DATATYPES.BYTE32, poolId), investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ACCEPT, poolId, investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
     }    
 
     public async reject(poolid: string, 
@@ -227,7 +227,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, investor);
         await this.validateInput(DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.REJECT, this.sanitiseInput(DATATYPES.BYTE32, poolId), investor, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.REJECT, poolId, investor, _hashedMessage, _v, _r, _s, options);
     }  
 
     public async settle(poolId: string, 

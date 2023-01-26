@@ -29,7 +29,7 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
     async getSettlementRequests(dpid, poolid, options) {
         await this.validateInput(index_1.DATATYPES.STRING, dpid);
         await this.validateInput(index_1.DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(index_1.DATATYPES.BYTE32, dpid), this.sanitiseInput(index_1.DATATYPES.BYTE32, poolid), options);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUESTS, this.sanitiseInput(index_1.DATATYPES.BYTE32, dpid), poolid, options);
     }
     async getSettlementRequest(ref, options) {
         await this.validateInput(index_1.DATATYPES.STRING, ref);

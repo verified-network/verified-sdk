@@ -145,12 +145,12 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, asset);
         await this.validateInput(index_1.DATATYPES.NUMBER, amnt);
         await this.validateInput(index_1.DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.ACCEPT, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ACCEPT, poolId, investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
     }
     async reject(poolid, investor, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, investor);
         await this.validateInput(index_1.DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.REJECT, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), investor, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.REJECT, poolId, investor, _hashedMessage, _v, _r, _s, options);
     }
     async settle(poolId, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
