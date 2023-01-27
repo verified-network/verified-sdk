@@ -154,7 +154,7 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
     }
     async settle(poolId, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.SETTLE, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.SETTLE, poolId, _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = PrimaryIssueManager;
