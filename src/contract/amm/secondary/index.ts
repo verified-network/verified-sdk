@@ -50,7 +50,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
 
     public async getSettlementRequest(ref: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, ref);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, this.sanitiseInput(DATATYPES.BYTE32, ref), options);
+        return this.callContract(FUNCTIONS.GETSETTLEMENTREQUEST, ref, options);
     }
 
     public async setSettlementStatus(ref: string, status: string, options?: { gasPrice, gasLimit }): any {
