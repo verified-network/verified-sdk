@@ -38,7 +38,7 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
     async setSettlementStatus(ref, status, options) {
         await this.validateInput(index_1.DATATYPES.STRING, ref);
         await this.validateInput(index_1.DATATYPES.STRING, status);
-        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, status), options);
+        return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, ref, this.sanitiseInput(index_1.DATATYPES.BYTE32, status), options);
     }
 }
 exports.default = SecondaryIssueManager;
