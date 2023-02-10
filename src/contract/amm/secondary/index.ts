@@ -64,7 +64,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
         poolId: string, 
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(DATATYPES.BYTE32, poolId), options);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
     }
 
 }

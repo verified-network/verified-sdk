@@ -43,7 +43,7 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
     }
     async getSubscribers(poolId, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
     }
 }
 exports.default = SecondaryIssueManager;
