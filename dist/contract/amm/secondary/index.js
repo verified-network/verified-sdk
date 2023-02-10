@@ -10,6 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["GETSETTLEMENTREQUESTS"] = "getSettlementRequests";
     FUNCTIONS["GETSETTLEMENTREQUEST"] = "getSettlementRequest";
     FUNCTIONS["SETSETTLEMENTSTATUS"] = "setSettlementStatus";
+    FUNCTIONS["GETSUBSCRIBERS"] = "getSubscribers";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class SecondaryIssueManager extends index_1.VerifiedContract {
     constructor(signer) {
@@ -39,6 +40,10 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, ref);
         await this.validateInput(index_1.DATATYPES.STRING, status);
         return this.callContract(FUNCTIONS.SETSETTLEMENTSTATUS, ref, this.sanitiseInput(index_1.DATATYPES.BYTE32, status), options);
+    }
+    async getSubscribers(poolId, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), _hashedMessage, _v, _r, _s, options);
     }
 }
 exports.default = SecondaryIssueManager;
