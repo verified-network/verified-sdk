@@ -12,6 +12,7 @@ var FUNCTIONS;
     FUNCTIONS["ADDROLE"] = "addRole";
     FUNCTIONS["UPDATEKYC"] = "KycUpdate";
     FUNCTIONS["GETCLIENTKYC"] = "getClientKYC";
+    FUNCTIONS["SETAMLSCORE"] = "setAmlScore";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class VerifiedClient extends index_1.VerifiedContract {
     constructor(signer) {
@@ -68,6 +69,11 @@ class VerifiedClient extends index_1.VerifiedContract {
     async getClientKYC(_client, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
         return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options);
+    }
+    async setAmlScore(_client, _score, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _score);
+        return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options);
     }
 }
 exports.default = VerifiedClient;

@@ -11,7 +11,8 @@ enum FUNCTIONS {
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
     UPDATEKYC = 'KycUpdate',
-    GETCLIENTKYC = 'getClientKYC'
+    GETCLIENTKYC = 'getClientKYC',
+    SETAMLSCORE = 'setAmlScore'
 }
 
 export default class VerifiedClient extends VerifiedContract {
@@ -93,6 +94,12 @@ export default class VerifiedClient extends VerifiedContract {
     public async getClientKYC(_client: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _client)
         return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options)
+    }
+
+    public async setAmlScore(_client: string, _score: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        await this.validateInput(DATATYPES.NUMBER, _score)
+        return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options)
     }
 
 }

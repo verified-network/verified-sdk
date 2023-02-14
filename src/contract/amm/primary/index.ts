@@ -14,8 +14,6 @@ enum FUNCTIONS {
     GETALLOTTEDSTAKE = 'getAllotedStake',
     GETLIQUIDITYPROVIDERS = 'getLiquidityProviders',
     ISSUE = 'issue',
-    ONSUBSCRIPTION = 'onSubscription',
-    SUBSCRIBE = 'subscribe',
     GETSUBSCRIBERS = 'getSubscribers',
     CLOSE = 'close',
     ACCEPT = 'accept',
@@ -44,10 +42,6 @@ export default class PrimaryIssueManager extends VerifiedContract {
                         min:string, 
                         issuer: string,
                         docs: string,
-                        // _hashedMessage: string,
-                        // _v: string,
-                        // _r: string,
-                        // _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, owned);
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
@@ -58,7 +52,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, desired);
         await this.validateInput(DATATYPES.NUMBER, min);
         return this.callContract(FUNCTIONS.OFFER, owned, this.sanitiseInput(DATATYPES.BYTE32, isin), offered, tomatch, desired, min, issuer, docs,
-                                    /*_hashedMessage, _v, _r, _s,*/ options);
+                                    options);
     }
 
     /**
@@ -71,16 +65,12 @@ export default class PrimaryIssueManager extends VerifiedContract {
      * @returns 
      */
     public async setOfferTerms(owner: string, offered: string, tomatch: string, ordersize: string, 
-                                _hashedMessage: string,
-                                _v: string,
-                                _r: string,
-                                _s: string,
                                 options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, owner);
         await this.validateInput(DATATYPES.ADDRESS, offered);
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
         await this.validateInput(DATATYPES.NUMBER, ordersize);
-        return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, options);
     }
 
     /**
@@ -124,119 +114,58 @@ export default class PrimaryIssueManager extends VerifiedContract {
      * @returns         array of structs of liquidity providers 
      */
     public async getLiquidityProviders(security: string, 
-                                        //_hashedMessage: string,
-                                        //_v: string,
-                                        //_r: string,
-                                        //_s: string,
                                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         return this.callContract(FUNCTIONS.GETLIQUIDITYPROVIDERS, security, 
-                                //_hashedMessage, _v, _r, _s, 
                                 options);
     }
 
     public async issue( security: string, 
                         cutoffTime: string,
                         issuer: string,
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, issuer);
         await this.validateInput(DATATYPES.NUMBER, cutoffTime);
-        return this.callContract(FUNCTIONS.ISSUE, security, cutoffTime, issuer, _hashedMessage, _v, _r, _s, options);
-    }
-
-    public async onSubscription( pool: string, 
-                                _hashedMessage: string,
-                                _v: string,
-                                _r: string,
-                                _s: string,
-                                options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, pool);
-        return this.callContract(FUNCTIONS.ONSUBSCRIPTION, pool, _hashedMessage, _v, _r, _s, options);
-    }
-
-    public async subscribe( security: string, 
-                            asset: string, 
-                            assetName : string, 
-                            amount: string, 
-                            investor: string, 
-                            price: string, 
-                            paidIn: string, 
-                            _hashedMessage: string, 
-                            _v: string, 
-                            _r: string, 
-                            _s: string,
-                            options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, security);
-        await this.validateInput(DATATYPES.ADDRESS, asset);
-        await this.validateInput(DATATYPES.STRING, assetName);
-        await this.validateInput(DATATYPES.ADDRESS, investor);
-        await this.validateInput(DATATYPES.NUMBER, amount);
-        await this.validateInput(DATATYPES.NUMBER, price);
-        await this.validateInput(DATATYPES.STRING, paidIn);
-        return this.callContract(FUNCTIONS.SUBSCRIBE, security, asset, assetName, amount, investor, price, paidIn, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ISSUE, security, cutoffTime, issuer, options);
     }
 
     public async getSubscribers(poolId: string, 
-                                _hashedMessage: string,
-                                _v: string,
-                                _r: string,
-                                _s: string,
                                 options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
     }
 
     public async close( security: string, 
                         redeem: string,
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.CLOSE, security, redeem, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.CLOSE, security, redeem, options);
     }
 
     public async accept(poolid: string, 
                         investor: string,
                         amnt: string,
                         asset: string,
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, investor);
         await this.validateInput(DATATYPES.ADDRESS, asset);
         await this.validateInput(DATATYPES.NUMBER, amnt);
         await this.validateInput(DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.ACCEPT, poolid, investor, amnt, asset, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ACCEPT, poolid, investor, amnt, asset, options);
     }    
 
     public async reject(poolid: string, 
                         investor: string,
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, investor);
         await this.validateInput(DATATYPES.STRING, poolid);
-        return this.callContract(FUNCTIONS.REJECT, poolid, investor, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.REJECT, poolid, investor, options);
     }  
 
     public async settle(poolId: string, 
-                        _hashedMessage: string,
-                        _v: string,
-                        _r: string,
-                        _s: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.SETTLE, poolId, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.SETTLE, poolId, options);
     }
 }
