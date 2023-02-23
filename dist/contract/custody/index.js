@@ -22,7 +22,7 @@ var FUNCTIONS;
     FUNCTIONS["NEWTRANSACTION"] = "NewTransaction";
     FUNCTIONS["SIGNATURE"] = "SignTransaction";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class CustodyContract extends index_1.VerifiedContract {
+class Custody extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = Object.keys(Vault_json_1.networks);
         const address = Vault_json_1.networks[chainId].address;
@@ -97,4 +97,4 @@ class CustodyContract extends index_1.VerifiedContract {
         this.getEvent(FUNCTIONS.SIGNATURE, callback);
     }
 }
-exports.default = CustodyContract;
+exports.default = Custody;

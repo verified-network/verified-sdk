@@ -22,7 +22,7 @@ enum FUNCTIONS {
     SETORACLES = 'setOracles'
 }
 
-export default class FactoryContract extends VerifiedContract {
+export default class Factory extends VerifiedContract {
 
     public contractAddress: string
     

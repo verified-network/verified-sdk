@@ -17,7 +17,7 @@ var FUNCTIONS;
     FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
     FUNCTIONS["BURNCASHTOKENS"] = "burnCashTokens";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class CashContract extends index_1.VerifiedContract {
+class Cash extends index_1.VerifiedContract {
     constructor(signer, currencyAddress) {
         const address = currencyAddress;
         super(address, JSON.stringify(Cash_json_1.abi), signer);
@@ -98,4 +98,4 @@ class CashContract extends index_1.VerifiedContract {
         this.getEvent(FUNCTIONS.EXCHANGE, callback);
     }
 }
-exports.default = CashContract;
+exports.default = Cash;

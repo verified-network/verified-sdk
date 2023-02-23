@@ -10,7 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["BALANCE"] = "balanceOf";
     FUNCTIONS["GETISSUER"] = "getIssuer";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class TokenContract extends index_1.VerifiedContract {
+class Token extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
         const address = bondCurrencyAddress;
         super(address, JSON.stringify(Token_json_1.abi), signer);
@@ -42,4 +42,4 @@ class TokenContract extends index_1.VerifiedContract {
         return this.callContract(FUNCTIONS.GETISSUER);
     }
 }
-exports.default = TokenContract;
+exports.default = Token;

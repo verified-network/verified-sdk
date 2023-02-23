@@ -18,7 +18,7 @@ enum FUNCTIONS {
     BURNCASHTOKENS = 'burnCashTokens'
 }
 
-export default class CashContract extends VerifiedContract {
+export default class Cash extends VerifiedContract {
 
     public contractAddress: string
     

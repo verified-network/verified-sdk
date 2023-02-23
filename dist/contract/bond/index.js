@@ -16,7 +16,7 @@ var FUNCTIONS;
     FUNCTIONS["SETSIGNER"] = "setSigner";
     FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class BondContract extends index_1.VerifiedContract {
+class Bond extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
         const address = bondCurrencyAddress;
         super(address, JSON.stringify(Bond_json_1.abi), signer);
@@ -90,4 +90,4 @@ class BondContract extends index_1.VerifiedContract {
         this.getEvent(FUNCTIONS.LIQUIDATE, callback);
     }
 }
-exports.default = BondContract;
+exports.default = Bond;

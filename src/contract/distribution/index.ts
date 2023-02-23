@@ -1,22 +1,19 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 
-import { VerifiedContract, DATATYPES } from '../index';
-import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/L2distribution/Distribution.json';
+import { VerifiedContract, DATATYPES } from '../../index';
+import { VerifiedWallet } from "../../../wallet";
+import { abi, networks } from '../../../abi/distribution/Distribution.json';
 
 enum FUNCTIONS {
     ADDREVENUESHAREHOLDER = 'addRevenueShareholder',
     GETREVENUESHAREHOLDER = 'getRevenueShareholders',
     GETPAYMENTFEECOLLECTED = 'getPaymentFeeCollected',
     GETLOANFEECOLLECTED = 'getLoanFeeCollected',
-    SHAREFEE = 'shareFee',
-    GETISSUINGFEECOLLECTED = 'getIssuingFeeCollected',
-    GETTRADINGFEECOLLECTED = 'getTradingFeeCollected',
-    SHARECOLLECTEDFEE = 'shareCollection'
+    SHAREFEE = 'shareFee'
 }
 
-export default class DistributionContract extends VerifiedContract {
+export default class Distribution extends VerifiedContract {
 
     public contractAddress: string
     
@@ -37,13 +34,6 @@ export default class DistributionContract extends VerifiedContract {
     }
 
     /**
-        Shares issuing and trading fee collected with shareholders
-     */
-    public async shareCollection(){
-        return this.callContract(FUNCTIONS.SHARECOLLECTEDFEE)
-    }    
-
-    /**
         Gets payment fee collected
         @param  _currency   payment fee in currency collected
      */
@@ -59,28 +49,6 @@ export default class DistributionContract extends VerifiedContract {
     public async getLoanFeeCollected(_currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.GETLOANFEECOLLECTED, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
-    }
-
-    /**
-        Gets issuing fee collected
-        @param  _platform   address of platform from which fee needs to be collected
-        @param  _token      address of token for which fee needs to be collected
-     */
-    public async getIssuingFeeCollected(_platform: string, _token: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _platform)
-        await this.validateInput(DATATYPES.ADDRESS, _token)
-        return this.callContract(FUNCTIONS.GETISSUINGFEECOLLECTED, _platform, _token, options)
-    }
-
-    /**
-        Gets trading fee collected
-        @param  _platform   address of platform from which fee needs to be collected
-        @param  _token      address of token for which fee needs to be collected
-     */
-    public async getTradingFeeCollected(_platform: string, _token: string,  options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _platform)
-        await this.validateInput(DATATYPES.ADDRESS, _token)
-        return this.callContract(FUNCTIONS.GETTRADINGFEECOLLECTED, _platform, _token, options)
     }
 
     /**

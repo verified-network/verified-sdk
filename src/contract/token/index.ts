@@ -11,7 +11,7 @@ enum FUNCTIONS {
     GETISSUER = 'getIssuer'
 }
 
-export default class TokenContract extends VerifiedContract {
+export default class Token extends VerifiedContract {
 
     public contractAddress: string
     

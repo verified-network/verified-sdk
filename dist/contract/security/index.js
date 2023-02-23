@@ -2,37 +2,23 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../index");
-const Security_json_1 = require("../../abi/trades/Security.json");
+const index_1 = require("../../index");
+const Security_json_1 = require("../../../abi/securities/Security.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
-    FUNCTIONS["GETSETTLEMENTS"] = "getSettlements";
-    FUNCTIONS["BALANCE"] = "balanceOf";
+    FUNCTIONS["APPROVETOKEN"] = "approveToken";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class SecurityContract extends index_1.VerifiedContract {
+class Security extends index_1.VerifiedContract {
     constructor(signer, tokenAddress) {
         const address = tokenAddress;
         super(address, JSON.stringify(Security_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async balanceOf(_wallet, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, _wallet);
-        return this.callContract(FUNCTIONS.BALANCE, this.sanitiseInput(index_1.DATATYPES.ADDRESS, _wallet), options);
-    }
-    /**
-     * Fetches settlement registry for client account.
-     * @param _client account address
-     * @param options
-     * @returns settlement registry struct registry{
-                                            address transferee;
-                                            address transferor;
-                                            uint256 amount;
-                                            uint256 transferDateTime;
-                                        }
-     */
-    async getSettlements(_client, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, _client);
-        return this.callContract(FUNCTIONS.GETSETTLEMENTS, this.sanitiseInput(index_1.DATATYPES.ADDRESS, _client), options);
+    async approveToken(_owner, _spender, _amount, _hashedMessage, _v, _r, _s, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _owner);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, _hashedMessage, _v, _r, _s, options);
     }
 }
-exports.default = SecurityContract;
+exports.default = Security;

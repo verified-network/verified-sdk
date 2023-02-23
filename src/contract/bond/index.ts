@@ -17,7 +17,7 @@ enum FUNCTIONS {
     REQUESTISSUEFROML1 = 'requestIssueFromL1'
 }
 
-export default class BondContract extends VerifiedContract {
+export default class Bond extends VerifiedContract {
 
     public contractAddress: string
     

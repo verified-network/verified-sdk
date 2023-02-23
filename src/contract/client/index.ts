@@ -1,32 +1,21 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 
-import { VerifiedContract, DATATYPES } from '../index';
-import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/accounts/Client.json';
-import { Initialize, SetCustody, GetCustody, SetAccess, GetAccess, SetManager, GetManager, IsRegistered, SetAMLStatus, GetAMLStatus, GetClients, GetManagers } from '../../models/client';
+import { VerifiedContract, DATATYPES } from '../../index';
+import { VerifiedWallet } from "../../../wallet";
+import { abi, networks } from '../../../abi/assetmanager/Client.json';
 
 enum FUNCTIONS {
-    INITIALIZE = 'initialize',
-    SETCUSTODY = 'setCustody',
-    GETCUSTODY = 'getCustody',
-    SETACCESS = 'setAccess',
-    GETACCESS = 'getAccess',
-    SETMANAGER = 'setManager',
-    GETMANAGER = 'getManager',
-    ISREGISTERED = 'isRegistered',
-    SETAMLSTATUS = 'setAMLStatus',
-    GETAMLSTATUS = 'getAMLStatus',
-    GETCLIENTS = 'getClients',
+    SETSIGNER = 'setSigner',
     GETROLE = 'getRole',
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
-    GETMANAGERS = 'getManagers',
-    MANAGERADDED = 'ManagerAdded',
-    GETCLIENT = 'getClient'
+    UPDATEKYC = 'KycUpdate',
+    GETCLIENTKYC = 'getClientKYC',
+    SETAMLSCORE = 'setAmlScore'
 }
 
-export default class ClientContract extends VerifiedContract {
+export default class Client extends VerifiedContract {
     public contractAddress: string
     constructor(signer: VerifiedWallet) {
 
@@ -37,105 +26,8 @@ export default class ClientContract extends VerifiedContract {
         this.contractAddress = address
     }
 
-    public initialize(_address: string): any {
-        return this.callContract(FUNCTIONS.INITIALIZE, params)
-    }
-
-    public async setCustody(client: string, service: string, account: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, client);
-        return this.callContract(FUNCTIONS.SETCUSTODY, client, this.sanitiseInput(DATATYPES.BYTE32, service), this.sanitiseInput(DATATYPES.BYTE32, account), options);
-    }
-
-    public async getCustody(client: string, service: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, client);
-        await this.validateInput(DATATYPES.STRING, service);
-        return this.callContract(FUNCTIONS.GETCUSTODY, client, this.sanitiseInput(DATATYPES.BYTE32, service), options);
-    }
-
-    public async getClient(service: string, account: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, service);
-        await this.validateInput(DATATYPES.STRING, account);
-        return this.callContract(FUNCTIONS.GETCLIENT, this.sanitiseInput(DATATYPES.BYTE32, service), this.sanitiseInput(DATATYPES.BYTE32, account), options);
-    }
-
-    /**
-     * We can implement registration and log in using a SSO scheme such as Firebase (https://firebase.google.com/docs/auth) or Azure. 
-     * We host our infra on Azure, so that might be preferable. This will enable google / facebook / twitter / Microsoft users to log in to our application. 
-     * The SSO system will provide us with a token. Once logged in, the Verified Dapp should call the following solidity function. 
-     * This should only be called after the user’s KYC is complete.
-     * @params (bool login) 
-     * @returns 
-     */
-    public async setAccess(_client: string, _token: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _client)
-        await this.validateInput(DATATYPES.STRING, _token)
-        return this.callContract(FUNCTIONS.SETACCESS, _client, _token, options)
-    }
-
-    public async getAccess(_clientAddress: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        return this.callContract(FUNCTIONS.GETACCESS, _clientAddress, options)
-    }
-
-    /**
-     * Once a user’s wallet is set up, the Dapp should register the user for KYC (know your customer) process
-     *  with the issuer. By default, Verified itself is the issuer. In the future, we may have country specific
-     *  issuers. This is done by calling the following solidity contract function
-     * @params (address _client, address _manager) 
-     * @returns 
-     */
-    public async setManager(_clientAddress: string, _managerAddress: string, options?: { gasLimit, gasPrice }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        await this.validateInput(DATATYPES.ADDRESS, _managerAddress)
-        return this.callContract(FUNCTIONS.SETMANAGER, _clientAddress, _managerAddress, options)
-    }
-
-    /**
-     * Get manager [callable by both client and manager
-     * @param _clientAddress 
-     * @returns address
-     */
-
-    public async getManager(_clientAddress: string): any {
-        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        return this.callContract(FUNCTIONS.GETMANAGER, _clientAddress)
-    }
-
-    public async isRegistered(params: IsRegistered): any {
-        return this.callContract(FUNCTIONS.ISREGISTERED, params)
-    }
-
-    /**
-     * We are going to use Coinfirm’s anti-money laundering score (cscore in the json response) to decide whether to block a user or not.
-     * Any cscore below 33 needs to be flagged to status equal to false in the following solidity function call.
-     * @params (address _client, bool status) 
-     * @returns 
-     */
-    public async setAMLStatus(_clientAddress: string, _status: boolean, options?: { gasLimit, gasPrice }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _clientAddress)
-        await this.validateInput(DATATYPES.BOOLEAN, _status)
-        return this.callContract(FUNCTIONS.SETAMLSTATUS, _clientAddress, _status, options)
-    }
-
-    /**
-    * Get KYC status [callable by client or its manager or KYCAML submanager 
-    * @params (address _client) 
-    * @returns bool
-    */
-    public async getAMLStatus(_client: string): any {
-        await this.validateInput(DATATYPES.ADDRESS, _client)
-        return this.callContract(FUNCTIONS.GETAMLSTATUS, _client)
-    }
-
-    /**
-     * The following solidity function should be called passing the issuer’s address as parameter where,
-     *  _status equal to false will fetch all investors whose KYC is not yet complete.
-     * @params (address _manager,bool _status) 
-     * @returns {address[] memory}
-     */
-    public async getClients(_managerAddress: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _managerAddress)
-        return this.callContract(FUNCTIONS.GETCLIENTS, _managerAddress, options)
+    public setSigner(_address: string): any {
+        return this.callContract(FUNCTIONS.SETSIGNER, _address)
     }
 
     /**
@@ -153,11 +45,17 @@ export default class ClientContract extends VerifiedContract {
    * @params (address _submanager, bytes32 _country, bytes32 _role)
    * @returns 
    */
-    public async removeRole(_submanager: string, _country: string, _role: string, options?: { gasPrice, gasLimit }): any {
+    public async removeRole(_manager: string, _submanager: string, _country: string, _role: string, 
+                            _hashedMessage: string,
+                            _v: string,
+                            _r: string,
+                            _s: string,
+                            options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.STRING, _role)
-        return this.callContract(FUNCTIONS.REMOVEROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
+        return this.callContract(FUNCTIONS.REMOVEROLE, _manager, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), _hashedMessage, _v, _r, _s, options)
     }
 
     /**
@@ -165,22 +63,43 @@ export default class ClientContract extends VerifiedContract {
      * @params (address _submanager, bytes32 _country, bytes32 _role)
      * @returns 
      */
-    public async addRole(_submanager: string, _country: string, _role: string, _id: string, options?: { gasPrice, gasLimit }): any {
+    public async addRole(_manager: string, _submanager: string, _country: string, _role: string, _id: string, 
+                        _hashedMessage: string,
+                        _v: string,
+                        _r: string,
+                        _s: string,
+                        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _manager)
         await this.validateInput(DATATYPES.ADDRESS, _submanager)
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.STRING, _role)
         await this.validateInput(DATATYPES.STRING, _id)
-        return this.callContract(FUNCTIONS.ADDROLE, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _id), options)
+        return this.callContract(FUNCTIONS.ADDROLE, _manager, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _id), _hashedMessage, _v, _r, _s, options)
     }
 
-    public async getManagers(_role: string, _country: string, options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, _role)
-        await this.validateInput(DATATYPES.STRING, _country)
-        return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _country), options)
+    public async KycUpdate(client: string, name: string, surname: string, country: string, status: string, 
+                                    _hashedMessage: string,
+                                    _v: string,
+                                    _r: string,
+                                    _s: string,
+                                    options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, client)
+        await this.validateInput(DATATYPES.STRING, name)
+        await this.validateInput(DATATYPES.STRING, surname)
+        await this.validateInput(DATATYPES.STRING, country)
+        await this.validateInput(DATATYPES.NUMBER, status)
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options)
     }
 
-    public notifyManagerAdded(callback: any): object {
-        this.getEvent(FUNCTIONS.MANAGERADDED, callback)
+    public async getClientKYC(_client: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options)
+    }
+
+    public async setAmlScore(_client: string, _score: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        await this.validateInput(DATATYPES.NUMBER, _score)
+        return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options)
     }
 
 }

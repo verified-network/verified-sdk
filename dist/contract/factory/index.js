@@ -21,7 +21,7 @@ var FUNCTIONS;
     FUNCTIONS["SETCRYPTODATAURL"] = "setCryptoDataURL";
     FUNCTIONS["SETORACLES"] = "setOracles";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class FactoryContract extends index_1.VerifiedContract {
+class Factory extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = Object.keys(Factory_json_1.networks);
         console.log("Factory chain id " + chainId);
@@ -102,4 +102,4 @@ class FactoryContract extends index_1.VerifiedContract {
         return this.callContract(FUNCTIONS.SETORACLES, _oracles, options);
     }
 }
-exports.default = FactoryContract;
+exports.default = Factory;

@@ -23,7 +23,7 @@ enum FUNCTIONS {
     SIGNATURE = 'SignTransaction'
 }
 
-export default class CustodyContract extends VerifiedContract {
+export default class Custody extends VerifiedContract {
 
     public contractAddress: string
     

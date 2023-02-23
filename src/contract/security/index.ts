@@ -1,17 +1,16 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 
-import { VerifiedContract, DATATYPES } from '../index';
-import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/trades/Security.json';
+import { VerifiedContract, DATATYPES } from '../../index';
+import { VerifiedWallet } from "../../../wallet";
+import { abi, networks } from '../../../abi/securities/Security.json';
 
 enum FUNCTIONS {
-    GETSETTLEMENTS = 'getSettlements',
-    BALANCE = 'balanceOf'
+    APPROVETOKEN = 'approveToken'
 }
 
-export default class SecurityContract extends VerifiedContract {
-
+export default class Security extends VerifiedContract {
+    
     public contractAddress: string
     
     constructor(signer: VerifiedWallet, tokenAddress: string) {
@@ -21,26 +20,19 @@ export default class SecurityContract extends VerifiedContract {
 
         this.contractAddress = address
     }
-
-    public async balanceOf(_wallet: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _wallet)
-        return this.callContract(FUNCTIONS.BALANCE, this.sanitiseInput(DATATYPES.ADDRESS, _wallet), options)
+    
+    public async approveToken(_owner: string,
+                            _spender: string,
+                            _amount: string, 
+                            _hashedMessage: string,
+                            _v: string,
+                            _r: string,
+                            _s: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _owner)
+        await this.validateInput(DATATYPES.ADDRESS, _spender)
+        await this.validateInput(DATATYPES.NUMBER, _amount)        
+        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, _hashedMessage, _v, _r, _s, options)
     }
-
-    /**
-     * Fetches settlement registry for client account.
-     * @param _client account address
-     * @param options 
-     * @returns settlement registry struct registry{
-                                            address transferee;
-                                            address transferor;
-                                            uint256 amount;
-                                            uint256 transferDateTime;
-                                        }
-     */
-    public async getSettlements(_client: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, _client)
-        return this.callContract(FUNCTIONS.GETSETTLEMENTS, this.sanitiseInput(DATATYPES.ADDRESS, _client), options)
-    }
-
+    
 }
