@@ -17,7 +17,7 @@ var FUNCTIONS;
     FUNCTIONS["GETCUSTODIAN"] = "getCustodian";
     FUNCTIONS["TRANSFERTOCUSTODY"] = "transferToCustody";
 })(FUNCTIONS || (FUNCTIONS = {}));
-class RatesContract extends index_1.VerifiedContract {
+class Rates extends index_1.VerifiedContract {
     constructor(signer) {
         const chainId = Object.keys(Rates_json_1.networks);
         const address = Rates_json_1.networks[chainId].address;
@@ -67,4 +67,4 @@ class RatesContract extends index_1.VerifiedContract {
         return this.callContract(FUNCTIONS.TRANSFERTOCUSTODY, _percent, _transferFrom, options);
     }
 }
-exports.default = RatesContract;
+exports.default = Rates;

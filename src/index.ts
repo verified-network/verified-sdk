@@ -9,13 +9,12 @@ import Token from './contract/token';
 import Oracle from './contract/oracle';
 import Custody from './contract/custody';
 import Liquidity from './contract/liquidity';
-import PaymentRates from './contract/payrates';
+import Rates from './contract/rates';
 import PrimaryIssueManager from './contract/amm/primary';
 import SecondaryIssueManager from './contract/amm/secondary';
 import Security from './contract/security';
 import SecuritiesFactory from './contract/securitiesfactory';
 import Distribution from './contract/distribution';
-import IssuingTradingRates from './contract/issuingrates';
 import Client from './contract/client';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
@@ -30,13 +29,12 @@ export {
     Oracle,
     Custody,
     Liquidity,
-    PaymentRates,
+    Rates,
     PrimaryIssueManager,
     SecondaryIssueManager,
     Security,
     SecuritiesFactory,
     Distribution,
-    IssuingTradingRates,
     Client,
     utils,
     contractAddress

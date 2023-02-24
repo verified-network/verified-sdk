@@ -4,7 +4,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
 const PrimaryIssueManager_json_1 = require("../../../abi/assetmanager/balancer/PrimaryIssueManager.json");
-const PrimaryIssueManager_json_2 = require("../../../abi/assetmanager/kyber/PrimaryIssueManager.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["OFFER"] = "offer";
@@ -26,7 +25,7 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
         if (platform == "balancer")
             super(address, JSON.stringify(PrimaryIssueManager_json_1.abi), signer);
         else if (platform == "kyber")
-            super(address, JSON.stringify(PrimaryIssueManager_json_2.abi), signer);
+            super(address, JSON.stringify(abiKyber), signer);
         this.contractAddress = address;
     }
     async offer(owned, isin, offered, tomatch, desired, min, issuer, docs, options) {

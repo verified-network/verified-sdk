@@ -4,7 +4,6 @@
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
 import { abi as abiBalancer } from '../../../abi/assetmanager/balancer/PrimaryIssueManager.json';
-import { abi as abiKyber } from '../../../abi/assetmanager/kyber/PrimaryIssueManager.json';
 
 enum FUNCTIONS {
     OFFER = 'offer',

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.contractAddress = exports.utils = exports.Client = exports.IssuingTradingRates = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.PaymentRates = exports.Liquidity = exports.Custody = exports.Oracle = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.Provider = exports.VerifiedWallet = void 0;
+exports.contractAddress = exports.utils = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Oracle = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.Provider = exports.VerifiedWallet = void 0;
 const wallet_1 = require("./wallet");
 Object.defineProperty(exports, "VerifiedWallet", { enumerable: true, get: function () { return wallet_1.VerifiedWallet; } });
 const utils_1 = require("./utils");
@@ -23,8 +23,8 @@ const custody_1 = __importDefault(require("./contract/custody"));
 exports.Custody = custody_1.default;
 const liquidity_1 = __importDefault(require("./contract/liquidity"));
 exports.Liquidity = liquidity_1.default;
-const payrates_1 = __importDefault(require("./contract/payrates"));
-exports.PaymentRates = payrates_1.default;
+const rates_1 = __importDefault(require("./contract/rates"));
+exports.Rates = rates_1.default;
 const primary_1 = __importDefault(require("./contract/amm/primary"));
 exports.PrimaryIssueManager = primary_1.default;
 const secondary_1 = __importDefault(require("./contract/amm/secondary"));
@@ -35,8 +35,6 @@ const securitiesfactory_1 = __importDefault(require("./contract/securitiesfactor
 exports.SecuritiesFactory = securitiesfactory_1.default;
 const distribution_1 = __importDefault(require("./contract/distribution"));
 exports.Distribution = distribution_1.default;
-const issuingrates_1 = __importDefault(require("./contract/issuingrates"));
-exports.IssuingTradingRates = issuingrates_1.default;
 const client_1 = __importDefault(require("./contract/client"));
 exports.Client = client_1.default;
 const ethers_1 = require("ethers");
