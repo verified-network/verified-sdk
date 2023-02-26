@@ -14,11 +14,11 @@ class Security extends index_1.VerifiedContract {
         super(address, JSON.stringify(Security_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async approveToken(_owner, _spender, _amount, _hashedMessage, _v, _r, _s, options) {
+    async approveToken(_owner, _spender, _amount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _owner);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, options);
     }
 }
 exports.default = Security;

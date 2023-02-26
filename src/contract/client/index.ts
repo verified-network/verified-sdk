@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/assetmanager/Client.json';
+import { abi, networks } from '../../../abi/securities/Client.json';
 
 enum FUNCTIONS {
     SETSIGNER = 'setSigner',
@@ -12,7 +12,11 @@ enum FUNCTIONS {
     ADDROLE = 'addRole',
     UPDATEKYC = 'KycUpdate',
     GETCLIENTKYC = 'getClientKYC',
-    SETAMLSCORE = 'setAmlScore'
+    SETAMLSCORE = 'setAmlScore',
+    SETAMLPASSSCORE = 'setAmlPassScore',
+    GETAMLSTATUS = 'getAMLStatus',
+    SETCUSTODYACCOUNT = 'setCustodyAccount',
+    GETCUSTODYACCOUNT = 'getCustodyAccount'
 }
 
 export default class Client extends VerifiedContract {
@@ -100,6 +104,28 @@ export default class Client extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _client)
         await this.validateInput(DATATYPES.NUMBER, _score)
         return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options)
+    }
+
+    public async setAmlPassScore(_score: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.NUMBER, _score)
+        return this.callContract(FUNCTIONS.SETAMLPASSSCORE, _score, options)
+    }
+
+    public async getAMLStatus(_client: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETAMLSTATUS, _client, options)
+    }
+
+    public async setCustodyAccount(_submanager: string, _currency: string, _accountId: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _submanager)
+        await this.validateInput(DATATYPES.STRING, _currency)
+        await this.validateInput(DATATYPES.STRING, _accountId)
+        return this.callContract(FUNCTIONS.SETCUSTODYACCOUNT, _submanager, _currency, _accountId, options)
+    }   
+
+    public async getCustodyAccount(_submanager: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _submanager)
+        return this.callContract(FUNCTIONS.GETCUSTODYACCOUNT, _submanager, options)
     }
 
 }

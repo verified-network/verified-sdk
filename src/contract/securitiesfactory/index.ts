@@ -3,24 +3,19 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/securities/Factory.json';
+import { abi, networks } from '../../../abi/securities/SecuritiesFactory.json';
 
 enum FUNCTIONS {
-    GETNAME = 'getName',
-    GETTYPE = 'getType',
-    GETTOKENBYNAMETYPE = 'getTokenByNameType',
-    GETISSUER = 'getIssuer',
     GETISSUES = 'getIssues',
-    GETTOKENCOUNT = 'getTokenCount',
-    GETTOKEN = 'getToken',
-    GETNAMEANDTYPE = 'getNameAndType',
     SETSIGNER = 'setSigner',
     ADDBALANCE = 'addBalance',
     ISSUESECURITY = 'issueSecurity',
     SECURITIESADDED = 'securitiesAdded',
     GETSECURITYTOKEN = 'getSecurityToken',
     GETHOLDER = 'getHolder',
-    GETSECURITY = 'getSecurity'
+    GETSECURITY = 'getSecurity',
+    SETCUSTODIAN = 'setCustodian',
+    GETCUSTODIAN = 'getCustodian'
 }
 
 export default class SecuritiesFactory extends VerifiedContract {
@@ -46,80 +41,6 @@ export default class SecuritiesFactory extends VerifiedContract {
     } 
 
     /**
-     * Get number of tokens [callable by client]
-     * @param
-     * @returns returns number of tokens
-     */
-     public async getTokenCount() {
-        return this.callContract(FUNCTIONS.GETTOKENCOUNT)
-    }
-
-    /**
-    * Get address of token by index [callable by client].
-    * @param (uint256 n)
-    * @returns boolean
-    */
-     public async getToken(_n: string, options?: { gasPrice: number, gasLimit: number }): any {
-        //await this.validateInput(DATATYPES.NUMBER, _n)
-        return this.callContract(FUNCTIONS.GETTOKEN, _n, options)
-    }
-
-    /**
-    * Get name and type of token by its address callable by client
-    * @param (address _viaAddress)
-    * @returns boolean
-    * returns name and type of token by its address passed as parameter.
-    */
-     public async getNameAndType(_viaAddress: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _viaAddress)
-        return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress, options)
-    }
-
-    /**
-     * Get name of token 
-     * @param   _token  address of token for which name is required
-     * @returns         returns name of token
-     */
-    public async getName(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _token)
-        return this.callContract(FUNCTIONS.GETNAME, _token, options)
-    }
-
-    /**
-     * Get type of token 
-     * @param   _token  address of token for which type is required
-     * @returns         returns name of token
-     */
-     public async getType(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _token)
-        return this.callContract(FUNCTIONS.GETTYPE, _token, options)
-    }
-
-    /**
-     * Get name and type of token 
-     * @param   _tokenName  string name of token
-     * @param   _tokenType  string type of token
-     * @returns             returns address of token
-     */
-    public async getTokenByNameType(tokenName: string, tokenType: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, tokenName)
-        await this.validateInput(DATATYPES.STRING, tokenType)
-        return this.callContract(FUNCTIONS.GETTOKENBYNAMETYPE, this.sanitiseInput(DATATYPES.BYTE32, tokenName), this.sanitiseInput(DATATYPES.BYTE32, tokenType), options)
-    }
-
-    /**
-     * Get name and type of token issuer
-     * @param   _tokenName  string name of token
-     * @param   _tokenType  string type of token
-     * @returns             returns address of token issuer
-     */
-    public async getIssuer(tokenName: string, tokenType: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.STRING, tokenName)
-        await this.validateInput(DATATYPES.STRING, tokenType)
-        return this.callContract(FUNCTIONS.GETISSUER, this.sanitiseInput(DATATYPES.BYTE32, tokenType), this.sanitiseInput(DATATYPES.BYTE32, tokenName), options)
-    }
-
-    /**
      * Get issued security token addresses
      * @param
      * @returns returns array of addresses
@@ -143,15 +64,16 @@ export default class SecuritiesFactory extends VerifiedContract {
                 _isin: string, 
                 _currency: string, 
                 _issuer: string,
+                _qualified: string,
                 _hashedMessage: string,
                 _v: string,
                 _r: string,
                 _s: string,
                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _security)
-        await this.validateInput(DATATYPES.ADDRESS, _issuer)        
+        await this.validateInput(DATATYPES.ADDRESS, _issuer)  
         return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuer, 
-                _hashedMessage, _v, _r, _s, options)
+                _qualified, _hashedMessage, _v, _r, _s, options)
     }
 
     public async getSecurityToken(security: string, issuer: string, options?: { gasPrice: number, gasLimit: number }): any {
@@ -178,6 +100,19 @@ export default class SecuritiesFactory extends VerifiedContract {
 
     public notifySecuritiesAdded(callback: any): object {
         this.getEvent(FUNCTIONS.SECURITIESADDED, callback)
+    }
+
+    public async setCustodian(_securityToken: string, _issuer: string, _custodian: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _securityToken)
+        await this.validateInput(DATATYPES.ADDRESS, _issuer)
+        await this.validateInput(DATATYPES.ADDRESS, _custodian)
+        return this.callContract(FUNCTIONS.SETCUSTODIAN, _securityToken, _issuer, _custodian, options)
+    }
+
+    public async getCustodian(_securityToken: string, _issuer: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _securityToken)
+        await this.validateInput(DATATYPES.ADDRESS, _issuer)
+        return this.callContract(FUNCTIONS.GETCUSTODIAN, _securityToken, _issuer, options)
     }
     
 }

@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const Client_json_1 = require("../../../abi/assetmanager/Client.json");
+const Client_json_1 = require("../../../abi/securities/Client.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SETSIGNER"] = "setSigner";
@@ -13,6 +13,10 @@ var FUNCTIONS;
     FUNCTIONS["UPDATEKYC"] = "KycUpdate";
     FUNCTIONS["GETCLIENTKYC"] = "getClientKYC";
     FUNCTIONS["SETAMLSCORE"] = "setAmlScore";
+    FUNCTIONS["SETAMLPASSSCORE"] = "setAmlPassScore";
+    FUNCTIONS["GETAMLSTATUS"] = "getAMLStatus";
+    FUNCTIONS["SETCUSTODYACCOUNT"] = "setCustodyAccount";
+    FUNCTIONS["GETCUSTODYACCOUNT"] = "getCustodyAccount";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Client extends index_1.VerifiedContract {
     constructor(signer) {
@@ -74,6 +78,24 @@ class Client extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
         await this.validateInput(index_1.DATATYPES.NUMBER, _score);
         return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options);
+    }
+    async setAmlPassScore(_score, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _score);
+        return this.callContract(FUNCTIONS.SETAMLPASSSCORE, _score, options);
+    }
+    async getAMLStatus(_client, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
+        return this.callContract(FUNCTIONS.GETAMLSTATUS, _client, options);
+    }
+    async setCustodyAccount(_submanager, _currency, _accountId, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _submanager);
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        await this.validateInput(index_1.DATATYPES.STRING, _accountId);
+        return this.callContract(FUNCTIONS.SETCUSTODYACCOUNT, _submanager, _currency, _accountId, options);
+    }
+    async getCustodyAccount(_submanager, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _submanager);
+        return this.callContract(FUNCTIONS.GETCUSTODYACCOUNT, _submanager, options);
     }
 }
 exports.default = Client;

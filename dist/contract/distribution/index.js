@@ -10,7 +10,11 @@ var FUNCTIONS;
     FUNCTIONS["GETREVENUESHAREHOLDER"] = "getRevenueShareholders";
     FUNCTIONS["GETPAYMENTFEECOLLECTED"] = "getPaymentFeeCollected";
     FUNCTIONS["GETLOANFEECOLLECTED"] = "getLoanFeeCollected";
+    FUNCTIONS["GETISSUINGFEECOLLECTED"] = "getIssuingFeeCollected";
+    FUNCTIONS["GETTRADINGFEECOLLECTED"] = "getTradingFeeCollected";
     FUNCTIONS["SHAREFEE"] = "shareFee";
+    FUNCTIONS["SHARECOLLECTION"] = "shareCollection";
+    FUNCTIONS["REVENUESHARE"] = "RevenueShare";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Distribution extends index_1.VerifiedContract {
     constructor(signer) {
@@ -24,6 +28,9 @@ class Distribution extends index_1.VerifiedContract {
      */
     async shareFee() {
         return this.callContract(FUNCTIONS.SHAREFEE);
+    }
+    async shareCollection() {
+        return this.callContract(FUNCTIONS.SHARECOLLECTION);
     }
     /**
         Gets payment fee collected
@@ -62,6 +69,19 @@ class Distribution extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _shareholder);
         await this.validateInput(index_1.DATATYPES.STRING, _currency);
         return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(index_1.DATATYPES.BYTE32, _type), _shareholder, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+    }
+    async getIssuingFeeCollected(_platform, _token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETISSUINGFEECOLLECTED, _platform, _token, options);
+    }
+    async getTradingFeeCollected(_platform, _token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETTRADINGFEECOLLECTED, _platform, _token, options);
+    }
+    notifyRevenueShare(callback) {
+        this.getEvent(FUNCTIONS.REVENUESHARE, callback);
     }
 }
 exports.default = Distribution;

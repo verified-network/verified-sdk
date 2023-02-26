@@ -1,0 +1,1516 @@
+{
+  "contractName": "IOrder",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "getOrderRef",
+      "outputs": [
+        {
+          "internalType": "bytes32[]",
+          "name": "",
+          "type": "bytes32[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "ref",
+          "type": "bytes32"
+        }
+      ],
+      "name": "cancelOrder",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "ref",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_price",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_qty",
+          "type": "uint256"
+        }
+      ],
+      "name": "editOrder",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "partyRef",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "counterpartyRef",
+          "type": "bytes32"
+        }
+      ],
+      "name": "orderFilled",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "partyRef",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "counterpartyRef",
+          "type": "bytes32"
+        }
+      ],
+      "name": "tradeSettled",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_orderRef",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_qty",
+          "type": "uint256"
+        },
+        {
+          "internalType": "enum IOrder.Order",
+          "name": "_order",
+          "type": "uint8"
+        }
+      ],
+      "name": "revertTrade",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.0+commit.c7dfd78e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"ref\",\"type\":\"bytes32\"}],\"name\":\"cancelOrder\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"ref\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_price\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_qty\",\"type\":\"uint256\"}],\"name\":\"editOrder\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"getOrderRef\",\"outputs\":[{\"internalType\":\"bytes32[]\",\"name\":\"\",\"type\":\"bytes32[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"partyRef\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"counterpartyRef\",\"type\":\"bytes32\"}],\"name\":\"orderFilled\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_orderRef\",\"type\":\"bytes32\"},{\"internalType\":\"uint256\",\"name\":\"_qty\",\"type\":\"uint256\"},{\"internalType\":\"enum IOrder.Order\",\"name\":\"_order\",\"type\":\"uint8\"}],\"name\":\"revertTrade\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"partyRef\",\"type\":\"bytes32\"},{\"internalType\":\"bytes32\",\"name\":\"counterpartyRef\",\"type\":\"bytes32\"}],\"name\":\"tradeSettled\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/interfaces/IOrder.sol\":\"IOrder\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/interfaces/IOrder.sol\":{\"keccak256\":\"0x15a1549bee9f77513c026f63d7a75e268b2697183f360cc3ddc567ba2362e12c\",\"license\":\"BUSL1.1\",\"urls\":[\"bzz-raw://82233b74ac0999feeba2a4a1f689fcbf8d7169323508c0eca2659ae4295e8e50\",\"dweb:/ipfs/QmUEiaBpRiNkrvN1Ng76zdT48FRqvDvdLC6upFGVhuUFjX\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// Interface for orders\n//\"SPDX-License-Identifier: BUSL1.1\"\n\npragma solidity 0.8.0;\n\ninterface IOrder {\n\n    enum OrderType{ Market, Limit, Stop }\n\n    enum OrderStatus{ Filled, PartlyFilled, Open, Cancelled, Expired }\n    \n    enum Order{ Buy, Sell } \n\n    /*struct order{\n        IVault.SwapKind swapKind; \n        IERC20 tokenIn;\n        IERC20 tokenOut;\n        OrderType otype;\n        Order order;\n        OrderStatus status;\n        uint256 qty;\n        uint256 dt;\n        address party;\n        uint256 price;  \n        //uint256 currencyBalance;  \n        //uint256 securityBalance;    \n    }*/\n\n    struct Params {\n        OrderType trade;\n        uint256 price;\n    }\n\n    function getOrderRef() external view returns(bytes32[] memory);\n\n    function cancelOrder(bytes32 ref) external;\n\n    function editOrder( bytes32 ref,\n                        uint256 _price,\n                        uint256 _qty) external;    \n\n    function orderFilled(bytes32 partyRef, bytes32 counterpartyRef) external;\n\n    function tradeSettled(bytes32 partyRef, bytes32 counterpartyRef) external;\n\n    function revertTrade(bytes32 _orderRef, uint256 _qty, IOrder.Order _order) external;\n}",
+  "sourcePath": "D:\\Code\\verified-liquidity\\distribution\\contracts\\interfaces\\IOrder.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/interfaces/IOrder.sol",
+    "exportedSymbols": {
+      "IOrder": [
+        2616
+      ]
+    },
+    "id": 2617,
+    "license": "BUSL1.1",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2552,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "62:22:12"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 2616,
+        "linearizedBaseContracts": [
+          2616
+        ],
+        "name": "IOrder",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IOrder.OrderType",
+            "id": 2556,
+            "members": [
+              {
+                "id": 2553,
+                "name": "Market",
+                "nodeType": "EnumValue",
+                "src": "126:6:12"
+              },
+              {
+                "id": 2554,
+                "name": "Limit",
+                "nodeType": "EnumValue",
+                "src": "134:5:12"
+              },
+              {
+                "id": 2555,
+                "name": "Stop",
+                "nodeType": "EnumValue",
+                "src": "141:4:12"
+              }
+            ],
+            "name": "OrderType",
+            "nodeType": "EnumDefinition",
+            "src": "110:37:12"
+          },
+          {
+            "canonicalName": "IOrder.OrderStatus",
+            "id": 2562,
+            "members": [
+              {
+                "id": 2557,
+                "name": "Filled",
+                "nodeType": "EnumValue",
+                "src": "171:6:12"
+              },
+              {
+                "id": 2558,
+                "name": "PartlyFilled",
+                "nodeType": "EnumValue",
+                "src": "179:12:12"
+              },
+              {
+                "id": 2559,
+                "name": "Open",
+                "nodeType": "EnumValue",
+                "src": "193:4:12"
+              },
+              {
+                "id": 2560,
+                "name": "Cancelled",
+                "nodeType": "EnumValue",
+                "src": "199:9:12"
+              },
+              {
+                "id": 2561,
+                "name": "Expired",
+                "nodeType": "EnumValue",
+                "src": "210:7:12"
+              }
+            ],
+            "name": "OrderStatus",
+            "nodeType": "EnumDefinition",
+            "src": "153:66:12"
+          },
+          {
+            "canonicalName": "IOrder.Order",
+            "id": 2565,
+            "members": [
+              {
+                "id": 2563,
+                "name": "Buy",
+                "nodeType": "EnumValue",
+                "src": "241:3:12"
+              },
+              {
+                "id": 2564,
+                "name": "Sell",
+                "nodeType": "EnumValue",
+                "src": "246:4:12"
+              }
+            ],
+            "name": "Order",
+            "nodeType": "EnumDefinition",
+            "src": "229:23:12"
+          },
+          {
+            "canonicalName": "IOrder.Params",
+            "id": 2571,
+            "members": [
+              {
+                "constant": false,
+                "id": 2568,
+                "mutability": "mutable",
+                "name": "trade",
+                "nodeType": "VariableDeclaration",
+                "scope": 2571,
+                "src": "635:15:12",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_enum$_OrderType_$2556",
+                  "typeString": "enum IOrder.OrderType"
+                },
+                "typeName": {
+                  "id": 2567,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 2566,
+                    "name": "OrderType",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 2556,
+                    "src": "635:9:12"
+                  },
+                  "referencedDeclaration": 2556,
+                  "src": "635:9:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_OrderType_$2556",
+                    "typeString": "enum IOrder.OrderType"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2570,
+                "mutability": "mutable",
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 2571,
+                "src": "660:13:12",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2569,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "660:7:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Params",
+            "nodeType": "StructDefinition",
+            "scope": 2616,
+            "src": "611:69:12",
+            "visibility": "public"
+          },
+          {
+            "functionSelector": "46b8b730",
+            "id": 2577,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOrderRef",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2572,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "706:2:12"
+            },
+            "returnParameters": {
+              "id": 2576,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2575,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2577,
+                  "src": "731:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2573,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "731:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 2574,
+                    "nodeType": "ArrayTypeName",
+                    "src": "731:9:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "730:18:12"
+            },
+            "scope": 2616,
+            "src": "686:63:12",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "7489ec23",
+            "id": 2582,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cancelOrder",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2580,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2579,
+                  "mutability": "mutable",
+                  "name": "ref",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2582,
+                  "src": "776:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2578,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "776:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "775:13:12"
+            },
+            "returnParameters": {
+              "id": 2581,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "797:0:12"
+            },
+            "scope": 2616,
+            "src": "755:43:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "0c8605be",
+            "id": 2591,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "editOrder",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2589,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2584,
+                  "mutability": "mutable",
+                  "name": "ref",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "824:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2583,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "824:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2586,
+                  "mutability": "mutable",
+                  "name": "_price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "861:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2585,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "861:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2588,
+                  "mutability": "mutable",
+                  "name": "_qty",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "901:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2587,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "901:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "822:92:12"
+            },
+            "returnParameters": {
+              "id": 2590,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "923:0:12"
+            },
+            "scope": 2616,
+            "src": "804:120:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "13ce4546",
+            "id": 2598,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "orderFilled",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2596,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2593,
+                  "mutability": "mutable",
+                  "name": "partyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2598,
+                  "src": "955:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2592,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "955:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2595,
+                  "mutability": "mutable",
+                  "name": "counterpartyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2598,
+                  "src": "973:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2594,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "973:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "954:43:12"
+            },
+            "returnParameters": {
+              "id": 2597,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1006:0:12"
+            },
+            "scope": 2616,
+            "src": "934:73:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4d689270",
+            "id": 2605,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tradeSettled",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2603,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2600,
+                  "mutability": "mutable",
+                  "name": "partyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2605,
+                  "src": "1035:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2599,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1035:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2602,
+                  "mutability": "mutable",
+                  "name": "counterpartyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2605,
+                  "src": "1053:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2601,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1053:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1034:43:12"
+            },
+            "returnParameters": {
+              "id": 2604,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1086:0:12"
+            },
+            "scope": 2616,
+            "src": "1013:74:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4c4d8209",
+            "id": 2615,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "revertTrade",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2613,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2607,
+                  "mutability": "mutable",
+                  "name": "_orderRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1114:17:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2606,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1114:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2609,
+                  "mutability": "mutable",
+                  "name": "_qty",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1133:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2608,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1133:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2612,
+                  "mutability": "mutable",
+                  "name": "_order",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1147:19:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Order_$2565",
+                    "typeString": "enum IOrder.Order"
+                  },
+                  "typeName": {
+                    "id": 2611,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 2610,
+                      "name": "IOrder.Order",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 2565,
+                      "src": "1147:12:12"
+                    },
+                    "referencedDeclaration": 2565,
+                    "src": "1147:12:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Order_$2565",
+                      "typeString": "enum IOrder.Order"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1113:54:12"
+            },
+            "returnParameters": {
+              "id": 2614,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1176:0:12"
+            },
+            "scope": 2616,
+            "src": "1093:84:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2617,
+        "src": "86:1093:12"
+      }
+    ],
+    "src": "62:1117:12"
+  },
+  "legacyAST": {
+    "absolutePath": "project:/contracts/interfaces/IOrder.sol",
+    "exportedSymbols": {
+      "IOrder": [
+        2616
+      ]
+    },
+    "id": 2617,
+    "license": "BUSL1.1",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 2552,
+        "literals": [
+          "solidity",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "62:22:12"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 2616,
+        "linearizedBaseContracts": [
+          2616
+        ],
+        "name": "IOrder",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "canonicalName": "IOrder.OrderType",
+            "id": 2556,
+            "members": [
+              {
+                "id": 2553,
+                "name": "Market",
+                "nodeType": "EnumValue",
+                "src": "126:6:12"
+              },
+              {
+                "id": 2554,
+                "name": "Limit",
+                "nodeType": "EnumValue",
+                "src": "134:5:12"
+              },
+              {
+                "id": 2555,
+                "name": "Stop",
+                "nodeType": "EnumValue",
+                "src": "141:4:12"
+              }
+            ],
+            "name": "OrderType",
+            "nodeType": "EnumDefinition",
+            "src": "110:37:12"
+          },
+          {
+            "canonicalName": "IOrder.OrderStatus",
+            "id": 2562,
+            "members": [
+              {
+                "id": 2557,
+                "name": "Filled",
+                "nodeType": "EnumValue",
+                "src": "171:6:12"
+              },
+              {
+                "id": 2558,
+                "name": "PartlyFilled",
+                "nodeType": "EnumValue",
+                "src": "179:12:12"
+              },
+              {
+                "id": 2559,
+                "name": "Open",
+                "nodeType": "EnumValue",
+                "src": "193:4:12"
+              },
+              {
+                "id": 2560,
+                "name": "Cancelled",
+                "nodeType": "EnumValue",
+                "src": "199:9:12"
+              },
+              {
+                "id": 2561,
+                "name": "Expired",
+                "nodeType": "EnumValue",
+                "src": "210:7:12"
+              }
+            ],
+            "name": "OrderStatus",
+            "nodeType": "EnumDefinition",
+            "src": "153:66:12"
+          },
+          {
+            "canonicalName": "IOrder.Order",
+            "id": 2565,
+            "members": [
+              {
+                "id": 2563,
+                "name": "Buy",
+                "nodeType": "EnumValue",
+                "src": "241:3:12"
+              },
+              {
+                "id": 2564,
+                "name": "Sell",
+                "nodeType": "EnumValue",
+                "src": "246:4:12"
+              }
+            ],
+            "name": "Order",
+            "nodeType": "EnumDefinition",
+            "src": "229:23:12"
+          },
+          {
+            "canonicalName": "IOrder.Params",
+            "id": 2571,
+            "members": [
+              {
+                "constant": false,
+                "id": 2568,
+                "mutability": "mutable",
+                "name": "trade",
+                "nodeType": "VariableDeclaration",
+                "scope": 2571,
+                "src": "635:15:12",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_enum$_OrderType_$2556",
+                  "typeString": "enum IOrder.OrderType"
+                },
+                "typeName": {
+                  "id": 2567,
+                  "nodeType": "UserDefinedTypeName",
+                  "pathNode": {
+                    "id": 2566,
+                    "name": "OrderType",
+                    "nodeType": "IdentifierPath",
+                    "referencedDeclaration": 2556,
+                    "src": "635:9:12"
+                  },
+                  "referencedDeclaration": 2556,
+                  "src": "635:9:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_OrderType_$2556",
+                    "typeString": "enum IOrder.OrderType"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2570,
+                "mutability": "mutable",
+                "name": "price",
+                "nodeType": "VariableDeclaration",
+                "scope": 2571,
+                "src": "660:13:12",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2569,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "660:7:12",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "Params",
+            "nodeType": "StructDefinition",
+            "scope": 2616,
+            "src": "611:69:12",
+            "visibility": "public"
+          },
+          {
+            "functionSelector": "46b8b730",
+            "id": 2577,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getOrderRef",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2572,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "706:2:12"
+            },
+            "returnParameters": {
+              "id": 2576,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2575,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2577,
+                  "src": "731:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_bytes32_$dyn_memory_ptr",
+                    "typeString": "bytes32[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2573,
+                      "name": "bytes32",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "731:7:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_bytes32",
+                        "typeString": "bytes32"
+                      }
+                    },
+                    "id": 2574,
+                    "nodeType": "ArrayTypeName",
+                    "src": "731:9:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_bytes32_$dyn_storage_ptr",
+                      "typeString": "bytes32[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "730:18:12"
+            },
+            "scope": 2616,
+            "src": "686:63:12",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "7489ec23",
+            "id": 2582,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "cancelOrder",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2580,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2579,
+                  "mutability": "mutable",
+                  "name": "ref",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2582,
+                  "src": "776:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2578,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "776:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "775:13:12"
+            },
+            "returnParameters": {
+              "id": 2581,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "797:0:12"
+            },
+            "scope": 2616,
+            "src": "755:43:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "0c8605be",
+            "id": 2591,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "editOrder",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2589,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2584,
+                  "mutability": "mutable",
+                  "name": "ref",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "824:11:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2583,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "824:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2586,
+                  "mutability": "mutable",
+                  "name": "_price",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "861:14:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2585,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "861:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2588,
+                  "mutability": "mutable",
+                  "name": "_qty",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2591,
+                  "src": "901:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2587,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "901:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "822:92:12"
+            },
+            "returnParameters": {
+              "id": 2590,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "923:0:12"
+            },
+            "scope": 2616,
+            "src": "804:120:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "13ce4546",
+            "id": 2598,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "orderFilled",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2596,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2593,
+                  "mutability": "mutable",
+                  "name": "partyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2598,
+                  "src": "955:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2592,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "955:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2595,
+                  "mutability": "mutable",
+                  "name": "counterpartyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2598,
+                  "src": "973:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2594,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "973:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "954:43:12"
+            },
+            "returnParameters": {
+              "id": 2597,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1006:0:12"
+            },
+            "scope": 2616,
+            "src": "934:73:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4d689270",
+            "id": 2605,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "tradeSettled",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2603,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2600,
+                  "mutability": "mutable",
+                  "name": "partyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2605,
+                  "src": "1035:16:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2599,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1035:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2602,
+                  "mutability": "mutable",
+                  "name": "counterpartyRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2605,
+                  "src": "1053:23:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2601,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1053:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1034:43:12"
+            },
+            "returnParameters": {
+              "id": 2604,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1086:0:12"
+            },
+            "scope": 2616,
+            "src": "1013:74:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "functionSelector": "4c4d8209",
+            "id": 2615,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "revertTrade",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 2613,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2607,
+                  "mutability": "mutable",
+                  "name": "_orderRef",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1114:17:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 2606,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1114:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2609,
+                  "mutability": "mutable",
+                  "name": "_qty",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1133:12:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2608,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1133:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2612,
+                  "mutability": "mutable",
+                  "name": "_order",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2615,
+                  "src": "1147:19:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_Order_$2565",
+                    "typeString": "enum IOrder.Order"
+                  },
+                  "typeName": {
+                    "id": 2611,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 2610,
+                      "name": "IOrder.Order",
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 2565,
+                      "src": "1147:12:12"
+                    },
+                    "referencedDeclaration": 2565,
+                    "src": "1147:12:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_Order_$2565",
+                      "typeString": "enum IOrder.Order"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1113:54:12"
+            },
+            "returnParameters": {
+              "id": 2614,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1176:0:12"
+            },
+            "scope": 2616,
+            "src": "1093:84:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 2617,
+        "src": "86:1093:12"
+      }
+    ],
+    "src": "62:1117:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.0+commit.c7dfd78e.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.3",
+  "updatedAt": "2023-02-26T00:41:57.546Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

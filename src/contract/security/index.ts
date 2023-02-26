@@ -24,15 +24,11 @@ export default class Security extends VerifiedContract {
     public async approveToken(_owner: string,
                             _spender: string,
                             _amount: string, 
-                            _hashedMessage: string,
-                            _v: string,
-                            _r: string,
-                            _s: string,
                             options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _owner)
         await this.validateInput(DATATYPES.ADDRESS, _spender)
         await this.validateInput(DATATYPES.NUMBER, _amount)        
-        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, _hashedMessage, _v, _r, _s, options)
+        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, options)
     }
     
 }

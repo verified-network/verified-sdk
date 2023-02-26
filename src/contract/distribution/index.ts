@@ -10,7 +10,11 @@ enum FUNCTIONS {
     GETREVENUESHAREHOLDER = 'getRevenueShareholders',
     GETPAYMENTFEECOLLECTED = 'getPaymentFeeCollected',
     GETLOANFEECOLLECTED = 'getLoanFeeCollected',
-    SHAREFEE = 'shareFee'
+    GETISSUINGFEECOLLECTED = 'getIssuingFeeCollected',
+    GETTRADINGFEECOLLECTED = 'getTradingFeeCollected',
+    SHAREFEE = 'shareFee',
+    SHARECOLLECTION = 'shareCollection',
+    REVENUESHARE = 'RevenueShare'
 }
 
 export default class Distribution extends VerifiedContract {
@@ -31,6 +35,10 @@ export default class Distribution extends VerifiedContract {
      */
     public async shareFee(){
         return this.callContract(FUNCTIONS.SHAREFEE)
+    }
+
+    public async shareCollection(){
+        return this.callContract(FUNCTIONS.SHARECOLLECTION)
     }
 
     /**
@@ -73,6 +81,22 @@ export default class Distribution extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _shareholder)
         await this.validateInput(DATATYPES.STRING, _currency)
         return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _type), _shareholder, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+    }
+
+    public async getIssuingFeeCollected(_platform: string, _token: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.GETISSUINGFEECOLLECTED, _platform, _token, options)
+    }
+
+    public async getTradingFeeCollected(_platform: string, _token: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _platform)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.GETTRADINGFEECOLLECTED, _platform, _token, options)
+    }
+
+    public notifyRevenueShare(callback: any): object {
+        this.getEvent(FUNCTIONS.REVENUESHARE, callback)
     }
 
 }
