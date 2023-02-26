@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
-    'goerli-test': {
+    'goerli': {
         'Client': '0x5d891583b79A00d6Ff7e93a68079942Be28fCA27',
         'Factory': '',
         'Cash': '',
@@ -28,7 +28,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'goerli-demo': {
+    'verified': {
         'Client': '',
         'Factory': '',
         'Cash': '',

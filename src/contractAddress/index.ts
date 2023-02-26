@@ -1,5 +1,5 @@
 const contractAddress: Object = {
-    'goerli-test': {
+    'goerli': {
         'Client': '0x5d891583b79A00d6Ff7e93a68079942Be28fCA27',
         'Factory': '',        
         'Cash': '',
@@ -26,7 +26,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'goerli-demo': {
+    'verified': {
         'Client': '',
         'Factory': '',        
         'Cash': '',
