@@ -23,9 +23,10 @@ var FUNCTIONS;
     FUNCTIONS["SIGNATURE"] = "SignTransaction";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Custody extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(Vault_json_1.networks);
-        const address = Vault_json_1.networks[chainId].address;
+    constructor(signer, contractNetworkAddress) {
+        const address = contractNetworkAddress;
+        //const chainId: string = Object.keys(networks)
+        //const address = networks[chainId].address
         super(address, JSON.stringify(Vault_json_1.abi), signer);
         this.contractAddress = address;
     }

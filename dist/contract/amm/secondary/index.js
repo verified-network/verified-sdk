@@ -13,9 +13,10 @@ var FUNCTIONS;
     FUNCTIONS["GETSUBSCRIBERS"] = "getSubscribers";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class SecondaryIssueManager extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(SecondaryIssueManager_json_1.networks);
-        const address = SecondaryIssueManager_json_1.networks[chainId].address;
+    constructor(signer, contractNetworkAddress) {
+        const address = contractNetworkAddress;
+        //const chainId: string = Object.keys(networks)
+        //const address = networks[chainId].address
         super(address, JSON.stringify(SecondaryIssueManager_json_1.abi), signer);
         this.contractAddress = address;
     }

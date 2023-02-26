@@ -22,10 +22,11 @@ var FUNCTIONS;
     FUNCTIONS["SETORACLES"] = "setOracles";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Factory extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(Factory_json_1.networks);
-        console.log("Factory chain id " + chainId);
-        const address = Factory_json_1.networks[chainId].address;
+    constructor(signer, contractNetworkAddress) {
+        const address = contractNetworkAddress;
+        //const chainId: string = Object.keys(networks)
+        //console.log("Factory chain id "+chainId);
+        //const address = networks[chainId].address
         super(address, JSON.stringify(Factory_json_1.abi), signer);
         this.contractAddress = address;
     }

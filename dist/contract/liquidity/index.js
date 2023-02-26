@@ -29,9 +29,10 @@ var FUNCTIONS;
     FUNCTIONS["NOTIFYISSUE"] = "RequestIssue";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class LiquidityContract extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(Liquidity_json_1.networks);
-        const address = Liquidity_json_1.networks[chainId].address;
+    constructor(signer, contractNetworkAddress) {
+        const address = contractNetworkAddress;
+        //const chainId: string = Object.keys(networks)
+        //const address = networks[chainId].address
         super(address, JSON.stringify(Liquidity_json_1.abi), signer);
         this.contractAddress = address;
     }

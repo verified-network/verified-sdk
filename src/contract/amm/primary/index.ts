@@ -22,6 +22,7 @@ enum FUNCTIONS {
 
 export default class PrimaryIssueManager extends VerifiedContract {
     public contractAddress: string
+
     constructor(signer: VerifiedWallet, platformAddress: string, platform: string) {
 
         const address = platformAddress

@@ -19,9 +19,10 @@ var FUNCTIONS;
     FUNCTIONS["GETCUSTODYACCOUNT"] = "getCustodyAccount";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Client extends index_1.VerifiedContract {
-    constructor(signer) {
-        const chainId = Object.keys(Client_json_1.networks);
-        const address = Client_json_1.networks[chainId].address;
+    constructor(signer, contractNetworkAddress) {
+        const address = contractNetworkAddress;
+        //const chainId: string = Object.keys(networks)
+        //const address = networks[chainId].address
         super(address, JSON.stringify(Client_json_1.abi), signer);
         this.contractAddress = address;
     }
