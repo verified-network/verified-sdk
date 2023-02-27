@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 
-import { VerifiedContract, DATATYPES } from '../../index';
+import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../../wallet";
 import { abi, networks } from '../../abi/securities/SecuritiesFactory.json';
 

@@ -1,5 +1,5 @@
 const contractAddress: Object = {
-    'goerli': {
+    5: {
         'Client': '0x5d891583b79A00d6Ff7e93a68079942Be28fCA27',
         'Factory': '',        
         'Cash': '',
@@ -53,7 +53,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'polygon': {
+    137: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
@@ -80,7 +80,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'mainnet': {
+    1: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
@@ -107,7 +107,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'arbitrum': {
+    42161: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
@@ -134,7 +134,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'optimism': {
+    10: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
@@ -161,7 +161,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'bsc': {
+    56: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
@@ -188,7 +188,7 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
-    'gnosis': {
+    100: {
         'Client': '',
         'Factory': '',        
         'Cash': '',
