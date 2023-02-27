@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/securities/Client.json';
+import { abi, networks } from '../../abi/securities/Client.json';
 
 enum FUNCTIONS {
     SETSIGNER = 'setSigner',

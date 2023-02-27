@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const Security_json_1 = require("../../../abi/securities/Security.json");
+const Security_json_1 = require("../../abi/securities/Security.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["APPROVETOKEN"] = "approveToken";

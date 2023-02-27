@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../../abi/distribution/Distribution.json';
+import { abi, networks } from '../../abi/distribution/Distribution.json';
 
 enum FUNCTIONS {
     ADDREVENUESHAREHOLDER = 'addRevenueShareholder',

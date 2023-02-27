@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const Client_json_1 = require("../../../abi/securities/Client.json");
+const Client_json_1 = require("../../abi/securities/Client.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SETSIGNER"] = "setSigner";

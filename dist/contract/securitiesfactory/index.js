@@ -3,7 +3,7 @@
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../../index");
-const SecuritiesFactory_json_1 = require("../../../abi/securities/SecuritiesFactory.json");
+const SecuritiesFactory_json_1 = require("../../abi/securities/SecuritiesFactory.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["GETISSUES"] = "getIssues";
