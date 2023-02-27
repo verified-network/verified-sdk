@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
-    'goerli': {
+    5: {
         'Client': '0x5d891583b79A00d6Ff7e93a68079942Be28fCA27',
         'Factory': '',
         'Cash': '',
@@ -55,7 +55,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'polygon': {
+    137: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -82,7 +82,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'mainnet': {
+    1: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -109,7 +109,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'arbitrum': {
+    42161: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -136,7 +136,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'optimism': {
+    10: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -163,7 +163,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'bsc': {
+    56: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -190,7 +190,7 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    'gnosis': {
+    100: {
         'Client': '',
         'Factory': '',
         'Cash': '',
