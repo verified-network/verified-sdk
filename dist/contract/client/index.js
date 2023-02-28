@@ -17,6 +17,7 @@ var FUNCTIONS;
     FUNCTIONS["GETAMLSTATUS"] = "getAMLStatus";
     FUNCTIONS["SETCUSTODYACCOUNT"] = "setCustodyAccount";
     FUNCTIONS["GETCUSTODYACCOUNT"] = "getCustodyAccount";
+    FUNCTIONS["GETMANAGERS"] = "getManagers";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Client extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -97,6 +98,11 @@ class Client extends index_1.VerifiedContract {
     async getCustodyAccount(_submanager, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _submanager);
         return this.callContract(FUNCTIONS.GETCUSTODYACCOUNT, _submanager, options);
+    }
+    async getManagers(_country, _role, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, _country);
+        await this.validateInput(index_1.DATATYPES.STRING, _role);
+        return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(index_1.DATATYPES.BYTE32, _country), this.sanitiseInput(index_1.DATATYPES.BYTE32, _role), options);
     }
 }
 exports.default = Client;

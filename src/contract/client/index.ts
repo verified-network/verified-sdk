@@ -16,7 +16,8 @@ enum FUNCTIONS {
     SETAMLPASSSCORE = 'setAmlPassScore',
     GETAMLSTATUS = 'getAMLStatus',
     SETCUSTODYACCOUNT = 'setCustodyAccount',
-    GETCUSTODYACCOUNT = 'getCustodyAccount'
+    GETCUSTODYACCOUNT = 'getCustodyAccount',
+    GETMANAGERS = 'getManagers'
 }
 
 export default class Client extends VerifiedContract {
@@ -131,4 +132,9 @@ export default class Client extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETCUSTODYACCOUNT, _submanager, options)
     }
 
+    public async getManagers(_country: string, _role: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, _country)
+        await this.validateInput(DATATYPES.STRING, _role)
+        return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
+    }
 }
