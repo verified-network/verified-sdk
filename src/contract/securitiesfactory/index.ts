@@ -15,7 +15,10 @@ enum FUNCTIONS {
     GETHOLDER = 'getHolder',
     GETSECURITY = 'getSecurity',
     SETCUSTODIAN = 'setCustodian',
-    GETCUSTODIAN = 'getCustodian'
+    GETCUSTODIAN = 'getCustodian',
+    RESTRICTCOUNTRY = 'restrictCountry',
+    GETRESTRICTEDCOUNTRIES = 'getRestrictedCountries',
+    GETDP = 'getDP'
 }
 
 export default class SecuritiesFactory extends VerifiedContract {
@@ -65,16 +68,13 @@ export default class SecuritiesFactory extends VerifiedContract {
                 _isin: string, 
                 _currency: string, 
                 _issuer: string,
+                _intermediary: string,
                 _qualified: string,
-                _hashedMessage: string,
-                _v: string,
-                _r: string,
-                _s: string,
                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _security)
         await this.validateInput(DATATYPES.ADDRESS, _issuer)  
-        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuer, 
-                _qualified, _hashedMessage, _v, _r, _s, options)
+        await this.validateInput(DATATYPES.ADDRESS, _intermediary)  
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), this.sanitiseInput(DATATYPES.BYTE32, _currency), _issuer, _intermediary, _qualified, options)
     }
 
     public async getSecurityToken(security: string, issuer: string, options?: { gasPrice: number, gasLimit: number }): any {
@@ -87,16 +87,12 @@ export default class SecuritiesFactory extends VerifiedContract {
                             _transferor: string, 
                             _transferee: string, 
                             _amount: string, 
-                            _hashedMessage: string,
-                            _v: string,
-                            _r: string,
-                            _s: string,
                             options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _security)
         await this.validateInput(DATATYPES.ADDRESS, _transferor)
         await this.validateInput(DATATYPES.ADDRESS, _transferee) 
         await this.validateInput(DATATYPES.NUMBER, _amount)             
-        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options)
+        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, options)
     }
 
     public notifySecuritiesAdded(callback: any): object {
@@ -115,5 +111,21 @@ export default class SecuritiesFactory extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _issuer)
         return this.callContract(FUNCTIONS.GETCUSTODIAN, _securityToken, _issuer, options)
     }
+
+    public async restrictCountry(_security: string, _countries: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _security)
+        await this.validateInput(DATATYPES.STRING, _countries)
+        return this.callContract(FUNCTIONS.RESTRICTCOUNTRY, _security, _countries, options)
+    } 
+
+    public async getRestrictedCountries(_security: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _security)
+        return this.callContract(FUNCTIONS.GETRESTRICTEDCOUNTRIES, _security, options)
+    } 
+
+    public async getDP(_securityToken: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _securityToken)
+        return this.callContract(FUNCTIONS.GETDP, _securityToken, options)
+    } 
     
 }

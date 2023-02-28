@@ -16,6 +16,9 @@ var FUNCTIONS;
     FUNCTIONS["GETSECURITY"] = "getSecurity";
     FUNCTIONS["SETCUSTODIAN"] = "setCustodian";
     FUNCTIONS["GETCUSTODIAN"] = "getCustodian";
+    FUNCTIONS["RESTRICTCOUNTRY"] = "restrictCountry";
+    FUNCTIONS["GETRESTRICTEDCOUNTRIES"] = "getRestrictedCountries";
+    FUNCTIONS["GETDP"] = "getDP";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class SecuritiesFactory extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -49,22 +52,23 @@ class SecuritiesFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
         return this.callContract(FUNCTIONS.GETSECURITY, _token, options);
     }
-    async issueSecurity(_security, _company, _isin, _currency, _issuer, _qualified, _hashedMessage, _v, _r, _s, options) {
+    async issueSecurity(_security, _company, _isin, _currency, _issuer, _intermediary, _qualified, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
-        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuer, _qualified, _hashedMessage, _v, _r, _s, options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _intermediary);
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _issuer, _intermediary, _qualified, options);
     }
     async getSecurityToken(security, issuer, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, issuer);
         return this.callContract(FUNCTIONS.GETSECURITYTOKEN, security, issuer, options);
     }
-    async addBalance(_security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options) {
+    async addBalance(_security, _transferor, _transferee, _amount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferor);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _transferee);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.ADDBALANCE, _security, _transferor, _transferee, _amount, options);
     }
     notifySecuritiesAdded(callback) {
         this.getEvent(FUNCTIONS.SECURITIESADDED, callback);
@@ -79,6 +83,19 @@ class SecuritiesFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _securityToken);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         return this.callContract(FUNCTIONS.GETCUSTODIAN, _securityToken, _issuer, options);
+    }
+    async restrictCountry(_security, _countries, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
+        await this.validateInput(index_1.DATATYPES.STRING, _countries);
+        return this.callContract(FUNCTIONS.RESTRICTCOUNTRY, _security, _countries, options);
+    }
+    async getRestrictedCountries(_security, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
+        return this.callContract(FUNCTIONS.GETRESTRICTEDCOUNTRIES, _security, options);
+    }
+    async getDP(_securityToken, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _securityToken);
+        return this.callContract(FUNCTIONS.GETDP, _securityToken, options);
     }
 }
 exports.default = SecuritiesFactory;
