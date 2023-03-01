@@ -6,7 +6,7 @@ import { VerifiedWallet } from "../../../wallet";
 import { abi, networks } from '../../abi/securities/Security.json';
 
 enum FUNCTIONS {
-    APPROVETOKEN = 'approveToken'
+    WHITELIST = 'whiteList'
 }
 
 export default class Security extends VerifiedContract {
@@ -21,14 +21,13 @@ export default class Security extends VerifiedContract {
         this.contractAddress = address
     }
     
-    public async approveToken(_owner: string,
+    public async approveToken(
                             _spender: string,
                             _amount: string, 
                             options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _owner)
         await this.validateInput(DATATYPES.ADDRESS, _spender)
         await this.validateInput(DATATYPES.NUMBER, _amount)        
-        return this.callContract(FUNCTIONS.APPROVETOKEN, _owner, _spender, _amount, options)
+        return this.callContract(FUNCTIONS.WHITELIST, _spender, _amount, options)
     }
     
 }
