@@ -21,7 +21,7 @@ export default class Security extends VerifiedContract {
         this.contractAddress = address
     }
     
-    public async approveToken(
+    public async whiteList(
                             _spender: string,
                             _amount: string, 
                             options?: { gasPrice: number, gasLimit: number }): any {

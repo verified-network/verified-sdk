@@ -14,7 +14,7 @@ class Security extends index_1.VerifiedContract {
         super(address, JSON.stringify(Security_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async approveToken(_spender, _amount, options) {
+    async whiteList(_spender, _amount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         return this.callContract(FUNCTIONS.WHITELIST, _spender, _amount, options);
