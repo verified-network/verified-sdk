@@ -11,7 +11,9 @@ var FUNCTIONS;
     FUNCTIONS["REMOVEROLE"] = "removeRole";
     FUNCTIONS["ADDROLE"] = "addRole";
     FUNCTIONS["UPDATEKYC"] = "KycUpdate";
+    FUNCTIONS["FULLKYCUPDATE"] = "fullKycUpdate";
     FUNCTIONS["GETCLIENTKYC"] = "getClientKYC";
+    FUNCTIONS["GETFULLKYC"] = "getFullClientKYC";
     FUNCTIONS["SETAMLSCORE"] = "setAmlScore";
     FUNCTIONS["SETAMLPASSSCORE"] = "setAmlPassScore";
     FUNCTIONS["GETAMLSTATUS"] = "getAMLStatus";
@@ -64,17 +66,29 @@ class Client extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         return this.callContract(FUNCTIONS.ADDROLE, _manager, _submanager, this.sanitiseInput(index_1.DATATYPES.BYTE32, _country), this.sanitiseInput(index_1.DATATYPES.BYTE32, _role), this.sanitiseInput(index_1.DATATYPES.BYTE32, _id), _hashedMessage, _v, _r, _s, options);
     }
-    async KycUpdate(client, name, surname, country, status, _hashedMessage, _v, _r, _s, options) {
+    async KycUpdate(client, name, surname, country, contact, status, _hashedMessage, _v, _r, _s, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, client);
         await this.validateInput(index_1.DATATYPES.STRING, name);
         await this.validateInput(index_1.DATATYPES.STRING, surname);
         await this.validateInput(index_1.DATATYPES.STRING, country);
+        await this.validateInput(index_1.DATATYPES.STRING, contact);
         await this.validateInput(index_1.DATATYPES.NUMBER, status);
-        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, name), this.sanitiseInput(index_1.DATATYPES.BYTE32, surname), this.sanitiseInput(index_1.DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options);
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(index_1.DATATYPES.BYTE32, name), this.sanitiseInput(index_1.DATATYPES.BYTE32, surname), this.sanitiseInput(index_1.DATATYPES.BYTE32, country), this.sanitiseInput(index_1.DATATYPES.BYTE32, contact), status, _hashedMessage, _v, _r, _s, options);
+    }
+    async fullKycUpdate(client, identity, videokyc, docs, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, client);
+        await this.validateInput(index_1.DATATYPES.STRING, identity);
+        await this.validateInput(index_1.DATATYPES.STRING, videokyc);
+        await this.validateInput(index_1.DATATYPES.STRING, docs);
+        return this.callContract(FUNCTIONS.FULLKYCUPDATE, client, identity, videokyc, docs, options);
     }
     async getClientKYC(_client, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
         return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options);
+    }
+    async getFullClientKYC(_client, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
+        return this.callContract(FUNCTIONS.GETFULLKYC, _client, options);
     }
     async setAmlScore(_client, _score, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _client);

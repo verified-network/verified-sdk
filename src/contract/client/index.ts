@@ -11,7 +11,9 @@ enum FUNCTIONS {
     REMOVEROLE = 'removeRole',
     ADDROLE = 'addRole',
     UPDATEKYC = 'KycUpdate',
+    FULLKYCUPDATE = 'fullKycUpdate',
     GETCLIENTKYC = 'getClientKYC',
+    GETFULLKYC = 'getFullClientKYC',
     SETAMLSCORE = 'setAmlScore',
     SETAMLPASSSCORE = 'setAmlPassScore',
     GETAMLSTATUS = 'getAMLStatus',
@@ -85,7 +87,7 @@ export default class Client extends VerifiedContract {
         return this.callContract(FUNCTIONS.ADDROLE, _manager, _submanager, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), this.sanitiseInput(DATATYPES.BYTE32, _id), _hashedMessage, _v, _r, _s, options)
     }
 
-    public async KycUpdate(client: string, name: string, surname: string, country: string, status: string, 
+    public async KycUpdate(client: string, name: string, surname: string, country: string, contact: string, status: string, 
                                     _hashedMessage: string,
                                     _v: string,
                                     _r: string,
@@ -95,13 +97,28 @@ export default class Client extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, name)
         await this.validateInput(DATATYPES.STRING, surname)
         await this.validateInput(DATATYPES.STRING, country)
+        await this.validateInput(DATATYPES.STRING, contact)
         await this.validateInput(DATATYPES.NUMBER, status)
-        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), status, _hashedMessage, _v, _r, _s, options)
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), this.sanitiseInput(DATATYPES.BYTE32, contact), status, _hashedMessage, _v, _r, _s, options)
+    }
+
+    public async fullKycUpdate(client: string, identity: string, videokyc: string, docs: string, 
+                                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, client)
+        await this.validateInput(DATATYPES.STRING, identity)
+        await this.validateInput(DATATYPES.STRING, videokyc)
+        await this.validateInput(DATATYPES.STRING, docs)
+        return this.callContract(FUNCTIONS.FULLKYCUPDATE, client, identity, videokyc, docs, options)
     }
 
     public async getClientKYC(_client: string, options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, _client)
         return this.callContract(FUNCTIONS.GETCLIENTKYC, _client, options)
+    }
+
+    public async getFullClientKYC(_client: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETFULLKYC, _client, options)
     }
 
     public async setAmlScore(_client: string, _score: string, options?: { gasPrice, gasLimit }): any {
