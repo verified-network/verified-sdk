@@ -19,7 +19,9 @@ enum FUNCTIONS {
     GETAMLSTATUS = 'getAMLStatus',
     SETCUSTODYACCOUNT = 'setCustodyAccount',
     GETCUSTODYACCOUNT = 'getCustodyAccount',
-    GETMANAGERS = 'getManagers'
+    GETMANAGERS = 'getManagers',
+    SETCUSTODY = 'setCustody',
+    GETCUSTODY = 'getCustody'
 }
 
 export default class Client extends VerifiedContract {
@@ -88,10 +90,6 @@ export default class Client extends VerifiedContract {
     }
 
     public async KycUpdate(client: string, name: string, surname: string, country: string, contact: string, status: string, 
-                                    _hashedMessage: string,
-                                    _v: string,
-                                    _r: string,
-                                    _s: string,
                                     options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, client)
         await this.validateInput(DATATYPES.STRING, name)
@@ -99,7 +97,7 @@ export default class Client extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, country)
         await this.validateInput(DATATYPES.STRING, contact)
         await this.validateInput(DATATYPES.NUMBER, status)
-        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), this.sanitiseInput(DATATYPES.BYTE32, contact), status, _hashedMessage, _v, _r, _s, options)
+        return this.callContract(FUNCTIONS.UPDATEKYC, client, this.sanitiseInput(DATATYPES.BYTE32, name), this.sanitiseInput(DATATYPES.BYTE32, surname), this.sanitiseInput(DATATYPES.BYTE32, country), this.sanitiseInput(DATATYPES.BYTE32, contact), status, options)
     }
 
     public async fullKycUpdate(client: string, identity: string, videokyc: string, docs: string, 
@@ -153,5 +151,16 @@ export default class Client extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _country)
         await this.validateInput(DATATYPES.STRING, _role)
         return this.callContract(FUNCTIONS.GETMANAGERS, this.sanitiseInput(DATATYPES.BYTE32, _country), this.sanitiseInput(DATATYPES.BYTE32, _role), options)
+    }
+
+    public async setCustody(_client: string, _account: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        await this.validateInput(DATATYPES.STRING, _account)
+        return this.callContract(FUNCTIONS.SETCUSTODY, _client, this.sanitiseInput(DATATYPES.BYTE32, _account), options)
+    }
+
+    public async getCustody(_client: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        return this.callContract(FUNCTIONS.GETCUSTODY, _client, options)
     }
 }
