@@ -52,12 +52,12 @@ class SecuritiesFactory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
         return this.callContract(FUNCTIONS.GETSECURITY, _token, options);
     }
-    async issueSecurity(_security, _company, _isin, _currency, _issuer, _intermediary, _qualified, options) {
+    async issueSecurity(_security, _category, _company, _isin, _currency, _issuer, _intermediary, _restrictions, _country, _qualified, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _currency);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _intermediary);
-        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _currency, _issuer, _intermediary, _qualified, options);
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, _category, this.sanitiseInput(index_1.DATATYPES.BYTE32, _company), this.sanitiseInput(index_1.DATATYPES.BYTE32, _isin), _currency, _issuer, _intermediary, _restrictions, _country, _qualified, options);
     }
     async getSecurityToken(security, issuer, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);

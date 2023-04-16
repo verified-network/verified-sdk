@@ -2,20 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     5: {
-        'Client': '0x1BB3849848EC6EE16a4e8a81e8B2e94f97874783',
+        'Client': '0x61B94d09d45CaA35Ab8e16f6CC051B2289F37591',
         'Factory': '',
         'Cash': '',
         'Bond': '',
         'Token': '',
         'Oracle': '',
         'Rates': '',
-        'Security': '0x5266906543BdFAC071eFDb176f91930350e14C14',
-        'SecuritiesFactory': '0x2b0d51Bf006e5847aF9Fb3Cf3bA8612190133857',
+        'Security': '0x7Ad3AB2EDc2700c942A33a4Fe4b20486D8c60C2b',
+        'SecuritiesFactory': '0x02D7D0826181EF4d04cf51CE1d57C078A317dd31',
         'Vitta': '0x91cCDa0346e2358D61Cf57fC2C67e0fD29489906',
         'Liquidity': '0x511ca18c39453fa89030Ca7DCe91dA8d1B2BDC18',
         'Distribution': '0x4aC9f5aC46a9A00D5c752Fc8788ea86E083EfaA8',
-        'BalancerPrimaryIssueManager': '0x658C6C5633422176464c559cfD705cf4eBD050e8',
-        'BalancerSecondaryIssueManager': '0xF8B381B9680DC940f2328c3442c48502Bf6097bb',
+        'BalancerPrimaryIssueManager': '0xC177c6a00eE8E6728b842F359783bEF2DaA1Be47',
+        'BalancerSecondaryIssueManager': '0x97F59661D2D285524D5bA6a272D6992280391e50',
         'Custody': '',
         'CASH': {
             'VCUSD': '',

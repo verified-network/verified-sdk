@@ -64,18 +64,21 @@ export default class SecuritiesFactory extends VerifiedContract {
     }
 
     public async issueSecurity(_security: string,
+                _category: string,
                 _company: string, 
                 _isin: string, 
                 _currency: string, 
                 _issuer: string,
-                _intermediary: string,
+                _intermediary: string,                
+                _restrictions: string,
+                _country: string,
                 _qualified: string,
                 options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _security)
         await this.validateInput(DATATYPES.ADDRESS, _currency)
         await this.validateInput(DATATYPES.ADDRESS, _issuer)  
         await this.validateInput(DATATYPES.ADDRESS, _intermediary)  
-        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), _currency, _issuer, _intermediary, _qualified, options)
+        return this.callContract(FUNCTIONS.ISSUESECURITY, _security, _category, this.sanitiseInput(DATATYPES.BYTE32, _company), this.sanitiseInput(DATATYPES.BYTE32, _isin), _currency, _issuer, _intermediary, _restrictions, _country, _qualified, options)
     }
 
     public async getSecurityToken(security: string, issuer: string, options?: { gasPrice: number, gasLimit: number }): any {
