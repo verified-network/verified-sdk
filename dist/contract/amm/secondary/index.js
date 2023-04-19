@@ -11,6 +11,7 @@ var FUNCTIONS;
     FUNCTIONS["GETSETTLEMENTREQUEST"] = "getSettlementRequest";
     FUNCTIONS["SETSETTLEMENTSTATUS"] = "setSettlementStatus";
     FUNCTIONS["GETSUBSCRIBERS"] = "getSubscribers";
+    FUNCTIONS["CLOSE"] = "close";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class SecondaryIssueManager extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -45,6 +46,10 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
     async getSubscribers(poolId, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
+    }
+    async close(poolId, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.CLOSE, poolId, options);
     }
 }
 exports.default = SecondaryIssueManager;

@@ -10,7 +10,8 @@ enum FUNCTIONS {
     GETSETTLEMENTREQUESTS = 'getSettlementRequests',
     GETSETTLEMENTREQUEST = 'getSettlementRequest',
     SETSETTLEMENTSTATUS = 'setSettlementStatus',
-    GETSUBSCRIBERS = 'getSubscribers'
+    GETSUBSCRIBERS = 'getSubscribers',
+    CLOSE = 'close'
 }
 
 export default class SecondaryIssueManager extends VerifiedContract {
@@ -64,6 +65,13 @@ export default class SecondaryIssueManager extends VerifiedContract {
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
+    }
+
+    public async close( 
+        poolId: string, 
+        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.CLOSE, poolId, options);
     }
 
 }

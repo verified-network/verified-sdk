@@ -15,6 +15,7 @@ var FUNCTIONS;
     FUNCTIONS["GETCLIENTKYC"] = "getClientKYC";
     FUNCTIONS["GETFULLKYC"] = "getFullClientKYC";
     FUNCTIONS["SETAMLSCORE"] = "setAmlScore";
+    FUNCTIONS["SETCREDITSCORE"] = "setCreditScore";
     FUNCTIONS["SETAMLPASSSCORE"] = "setAmlPassScore";
     FUNCTIONS["GETAMLSTATUS"] = "getAMLStatus";
     FUNCTIONS["SETCUSTODYACCOUNT"] = "setCustodyAccount";
@@ -96,6 +97,11 @@ class Client extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
         await this.validateInput(index_1.DATATYPES.NUMBER, _score);
         return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options);
+    }
+    async setCreditScore(_client, _score, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _client);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _score);
+        return this.callContract(FUNCTIONS.SETCREDITSCORE, _client, _score, options);
     }
     async setAmlPassScore(_score, options) {
         await this.validateInput(index_1.DATATYPES.NUMBER, _score);

@@ -15,6 +15,7 @@ enum FUNCTIONS {
     GETCLIENTKYC = 'getClientKYC',
     GETFULLKYC = 'getFullClientKYC',
     SETAMLSCORE = 'setAmlScore',
+    SETCREDITSCORE = 'setCreditScore',
     SETAMLPASSSCORE = 'setAmlPassScore',
     GETAMLSTATUS = 'getAMLStatus',
     SETCUSTODYACCOUNT = 'setCustodyAccount',
@@ -123,6 +124,12 @@ export default class Client extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _client)
         await this.validateInput(DATATYPES.NUMBER, _score)
         return this.callContract(FUNCTIONS.SETAMLSCORE, _client, _score, options)
+    }
+
+    public async setCreditScore(_client: string, _score: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _client)
+        await this.validateInput(DATATYPES.NUMBER, _score)
+        return this.callContract(FUNCTIONS.SETCREDITSCORE, _client, _score, options)
     }
 
     public async setAmlPassScore(_score: string, options?: { gasPrice, gasLimit }): any {
