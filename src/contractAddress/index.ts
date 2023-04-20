@@ -1,19 +1,20 @@
 const contractAddress: Object = {
     5: {
-        'Client': '0xa364FBc00181aA25EB8aF84D59Caa5A86925616A',
+        'Client': '0xB1752A2Af74886B994596EdC6b3806c601d4f682',
         'Factory': '',        
         'Cash': '',
         'Bond': '',
         'Token': '',
         'Oracle': '',
         'Rates': '',
-        'Security': '0xDE5866439D97Ad9efd45F6DA570ccE510d3646da',
-        'SecuritiesFactory': '0x498E6B98f206d6c0596c043bdEB0c31F4bdF9b2E',
+        'Security': '0x6544605D7479F499f5082E8460D53b57C138A8A3',
+        'SecuritiesFactory': '0xD563A0134e4DC1e626109eFA137E77cd68DC524c',
         'Vitta': '0x91cCDa0346e2358D61Cf57fC2C67e0fD29489906',
         'Liquidity': '0x511ca18c39453fa89030Ca7DCe91dA8d1B2BDC18',
         'Distribution': '0x4aC9f5aC46a9A00D5c752Fc8788ea86E083EfaA8',
-        'BalancerPrimaryIssueManager': '0xFee9F96B4c6cAfca14fFcD49D6Ab126AE0470427',
-        'BalancerSecondaryIssueManager' : '0x1E187BC2F1784BB428a0d1140d5b462387eB4BEa',
+        'BalancerPrimaryIssueManager': '0xBeC826060d9842e826d616F4eC6ba19e11b5054A',
+        'BalancerSecondaryIssueManager' : '0xEb273679963b9eCc51C9a14a56C491C02FF75f6a',
+        'BalancerMarginIssueManager' : '0x5482761A7Cad2C562a314b6c5Bc6d0e3e54295f6',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -41,6 +42,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -68,6 +70,7 @@ const contractAddress: Object = {
         'Distribution': '0xa5D4c6d6Fb8efFb3785F31352be3343E0B7113A3',
         'BalancerPrimaryIssueManager': '0xaeb0135cF07CDdb695dF7f15E8a9D5f7eCCF6076',
         'BalancerSecondaryIssueManager' : '0x1E99ae988c872598Bf1874BEf42020Df9796f6dA',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -95,6 +98,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -122,6 +126,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -149,6 +154,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -176,6 +182,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',
@@ -203,6 +210,7 @@ const contractAddress: Object = {
         'Distribution': '',
         'BalancerPrimaryIssueManager': '',
         'BalancerSecondaryIssueManager' : '',
+        'BalancerMarginIssueManager' : '',
         'Custody': '',
         'CASH': {
             'VCUSD': '',

@@ -12,6 +12,7 @@ import Liquidity from './contract/liquidity';
 import Rates from './contract/rates';
 import PrimaryIssueManager from './contract/amm/primary';
 import SecondaryIssueManager from './contract/amm/secondary';
+import MarginIssueManager from './contract/amm/margin';
 import Security from './contract/security';
 import SecuritiesFactory from './contract/securitiesfactory';
 import Distribution from './contract/distribution';
@@ -32,6 +33,7 @@ export {
     Rates,
     PrimaryIssueManager,
     SecondaryIssueManager,
+    MarginIssueManager,
     Security,
     SecuritiesFactory,
     Distribution,
