@@ -47,7 +47,7 @@ export class VerifiedContract {
                 else status = false
                 break;
             case DATATYPES.NUMBER:
-                if (data === Number(data)) error = 'Invalid numerical value'
+                if (data !== Number(data)) error = 'Invalid numerical value'
                 else status = false
                 break;
             case DATATYPES.BOOLEAN:

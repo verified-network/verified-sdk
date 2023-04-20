@@ -35,7 +35,7 @@ class VerifiedContract {
                     status = false;
                 break;
             case DATATYPES.NUMBER:
-                if (data === Number(data))
+                if (data !== Number(data))
                     error = 'Invalid numerical value';
                 else
                     status = false;
