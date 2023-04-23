@@ -25,8 +25,6 @@ var FUNCTIONS;
 class Custody extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
         const address = contractNetworkAddress;
-        //const chainId: string = Object.keys(networks)
-        //const address = networks[chainId].address
         super(address, JSON.stringify(Vault_json_1.abi), signer);
         this.contractAddress = address;
     }

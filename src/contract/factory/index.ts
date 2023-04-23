@@ -3,23 +3,24 @@
 
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/payments/Factory.json';
+import { abi } from '../../abi/payments/Factory.json';
 
 enum FUNCTIONS {
     GETTOKENCOUNT = 'getTokenCount',
     GETTOKEN = 'getToken',
     GETNAMEANDTYPE = 'getNameAndType',
-    TOKENCREATED = 'TokenCreated',
     GETTOKENBYNAMETYPE = 'getTokenByNameType',
     GETISSUER = 'getIssuer',
     GETADDRESSTYPE = 'getAddressAndType',
-    SETORACLEURL = 'setViaOracleUrl',
     GETORACLEURL = 'getViaOracleUrl',
-    SETPAYOUTURL = 'setFiatPayoutUrl',
     GETPAYOUTURL = 'getFiatPayoutUrl',
-    SETSIGNER = 'setSigner',
+    GETORACLES = 'getOracles',
+    SETORACLEURL = 'setViaOracleUrl',
+    SETPAYOUTURL = 'setFiatPayoutUrl',
     SETCRYPTODATAURL = 'setCryptoDataURL',
-    SETORACLES = 'setOracles'
+    SETORACLES = 'setOracles',
+    SUPPORTTOKENS = 'supportTokens',
+    TOKENCREATED = 'TokenCreated'     
 }
 
 export default class Factory extends VerifiedContract {
@@ -29,9 +30,6 @@ export default class Factory extends VerifiedContract {
     constructor(signer: VerifiedWallet, contractNetworkAddress: string) {
         
         const address = contractNetworkAddress
-        //const chainId: string = Object.keys(networks)
-        //console.log("Factory chain id "+chainId);
-        //const address = networks[chainId].address
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
@@ -46,9 +44,8 @@ export default class Factory extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETTOKENCOUNT)
     }
 
-    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _signer)
-        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
+    public async getOracles() {
+        return this.callContract(FUNCTIONS.GETORACLES)
     }
 
     /**
@@ -57,7 +54,7 @@ export default class Factory extends VerifiedContract {
     * @returns boolean
     */
     public async getToken(_n: string, options?: { gasPrice: number, gasLimit: number }): any {
-        //await this.validateInput(DATATYPES.NUMBER, _n)
+        await this.validateInput(DATATYPES.NUMBER, _n)
         return this.callContract(FUNCTIONS.GETTOKEN, _n, options)
     }
 
@@ -114,13 +111,21 @@ export default class Factory extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETPAYOUTURL, options)
     } 
 
-    public async setCryptoDataURL(_url: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async setCryptoDataURL(_url: string, _fromCurrency: string, _toCurrency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _url)
-        return this.callContract(FUNCTIONS.SETCRYPTODATAURL, _url, options)
+        await this.validateInput(DATATYPES.STRING, _fromCurrency)
+        await this.validateInput(DATATYPES.STRING, _toCurrency)
+        return this.callContract(FUNCTIONS.SETCRYPTODATAURL, _url, this.sanitiseInput(DATATYPES.BYTE32, _fromCurrency), this.sanitiseInput(DATATYPES.BYTE32, _toCurrency), options)
     } 
 
     public async setOracles(_oracles: string, options?: { gasPrice: number, gasLimit: number }): any {
         return this.callContract(FUNCTIONS.SETORACLES, _oracles, options)
+    } 
+
+    public async supportTokens(_currency: string, _address: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.STRING, _currency)
+        await this.validateInput(DATATYPES.ADDRESS, _address)
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, this.sanitiseInput(DATATYPES.BYTE32, _currency), _address, options)
     } 
 
 }

@@ -9,24 +9,22 @@ var FUNCTIONS;
     FUNCTIONS["GETTOKENCOUNT"] = "getTokenCount";
     FUNCTIONS["GETTOKEN"] = "getToken";
     FUNCTIONS["GETNAMEANDTYPE"] = "getNameAndType";
-    FUNCTIONS["TOKENCREATED"] = "TokenCreated";
     FUNCTIONS["GETTOKENBYNAMETYPE"] = "getTokenByNameType";
     FUNCTIONS["GETISSUER"] = "getIssuer";
     FUNCTIONS["GETADDRESSTYPE"] = "getAddressAndType";
-    FUNCTIONS["SETORACLEURL"] = "setViaOracleUrl";
     FUNCTIONS["GETORACLEURL"] = "getViaOracleUrl";
-    FUNCTIONS["SETPAYOUTURL"] = "setFiatPayoutUrl";
     FUNCTIONS["GETPAYOUTURL"] = "getFiatPayoutUrl";
-    FUNCTIONS["SETSIGNER"] = "setSigner";
+    FUNCTIONS["GETORACLES"] = "getOracles";
+    FUNCTIONS["SETORACLEURL"] = "setViaOracleUrl";
+    FUNCTIONS["SETPAYOUTURL"] = "setFiatPayoutUrl";
     FUNCTIONS["SETCRYPTODATAURL"] = "setCryptoDataURL";
     FUNCTIONS["SETORACLES"] = "setOracles";
+    FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
+    FUNCTIONS["TOKENCREATED"] = "TokenCreated";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Factory extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
         const address = contractNetworkAddress;
-        //const chainId: string = Object.keys(networks)
-        //console.log("Factory chain id "+chainId);
-        //const address = networks[chainId].address
         super(address, JSON.stringify(Factory_json_1.abi), signer);
         this.contractAddress = address;
     }
@@ -38,9 +36,8 @@ class Factory extends index_1.VerifiedContract {
     async getTokenCount() {
         return this.callContract(FUNCTIONS.GETTOKENCOUNT);
     }
-    async setSigner(_signer, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
-        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
+    async getOracles() {
+        return this.callContract(FUNCTIONS.GETORACLES);
     }
     /**
     * Get address of token by index [callable by client].
@@ -48,7 +45,7 @@ class Factory extends index_1.VerifiedContract {
     * @returns boolean
     */
     async getToken(_n, options) {
-        //await this.validateInput(DATATYPES.NUMBER, _n)
+        await this.validateInput(index_1.DATATYPES.NUMBER, _n);
         return this.callContract(FUNCTIONS.GETTOKEN, _n, options);
     }
     /**
@@ -95,12 +92,19 @@ class Factory extends index_1.VerifiedContract {
     async getFiatPayoutUrl(options) {
         return this.callContract(FUNCTIONS.GETPAYOUTURL, options);
     }
-    async setCryptoDataURL(_url, options) {
+    async setCryptoDataURL(_url, _fromCurrency, _toCurrency, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _url);
-        return this.callContract(FUNCTIONS.SETCRYPTODATAURL, _url, options);
+        await this.validateInput(index_1.DATATYPES.STRING, _fromCurrency);
+        await this.validateInput(index_1.DATATYPES.STRING, _toCurrency);
+        return this.callContract(FUNCTIONS.SETCRYPTODATAURL, _url, this.sanitiseInput(index_1.DATATYPES.BYTE32, _fromCurrency), this.sanitiseInput(index_1.DATATYPES.BYTE32, _toCurrency), options);
     }
     async setOracles(_oracles, options) {
         return this.callContract(FUNCTIONS.SETORACLES, _oracles, options);
+    }
+    async supportTokens(_currency, _address, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _address);
+        return this.callContract(FUNCTIONS.SUPPORTTOKENS, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _address, options);
     }
 }
 exports.default = Factory;

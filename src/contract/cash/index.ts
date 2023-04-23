@@ -6,16 +6,15 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from '../../abi/payments/Cash.json';
 
 enum FUNCTIONS {
-    TRANSFERFROM = 'transferFrom',
     PAYIN = 'payIn',
+    REQUESTISSUE = 'requestIssue',
+    BURNCASHTOKENS = 'burnCashTokens',
+    TRANSFERFROM = 'transferFrom',
     BALANCE = 'balanceOf',
     ISSUE = 'CashIssued',
     REDEEM = 'CashRedeemed',
     TRANSFER = 'CashTransfer',
-    EXCHANGE = 'CashDeposits',
-    SETSIGNER = 'setSigner',
-    REQUESTISSUEFROML1 = 'requestIssueFromL1',
-    BURNCASHTOKENS = 'burnCashTokens'
+    EXCHANGE = 'CashDeposits'
 }
 
 export default class Cash extends VerifiedContract {
@@ -31,6 +30,35 @@ export default class Cash extends VerifiedContract {
     }
 
     /**
+     * Request pay out [callable by manager]
+     * @param (uint256 _tokens, address _payer, bytes32 _currency, address _sender)
+     * @returns boolean
+     */
+     public async payIn(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        await this.validateInput(DATATYPES.ADDRESS, _payer) 
+        await this.validateInput(DATATYPES.STRING, _currency)
+        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+    }
+
+    public async requestIssue(_amount: string, 
+                            _buyer: string, 
+                            _currency: string,
+                            options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _buyer)
+        await this.validateInput(DATATYPES.NUMBER, _amount)   
+        await this.validateInput(DATATYPES.STRING, _currency)     
+        return this.callContract(FUNCTIONS.REQUESTISSUE, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+    }
+
+    public async burnCashTokens(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        await this.validateInput(DATATYPES.ADDRESS, _payer) 
+        await this.validateInput(DATATYPES.STRING, _currency)
+        return this.callContract(FUNCTIONS.BURNCASHTOKENS, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+    }
+
+    /**
     * An investor can also request cash tokens from Verified by paying in another cash token. 
     * For example, an investor can request a USD cash token by paying in a EUR cash token.
     * where, the sender is the address of cash token paid in, the receiver is the address of the cash token converted to
@@ -43,49 +71,7 @@ export default class Cash extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
         await this.validateInput(DATATYPES.NUMBER, _tokens)
         return this.callContract(FUNCTIONS.TRANSFERFROM, _senderAddress, _recieverAddress, _tokens, options)
-    }
-
-    /**
-     * Request pay out [callable by manager]
-     * @param (uint256 _tokens, address _payer, bytes32 _currency, address _sender)
-     * @returns boolean
-     */
-    public async payIn(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _tokens)
-        await this.validateInput(DATATYPES.ADDRESS, _payer) 
-        await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.PAYIN, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
-    }
-
-    public async burnCashTokens(_tokens: string, _payer: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _tokens)
-        await this.validateInput(DATATYPES.ADDRESS, _payer) 
-        await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.BURNCASHTOKENS, _tokens, _payer, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
-    }
-
-    /**
-        Sets signer to verify bridge
-        @param  _signer  address of signer that can only be set by owner of bridge
-     */
-    public async setSigner(_signer: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _signer)
-        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options)
-    } 
-
-    public async requestIssueFromL1(_amount: string, 
-                                    _buyer: string, 
-                                    _currency: string, 
-                                    _hashedMessage: string,
-                                    _v: string,
-                                    _r: string,
-                                    _s: string,
-                                    options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.ADDRESS, _buyer)
-        await this.validateInput(DATATYPES.NUMBER, _amount)        
-        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(DATATYPES.BYTE32, _currency), 
-                                _hashedMessage, _v, _r, _s, options)
-    }
+    }       
 
     /* Request balance of wallet in contract
     */

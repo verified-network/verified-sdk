@@ -7,21 +7,15 @@ const Rates_json_1 = require("../../abi/payments/Rates.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["SETFEETO"] = "setFeeTo";
-    FUNCTIONS["SETFEETOSETTER"] = "setFeeToSetter";
-    FUNCTIONS["SETMARGIN"] = "setMargin";
-    FUNCTIONS["SETTREASURY"] = "setTreasury";
-    FUNCTIONS["SETCUSTODIAN"] = "setCustodian";
-    FUNCTIONS["GETMARGIN"] = "getMargin";
     FUNCTIONS["GETFEE"] = "getFee";
+    FUNCTIONS["SETFEETOSETTER"] = "setFeeToSetter";
+    FUNCTIONS["SETCUSTODIAN"] = "setCustodian";
     FUNCTIONS["GETFEETOSETTER"] = "getFeeToSetter";
     FUNCTIONS["GETCUSTODIAN"] = "getCustodian";
-    FUNCTIONS["TRANSFERTOCUSTODY"] = "transferToCustody";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Rates extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
         const address = contractNetworkAddress;
-        //const chainId: string = Object.keys(networks)
-        //const address = networks[chainId].address
         super(address, JSON.stringify(Rates_json_1.abi), signer);
         this.contractAddress = address;
     }
@@ -35,22 +29,9 @@ class Rates extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _feeToSetter);
         return this.callContract(FUNCTIONS.SETFEETOSETTER, _feeToSetter, options);
     }
-    async setMargin(_margin, _asset, options) {
-        await this.validateInput(index_1.DATATYPES.NUMBER, _margin);
-        await this.validateInput(index_1.DATATYPES.STRING, _asset);
-        return this.callContract(FUNCTIONS.SETMARGIN, _margin, this.sanitiseInput(index_1.DATATYPES.BYTE32, _asset), options);
-    }
-    async setTreasury(_treasury, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _treasury);
-        return this.callContract(FUNCTIONS.SETTREASURY, _treasury, options);
-    }
     async setCustodian(_custodian, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _custodian);
         return this.callContract(FUNCTIONS.SETCUSTODIAN, _custodian, options);
-    }
-    async getMargin(_asset, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, _asset);
-        return this.callContract(FUNCTIONS.GETMARGIN, this.sanitiseInput(index_1.DATATYPES.BYTE32, _asset), options);
     }
     async getFee(_feeType, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _feeType);
@@ -61,11 +42,6 @@ class Rates extends index_1.VerifiedContract {
     }
     async getCustodian() {
         return this.callContract(FUNCTIONS.GETCUSTODIAN);
-    }
-    async transferToCustody(_percent, _transferFrom, options) {
-        await this.validateInput(index_1.DATATYPES.NUMBER, _percent);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _transferFrom);
-        return this.callContract(FUNCTIONS.TRANSFERTOCUSTODY, _percent, _transferFrom, options);
     }
 }
 exports.default = Rates;

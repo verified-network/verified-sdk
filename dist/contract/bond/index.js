@@ -6,6 +6,9 @@ const index_1 = require("../index");
 const Bond_json_1 = require("../../abi/payments/Bond.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {
+    FUNCTIONS["REQUESTISSUE"] = "requestIssue";
+    FUNCTIONS["REQUESTPURCHASE"] = "requestPurchase";
+    FUNCTIONS["REQUESTREDEMPTION"] = "requestRedemption";
     FUNCTIONS["GETBONDS"] = "getBonds";
     FUNCTIONS["GETBONDISSUES"] = "getBondIssues";
     FUNCTIONS["GETBONDPURCHASES"] = "getBondPurchases";
@@ -13,14 +16,33 @@ var FUNCTIONS;
     FUNCTIONS["REDEEM"] = "BondRedeemed";
     FUNCTIONS["PURCHASE"] = "BondPurchased";
     FUNCTIONS["LIQUIDATE"] = "BondLiquidated";
-    FUNCTIONS["SETSIGNER"] = "setSigner";
-    FUNCTIONS["REQUESTISSUEFROML1"] = "requestIssueFromL1";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Bond extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
         const address = bondCurrencyAddress;
         super(address, JSON.stringify(Bond_json_1.abi), signer);
         this.contractAddress = address;
+    }
+    async requestIssue(_amount, _payer, _currency, _cashContract, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _cashContract);
+        return this.callContract(FUNCTIONS.REQUESTISSUE, _amount, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _cashContract, options);
+    }
+    async requestPurchase(_amount, _payer, _currency, _cashContract, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _cashContract);
+        return this.callContract(FUNCTIONS.REQUESTPURCHASE, _amount, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _cashContract, options);
+    }
+    async requestRedemption(_amount, _payer, _currency, _tokenContract, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
+        await this.validateInput(index_1.DATATYPES.STRING, _currency);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _tokenContract);
+        return this.callContract(FUNCTIONS.REQUESTREDEMPTION, _amount, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _tokenContract, options);
     }
     /*
     * Gets bond issued address
@@ -51,19 +73,6 @@ class Bond extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _issuer);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _bond);
         return this.callContract(FUNCTIONS.GETBONDPURCHASES, _issuer, _bond, options);
-    }
-    /**
-        Sets signer to verify bridge
-        @param  _signer  address of signer that can only be set by owner of bridge
-     */
-    async setSigner(_signer, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _signer);
-        return this.callContract(FUNCTIONS.SETSIGNER, _signer, options);
-    }
-    async requestIssueFromL1(_amount, _buyer, _currency, _hashedMessage, _v, _r, _s, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _buyer);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        return this.callContract(FUNCTIONS.REQUESTISSUEFROML1, _amount, _buyer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _hashedMessage, _v, _r, _s, options);
     }
     /*
     emits event BondIssued(address indexed _token, address issuer, uint256 issuedAmount, bytes32 collateralCurrency, uint256 collateralValue);
