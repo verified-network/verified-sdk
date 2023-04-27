@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     5: {
         'Client': '0x3a4258bE84ddDb689CFeD49107726B8700ec593e',
-        'Factory': '',
-        'Cash': '',
-        'Bond': '',
-        'Token': '',
-        'Oracle': '',
-        'Rates': '',
+        'Factory': '0x979096681423F77396e1C2a4d0A0B1e2cfd4b886',
+        'Cash': '0xB58142f2e2c1238E900a461eb3E14ECD232eA868',
+        'Bond': '0x22b5a9F9be86bcD7Ffef3C1683aF04A1F3b83959',
+        'Token': '0x4aC88676E3d1F10469f131F8F6B84E9Ca61De514',
+        'Oracle': '0x109F99eA5ED3DA588469173Fc32A843c8830296a',
+        'Rates': '0x766545084E1C461dB5EC5A381E3cb6817aD271Ad',
         'Security': '0x68dFe8f2806052D6288467c58aEDc1165a6085F1',
         'SecuritiesFactory': '0x7F0B92c1FBB5F71B5c9cc65d030cB09Dd6812E88',
         'Vitta': '0x91cCDa0346e2358D61Cf57fC2C67e0fD29489906',
@@ -19,14 +19,16 @@ const contractAddress = {
         'BalancerMarginIssueManager': '0xeaA3d0A44789B26295fAAC62eF5De82ed61223a8',
         'Custody': '',
         'CASH': {
-            'VCUSD': '',
-            'VCEUR': '',
-            'VCINR': ''
+            'VCUSD': '0xa18244Fb7236EE7E0D5382579eE0341FA621B9bB',
+            'VCEUR': '0x8A2002c9dBA52909647Bca0049058bb0daB0196d',
+            'VCCHF': '0x6c2e82cEb14Ed629192518128a49fb0B43616d58',
+            'VCINR': '0xa241A295a9E7C7d6f40f7BaF6E971438e5D52f07'
         },
         'BOND': {
-            'VBUSD': '',
-            'VBEUR': '',
-            'VBINR': ''
+            'VBUSD': '0xC54c7D322432C817a47fa99468d6C38f93ce9205',
+            'VBEUR': '0xEee16BA238308315a3AE7e3cfad51447469dE2B2',
+            'VCCHF': '0xa9F081b179688F0b676297d211865703e3FB13CD',
+            'VBINR': '0x99EEBAeE18680c50463eb1A4784f7426b75D22EE'
         },
     },
     'verified': {
@@ -49,11 +51,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -77,11 +81,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -105,11 +111,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -133,11 +141,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -161,11 +171,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -189,11 +201,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     },
@@ -217,11 +231,13 @@ const contractAddress = {
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
+            'VCCHF': '',
             'VCINR': ''
         },
         'BOND': {
             'VBUSD': '',
             'VBEUR': '',
+            'VCCHF': '',
             'VBINR': ''
         },
     }
