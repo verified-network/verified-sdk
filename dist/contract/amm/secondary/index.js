@@ -7,6 +7,7 @@ const SecondaryIssueManager_json_1 = require("../../../abi/assetmanager/balancer
 var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["ISSUESECONDARY"] = "issueSecondary";
+    FUNCTIONS["SETISSUINGFEE"] = "setIssuingFee";
     FUNCTIONS["GETSETTLEMENTREQUESTS"] = "getSettlementRequests";
     FUNCTIONS["GETSETTLEMENTREQUEST"] = "getSettlementRequest";
     FUNCTIONS["SETSETTLEMENTSTATUS"] = "setSettlementStatus";
@@ -28,6 +29,12 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, minOrderSize);
         await this.validateInput(index_1.DATATYPES.NUMBER, currencyAmount);
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, minOrderSize, currencyAmount, options);
+    }
+    async setIssuingFee(security, currency, swapfee, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, swapfee);
+        return this.callContract(FUNCTIONS.SETISSUINGFEE, security, currency, swapfee, options);
     }
     async getSettlementRequests(dpid, poolid, options) {
         await this.validateInput(index_1.DATATYPES.STRING, dpid);

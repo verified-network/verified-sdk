@@ -18,6 +18,7 @@ var FUNCTIONS;
     FUNCTIONS["ACCEPT"] = "accept";
     FUNCTIONS["REJECT"] = "reject";
     FUNCTIONS["SETTLE"] = "settle";
+    FUNCTIONS["SETISSUINGFEE"] = "setIssuingFee";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class PrimaryIssueManager extends index_1.VerifiedContract {
     constructor(signer, platformAddress, platform) {
@@ -54,6 +55,13 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
         await this.validateInput(index_1.DATATYPES.NUMBER, ordersize);
         return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, options);
+    }
+    async setIssuingFee(owner, offered, tomatch, swapfee, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, owner);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, offered);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(index_1.DATATYPES.NUMBER, swapfee);
+        return this.callContract(FUNCTIONS.SETISSUINGFEE, owner, offered, tomatch, swapfee, options);
     }
     /**
      * Gets security tokens offered for passed token parameter

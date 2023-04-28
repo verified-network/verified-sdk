@@ -7,6 +7,7 @@ import { abi, networks } from '../../../abi/assetmanager/balancer/SecondaryIssue
 
 enum FUNCTIONS {
     ISSUESECONDARY = 'issueSecondary',
+    SETISSUINGFEE = 'setIssuingFee',
     GETSETTLEMENTREQUESTS = 'getSettlementRequests',
     GETSETTLEMENTREQUEST = 'getSettlementRequest',
     SETSETTLEMENTSTATUS = 'setSettlementStatus',
@@ -41,6 +42,13 @@ export default class SecondaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, minOrderSize);
         await this.validateInput(DATATYPES.NUMBER, currencyAmount);
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, minOrderSize, currencyAmount, options);
+    }
+
+    public async setIssuingFee(security: string, currency: string, swapfee: string, options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        await this.validateInput(DATATYPES.ADDRESS, currency);
+        await this.validateInput(DATATYPES.NUMBER, swapfee);
+        return this.callContract(FUNCTIONS.SETISSUINGFEE, security, currency, swapfee, options);
     }
 
     public async getSettlementRequests(dpid: string, poolid: string, options?: { gasPrice, gasLimit }): any {

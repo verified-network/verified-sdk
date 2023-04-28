@@ -17,7 +17,8 @@ enum FUNCTIONS {
     CLOSE = 'close',
     ACCEPT = 'accept',
     REJECT = 'reject',
-    SETTLE = 'settle'
+    SETTLE = 'settle',
+    SETISSUINGFEE = 'setIssuingFee'
 }
 
 export default class PrimaryIssueManager extends VerifiedContract {
@@ -71,6 +72,15 @@ export default class PrimaryIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, tomatch);
         await this.validateInput(DATATYPES.NUMBER, ordersize);
         return this.callContract(FUNCTIONS.OFFERTERMS, owner, offered, tomatch, ordersize, options);
+    }
+
+    public async setIssuingFee(owner: string, offered: string, tomatch: string, swapfee: string, 
+                options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, owner);
+        await this.validateInput(DATATYPES.ADDRESS, offered);
+        await this.validateInput(DATATYPES.ADDRESS, tomatch);
+        await this.validateInput(DATATYPES.NUMBER, swapfee);
+        return this.callContract(FUNCTIONS.SETISSUINGFEE, owner, offered, tomatch, swapfee, options);
     }
 
     /**
