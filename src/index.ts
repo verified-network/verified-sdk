@@ -6,7 +6,7 @@ import Bond from './contract/bond';
 import Cash from './contract/cash';
 import Factory from './contract/factory';
 import Token from './contract/token';
-import Oracle from './contract/oracle';
+import Vault from './contract/vault';
 import Custody from './contract/custody';
 import Liquidity from './contract/liquidity';
 import Rates from './contract/rates';
@@ -27,7 +27,7 @@ export {
     Cash,
     Factory,
     Token,
-    Oracle,
+    Vault,
     Custody,
     Liquidity,
     Rates,
