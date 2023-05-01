@@ -114,9 +114,9 @@ class PrimaryIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.GETSUBSCRIBERS, poolId, options);
     }
-    async close(security, redeem, options) {
+    async close(security, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.CLOSE, security, redeem, options);
+        return this.callContract(FUNCTIONS.CLOSE, security, options);
     }
     async accept(poolid, investor, amnt, asset, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, investor);

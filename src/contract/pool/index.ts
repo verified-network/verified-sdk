@@ -9,7 +9,7 @@ enum FUNCTIONS {
     FUNCTIONNAME = 'funcName'
 }
 
-export default class VaultContract extends VerifiedContract {
+export default class PoolContract extends VerifiedContract {
 
     public contractAddress: string
     

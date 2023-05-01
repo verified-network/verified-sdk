@@ -6,7 +6,7 @@ import Bond from './contract/bond';
 import Cash from './contract/cash';
 import Factory from './contract/factory';
 import Token from './contract/token';
-import Vault from './contract/vault';
+import Pool from './contract/pool';
 import Custody from './contract/custody';
 import Liquidity from './contract/liquidity';
 import Rates from './contract/rates';
@@ -27,7 +27,7 @@ export {
     Cash,
     Factory,
     Token,
-    Vault,
+    Pool,
     Custody,
     Liquidity,
     Rates,

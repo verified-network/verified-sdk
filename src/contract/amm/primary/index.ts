@@ -147,10 +147,9 @@ export default class PrimaryIssueManager extends VerifiedContract {
     }
 
     public async close( security: string, 
-                        redeem: string,
                         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.CLOSE, security, redeem, options);
+        return this.callContract(FUNCTIONS.CLOSE, security, options);
     }
 
     public async accept(poolid: string, 
