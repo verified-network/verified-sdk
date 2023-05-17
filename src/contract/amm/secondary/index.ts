@@ -32,16 +32,18 @@ export default class SecondaryIssueManager extends VerifiedContract {
     public async issueSecondary( 
         security: string, 
         currency:string, 
+        securityOutstanding: string,
         securityAmount:string, 
         minOrderSize: string,
         currencyAmount:string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
+        await this.validateInput(DATATYPES.NUMBER, securityOutstanding);
         await this.validateInput(DATATYPES.NUMBER, securityAmount);
         await this.validateInput(DATATYPES.NUMBER, minOrderSize);
         await this.validateInput(DATATYPES.NUMBER, currencyAmount);
-        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, minOrderSize, currencyAmount, options);
+        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityOutstanding, securityAmount, minOrderSize, currencyAmount, options);
     }
 
     public async setIssuingFee(security: string, currency: string, swapfee: string, options?: { gasPrice, gasLimit }): any {

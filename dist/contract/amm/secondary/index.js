@@ -22,13 +22,14 @@ class SecondaryIssueManager extends index_1.VerifiedContract {
         super(address, JSON.stringify(SecondaryIssueManager_json_1.abi), signer);
         this.contractAddress = address;
     }
-    async issueSecondary(security, currency, securityAmount, minOrderSize, currencyAmount, options) {
+    async issueSecondary(security, currency, securityOutstanding, securityAmount, minOrderSize, currencyAmount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, securityOutstanding);
         await this.validateInput(index_1.DATATYPES.NUMBER, securityAmount);
         await this.validateInput(index_1.DATATYPES.NUMBER, minOrderSize);
         await this.validateInput(index_1.DATATYPES.NUMBER, currencyAmount);
-        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityAmount, minOrderSize, currencyAmount, options);
+        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, currency, securityOutstanding, securityAmount, minOrderSize, currencyAmount, options);
     }
     async setIssuingFee(security, currency, swapfee, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
