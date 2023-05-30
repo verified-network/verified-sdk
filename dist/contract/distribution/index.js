@@ -19,8 +19,6 @@ var FUNCTIONS;
 class Distribution extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
         const address = contractNetworkAddress;
-        //const chainId: string = Object.keys(networks)
-        //const address = networks[chainId].address
         super(address, JSON.stringify(Distribution_json_1.abi), signer);
         this.contractAddress = address;
     }
@@ -56,8 +54,8 @@ class Distribution extends index_1.VerifiedContract {
      */
     async getRevenueShareholders(_type, _currency, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _type);
-        await this.validateInput(index_1.DATATYPES.STRING, _currency);
-        return this.callContract(FUNCTIONS.GETREVENUESHAREHOLDER, this.sanitiseInput(index_1.DATATYPES.BYTE32, _type), this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _currency);
+        return this.callContract(FUNCTIONS.GETREVENUESHAREHOLDER, this.sanitiseInput(index_1.DATATYPES.BYTE32, _type), _currency, options);
     }
     /**
         Add revenue shareholders
@@ -68,8 +66,8 @@ class Distribution extends index_1.VerifiedContract {
     async addRevenueShareholder(_type, _shareholder, _currency, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _type);
         await this.validateInput(index_1.DATATYPES.STRING, _shareholder);
-        await this.validateInput(index_1.DATATYPES.STRING, _currency);
-        return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(index_1.DATATYPES.BYTE32, _type), _shareholder, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _currency);
+        return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(index_1.DATATYPES.BYTE32, _type), _shareholder, _currency, options);
     }
     async getIssuingFeeCollected(_platform, _token, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _platform);

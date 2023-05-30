@@ -24,8 +24,6 @@ export default class Distribution extends VerifiedContract {
     constructor(signer: VerifiedWallet, contractNetworkAddress: string) {
         
         const address = contractNetworkAddress
-        //const chainId: string = Object.keys(networks)
-        //const address = networks[chainId].address
         super(address, JSON.stringify(abi), signer)
 
         this.contractAddress = address
@@ -67,8 +65,8 @@ export default class Distribution extends VerifiedContract {
      */
     public async getRevenueShareholders(_type: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _type)
-        await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.GETREVENUESHAREHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _type), this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+        await this.validateInput(DATATYPES.ADDRESS, _currency)
+        return this.callContract(FUNCTIONS.GETREVENUESHAREHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _type), _currency, options)
     }
 
     /**
@@ -80,8 +78,8 @@ export default class Distribution extends VerifiedContract {
     public async addRevenueShareholder(_type: string, _shareholder: string, _currency: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _type)
         await this.validateInput(DATATYPES.STRING, _shareholder)
-        await this.validateInput(DATATYPES.STRING, _currency)
-        return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _type), _shareholder, this.sanitiseInput(DATATYPES.BYTE32, _currency), options)
+        await this.validateInput(DATATYPES.ADDRESS, _currency)
+        return this.callContract(FUNCTIONS.ADDREVENUESHAREHOLDER, this.sanitiseInput(DATATYPES.BYTE32, _type), _shareholder, _currency, options)
     }
 
     public async getIssuingFeeCollected(_platform: string, _token: string, options?: { gasPrice: number, gasLimit: number }): any {
