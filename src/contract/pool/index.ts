@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
-import { abi, networks } from '../../abi/assetmanager/Vault.json';
+import { abi } from '../../abi/assetmanager/Vault.json';
 import contractAddress from '../../contractAddress';
 
 

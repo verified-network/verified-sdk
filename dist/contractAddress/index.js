@@ -240,6 +240,7 @@ const contractAddress = {
             'VCCHF': '0x8eE273Ac39C83EF01e3Df73d15B562a9056B03Bd',
             'VBINR': '0xd9b9A355Baf5FC1467118306e1C82732771eD140'
         },
-    }
+    },
+    'balancerVault': '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
 };
 exports.default = contractAddress;
