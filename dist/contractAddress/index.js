@@ -14,9 +14,9 @@ const contractAddress = {
         'Vitta': '0x9Ca7c1DB38aECc5a7AB4F5076f3Ed3eb4D7E12c3',
         'Liquidity': '0x83C3c211DbC1Aa6f3bd2C8175E44cf527073b7fF',
         'Distribution': '0xb136a399037BE6965f540654921ea9431E433DE2',
-        'BalancerPrimaryIssueManager': '0x70A51F7cFF9b40dC6EF30dbF0Ef23Ff9b5b8d1D6',
-        'BalancerSecondaryIssueManager': '0x9c37C5e1FEBEb25c96e5e2ac38e24d303797A8Cb',
-        'BalancerMarginIssueManager': '0xF3b0F2203578F153e1D864A73D06610236CC16C2',
+        'BalancerPrimaryIssueManager': '0xb55bcdE3Fc6Fb426A2dAf7eB39664DF465A62B88',
+        'BalancerSecondaryIssueManager': '0xf9583A87a6883a92D927A7664b8D361781923dd7',
+        'BalancerMarginIssueManager': '0xD3E2112703c639176d6FEb518263b31B424Af448',
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
         'CASH': {
             'VCUSD': '0xcd9e67b873Cf50eeb1Dc08b95a29782a5f108f1A',
