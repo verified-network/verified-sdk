@@ -6,10 +6,10 @@ import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/assetmanager/Vault.json';
 import contractAddress from '../../contractAddress';
 
-
 enum FUNCTIONS {
     BATCHSWAP = 'batchSwap',
-    SINGLESWAP = 'swap'
+    SINGLESWAP = 'swap',
+    GETPOOLTOKENS = 'getPoolTokens'
 }
 
 export default class PoolContract extends VerifiedContract {
@@ -32,48 +32,39 @@ export default class PoolContract extends VerifiedContract {
     */
     public async batchSwap(_poolId: string, 
                 _swapType: string,
-                _poolType: string,
-                _assetInIndex: string,
-                _assetOutIndex: string, 
                 _limitAmount: string, 
                 _currencyAddress: string, 
                 _securityAddress: string, 
-                _vptAddress: string, 
                 _amount: string, 
                 _account: string,
                 options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, _poolId)
         await this.validateInput(DATATYPES.STRING, _swapType)
-        await this.validateInput(DATATYPES.STRING, _poolType)
-        await this.validateInput(DATATYPES.NUMBER, _assetInIndex)
-        await this.validateInput(DATATYPES.NUMBER, _assetOutIndex)
         await this.validateInput(DATATYPES.NUMBER, _limitAmount)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.ADDRESS, _account)
         await this.validateInput(DATATYPES.ADDRESS, _currencyAddress)
         await this.validateInput(DATATYPES.ADDRESS, _securityAddress)
-        await this.validateInput(DATATYPES.ADDRESS, _vptAddress)
-        let tokensList = [undefined, undefined, undefined];
+
+        const poolTokens = (await this.fetchPoolTokens(_poolId)).response.result[0];
+        let _assetInIndex, _assetOutIndex;
+        const vptAddress = poolTokens.find(address => address.toLowerCase() !== _securityAddress.toLowerCase() && 
+                                        address.toLowerCase() !== _currencyAddress.toLowerCase() );
         if(_swapType === "Sell")
         {
-            tokensList[_assetInIndex] = _securityAddress;
+            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
             if(_poolType === "PrimaryIssue")
-                tokensList[_assetOutIndex] = _currencyAddress;
+                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
             else if(_poolType === "SecondaryIssue")
-                tokensList[_assetOutIndex] = _vptAddress;
+                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
         }else if(_swapType === "Buy")
         {
-            tokensList[_assetInIndex] = _currencyAddress;
+            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
             if(_poolType === "PrimaryIssue")
-                tokensList[_assetOutIndex] = _securityAddress;
+                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
             else if(_poolType === "SecondaryIssue")
-                tokensList[_assetOutIndex] = _vptAddress;
+                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
         }
-        let remainingIndex = tokensList.findIndex(element => element === undefined);
-        if(_poolType === "PrimaryIssue")
-            tokensList[remainingIndex] = _vptAddress;
-        else if(_poolType === "SecondaryIssue")
-            tokensList[remainingIndex] = _currencyAddress;
 
         let limitArr = new Array(3).fill(0);
         limitArr[_assetInIndex] = _limitAmount;
@@ -86,7 +77,7 @@ export default class PoolContract extends VerifiedContract {
             "toInternalBalance": 	false
         }
         // When should the transaction timeout?
-        const deadline = BigNumber(999999999999999999);
+        const deadline = "999999999999999999";
         const swap_step_struct = [{
             poolId: _poolId,
             assetInIndex: _assetInIndex,
@@ -96,29 +87,25 @@ export default class PoolContract extends VerifiedContract {
         }];
         const swapKind = _swapType === "Sell" ? 0 : 1;
         
-        return this.callContract(FUNCTIONS.BATCHSWAP,swapKind,swap_step_struct,tokensList,fund_struct,limitArr,deadline, options)
+        return this.callContract(FUNCTIONS.BATCHSWAP,swapKind,swap_step_struct,poolTokens,fund_struct,limitArr,deadline, options)
     }
 
     public async singleSwap(_poolId: string, 
                 _swapType: string,
-                _poolType: string,
                 _assetIn: string,
                 _assetOut: string, 
                 _limitAmount: string, 
-                _vptAddress: string, 
                 _amount: string, 
                 _account: string,
                 options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.STRING, _poolId)
         await this.validateInput(DATATYPES.STRING, _swapType)
-        await this.validateInput(DATATYPES.STRING, _poolType)
         await this.validateInput(DATATYPES.ADDRESS, _assetIn)
         await this.validateInput(DATATYPES.ADDRESS, _assetOut)
         await this.validateInput(DATATYPES.NUMBER, _limitAmount)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.ADDRESS, _account)
       
-
         const swapKind = _swapType === "Sell" ? 0 : 1;
         // Where are the tokens coming from/going to?
         const fund_struct = {
@@ -128,7 +115,7 @@ export default class PoolContract extends VerifiedContract {
             "toInternalBalance": 	false
         }
         // When should the transaction timeout?
-        const deadline = BigNumber(999999999999999999);
+        const deadline = "999999999999999999";
         const swap_struct = {
             poolId: _poolId,
             kind: swapKind,
@@ -139,5 +126,10 @@ export default class PoolContract extends VerifiedContract {
         };
         
         return this.callContract(FUNCTIONS.SINGLESWAP,swap_struct,fund_struct, _limitAmount, deadline, options)
+    }
+
+    public async fetchPoolTokens(_poolId: string, 
+                            options?: { gasPrice, gasLimit }): any {
+        return this.callContract(FUNCTIONS.GETPOOLTOKENS, _poolId, options);
     }
 }
