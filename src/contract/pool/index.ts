@@ -5,6 +5,7 @@ import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../wallet";
 import { abi } from '../../abi/assetmanager/Vault.json';
 import contractAddress from '../../contractAddress';
+import { ethers } from 'ethers'
 
 enum FUNCTIONS {
     BATCHSWAP = 'batchSwap',
@@ -33,8 +34,8 @@ export default class PoolContract extends VerifiedContract {
     public async batchSwap(_poolId: string, 
                 _swapType: string,
                 _limitAmount: string, 
-                _currencyAddress: string, 
-                _securityAddress: string, 
+                _assetIn: string, 
+                _assetOut: string, 
                 _amount: string, 
                 _account: string,
                 options?: { gasPrice, gasLimit }): any {
@@ -43,28 +44,13 @@ export default class PoolContract extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, _limitAmount)
         await this.validateInput(DATATYPES.NUMBER, _amount)
         await this.validateInput(DATATYPES.ADDRESS, _account)
-        await this.validateInput(DATATYPES.ADDRESS, _currencyAddress)
-        await this.validateInput(DATATYPES.ADDRESS, _securityAddress)
+        await this.validateInput(DATATYPES.ADDRESS, _assetIn)
+        await this.validateInput(DATATYPES.ADDRESS, _assetOut)
 
         const poolTokens = (await this.fetchPoolTokens(_poolId)).response.result[0];
-        let _assetInIndex, _assetOutIndex;
-        const vptAddress = poolTokens.find(address => address.toLowerCase() !== _securityAddress.toLowerCase() && 
-                                        address.toLowerCase() !== _currencyAddress.toLowerCase() );
-        if(_swapType === "Sell")
-        {
-            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
-            if(_poolType === "PrimaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
-            else if(_poolType === "SecondaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
-        }else if(_swapType === "Buy")
-        {
-            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
-            if(_poolType === "PrimaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
-            else if(_poolType === "SecondaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
-        }
+
+        const _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetIn.toLowerCase());
+        const _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetOut.toLowerCase());
 
         let limitArr = new Array(3).fill(0);
         limitArr[_assetInIndex] = _limitAmount;
@@ -87,7 +73,7 @@ export default class PoolContract extends VerifiedContract {
         }];
         const swapKind = _swapType === "Sell" ? 0 : 1;
         
-        return this.callContract(FUNCTIONS.BATCHSWAP,swapKind,swap_step_struct,poolTokens,fund_struct,limitArr,deadline, options)
+        return this.callContract(FUNCTIONS.BATCHSWAP, swapKind, swap_step_struct, poolTokens, fund_struct, limitArr, deadline, options)
     }
 
     public async singleSwap(_poolId: string, 
@@ -125,7 +111,7 @@ export default class PoolContract extends VerifiedContract {
             userData: '0x'        
         };
         
-        return this.callContract(FUNCTIONS.SINGLESWAP,swap_struct,fund_struct, _limitAmount, deadline, options)
+        return this.callContract(FUNCTIONS.SINGLESWAP, swap_struct, fund_struct, _limitAmount, deadline, options)
     }
 
     public async fetchPoolTokens(_poolId: string, 

@@ -26,32 +26,17 @@ class PoolContract extends index_1.VerifiedContract {
     * @params (string _poolId,)
     * @returns {address[] memory}
     */
-    async batchSwap(_poolId, _swapType, _limitAmount, _currencyAddress, _securityAddress, _amount, _account, options) {
+    async batchSwap(_poolId, _swapType, _limitAmount, _assetIn, _assetOut, _amount, _account, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _poolId);
         await this.validateInput(index_1.DATATYPES.STRING, _swapType);
         await this.validateInput(index_1.DATATYPES.NUMBER, _limitAmount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _account);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _currencyAddress);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _securityAddress);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetIn);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetOut);
         const poolTokens = (await this.fetchPoolTokens(_poolId)).response.result[0];
-        let _assetInIndex, _assetOutIndex;
-        const vptAddress = poolTokens.find(address => address.toLowerCase() !== _securityAddress.toLowerCase() &&
-            address.toLowerCase() !== _currencyAddress.toLowerCase());
-        if (_swapType === "Sell") {
-            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
-            if (_poolType === "PrimaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
-            else if (_poolType === "SecondaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
-        }
-        else if (_swapType === "Buy") {
-            _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _currencyAddress.toLowerCase());
-            if (_poolType === "PrimaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _securityAddress.toLowerCase());
-            else if (_poolType === "SecondaryIssue")
-                _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === vptAddress.toLowerCase());
-        }
+        const _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetIn.toLowerCase());
+        const _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetOut.toLowerCase());
         let limitArr = new Array(3).fill(0);
         limitArr[_assetInIndex] = _limitAmount;
         // Where are the tokens coming from/going to?
