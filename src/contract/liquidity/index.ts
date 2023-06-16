@@ -49,11 +49,10 @@ export default class LiquidityContract extends VerifiedContract {
         @param  _cap    investment limit for each investor
         @param  _limit  time limit for issue close 
      */
-    public async createSupply(_supply: string, _cap: string, _limit: string, options?: { gasPrice: number, gasLimit: number }): any {
-        await this.validateInput(DATATYPES.NUMBER, _supply)
+    public async createSupply(_cap: string, _limit: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.NUMBER, _cap)
         await this.validateInput(DATATYPES.NUMBER, _limit)
-        return this.callContract(FUNCTIONS.CREATESUPPLY, _supply, _cap, _limit, options)
+        return this.callContract(FUNCTIONS.CREATESUPPLY, _cap, _limit, options)
     }
 
     /**
@@ -121,27 +120,27 @@ export default class LiquidityContract extends VerifiedContract {
     /**
         Fetches investment detail for specific investor in VITTA
         @param  _investor   address of investor
-        @param  _tokenName  name of token invested by investor
+        @param  _token      address of token invested by investor
      */
-    public async getInvestment(_investor: string, _tokenName: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async getInvestment(_investor: string, _token: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _investor)
-        await this.validateInput(DATATYPES.STRING, _tokenName)
-        return this.callContract(FUNCTIONS.GETINVESTMENT, _investor, _tokenName, options)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.GETINVESTMENT, _investor, _token, options)
     }
 
     /**
         Used by Issuers (eg, asset managers) to issue VITTA to investors or refund paid in tokens to investors if investment cap is breached
         @param  _investor       address of investor
-        @param  _tokenName      name of token invested in VITTA
+        @param  _token          address of token invested in VITTA
         @param  _tokenAmount    amount of token invested in VITTA
         @param  _LPToIssue      amount of VITTA to issue to investor
      */
-    public async issue(_investor: string, _tokenName: string, _tokenAmount: string, _LPToIssue: string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async issue(_investor: string, _token: string, _tokenAmount: string, _LPToIssue: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _investor)
-        await this.validateInput(DATATYPES.STRING, _tokenName)
+        await this.validateInput(DATATYPES.ADDRESS, _token)
         await this.validateInput(DATATYPES.NUMBER, _tokenAmount)
         await this.validateInput(DATATYPES.NUMBER, _LPToIssue)
-        return this.callContract(FUNCTIONS.ISSUE, _investor, _tokenName, _tokenAmount, _LPToIssue, options)
+        return this.callContract(FUNCTIONS.ISSUE, _investor, _token, _tokenAmount, _LPToIssue, options)
     }
 
     /**

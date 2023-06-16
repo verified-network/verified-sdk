@@ -42,11 +42,10 @@ class LiquidityContract extends index_1.VerifiedContract {
         @param  _cap    investment limit for each investor
         @param  _limit  time limit for issue close
      */
-    async createSupply(_supply, _cap, _limit, options) {
-        await this.validateInput(index_1.DATATYPES.NUMBER, _supply);
+    async createSupply(_cap, _limit, options) {
         await this.validateInput(index_1.DATATYPES.NUMBER, _cap);
         await this.validateInput(index_1.DATATYPES.NUMBER, _limit);
-        return this.callContract(FUNCTIONS.CREATESUPPLY, _supply, _cap, _limit, options);
+        return this.callContract(FUNCTIONS.CREATESUPPLY, _cap, _limit, options);
     }
     /**
         Specifies list of supported tokens that can be invested in the Verified Liquidity token
@@ -106,26 +105,26 @@ class LiquidityContract extends index_1.VerifiedContract {
     /**
         Fetches investment detail for specific investor in VITTA
         @param  _investor   address of investor
-        @param  _tokenName  name of token invested by investor
+        @param  _token      address of token invested by investor
      */
-    async getInvestment(_investor, _tokenName, options) {
+    async getInvestment(_investor, _token, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _investor);
-        await this.validateInput(index_1.DATATYPES.STRING, _tokenName);
-        return this.callContract(FUNCTIONS.GETINVESTMENT, _investor, _tokenName, options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.GETINVESTMENT, _investor, _token, options);
     }
     /**
         Used by Issuers (eg, asset managers) to issue VITTA to investors or refund paid in tokens to investors if investment cap is breached
         @param  _investor       address of investor
-        @param  _tokenName      name of token invested in VITTA
+        @param  _token          address of token invested in VITTA
         @param  _tokenAmount    amount of token invested in VITTA
         @param  _LPToIssue      amount of VITTA to issue to investor
      */
-    async issue(_investor, _tokenName, _tokenAmount, _LPToIssue, options) {
+    async issue(_investor, _token, _tokenAmount, _LPToIssue, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _investor);
-        await this.validateInput(index_1.DATATYPES.STRING, _tokenName);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
         await this.validateInput(index_1.DATATYPES.NUMBER, _tokenAmount);
         await this.validateInput(index_1.DATATYPES.NUMBER, _LPToIssue);
-        return this.callContract(FUNCTIONS.ISSUE, _investor, _tokenName, _tokenAmount, _LPToIssue, options);
+        return this.callContract(FUNCTIONS.ISSUE, _investor, _token, _tokenAmount, _LPToIssue, options);
     }
     /**
         Used by VITTA holder to stake it for providing liquidity for underwriting investments
