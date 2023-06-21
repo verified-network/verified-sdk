@@ -1,5 +1,5 @@
 # The Verified SDK
-The Verified SDK provides access to the payments, issuing and trading of tokenized securities on the Verified Network.
+The Verified SDK provides access to the issuing, trading and servicing of tokenized securities on the Verified Network.
 
 # installing using npm
 ```npm install @verified-network/verified-sdk```
@@ -29,25 +29,20 @@ Now you can call a function in clientContract like:
 Similarly you can create different Contracts instances available:
 ```
 ClientContract,
-KYCContract,
-SystemContract,
-HolderContract,
-LedgerContract,
-AccountContract,
 BondContract,
 CashContract,
 TokenContract,
 FactoryContract,
-OrderPoolContract,
-PoolFactoryContract,
-PostTradeContract,
-PreTradeContract,
+RatesContract,
 SecurityContract,
-SecuritiesRegistryContract,
-TradeContract,
-ProductContract,
-IssueContract,
-CustodyContract
+SecuritiesFactory,
+PoolContract,
+PrimaryIssueManager,
+SecondaryIssueManager,
+MarginIssueManager,
+CustodyContract,
+LiquidityContract,
+DistributionContract
 ```
 
 # VerifiedContract
