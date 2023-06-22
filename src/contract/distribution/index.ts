@@ -32,12 +32,12 @@ export default class Distribution extends VerifiedContract {
     /**
         Shares fee income with revenue shareholders
      */
-    public async shareFee(){
-        return this.callContract(FUNCTIONS.SHAREFEE)
+    public async shareFee(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.SHAREFEE, options)
     }
 
-    public async shareCollection(){
-        return this.callContract(FUNCTIONS.SHARECOLLECTION)
+    public async shareCollection(options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.SHARECOLLECTION, options)
     }
 
     /**
