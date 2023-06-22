@@ -12,7 +12,7 @@ const contractAddress: Object = {
         'Vitta': '0x8aa063d709A7Ec84086A0b5330c75D73af528cD3',
         'Liquidity': '0xce6FD14dD748F5f371BB226a3FdF6fEA3a4C423B',
         'Distribution': '0x07E4C2ada55cb78ECeA1cA2ab115111263bb6363',
-        'BalancerPrimaryIssueManager': '0x6B592F7609442569E063483b74561790Be532607',
+        'BalancerPrimaryIssueManager': '0x2D2C9a67FB4518cb0F8F13cb97A566eF5e72a5c6',
         'BalancerSecondaryIssueManager' : '0x23229B3A15D20a6F5dba6C14b44D8Fd79bD1d617',
         'BalancerMarginIssueManager' : '0x1043Fd279F08f816e573FCF82e2618CCD3E3e8A5',
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
