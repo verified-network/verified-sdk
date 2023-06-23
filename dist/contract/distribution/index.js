@@ -25,11 +25,11 @@ class Distribution extends index_1.VerifiedContract {
     /**
         Shares fee income with revenue shareholders
      */
-    async shareFee(options) {
-        return this.callContract(FUNCTIONS.SHAREFEE, options);
+    async shareFee() {
+        return this.callContract(FUNCTIONS.SHAREFEE);
     }
-    async shareCollection(options) {
-        return this.callContract(FUNCTIONS.SHARECOLLECTION, options);
+    async shareCollection() {
+        return this.callContract(FUNCTIONS.SHARECOLLECTION);
     }
     /**
         Gets payment fee collected
