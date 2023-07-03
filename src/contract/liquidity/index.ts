@@ -8,6 +8,7 @@ import { abi, networks } from '../../abi/liquidity/Liquidity.json';
 enum FUNCTIONS {
     CREATESUPPLY = 'createSupply',
     SUPPORTTOKENS = 'supportTokens',
+    REMOVETOKEN = 'removeToken',
     CHECKSUPPORTFORTOKEN = 'checkSupportForToken',
     GETSUPPORTEDTOKENS = 'getSupportedTokens',
     REGISTERPLATFORM = 'registerPlatform',
@@ -72,6 +73,15 @@ export default class LiquidityContract extends VerifiedContract {
     public async checkSupportForToken(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.ADDRESS, _token)
         return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, _token, options)
+    }
+
+    /**
+        Removes support for token for investing in the Verified Liquidity token
+        @param  _token  token that is supported for investment
+     */
+    public async removeToken(_token: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _token)
+        return this.callContract(FUNCTIONS.REMOVETOKEN, _token, options)
     }
 
     /**

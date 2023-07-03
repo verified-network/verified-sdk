@@ -8,6 +8,7 @@ var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["CREATESUPPLY"] = "createSupply";
     FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
+    FUNCTIONS["REMOVETOKEN"] = "removeToken";
     FUNCTIONS["CHECKSUPPORTFORTOKEN"] = "checkSupportForToken";
     FUNCTIONS["GETSUPPORTEDTOKENS"] = "getSupportedTokens";
     FUNCTIONS["REGISTERPLATFORM"] = "registerPlatform";
@@ -63,6 +64,14 @@ class LiquidityContract extends index_1.VerifiedContract {
     async checkSupportForToken(_token, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
         return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, _token, options);
+    }
+    /**
+        Removes support for token for investing in the Verified Liquidity token
+        @param  _token  token that is supported for investment
+     */
+    async removeToken(_token, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _token);
+        return this.callContract(FUNCTIONS.REMOVETOKEN, _token, options);
     }
     /**
      * Returns list of supported liquidity tokens (eg, VITTA, USDC, DAI)
