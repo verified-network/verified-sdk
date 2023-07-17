@@ -3,32 +3,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     5: {
         'Client': '0x3e132ee9fc32428655b2151A4E6C3f2B1FD49923',
-        'Factory': '0x4c74BB3B701Ad556bEC623228555e363923d7d7f',
-        'Cash': '0x8e0eF99e187d99f38ed8c4f65c0eE5b9e8FC7304',
-        'Bond': '0xf9f1715dC1512693C03F8767Cbc9C39d84ffD93a',
-        'Token': '0x5f22708f8Ed8622E1E5296c99215c56fDc5f1C04',
-        'Oracle': '0x0Ae1A4711d7bAe34865A9Bf1A69C4243b89ac073',
-        'Rates': '0xC805B6D74d17c9DD2dA508AbeA90a1b9bCC2344c',
+        'Factory': '0xAFf627DF5f856f5696597f223DCC4AB9EFf689DF',
+        'Cash': '0x065E3935dE6703872283D831ef3516b7f0226464',
+        'Bond': '0x799D93ecCE0bbd07191A92f8cf904Aa6701b4cFA',
+        'Token': '0x5B5B48E58A2cD4110060ff9eCf1290cddaf314bA',
+        'Oracle': '0xEec8c80C4ffa37f24D48B41238767B0c3d6fbEa8',
+        'Rates': '0x2Ba403e59E0743992A2aE1Dc77439F187B55547F',
         'Security': '0x93527FaeCD88c108C3Fb78a1Ca72536eeb1Adbf7',
         'SecuritiesFactory': '0x647a7EA364a31fa18c65f4043CD55718d245D774',
         'Vitta': '0x8aa063d709A7Ec84086A0b5330c75D73af528cD3',
         'Liquidity': '0xce6FD14dD748F5f371BB226a3FdF6fEA3a4C423B',
-        'Distribution': '0x719141e877FcF9306299A3Ec5b7F9dcadd0F4cD8',
-        'BalancerPrimaryIssueManager': '0x57E416421ffCDF26d630F2bf36776Dc019A9Dc02',
-        'BalancerSecondaryIssueManager': '0x252b67835032D25b3913571446EDB0d1597D2DFf',
-        'BalancerMarginIssueManager': '0xeC1Ebd0629c7D8db515cbD29DcafB7Ca106C56e5',
+        'Distribution': '0x22Af8F976f34a5f91A333bcc2bBe82826e517B12',
+        'BalancerPrimaryIssueManager': '0x63D95635938857Ad202f0684dfd91dc71C9d111e',
+        'BalancerSecondaryIssueManager': '0xe1f45e7104069F998b919C26435c4aaBAeD68fEd',
+        'BalancerMarginIssueManager': '0x64Ba97dC2f89c121B4248Df4C4F077E50E8FA96b',
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
         'CASH': {
-            'VCUSD': '0xcd9e67b873Cf50eeb1Dc08b95a29782a5f108f1A',
-            'VCEUR': '0xd8B292d6d4ad28C089DAC27FBc0D6dc7bD2Df538',
-            'VCCHF': '0xd92965Cb9f1056ECCB90171fDe4c26337a64beEd',
-            'VCINR': '0x0d2ea8520Ac523253AC1816fE1002adD615cc077'
+            'VCUSD': '0x481134BE0E025EfCfeF410b33E80FeD681328390',
+            'VCEUR': '0x3744e139E7fa373F8e55C560Cc22eff4a28e5737',
+            'VCCHF': '0x23a480A9C9fFe3AE1489E279D4563FA9d8C2636a',
+            'VCINR': '0x741314e6c6cD48108e7fc49dA4907a707BC6d559'
         },
         'BOND': {
-            'VBUSD': '0x33762f93Ca0edccbb3Ef0084A15afc73EAc3F9f3',
-            'VBEUR': '0xb4bf88282F5fC47fa8B4984cf85FCFf77bDE14de',
-            'VCCHF': '0x2dC17af0Ae170203CC978aB5328369861Bd24D1B',
-            'VBINR': '0x10476c24C19d5d29D34E701669071d9E93D96862'
+            'VBUSD': '0xF261C7DD3219Ab678aAE86af2e437F265267842b',
+            'VBEUR': '0x10c4300b3694Bc02BDF7a15aaCDAf76840ee49fC',
+            'VCCHF': '0x96a27B80103BE703a06CEf9dD39C5246b121D1F0',
+            'VBINR': '0xAD1a917feEE425BA61C8566DCf0b9F7DDcAE6539'
         },
     },
     'verified': {
