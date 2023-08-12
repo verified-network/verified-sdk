@@ -21,6 +21,8 @@ var FUNCTIONS;
     FUNCTIONS["SETORACLES"] = "setOracles";
     FUNCTIONS["SUPPORTTOKENS"] = "supportTokens";
     FUNCTIONS["TOKENCREATED"] = "TokenCreated";
+    FUNCTIONS["SETBONDTERM"] = "setBondTerm";
+    FUNCTIONS["GETBONDTERM"] = "getBondTerm";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Factory extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -105,6 +107,15 @@ class Factory extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _currency);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _address);
         return this.callContract(FUNCTIONS.SUPPORTTOKENS, this.sanitiseInput(index_1.DATATYPES.BYTE32, _currency), _address, options);
+    }
+    async setBondTerm(bondToken, term, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, bondToken);
+        await this.validateInput(index_1.DATATYPES.NUMBER, term);
+        return this.callContract(FUNCTIONS.SETBONDTERM, bondToken, term, options);
+    }
+    async getBondTerm(bondToken, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, bondToken);
+        return this.callContract(FUNCTIONS.GETBONDTERM, bondToken, options);
     }
 }
 exports.default = Factory;

@@ -20,7 +20,9 @@ enum FUNCTIONS {
     SETCRYPTODATAURL = 'setCryptoDataURL',
     SETORACLES = 'setOracles',
     SUPPORTTOKENS = 'supportTokens',
-    TOKENCREATED = 'TokenCreated'     
+    TOKENCREATED = 'TokenCreated',
+    SETBONDTERM = 'setBondTerm',
+    GETBONDTERM = 'getBondTerm'
 }
 
 export default class Factory extends VerifiedContract {
@@ -126,6 +128,17 @@ export default class Factory extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _currency)
         await this.validateInput(DATATYPES.ADDRESS, _address)
         return this.callContract(FUNCTIONS.SUPPORTTOKENS, this.sanitiseInput(DATATYPES.BYTE32, _currency), _address, options)
-    } 
+    }
+    
+    public async setBondTerm(bondToken: string, term: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, bondToken)
+        await this.validateInput(DATATYPES.NUMBER, term)
+        return this.callContract(FUNCTIONS.SETBONDTERM, bondToken, term, options)
+    }
+
+    public async getBondTerm(bondToken: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, bondToken)
+        return this.callContract(FUNCTIONS.GETBONDTERM, bondToken, options)
+    }
 
 }

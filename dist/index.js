@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.contractAddress = exports.utils = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.Provider = exports.VerifiedWallet = void 0;
+exports.contractAddress = exports.utils = exports.Compound = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.Provider = exports.VerifiedWallet = void 0;
 const wallet_1 = require("./wallet");
 Object.defineProperty(exports, "VerifiedWallet", { enumerable: true, get: function () { return wallet_1.VerifiedWallet; } });
 const utils_1 = require("./utils");
@@ -39,6 +39,8 @@ const distribution_1 = __importDefault(require("./contract/distribution"));
 exports.Distribution = distribution_1.default;
 const client_1 = __importDefault(require("./contract/client"));
 exports.Client = client_1.default;
+const compound_1 = __importDefault(require("./contract/loans/compound"));
+exports.Compound = compound_1.default;
 const ethers_1 = require("ethers");
 Object.defineProperty(exports, "utils", { enumerable: true, get: function () { return ethers_1.utils; } });
 const contractAddress_1 = __importDefault(require("./contractAddress"));

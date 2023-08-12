@@ -17,6 +17,7 @@ import Security from './contract/security';
 import SecuritiesFactory from './contract/securitiesfactory';
 import Distribution from './contract/distribution';
 import Client from './contract/client';
+import Compound from './contract/loans/compound';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 
@@ -38,6 +39,7 @@ export {
     SecuritiesFactory,
     Distribution,
     Client,
+    Compound,
     utils,
     contractAddress
 }

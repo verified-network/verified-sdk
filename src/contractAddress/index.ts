@@ -16,6 +16,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '0xe1f45e7104069F998b919C26435c4aaBAeD68fEd',
         'BalancerMarginIssueManager' : '0x64Ba97dC2f89c121B4248Df4C4F077E50E8FA96b',
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
+        'Compound': '0xf8287e8D37863Db0Cabd25B55f77652d5d6aEb83',
         'CASH': {
             'VCUSD': '0x481134BE0E025EfCfeF410b33E80FeD681328390',
             'VCEUR': '0x3744e139E7fa373F8e55C560Cc22eff4a28e5737',
@@ -46,6 +47,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -76,6 +78,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '0xb9AD11aC80AD0BE1B83ba6b83E4E27C110c18a33',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -106,6 +109,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -136,6 +140,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -166,6 +171,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -196,6 +202,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'BalancerMarginIssueManager' : '',
         'Custody': '',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
@@ -226,6 +233,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '0x2c6F953dfc7b922ef3101c65c62f9349fCd65e1A',
         'BalancerMarginIssueManager' : '0x0d062A0064b762ed8AEe7DE9E79b532e6215c77a',
         'Custody': '0x4A59d0A82A9e1196c7789a25b0F302A683b220E7',
+        'Compound': '',
         'CASH': {
             'VCUSD': '',
             'VCEUR': '',
