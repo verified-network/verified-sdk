@@ -3,12 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const contractAddress = {
     5: {
         'Client': '0x3e132ee9fc32428655b2151A4E6C3f2B1FD49923',
-        'Factory': '0xAFf627DF5f856f5696597f223DCC4AB9EFf689DF',
-        'Cash': '0x065E3935dE6703872283D831ef3516b7f0226464',
-        'Bond': '0x799D93ecCE0bbd07191A92f8cf904Aa6701b4cFA',
-        'Token': '0x5B5B48E58A2cD4110060ff9eCf1290cddaf314bA',
-        'Oracle': '0xEec8c80C4ffa37f24D48B41238767B0c3d6fbEa8',
-        'Rates': '0x2Ba403e59E0743992A2aE1Dc77439F187B55547F',
+        'Factory': '0xFA2ADf68Eb4fc9d4331Df124B5902021A78D2842',
+        'Cash': '0x9F6807CeeE8951d46ce33D57eEe3256B523bE56A',
+        'Bond': '0xeCd032f9Da2aA83d90D14D4648424422c4515216',
+        'Token': '0x8F82bC814C1b205e610d379e983aaDe72Ef6F9E2',
+        'Oracle': '0x5b42b50012607Ff072A625835eBB5Fd7D4Af90f9',
+        'Rates': '0x165Ca3C823FEf1EC9360b323FE7b0f2C7041cf51',
         'Security': '0x93527FaeCD88c108C3Fb78a1Ca72536eeb1Adbf7',
         'SecuritiesFactory': '0x647a7EA364a31fa18c65f4043CD55718d245D774',
         'Vitta': '0x8aa063d709A7Ec84086A0b5330c75D73af528cD3',
@@ -20,16 +20,16 @@ const contractAddress = {
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
         'Compound': '0xf8287e8D37863Db0Cabd25B55f77652d5d6aEb83',
         'CASH': {
-            'VCUSD': '0x481134BE0E025EfCfeF410b33E80FeD681328390',
-            'VCEUR': '0x3744e139E7fa373F8e55C560Cc22eff4a28e5737',
-            'VCCHF': '0x23a480A9C9fFe3AE1489E279D4563FA9d8C2636a',
-            'VCINR': '0x741314e6c6cD48108e7fc49dA4907a707BC6d559'
+            'VCUSD': '0xa6aa25115f23F3ADc4471133bbDC401b613DbF65',
+            'VCEUR': '0xEeD0099ad11960f963Bfdf359c79Acb75E27C5d3',
+            'VCCHF': '0xdB551DA261786abcF637Cff6c4E64d2CBe5BB3CA',
+            'VCINR': '0x255744717B3b01BBF9388FEb7fa829D1A5b44ba8'
         },
         'BOND': {
-            'VBUSD': '0xF261C7DD3219Ab678aAE86af2e437F265267842b',
-            'VBEUR': '0x10c4300b3694Bc02BDF7a15aaCDAf76840ee49fC',
-            'VCCHF': '0x96a27B80103BE703a06CEf9dD39C5246b121D1F0',
-            'VBINR': '0xAD1a917feEE425BA61C8566DCf0b9F7DDcAE6539'
+            'VBUSD': '0x0AD3B8eA3F464d0C6DaafC630f50Fffa0b860E73',
+            'VBEUR': '0x388212CE38453dcE7C63f80E27fe2C74F96aaa3a',
+            'VCCHF': '0x5050553d73526D252c3465D36768E504BC9276d4',
+            'VBINR': '0xC9DC7B9A25e60627881912b19E25856452130BE4'
         },
     },
     'verified': {
