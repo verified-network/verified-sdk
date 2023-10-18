@@ -8,6 +8,12 @@ var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["ISSUEPRODUCT"] = "issueProduct";
     FUNCTIONS["CLOSE"] = "close";
+    FUNCTIONS["OFFERCOLLATERAL"] = "offerCollateral";
+    FUNCTIONS["SENDCOLLATERAL"] = "sendCollateral";
+    FUNCTIONS["ONMATCH"] = "onMatch";
+    FUNCTIONS["ONTRADE"] = "onTrade";
+    FUNCTIONS["ONSETTLE"] = "onSettle";
+    FUNCTIONS["WITHDRAW"] = "withdraw";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class MarginIssueManager extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -31,6 +37,53 @@ class MarginIssueManager extends index_1.VerifiedContract {
     async close(poolId, options) {
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.CLOSE, poolId, options);
+    }
+    async offerCollateral(currency, amount, poolId, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, amount);
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.OFFERCOLLATERAL, currency, amount, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
+    }
+    async sendCollateral(currency, amount, poolId, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, amount);
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
+    }
+    async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, party);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, counterparty);
+        await this.validateInput(index_1.DATATYPES.STRING, orderRef);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.NUMBER, securityTraded);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, cashTraded);
+        return this.callContract(FUNCTIONS.ONMATCH, party, counterparty, this.sanitiseInput(index_1.DATATYPES.BYTE32, orderRef), security, securityTraded, currency, cashTraded, options);
+    }
+    async onTrade(ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, ref);
+        await this.validateInput(index_1.DATATYPES.STRING, cref);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.NUMBER, securityTraded);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, currencyTraded);
+        await this.validateInput(index_1.DATATYPES.NUMBER, executionTime);
+        return this.callContract(FUNCTIONS.ONTRADE, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, cref), security, securityTraded, currency, currencyTraded, executionTime, options);
+    }
+    async onSettle(security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, financingPerSec);
+        await this.validateInput(index_1.DATATYPES.BOOLEAN, charge);
+        await this.validateInput(index_1.DATATYPES.NUMBER, dividendPerSec);
+        await this.validateInput(index_1.DATATYPES.BOOLEAN, payout);
+        await this.validateInput(index_1.DATATYPES.NUMBER, settlementTime);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options);
+    }
+    async withdraw(security, currency, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        return this.callContract(FUNCTIONS.WITHDRAW, currency, security, currency, options);
     }
 }
 exports.default = MarginIssueManager;
