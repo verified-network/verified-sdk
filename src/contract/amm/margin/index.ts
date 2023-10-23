@@ -54,32 +54,32 @@ export default class MarginIssueManager extends VerifiedContract {
     }
 
     public async close( 
-        poolId: string, 
+        security: string, 
         options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.CLOSE, poolId, options);
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.CLOSE, security, options);
     }
 
     public async offerCollateral( 
         currency: string, 
         amount: string,
-        poolId: string,
+        security: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, currency);
         await this.validateInput(DATATYPES.NUMBER, amount);
-        await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.OFFERCOLLATERAL, currency, amount, this.sanitiseInput(DATATYPES.BYTE32, poolId), options);
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.OFFERCOLLATERAL, currency, amount, security, options);
     }
 
     public async sendCollateral( 
         currency: string, 
         amount: string,
-        poolId: string,
+        security: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, currency);
         await this.validateInput(DATATYPES.NUMBER, amount);
-        await this.validateInput(DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, this.sanitiseInput(DATATYPES.BYTE32, poolId), options);
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, security, options);
     }
 
     public async onMatch( 

@@ -34,21 +34,21 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, tradeFee);
         return this.callContract(FUNCTIONS.ISSUESECONDARY, security, this.sanitiseInput(index_1.DATATYPES.BYTE32, securityType), currency, this.sanitiseInput(index_1.DATATYPES.BYTE32, cficode), securityAmount, minOrderSize, currencyAmount, margin, collateral, tradefee, options);
     }
-    async close(poolId, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.CLOSE, poolId, options);
+    async close(security, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.CLOSE, security, options);
     }
-    async offerCollateral(currency, amount, poolId, options) {
+    async offerCollateral(currency, amount, security, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.NUMBER, amount);
-        await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.OFFERCOLLATERAL, currency, amount, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.OFFERCOLLATERAL, currency, amount, security, options);
     }
-    async sendCollateral(currency, amount, poolId, options) {
+    async sendCollateral(currency, amount, security, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.NUMBER, amount);
-        await this.validateInput(index_1.DATATYPES.STRING, poolId);
-        return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, security, options);
     }
     async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, party);
