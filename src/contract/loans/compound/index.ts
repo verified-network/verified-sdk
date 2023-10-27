@@ -3,7 +3,7 @@
 
 import { VerifiedContract, DATATYPES } from '../index';
 import { VerifiedWallet } from "../../../wallet";
-import { abi, networks } from '../../abi/loans/compound/VerifiedMarkets.json';
+import { abi, networks } from '../../../abi/loans/compound/VerifiedMarkets.json';
 
 enum FUNCTIONS {
     NEWRWA = 'submitNewRWA',

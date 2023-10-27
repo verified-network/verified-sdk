@@ -50,7 +50,7 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, margin);
         await this.validateInput(DATATYPES.NUMBER, collateral);
         await this.validateInput(DATATYPES.NUMBER, tradeFee);
-        return this.callContract(FUNCTIONS.ISSUESECONDARY, security, this.sanitiseInput(DATATYPES.BYTE32, securityType), currency, this.sanitiseInput(DATATYPES.BYTE32, cficode), securityAmount, minOrderSize, currencyAmount, margin, collateral, tradefee, options);
+        return this.callContract(FUNCTIONS.ISSUEPRODUCT, security, this.sanitiseInput(DATATYPES.BYTE32, securityType), currency, this.sanitiseInput(DATATYPES.BYTE32, cficode), securityAmount, minOrderSize, currencyAmount, margin, collateral, tradefee, options);
     }
 
     public async close( 
@@ -145,7 +145,7 @@ export default class MarginIssueManager extends VerifiedContract {
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
-        return this.callContract(FUNCTIONS.WITHDRAW, currency, security, currency, options);
+        return this.callContract(FUNCTIONS.WITHDRAW, security, currency, options);
     }
 
 }
