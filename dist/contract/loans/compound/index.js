@@ -2,7 +2,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 Object.defineProperty(exports, "__esModule", { value: true });
-const index_1 = require("../index");
+const index_1 = require("../../index");
 const VerifiedMarkets_json_1 = require("../../../abi/loans/compound/VerifiedMarkets.json");
 var FUNCTIONS;
 (function (FUNCTIONS) {

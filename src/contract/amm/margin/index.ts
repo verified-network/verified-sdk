@@ -50,7 +50,7 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, margin);
         await this.validateInput(DATATYPES.NUMBER, collateral);
         await this.validateInput(DATATYPES.NUMBER, tradeFee);
-        return this.callContract(FUNCTIONS.ISSUEPRODUCT, security, this.sanitiseInput(DATATYPES.BYTE32, securityType), currency, this.sanitiseInput(DATATYPES.BYTE32, cficode), securityAmount, minOrderSize, currencyAmount, margin, collateral, tradefee, options);
+        return this.callContract(FUNCTIONS.ISSUEPRODUCT, security, this.sanitiseInput(DATATYPES.BYTE32, securityType), currency, this.sanitiseInput(DATATYPES.BYTE32, cficode), securityAmount, minOrderSize, currencyAmount, margin, collateral, tradeFee, options);
     }
 
     public async close( 
