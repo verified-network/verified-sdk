@@ -14,7 +14,7 @@ const contractAddress: Object = {
         'Distribution': '0x22Af8F976f34a5f91A333bcc2bBe82826e517B12',
         'BalancerPrimaryIssueManager': '0x63D95635938857Ad202f0684dfd91dc71C9d111e',
         'BalancerSecondaryIssueManager' : '0xe1f45e7104069F998b919C26435c4aaBAeD68fEd',
-        'BalancerMarginIssueManager' : '0x990e06f853B2EC48a3773572951D099c015BA900',
+        'BalancerMarginIssueManager' : '0x332324cf50648B1A9e7EEc77248f138301981F3D',
         'Custody': '0x60aEDad13a34b1DC45bDeA9eD6a66d639563e917',
         'Compound': '0xf8287e8D37863Db0Cabd25B55f77652d5d6aEb83',
         'CASH': {

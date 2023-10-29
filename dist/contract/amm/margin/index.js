@@ -58,7 +58,7 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, securityTraded);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.NUMBER, cashTraded);
-        return this.callContract(FUNCTIONS.ONMATCH, party, counterparty, this.sanitiseInput(index_1.DATATYPES.BYTE32, orderRef), security, securityTraded, currency, cashTraded, options);
+        return this.callContract(FUNCTIONS.ONMATCH, party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options);
     }
     async onTrade(ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options) {
         await this.validateInput(index_1.DATATYPES.STRING, ref);
@@ -68,7 +68,7 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.NUMBER, currencyTraded);
         await this.validateInput(index_1.DATATYPES.NUMBER, executionTime);
-        return this.callContract(FUNCTIONS.ONTRADE, this.sanitiseInput(index_1.DATATYPES.BYTE32, ref), this.sanitiseInput(index_1.DATATYPES.BYTE32, cref), security, securityTraded, currency, currencyTraded, executionTime, options);
+        return this.callContract(FUNCTIONS.ONTRADE, ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options);
     }
     async onSettle(security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
