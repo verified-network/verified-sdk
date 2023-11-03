@@ -53,7 +53,7 @@ class MarginIssueManager extends index_1.VerifiedContract {
     async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, party);
         await this.validateInput(index_1.DATATYPES.ADDRESS, counterparty);
-        await this.validateInput(index_1.DATATYPES.STRING, orderRef);
+        //await this.validateInput(DATATYPES.STRING, orderRef);
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.NUMBER, securityTraded);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
@@ -61,8 +61,8 @@ class MarginIssueManager extends index_1.VerifiedContract {
         return this.callContract(FUNCTIONS.ONMATCH, party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options);
     }
     async onTrade(ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, ref);
-        await this.validateInput(index_1.DATATYPES.STRING, cref);
+        //await this.validateInput(DATATYPES.STRING, ref);
+        //await this.validateInput(DATATYPES.STRING, cref);
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.NUMBER, securityTraded);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
