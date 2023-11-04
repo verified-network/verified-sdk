@@ -20,6 +20,7 @@ import Client from './contract/client';
 import Compound from './contract/loans/compound';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
+import {GasLessTransaction} from './erc-4337'
 
 export {
     VerifiedWallet,
@@ -41,5 +42,6 @@ export {
     Client,
     Compound,
     utils,
-    contractAddress
+    contractAddress,
+    GasLessTransaction
 }
