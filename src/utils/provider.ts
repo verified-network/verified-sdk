@@ -3,6 +3,7 @@
 "use strict";
 
 import { ethers } from "ethers";
+import { BundlerJsonRpcProvider} from 'userop';
 export class Provider extends ethers.providers.JsonRpcProvider {
 
     constructor(url?: string, network?: string) {
@@ -19,6 +20,13 @@ export class Provider extends ethers.providers.JsonRpcProvider {
 
     static alchemyProvider(network: string, key: string) {
         return new ethers.providers.AlchemyProvider(network, key);
+    }
+
+    /**
+     *  Implements ERC-4337 using userop from stackup
+     */
+    static stackUpProvider(rpcUrl: string) {
+        return new BundlerJsonRpcProvider(rpcUrl).setBundlerRpc();
     }
 
 }
