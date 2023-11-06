@@ -93,7 +93,7 @@ export default class MarginIssueManager extends VerifiedContract {
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, party);
         await this.validateInput(DATATYPES.ADDRESS, counterparty);
-        await this.validateInput(DATATYPES.STRING, orderRef);
+        //await this.validateInput(DATATYPES.STRING, orderRef);
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.NUMBER, securityTraded);
         await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -110,8 +110,8 @@ export default class MarginIssueManager extends VerifiedContract {
         currencyTraded:string,
         executionTime:string,
         options?: { gasPrice, gasLimit }): any {
-        await this.validateInput(DATATYPES.STRING, ref);
-        await this.validateInput(DATATYPES.STRING, cref);
+        //await this.validateInput(DATATYPES.STRING, ref);
+        //await this.validateInput(DATATYPES.STRING, cref);
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.NUMBER, securityTraded);
         await this.validateInput(DATATYPES.ADDRESS, currency);
