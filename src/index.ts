@@ -20,7 +20,7 @@ import Client from './contract/client';
 import Compound from './contract/loans/compound';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
-import {GasLessTransaction} from './erc-4337'
+import GasLessTransaction from './contract/userop'
 
 export {
     VerifiedWallet,
