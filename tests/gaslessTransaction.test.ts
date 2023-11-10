@@ -9,10 +9,10 @@ describe("userop gasless transaction", () => {
     test('gasless transaction should succeed', async() => { 
         const mnemonics = await VerifiedWallet.generateMnemonic()
         const wallet = VerifiedWallet.importWallet(mnemonics)
-        const walletWithProvider = wallet.setProvider(
+        const signer = wallet.setProvider(
           Provider.stackUpProvider(rpcUrl)
       )
-        const transaction = new GasLessTransaction({ apiKey,paymasterUrl,wallet, walletWithProvider});
+        const transaction = new GasLessTransaction({ apiKey,paymasterUrl,wallet, signer});
         const response =  await transaction.makeTransaction({ value:'0'})
         console.log(response)
         expect(response.result?.blockHash).toBeDefined()
