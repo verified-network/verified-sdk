@@ -1,13 +1,11 @@
 import { UserOperationEventEvent } from "userop/dist/typechain/EntryPoint";
 import { VerifiedWallet } from "../../wallet";
-import { ethers, utils } from "ethers";
+import { ContractInterface, ethers, Signer, utils } from "ethers";
 import { Client, Presets } from "userop";
 
 interface Params {
     apiKey:string, 
     paymasterUrl:string,
-    wallet:VerifiedWallet
-    signer:VerifiedWallet
     value:string
 }
 
@@ -15,18 +13,24 @@ const response: { transactionHash: string | null, result: UserOperationEventEven
 export type UseropResponse = typeof response;
 
  class VerifiedContract {
-
-    constructor(){
-
+    private signer: VerifiedWallet | Signer;
+    private contract: ethers.Contract;
+    private abiInterface: ContractInterface;
+    private address: string;
+    constructor(address: string, abi: string, signer: VerifiedWallet | Signer){
+        this.signer = signer;
+        this.abiInterface = new utils.Interface(abi)
+        this.contract = new ethers.Contract(address, this.abiInterface, signer);
+        this.address = address
     }
 
-   static async callContract(params:Params):Promise<UseropResponse>{
+    async callContract(params:Params):Promise<UseropResponse>{
          // Validate value input
         if (!ethers.BigNumber.from(params.value)) {
             throw new Error("Value should be number in string quotes")
         }
          // // Validate the address
-         if (!utils.isAddress(params.wallet.address)){
+         if (!utils.isAddress(this.address)){
             throw new Error("Invalid address value");  
           }
         // // Validate paymasterUrl
@@ -38,8 +42,8 @@ export type UseropResponse = typeof response;
         if ((typeof params.apiKey !== 'string')){
             throw new Error(`Invalid ${params.apiKey}`)
         }
-        // @ts-ignore
-       const bundlerUrl = params.signer.provider.connection.url
+       //@ts-ignore
+       const bundlerUrl = this.signer?.provider?.connection.url
         // Send the User Operation to the ERC-4337 mempool
         const client = await Client.init(bundlerUrl);
 
@@ -55,10 +59,6 @@ export type UseropResponse = typeof response;
               params.paymasterUrl,
               paymasterContext
           );
-        
-        const builder =  Presets.Builder.Kernel.init(useropSigner, bundlerUrl, {
-            paymasterMiddleware
-        });
 
         const simpleAccount = await Presets.Builder.SimpleAccount.init(
             useropSigner, // Any object compatible with ethers.Signer
@@ -68,7 +68,7 @@ export type UseropResponse = typeof response;
           );
         
         const res = await client.sendUserOperation(
-            simpleAccount.execute(params.wallet.address, params.value, "0x"),
+            simpleAccount.execute(this.address, params.value, "0x"),
             { onBuild: (op) => console.log("Signed UserOperation:", op) }
           );
 
