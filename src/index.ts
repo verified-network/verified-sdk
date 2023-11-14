@@ -42,5 +42,4 @@ export {
     Compound,
     utils,
     contractAddress,
-   
 }
