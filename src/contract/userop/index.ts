@@ -1,40 +1,86 @@
+import { UserOperationEventEvent } from "userop/dist/typechain/EntryPoint";
 import { VerifiedWallet } from "../../wallet";
-import { USEROP_DATATYPES, UseropResponse, UseropVerifiedContract } from "./contract";
+import { ethers, utils } from "ethers";
+import { Client, Presets } from "userop";
 
-interface TransactionParams{
-    value:string
-}
-interface ClassParams {
+interface Params {
     apiKey:string, 
     paymasterUrl:string,
     wallet:VerifiedWallet
     signer:VerifiedWallet
-    // options?:Options
+    value:string
 }
-class GasLessTransaction extends UseropVerifiedContract {
 
-    constructor(params: ClassParams){
-        super(params.signer,params.apiKey,params.paymasterUrl,params.wallet)
-        
-        // Validate the address
-        this.validateInput(USEROP_DATATYPES.ADDRESS,params.wallet.address);
+const response: { transactionHash: string | null, result: UserOperationEventEvent | null } = { transactionHash: null, result: null }
+export type UseropResponse = typeof response;
 
-        // Validate paymasterUrl
-        this.validateInput(USEROP_DATATYPES.STRING,params.paymasterUrl);
+ class VerifiedContract {
 
-        // Validate api key
-        this.validateInput(USEROP_DATATYPES.STRING,params.apiKey);
+    constructor(){
 
     }
 
-    async makeTransaction(params:TransactionParams):Promise<UseropResponse>{
+   static async callContract(params:Params):Promise<UseropResponse>{
          // Validate value input
-        this.validateInput(USEROP_DATATYPES.VALUE,params.value);
+        if (!ethers.BigNumber.from(params.value)) {
+            throw new Error("Value should be number in string quotes")
+        }
+         // // Validate the address
+         if (!utils.isAddress(params.wallet.address)){
+            throw new Error("Invalid address value");  
+          }
+        // // Validate paymasterUrl
+        if ((typeof params.paymasterUrl !== 'string')){
+            throw new Error(`Invalid ${params.paymasterUrl}`)
+        }
 
-       return await this.callContract(params.value)
+        // // Validate api key
+        if ((typeof params.apiKey !== 'string')){
+            throw new Error(`Invalid ${params.apiKey}`)
+        }
+        // @ts-ignore
+       const bundlerUrl = params.signer.provider.connection.url
+        // Send the User Operation to the ERC-4337 mempool
+        const client = await Client.init(bundlerUrl);
+
+          // Initialize the User Operation
+        // Userop.js has a few presets for different smart account types to set default fields
+        // for user operations. This uses the ZeroDev Kernel contracts.
+        const useropSigner = new ethers.Wallet(params.apiKey);
+
+          // Define the kind of paymaster you want to use. If you do not want to use a paymaster,
+        const paymasterContext = { type: "payg" };
+
+        const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
+              params.paymasterUrl,
+              paymasterContext
+          );
+        
+        const builder =  Presets.Builder.Kernel.init(useropSigner, bundlerUrl, {
+            paymasterMiddleware
+        });
+
+        const simpleAccount = await Presets.Builder.SimpleAccount.init(
+            useropSigner, // Any object compatible with ethers.Signer
+            bundlerUrl,{
+              paymasterMiddleware
+            }
+          );
+        
+        const res = await client.sendUserOperation(
+            simpleAccount.execute(params.wallet.address, params.value, "0x"),
+            { onBuild: (op) => console.log("Signed UserOperation:", op) }
+          );
+
+        const ev = await res.wait();
+
+       return {
+        transactionHash: ev?.transactionHash!,
+        result: ev
+       }
     }
 
     
 }
 
-export default GasLessTransaction
+export default VerifiedContract
