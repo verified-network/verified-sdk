@@ -1,86 +1,44 @@
 import { UserOperationEventEvent } from "userop/dist/typechain/EntryPoint";
 import { VerifiedWallet } from "../../wallet";
-import { ContractInterface, ethers, Signer, utils } from "ethers";
-import { Client, Presets } from "userop";
-
-interface Params {
-    apiKey:string, 
-    paymasterUrl:string,
-    value:string
-}
+import { Signer } from "ethers";
+import  VerifiedContract, {USEROP_DATATYPES}  from "./contract";
+import abi from '../../abi/erc-20/erc20Abi.json'
 
 const response: { transactionHash: string | null, result: UserOperationEventEvent | null } = { transactionHash: null, result: null }
 export type UseropResponse = typeof response;
 
- class VerifiedContract {
-    private signer: VerifiedWallet | Signer;
-    private contract: ethers.Contract;
-    private abiInterface: ContractInterface;
+type TransactionParams ={
+  value:string
+}
+ export default class UseropContract extends VerifiedContract {
     private address: string;
-    constructor(address: string, abi: string, signer: VerifiedWallet | Signer){
-        this.signer = signer;
-        this.abiInterface = new utils.Interface(abi)
-        this.contract = new ethers.Contract(address, this.abiInterface, signer);
+    private apiKey:string;
+    private paymasterUrl:string;
+    constructor(address: string, signer: VerifiedWallet | Signer){
+      super(address, JSON.stringify(abi), signer)
         this.address = address
+        this.apiKey = process.env.API_KEY
+        this.paymasterUrl = process.env.PAY_MASTER_URL
     }
 
-    async callContract(params:Params):Promise<UseropResponse>{
+    async makeTransaction(params:TransactionParams):Promise<UseropResponse>{
+        const value = params.value
          // Validate value input
-        if (!ethers.BigNumber.from(params.value)) {
-            throw new Error("Value should be number in string quotes")
-        }
-         // // Validate the address
-         if (!utils.isAddress(this.address)){
-            throw new Error("Invalid address value");  
-          }
-        // // Validate paymasterUrl
-        if ((typeof params.paymasterUrl !== 'string')){
-            throw new Error(`Invalid ${params.paymasterUrl}`)
-        }
+        this.validateInput(USEROP_DATATYPES.VALUE, value)
+         // Validate the address
+        this.validateInput(USEROP_DATATYPES.ADDRESS,this.address)
 
-        // // Validate api key
-        if ((typeof params.apiKey !== 'string')){
-            throw new Error(`Invalid ${params.apiKey}`)
-        }
-       //@ts-ignore
-       const bundlerUrl = this.signer?.provider?.connection.url
-        // Send the User Operation to the ERC-4337 mempool
-        const client = await Client.init(bundlerUrl);
+        // Validate paymasterUrl
+        this.validateInput(USEROP_DATATYPES.STRING,this.paymasterUrl)
 
-          // Initialize the User Operation
-        // Userop.js has a few presets for different smart account types to set default fields
-        // for user operations. This uses the ZeroDev Kernel contracts.
-        const useropSigner = new ethers.Wallet(params.apiKey);
-
-          // Define the kind of paymaster you want to use. If you do not want to use a paymaster,
-        const paymasterContext = { type: "payg" };
-
-        const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
-              params.paymasterUrl,
-              paymasterContext
-          );
-
-        const simpleAccount = await Presets.Builder.SimpleAccount.init(
-            useropSigner, // Any object compatible with ethers.Signer
-            bundlerUrl,{
-              paymasterMiddleware
-            }
-          );
-        
-        const res = await client.sendUserOperation(
-            simpleAccount.execute(this.address, params.value, "0x"),
-            { onBuild: (op) => console.log("Signed UserOperation:", op) }
-          );
-
-        const ev = await res.wait();
-
-       return {
-        transactionHash: ev?.transactionHash!,
-        result: ev
-       }
+        // Validate api key
+        this.validateInput(USEROP_DATATYPES.STRING,this.apiKey)
+      
+       // Call contract
+       return this.callContract({address:this.address,apiKey:this.apiKey,paymasterUrl:this.paymasterUrl,value})
     }
+
+
 
     
 }
-
-export default VerifiedContract

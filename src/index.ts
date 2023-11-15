@@ -20,6 +20,7 @@ import Client from './contract/client';
 import Compound from './contract/loans/compound';
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
+import UseropContract from './contract/userop';
 
 export {
     VerifiedWallet,
@@ -41,5 +42,6 @@ export {
     Client,
     Compound,
     utils,
-    contractAddress
+    contractAddress,
+    UseropContract
 }
