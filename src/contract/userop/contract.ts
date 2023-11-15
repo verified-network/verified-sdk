@@ -69,7 +69,7 @@ export default class VerifiedContract {
        //@ts-ignore
        const bundlerUrl = this.signer?.provider?.connection.url
         // Send the User Operation to the ERC-4337 mempool
-        const client = await Client.init(bundlerUrl,{});
+        const client = await Client.init(bundlerUrl);
 
           // Initialize the User Operation
         // Userop.js has a few presets for different smart account types to set default fields
