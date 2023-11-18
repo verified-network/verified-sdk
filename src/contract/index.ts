@@ -2,7 +2,7 @@
 
 "use strict"
 import { ethers, utils, ContractInterface, Signer } from "ethers";
-import {Presets,Client, UserOperationMiddlewareFn, IUserOperation, BundlerJsonRpcProvider} from 'userop'
+import {Presets,Client } from 'userop'
 import { UserOperationEventEvent } from "userop/dist/typechain/EntryPoint";
 import { VerifiedWallet } from "../wallet";
 
@@ -186,32 +186,29 @@ export class VerifiedContract {
             if (isOptionsProvided && options[0].gasPrice===0) {
                 // Get the arguments for the contract after removing options
                 const funcParameters = params.length>0?params:undefined;
-                 // Define the kind of paymaster you want to use. If you do not want to use a paymaster,
-                    // comment out these lines.
+
+                 // Define the kind of paymaster you want to use
                     const paymasterContext = { type: "payg" };
                     const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
                         process.env.PAY_MASTER_URL,
                         paymasterContext
                     );
 
-                    // Initialize the User Operation
-                    // Userop.js has a few presets for different smart account types to set default fields
-                    // for user operations. This uses the ZeroDev Kernel contracts.
                     const signer = new ethers.Wallet(process.env.API_KEY);
                     // @ts-ignore
                     const builder = await Presets.Builder.Kernel.init(signer, this.signer?.provider?.connection?.url, {
                         paymasterMiddleware: paymasterMiddleware,
                     });
 
-                    // Call the contract
-                    const call = {
+                    // @ts-ignore
+                    const client = await Client.init(this.signer?.provider?.connection?.url);
+
+                     // Call the contract
+                     const call = {
                         to: this.address,
                         value: ethers.constants.Zero,
                         data: this.contract.interface.encodeFunctionData(functionName,funcParameters)
                     };
-
-                    // @ts-ignore
-                    const client = await Client.init(this.signer?.provider?.connection?.url);
 
                     const res = await client.sendUserOperation(builder.execute(call), {
                         onBuild: (op) =>{
