@@ -2,6 +2,8 @@
 
 "use strict"
 import { ethers, utils, ContractInterface, Signer } from "ethers";
+import {Presets,Client, UserOperationMiddlewareFn, IUserOperation, BundlerJsonRpcProvider} from 'userop'
+import { UserOperationEventEvent } from "userop/dist/typechain/EntryPoint";
 import { VerifiedWallet } from "../wallet";
 
 enum STATUS {
@@ -30,11 +32,12 @@ export class VerifiedContract {
     private signer: VerifiedWallet | Signer;
     private contract: ethers.Contract;
     private abiInterface: ContractInterface;
-
+    private address: string;
     constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
         this.signer = signer;
         this.abiInterface = new utils.Interface(abi)
         this.contract = new ethers.Contract(address, this.abiInterface, signer);
+        this.address = address;
     }
 
     protected async validateInput(type: DATATYPES, data: any) {
@@ -158,18 +161,69 @@ export class VerifiedContract {
         else return [data]
     }
 
-    async callContract(functionName: string, ...args: any) {
+    async callContract(functionName: string, ...args: any):Promise<UserOperationEventEvent | SCResponse | null> {
         let res = <SCResponse>{};
         try {
             let options = []
             const totalArguments = args.length
-
+            // params to be used while performing gasless transaction with userop 
+            const params =  [...args];
+                if (totalArguments > 1){
+                    // Check if there is options and remove it because it should be removed last in arguments
+                    params.pop()
+                }
             if (totalArguments > 1) options = args.splice(-1)
             //console.log('options before', options);
 
             if (options == 0) options[0] = {}
             //console.log('*********', ...args)
             //console.log('options after', options);
+
+            // call the function using userop
+            // Detect options are parsed
+            // @ts-ignore
+            const isOptionsProvided = Object.keys(...options).length>0 && "gasPrice" in options[0];
+            if (isOptionsProvided && options[0].gasPrice===0) {
+                // Get the arguments for the contract after removing options
+                const funcParameters = params.length>0?params:undefined;
+                 // Define the kind of paymaster you want to use. If you do not want to use a paymaster,
+                    // comment out these lines.
+                    const paymasterContext = { type: "payg" };
+                    const paymasterMiddleware = Presets.Middleware.verifyingPaymaster(
+                        process.env.PAY_MASTER_URL,
+                        paymasterContext
+                    );
+
+                    // Initialize the User Operation
+                    // Userop.js has a few presets for different smart account types to set default fields
+                    // for user operations. This uses the ZeroDev Kernel contracts.
+                    const signer = new ethers.Wallet(process.env.API_KEY);
+                    // @ts-ignore
+                    const builder = await Presets.Builder.Kernel.init(signer, this.signer?.provider?.connection?.url, {
+                        paymasterMiddleware: paymasterMiddleware,
+                    });
+
+                    // Call the contract
+                    const call = {
+                        to: this.address,
+                        value: ethers.constants.Zero,
+                        data: this.contract.interface.encodeFunctionData(functionName,funcParameters)
+                    };
+
+                    // @ts-ignore
+                    const client = await Client.init(this.signer?.provider?.connection?.url);
+
+                    const res = await client.sendUserOperation(builder.execute(call), {
+                        onBuild: (op) =>{
+                        // console.log("Signed UserOperation:", op)
+                        }
+                        
+                    });
+                    console.log(`UserOpHash: ${res.userOpHash}`);
+                    console.log("Waiting for transaction...");
+                    const ev = await res.wait();
+                    return ev
+            }
            
             /**
              * Actual Function call using Ethers.js
