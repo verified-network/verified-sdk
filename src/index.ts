@@ -41,5 +41,5 @@ export {
     Client,
     Compound,
     utils,
-    contractAddress,
+    contractAddress
 }
