@@ -170,28 +170,29 @@ class VerifiedContract {
     else return [data];
   }
   /** Checks if a contract support gasless transaction */
-  supportsGasless(contract, chainId) {
+  supportsGasless(chainId) {
     let isSupported = false;
-    const contractPaymasterUrl =
-      process.env[`${chainId}_${contract.toUpperCase()}_API_KEY`];
+    const contractPaymasterUrl = process.env[`${chainId}_PAYMASTER_API_KEY`];
     if (contractPaymasterUrl && contractPaymasterUrl.length > 0)
       isSupported = true;
     return isSupported;
   }
 
-  async createSmartAccount(chainId, contractName) {
+  async createSmartAccount(chainId) {
     //create bundler instance
     const bundler = new Bundler({
       bundlerUrl: `${process.env.BUNDLER_URL_FIRST_SECTION}/${chainId}/${process.env.BUNDLER_URL_SECTION_SECTION}`,
       chainId: chainId,
       entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
     });
+    // console.log("bd: ", bundler);
     //create paymaster instance
     const paymaster = new BiconomyPaymaster({
       paymasterUrl: `${process.env.GENERAL_PAYMASTER_URL}/${chainId}/${
-        process.env[`${chainId}_${contractName.toUpperCase()}_API_KEY`]
+        process.env[`${chainId}_PAYMASTER_API_KEY`]
       }`,
     });
+    // console.log("pm: ", paymaster);
     const module = await ECDSAOwnershipValidationModule.create({
       signer: this.signer,
       moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
@@ -213,8 +214,7 @@ class VerifiedContract {
   async callContract(functionName, ...args) {
     let res = {};
     const chainId = await this.signer.getChainId();
-    const contractName = this.constructor.name.toString();
-    if (this.supportsGasless(contractName, chainId)) {
+    if (this.supportsGasless(chainId)) {
       //call contract through userop for gasless transaction
       let options = [];
       const totalArguments = args.length;
@@ -223,7 +223,7 @@ class VerifiedContract {
       //console.log('options before', options);
       if (options == 0) options[0] = {};
       //create smart account for signer
-      const smartAccount = await this.createSmartAccount(chainId, contractName);
+      const smartAccount = await this.createSmartAccount(chainId);
       //construct calldata for function
       const functionData = this.abiInterface.encodeFunctionData(functionName, [
         ...args,
@@ -235,24 +235,27 @@ class VerifiedContract {
       //build userops transaction
       let partialUserOp = await smartAccount.buildUserOp([transaction]);
       const biconomyPaymaster = smartAccount.paymaster;
-      //query paymaster to get neccesary params and update userops
+      //query paymaster for sponsored mode to get neccesary params and update userops
       try {
         const paymasterAndDataResponse =
           await biconomyPaymaster.getPaymasterAndData(partialUserOp, {
             mode: PaymasterMode.SPONSORED,
           });
-        partialUserOp.paymasterAndData =
-          paymasterAndDataResponse.paymasterAndData;
-        if (
-          paymasterAndDataResponse.callGasLimit &&
-          paymasterAndDataResponse.verificationGasLimit &&
-          paymasterAndDataResponse.preVerificationGas
-        ) {
-          partialUserOp.callGasLimit = paymasterAndDataResponse.callGasLimit;
-          partialUserOp.verificationGasLimit =
-            paymasterAndDataResponse.verificationGasLimit;
-          partialUserOp.preVerificationGas =
-            paymasterAndDataResponse.preVerificationGas;
+        console.log("pmR: ", paymasterAndDataResponse);
+        if (paymasterAndDataResponse) {
+          partialUserOp.paymasterAndData =
+            paymasterAndDataResponse.paymasterAndData;
+          if (
+            paymasterAndDataResponse.callGasLimit &&
+            paymasterAndDataResponse.verificationGasLimit &&
+            paymasterAndDataResponse.preVerificationGas
+          ) {
+            partialUserOp.callGasLimit = paymasterAndDataResponse.callGasLimit;
+            partialUserOp.verificationGasLimit =
+              paymasterAndDataResponse.verificationGasLimit;
+            partialUserOp.preVerificationGas =
+              paymasterAndDataResponse.preVerificationGas;
+          }
         }
       } catch (err) {
         console.log("error received from paymaster query", err);
@@ -261,7 +264,7 @@ class VerifiedContract {
       try {
         const userOpResponse = await smartAccount.sendUserOp(partialUserOp);
         const transactionDetails = await userOpResponse.wait();
-        console.log("tx details: ", transactionDetails);
+        // console.log("tx details: ", transactionDetails);
         res.response = {
           hash: transactionDetails.receipt.transactionHash,
           result: [],
