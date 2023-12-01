@@ -13,7 +13,11 @@ const {
   DEFAULT_ECDSA_OWNERSHIP_MODULE,
 } = require("@biconomy/modules");
 const { Bundler } = require("@biconomy/bundler");
-const { BiconomyPaymaster, PaymasterMode } = require("@biconomy/paymaster");
+const {
+  BiconomyPaymaster,
+  PaymasterMode,
+  SponsorUserOperationDto,
+} = require("@biconomy/paymaster");
 var STATUS;
 (function (STATUS) {
   STATUS[(STATUS["SUCCESS"] = 0)] = "SUCCESS";
@@ -174,98 +178,103 @@ class VerifiedContract {
       isSupported = true;
     return isSupported;
   }
+
+  async createSmartAccount(chainId, contractName) {
+    //create bundler instance
+    const bundler = new Bundler({
+      bundlerUrl: `${process.env.BUNDLER_URL_FIRST_SECTION}/${chainId}/${process.env.BUNDLER_URL_SECTION_SECTION}`,
+      chainId: chainId,
+      entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+    });
+    //create paymaster instance
+    const paymaster = new BiconomyPaymaster({
+      paymasterUrl: `${process.env.GENERAL_PAYMASTER_URL}/${chainId}/${
+        process.env[`${chainId}_${contractName.toUpperCase()}_API_KEY`]
+      }`,
+    });
+    const module = await ECDSAOwnershipValidationModule.create({
+      signer: this.signer,
+      moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
+    });
+    //create biconomy smart account
+    let biconomyAccount = await BiconomySmartAccountV2.create({
+      chainId: chainId,
+      bundler: bundler,
+      paymaster: paymaster,
+      entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
+      defaultValidationModule: module,
+      activeValidationModule: module,
+    });
+    // console.log("address", await biconomyAccount.getAccountAddress());
+    //return smart account
+    return biconomyAccount;
+  }
+
   async callContract(functionName, ...args) {
     let res = {};
     const chainId = await this.signer.getChainId();
     const contractName = this.constructor.name.toString();
-    if (supportsGasless(contractName, chainId)) {
+    if (this.supportsGasless(contractName, chainId)) {
       //call contract through userop for gasless transaction
-
-      // create instance of bundler
-      const bundler = new Bundler({
-        bundlerUrl: `${process.env.BUNDLER_URL_FIRST_SECTION}/${chainId}/${process.env.BUNDLER_URL_SECTION_SECTION}`,
-        chainId: chainId,
-        entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
-      });
-      // create instance of paymaster
-      const paymaster = new BiconomyPaymaster({
-        paymasterUrl: `${process.env.GENERAL_PAYMASTER_URL}/${chainId}/${
-          process.env[`${chainId}_${contractName.toUpperCase()}_API_KEY`]
-        }`,
-      });
-      // instance of ownership module
-      const ownerShipModule = await ECDSAOwnershipValidationModule.create({
-        signer: this.signer,
-        moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
-      });
-      const biconomySmartAccount = await BiconomySmartAccountV2.create({
-        chainId: chainId, //or any chain of your choice
-        bundler: bundler, // instance of bundler
-        paymaster: paymaster, // instance of paymaster
-        entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS, //entry point address for chain
-        defaultValidationModule: ownerShipModule, // either ECDSA or Multi chain to start
-        activeValidationModule: ownerShipModule, // either ECDSA or Multi chain to start
-      });
-      const senderAddress = await biconomySmartAccount.getAccountAddress();
+      let options = [];
+      const totalArguments = args.length;
+      //reduce args to exclude options
+      if (totalArguments > 1) options = args.splice(-1);
+      //console.log('options before', options);
+      if (options == 0) options[0] = {};
+      //create smart account for signer
+      const smartAccount = await this.createSmartAccount(chainId, contractName);
+      //construct calldata for function
+      const functionData = this.abiInterface.encodeFunctionData(functionName, [
+        ...args,
+      ]);
+      const transaction = {
+        to: this.contractAddress,
+        data: functionData,
+      };
+      //build userops transaction
+      let partialUserOp = await smartAccount.buildUserOp([transaction]);
+      const biconomyPaymaster = smartAccount.paymaster;
+      //query paymaster to get neccesary params and update userops
       try {
-        let options = [];
-        const totalArguments = args.length;
-        if (totalArguments > 1) options = args.splice(-1);
-        //console.log('options before', options);
-        if (options == 0) options[0] = {};
-        //console.log('*********', ...args)
-        //console.log('options after', options);
-        /**
-         * gasless Function call using Biconomy smart account with paymaster
-         */
-        // const functionInterface = this.abiInterface
-        const data = this.abiInterface.encodeFunctionData(functionName, args);
-        const tx = {
-          to: this.contractAddress,
-          data: data,
-        };
-        let userOp = await biconomySmartAccount.buildUserOp([tx], {
-          skipBundlerGasEstimation: true,
-          overrides: {
-            maxFeePerGas: options.maxFeePerGas || "50000000000",
-            maxPriorityFeePerGas: options.maxPriorityFeePerGas || "20000000000",
-          },
-        });
-        const biconomyPaymaster = biconomySmartAccount.paymaster;
-        let paymasterServiceData = {
-          mode: PaymasterMode.SPONSORED,
-          smartAccountInfo: {
-            name: "BICONOMY",
-            version: "2.0.0",
-          },
-        };
         const paymasterAndDataResponse =
-          await biconomyPaymaster.getPaymasterAndData(
-            userOp,
-            paymasterServiceData
-          );
-        console.log("paymaster response to tx: ", paymasterAndDataResponse);
-        userOp.paymasterAndData = paymasterAndDataResponse.paymasterAndData;
-        const userOpResponse = await biconomySmartAccount.sendUserOp(userOp);
-        console.log("userOpHash", userOpResponse);
-        const { receipt } = await userOpResponse.wait(1);
-        console.log("txHash", receipt.transactionHash);
-        //console.log('_res', _res)
-        //console.log('_res.value.toString()',_res.value.toString())
-        // let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
-        // //console.log('_resp', _resp)
-        // res.response = this.tempOutput(
-        //   this.convertToArray(ethers_1.utils.deepCopy(_resp))
-        // );
+          await biconomyPaymaster.getPaymasterAndData(partialUserOp, {
+            mode: PaymasterMode.SPONSORED,
+          });
+        partialUserOp.paymasterAndData =
+          paymasterAndDataResponse.paymasterAndData;
+        if (
+          paymasterAndDataResponse.callGasLimit &&
+          paymasterAndDataResponse.verificationGasLimit &&
+          paymasterAndDataResponse.preVerificationGas
+        ) {
+          partialUserOp.callGasLimit = paymasterAndDataResponse.callGasLimit;
+          partialUserOp.verificationGasLimit =
+            paymasterAndDataResponse.verificationGasLimit;
+          partialUserOp.preVerificationGas =
+            paymasterAndDataResponse.preVerificationGas;
+        }
+      } catch (err) {
+        console.log("error received from paymaster query", err);
+      }
+      //send userops transaction and construct transaction response
+      try {
+        const userOpResponse = await smartAccount.sendUserOp(partialUserOp);
+        const transactionDetails = await userOpResponse.wait();
+        console.log("tx details: ", transactionDetails);
+        res.response = {
+          hash: transactionDetails.receipt.transactionHash,
+          result: [],
+        }; //TODO: update response
         res.status = STATUS.SUCCESS;
         res.message = "";
         return res;
-      } catch (error) {
-        console.error(error);
+      } catch (err) {
+        console.log("error received when sending transaction", err);
         res.status = STATUS.ERROR;
-        res.reason = error.reason;
-        res.message = error.message;
-        res.code = error.code;
+        res.reason = err.reason;
+        res.message = err.message;
+        res.code = err.code;
         return res;
       }
     } else {
@@ -316,14 +325,5 @@ class VerifiedContract {
     });
   }
 }
-
-const supportsGasless = (contract, chainId) => {
-  let isSupported = false;
-  const contractPaymasterUrl =
-    process.env[`${chainId}_${contract.toUpperCase()}_API_KEY`];
-  if (contractPaymasterUrl && contractPaymasterUrl.length > 0)
-    isSupported = true;
-  return isSupported;
-};
 
 exports.VerifiedContract = VerifiedContract;
