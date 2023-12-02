@@ -4,6 +4,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedContract = exports.DATATYPES = void 0;
 require("dotenv").config();
 const ethers_1 = require("ethers");
+const { Web3 } = require("web3");
 const {
   BiconomySmartAccountV2,
   DEFAULT_ENTRYPOINT_ADDRESS,
@@ -18,6 +19,7 @@ const {
   PaymasterMode,
   SponsorUserOperationDto,
 } = require("@biconomy/paymaster");
+const { Provider } = require("../utils");
 var STATUS;
 (function (STATUS) {
   STATUS[(STATUS["SUCCESS"] = 0)] = "SUCCESS";
@@ -211,10 +213,80 @@ class VerifiedContract {
     return biconomyAccount;
   }
 
-  async callContract(functionName, ...args) {
+  async callFunctionWithEthers(functionName, ...args) {
     let res = {};
+    try {
+      let options = [];
+      const totalArguments = args.length;
+      if (totalArguments > 1) options = args.splice(-1);
+      //console.log('options before', options);
+      if (options == 0) options[0] = {};
+      //console.log('*********', ...args)
+      //console.log('options after', options);
+      /**
+       * Actual Function call using Ethers.js
+       */
+      let fn = this.contract[functionName];
+      let _res = await fn(...args, ...options);
+      //console.log('_res', _res)
+      //console.log('_res.value.toString()',_res.value.toString())
+      let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
+      //console.log('_resp', _resp)
+      res.response = this.tempOutput(
+        this.convertToArray(ethers_1.utils.deepCopy(_resp))
+      );
+      res.status = STATUS.SUCCESS;
+      res.message = "";
+      return res;
+    } catch (error) {
+      console.error(error);
+      res.status = STATUS.ERROR;
+      res.reason = error.reason;
+      res.message = error.message;
+      res.code = error.code;
+      return res;
+    }
+  }
+
+  async callFunctionAsUserOp(smartAccount, userOp) {
+    //send userops transaction and construct transaction response
+    let res = {};
+    try {
+      const userOpResponse = await smartAccount.sendUserOp(userOp);
+      const transactionDetails = await userOpResponse.wait();
+      if (transactionDetails.success === "true") {
+        res.response = {
+          hash: transactionDetails.receipt.transactionHash,
+          result: [],
+        }; //TODO: update response
+        res.status = STATUS.SUCCESS;
+        res.message = "";
+        return res;
+      } else {
+        const logs = transactionDetails.receipt.logs;
+        let reason = "";
+        logs.map((log) => {
+          if (log.topics.includes(process.env.BICONOMY_REVERT_TOPIC)) {
+            const web3 = new Web3(Provider.defaultProvider());
+            reason = web3.utils.hexToAscii(log.data);
+          }
+        });
+        throw Error(`execution reverted: ${reason}`);
+      }
+    } catch (err) {
+      console.log(err);
+      res.status = STATUS.ERROR;
+      res.reason = err.reason;
+      res.message = err.message;
+      res.code = err.code;
+      return res;
+    }
+  }
+
+  async callContract(functionName, ...args) {
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
+      console.log("gassless supported will use userop");
       //call contract through userop for gasless transaction
       let options = [];
       const totalArguments = args.length;
@@ -224,24 +296,34 @@ class VerifiedContract {
       if (options == 0) options[0] = {};
       //create smart account for signer
       const smartAccount = await this.createSmartAccount(chainId);
+      const account = await smartAccount.getAccountAddress();
+      //sanitize arguments to use smartaccount address
+      const newArgs = args.map((_arg) => {
+        if (
+          typeof _arg === "string" &&
+          _arg.toLowerCase() === this.signer.address.toLowerCase()
+        ) {
+          _arg = account;
+        }
+        return _arg;
+      });
       //construct calldata for function
-      const functionData = this.abiInterface.encodeFunctionData(functionName, [
-        ...args,
-      ]);
-      const transaction = {
+      let fn = this.contract.populateTransaction[functionName];
+      let _res = await fn(...newArgs);
+      const tx1 = {
         to: this.contractAddress,
-        data: functionData,
+        data: _res.data,
       };
-      //build userops transaction
-      let partialUserOp = await smartAccount.buildUserOp([transaction]);
+      //build userop transaction
+      let partialUserOp = await smartAccount.buildUserOp([tx1]);
+      //query paymaster for sponsored mode to get neccesary params and update userop
       const biconomyPaymaster = smartAccount.paymaster;
-      //query paymaster for sponsored mode to get neccesary params and update userops
       try {
         const paymasterAndDataResponse =
           await biconomyPaymaster.getPaymasterAndData(partialUserOp, {
             mode: PaymasterMode.SPONSORED,
           });
-        console.log("pmR: ", paymasterAndDataResponse);
+        // console.log("pmR: ", paymasterAndDataResponse);
         if (paymasterAndDataResponse) {
           partialUserOp.paymasterAndData =
             paymasterAndDataResponse.paymasterAndData;
@@ -257,62 +339,70 @@ class VerifiedContract {
               paymasterAndDataResponse.preVerificationGas;
           }
         }
+        return await this.callFunctionAsUserOp(smartAccount, partialUserOp);
       } catch (err) {
-        console.log("error received from paymaster query", err);
-      }
-      //send userops transaction and construct transaction response
-      try {
-        const userOpResponse = await smartAccount.sendUserOp(partialUserOp);
-        const transactionDetails = await userOpResponse.wait();
-        // console.log("tx details: ", transactionDetails);
-        res.response = {
-          hash: transactionDetails.receipt.transactionHash,
-          result: [],
-        }; //TODO: update response
-        res.status = STATUS.SUCCESS;
-        res.message = "";
-        return res;
-      } catch (err) {
-        console.log("error received when sending transaction", err);
-        res.status = STATUS.ERROR;
-        res.reason = err.reason;
-        res.message = err.message;
-        res.code = err.code;
-        return res;
+        console.log("sponsored failed will try erc20");
+        //if userop can't be sponsored use ERC20 mode
+        try {
+          let finalUserOp = partialUserOp;
+          //get fee quote for network cash token
+          const feeQuotesResponse =
+            await biconomyPaymaster.getPaymasterFeeQuotesOrData(partialUserOp, {
+              mode: PaymasterMode.ERC20,
+              tokenList: [process.env[`${chainId}_CASH_TOKEN_ADDRESS`]],
+            });
+          const feeQuotes = feeQuotesResponse.feeQuotes;
+          const spender = feeQuotesResponse.tokenPaymasterAddress || "";
+          const tokenFeeQuotes = feeQuotes[0];
+          finalUserOp = await smartAccount.buildTokenPaymasterUserOp(
+            partialUserOp,
+            {
+              feeQuote: tokenFeeQuotes,
+              spender: spender,
+              maxApproval: false,
+            }
+          );
+          let paymasterServiceData = {
+            mode: PaymasterMode.ERC20,
+            feeTokenAddress: tokenFeeQuotes.tokenAddress,
+            calculateGasLimits: true,
+          };
+          const paymasterAndDataWithLimits =
+            await biconomyPaymaster.getPaymasterAndData(
+              finalUserOp,
+              paymasterServiceData
+            );
+          finalUserOp.paymasterAndData =
+            paymasterAndDataWithLimits.paymasterAndData;
+          if (
+            paymasterAndDataWithLimits.callGasLimit &&
+            paymasterAndDataWithLimits.verificationGasLimit &&
+            paymasterAndDataWithLimits.preVerificationGas
+          ) {
+            finalUserOp.callGasLimit = paymasterAndDataWithLimits.callGasLimit;
+            finalUserOp.verificationGasLimit =
+              paymasterAndDataWithLimits.verificationGasLimit;
+            finalUserOp.preVerificationGas =
+              paymasterAndDataWithLimits.preVerificationGas;
+          }
+          const _paymasterAndDataWithLimits =
+            await biconomyPaymaster.getPaymasterAndData(
+              finalUserOp,
+              paymasterServiceData
+            );
+          finalUserOp.paymasterAndData =
+            _paymasterAndDataWithLimits.paymasterAndData;
+          return await this.callFunctionAsUserOp(smartAccount, finalUserOp);
+        } catch (_err) {
+          //if erc20 mode didn't work use ethers.js
+          console.log("both sponsored and erc20 failed will use ethers");
+          return await this.callFunctionWithEthers(functionName, ...args);
+        }
       }
     } else {
       //call contract through normal ether.js
-      try {
-        let options = [];
-        const totalArguments = args.length;
-        if (totalArguments > 1) options = args.splice(-1);
-        //console.log('options before', options);
-        if (options == 0) options[0] = {};
-        //console.log('*********', ...args)
-        //console.log('options after', options);
-        /**
-         * Actual Function call using Ethers.js
-         */
-        let fn = this.contract[functionName];
-        let _res = await fn(...args, ...options);
-        //console.log('_res', _res)
-        //console.log('_res.value.toString()',_res.value.toString())
-        let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
-        //console.log('_resp', _resp)
-        res.response = this.tempOutput(
-          this.convertToArray(ethers_1.utils.deepCopy(_resp))
-        );
-        res.status = STATUS.SUCCESS;
-        res.message = "";
-        return res;
-      } catch (error) {
-        console.error(error);
-        res.status = STATUS.ERROR;
-        res.reason = error.reason;
-        res.message = error.message;
-        res.code = error.code;
-        return res;
-      }
+      console.log("gassless not supported will use ethers");
+      return await this.callFunctionWithEthers(functionName, ...args);
     }
   }
   getEvent(eventName, callback) {

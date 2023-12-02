@@ -40,8 +40,30 @@ const testSecurityFactoryIssueProduct = async () => {
       indiaBytes,
       false
     )
-    .then((res) => {
+    .then(async (res) => {
       console.log("Security Issued Succesfully with hash: ", res.response.hash);
+      securityFactoryContract.notifySecuritiesAdded(async (evnt) => {
+        const security = evnt.response.result[0];
+        console.log("added security : ", security, "succesfully");
+        if (security) {
+          await securityFactoryContract
+            .addBalance(
+              security,
+              zeroAddress,
+              sender.address,
+              1000000000000000000000000n
+            )
+            .then(async (_res) => {
+              console.log(
+                "Security Minted succesfully with hash: ",
+                _res.response.hash
+              );
+            })
+            .catch((_err) => {
+              console.error("Mint security failed with error: ", _err);
+            });
+        }
+      });
     })
     .catch((err) => {
       console.error("issueSecurity failed with error: ", err);
