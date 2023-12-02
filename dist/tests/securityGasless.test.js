@@ -28,7 +28,7 @@ const testSecurityTransfer = async (
 };
 
 testSecurityTransfer(
-  "0x89b60e2b51D5b604F54786D16b75F4E54594Cde8",
+  "0xd7252bfa14C0Dca5A72d90a28Bb513E0f989Ee1e",
   1000000000000000000n,
   "0x286a759DACfd0C533B88E42b9e7571040008D778"
 );
