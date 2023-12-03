@@ -67,6 +67,40 @@ const contractAddress: Object = {
             'VBINR': ''
         },
     },
+    80001 : { //polygon mumbai testnet
+        'Client': '0x8009B03BbaBD09B9C1EADCaBC7D27197AC251F44',
+        'Factory': '',        
+        'Cash': '',
+        'Bond': '',
+        'Token': '',
+        'Oracle': '',
+        'Rates': '',
+        'Security': '0x2D76FE6DdC229a482eDeb6E86d12c733A05Af55b',
+        'SecuritiesFactory': '0xf1f349C2CBDA5BCAfD7F95b20C812b4A17c9333D',
+        'Vitta': '',
+        'Liquidity': '',
+        'Distribution': '',
+        'PrimaryIssuePoolFactory': '',
+        'BalancerPrimaryIssueManager': '',
+        'SecondaryIssuePoolFactory': '',
+        'BalancerSecondaryIssueManager' : '',
+        'MarginTradingPoolFactory': '',
+        'BalancerMarginIssueManager' : '',
+        'Custody': '0x27006b68b3594EF5Ae04C5457c24F0c7CF1E5553',
+        'Compound': '',
+        'CASH': {
+            'VCUSD': '',
+            'VCEUR': '',
+            'VCCHF': '',
+            'VCINR': ''
+        },
+        'BOND': {
+            'VBUSD': '',
+            'VBEUR': '',
+            'VCCHF': '',
+            'VBINR': ''
+        },
+    },
     137: { //polygon
         'Client': '0x2C5718206b37b8744784ce44f374DE13dd7BC2d1',
         'Factory': '',        
