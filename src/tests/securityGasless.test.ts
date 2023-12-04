@@ -1,11 +1,11 @@
-const { Provider } = require("../utils/index");
-const { VerifiedWallet } = require("../wallet/index");
-const { Security } = require("../index");
+import { Provider } from "../utils/index";
+import { VerifiedWallet } from "../wallet/index";
+import { Security } from "../index";
 
 const testSecurityTransfer = async (
-  securityAddress,
-  amount,
-  receiverAddress
+  securityAddress: string,
+  amount: string,
+  receiverAddress: string
 ) => {
   const INFURA_API_KEY = "95c1322d7c0e44de9ea77cc9eea18534";
   const SECURITY_HOLDER_MNEMONICS =
@@ -18,10 +18,10 @@ const testSecurityTransfer = async (
   const securityContract = new Security(signer, securityAddress);
   await securityContract
     .transfer(receiverAddress, amount)
-    .then((res) => {
+    .then((res: any) => {
       console.log("Transfer succesful with hash: ", res.response.hash);
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.log("Transfer failed with error: ", err);
     });
 };

@@ -14,6 +14,8 @@ import { IPaymaster,
     PaymasterMode,
     SponsorUserOperationDto, } from "@biconomy/paymaster";
 
+config();
+
 enum STATUS {
     SUCCESS,
     ERROR
