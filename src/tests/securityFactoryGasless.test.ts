@@ -1,18 +1,17 @@
-const { Provider } = require("../utils/index");
-const { VerifiedWallet } = require("../wallet/index");
-const { SecuritiesFactory, contractAddress } = require("../index");
-const { ethers } = require("ethers");
+import { Provider } from "../utils/index";
+import { VerifiedWallet } from "../wallet/index";
+import { SecuritiesFactory, contractAddress } from "../index";
+import { ethers } from "ethers";
 
-const testSecurityFactoryIssueProduct = async () => {
-  INFURA_API_KEY = "95c1322d7c0e44de9ea77cc9eea18534";
-  SECURITY_HOLDER_MNEMONICS =
+
+const testSecurityFactoryIssueProduct = async (securityFactoryAddress: string) => {
+  const INFURA_API_KEY = "95c1322d7c0e44de9ea77cc9eea18534";
+  const SECURITY_HOLDER_MNEMONICS =
     "correct galaxy various swap chair assault blue improve ivory pear infant oak";
   const sender = VerifiedWallet.importWallet(SECURITY_HOLDER_MNEMONICS);
   const signer = sender.setProvider(
     Provider.infuraProvider(80001, INFURA_API_KEY)
   );
-  const securityFactoryAddress = contractAddress[80001]["SecuritiesFactory"];
-  console.log("add: ", securityFactoryAddress);
   const securityFactoryContract = new SecuritiesFactory(
     signer,
     securityFactoryAddress
@@ -24,7 +23,7 @@ const testSecurityFactoryIssueProduct = async () => {
     "0x4346440000000000000000000000000000000000000000000000000000000000";
   const indiaBytes =
     "0x496e646961000000000000000000000000000000000000000000000000000000";
-  const restrictions = [];
+  const restrictions: any[] = [];
   const abiCoder = ethers.utils.defaultAbiCoder;
   const encodedArray = abiCoder.encode(["bytes32[]"], [restrictions]);
   await securityFactoryContract
@@ -38,11 +37,11 @@ const testSecurityFactoryIssueProduct = async () => {
       sender.address,
       encodedArray,
       indiaBytes,
-      false
+      "false"
     )
-    .then(async (res) => {
+    .then(async (res: any) => {
       console.log("Security Issued Succesfully with hash: ", res.response.hash);
-      securityFactoryContract.notifySecuritiesAdded(async (evnt) => {
+      securityFactoryContract.notifySecuritiesAdded(async (evnt: any) => {
         const security = evnt.response.result[0];
         console.log("added security : ", security, "succesfully");
         if (security) {
@@ -51,23 +50,23 @@ const testSecurityFactoryIssueProduct = async () => {
               security,
               zeroAddress,
               sender.address,
-              1000000000000000000000000n
+              "1000000000000000000000000"
             )
-            .then(async (_res) => {
+            .then(async (_res: any) => {
               console.log(
                 "Security Minted succesfully with hash: ",
                 _res.response.hash
               );
             })
-            .catch((_err) => {
+            .catch((_err: any) => {
               console.error("Mint security failed with error: ", _err);
             });
         }
       });
     })
-    .catch((err) => {
+    .catch((err: any) => {
       console.error("issueSecurity failed with error: ", err);
     });
 };
 
-testSecurityFactoryIssueProduct();
+testSecurityFactoryIssueProduct("0xf1f349C2CBDA5BCAfD7F95b20C812b4A17c9333D");
