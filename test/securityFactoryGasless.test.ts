@@ -1,6 +1,6 @@
-import { Provider } from "../utils/index";
-import { VerifiedWallet } from "../wallet/index";
-import { SecuritiesFactory, contractAddress } from "../index";
+import { Provider } from "../src/utils/index";
+import { VerifiedWallet } from "../src/wallet/index";
+import { SecuritiesFactory, contractAddress } from "../src/index";
 import { ethers } from "ethers";
 
 
