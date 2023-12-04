@@ -69,17 +69,17 @@ const contractAddress: Object = {
     },
     80001 : { //polygon mumbai testnet
         'Client': '0x8009B03BbaBD09B9C1EADCaBC7D27197AC251F44',
-        'Factory': '',        
-        'Cash': '',
-        'Bond': '',
-        'Token': '',
-        'Oracle': '',
-        'Rates': '',
+        'Factory': '0xaE16E00380450617E7D96Bdee3c242a8a83CF474',        
+        'Cash': '0xE6aF6F4d0DD2c4d6F46cdF02be016d7352AF8594',
+        'Bond': '0x035ad7060e366e7d619d3394d667c4F9Fa8fbFFc',
+        'Token': '0x937d8b7A5b36E3573f4B909D742A1afc46998914',
+        'Oracle': '0x3d85758f26866D0D0cd7f3a8f4740cCfE341CBf3',
+        'Rates': '0xFA674a58063bAfD52ce5981DB137B01c2504B312',
         'Security': '0x2D76FE6DdC229a482eDeb6E86d12c733A05Af55b',
         'SecuritiesFactory': '0xf1f349C2CBDA5BCAfD7F95b20C812b4A17c9333D',
-        'Vitta': '',
-        'Liquidity': '',
-        'Distribution': '',
+        'Vitta': '0x2D5d7F6a1065C1D47c333cacb0ea02f4e25c268C',
+        'Liquidity': '0x9322e3002403C6f13d567d85FF72eC69733a57ab',
+        'Distribution': '0x009B5BAd3C3b8E58f71321e149b22F2Ae080089a',
         'PrimaryIssuePoolFactory': '',
         'BalancerPrimaryIssueManager': '',
         'SecondaryIssuePoolFactory': '',
@@ -89,16 +89,16 @@ const contractAddress: Object = {
         'Custody': '0x27006b68b3594EF5Ae04C5457c24F0c7CF1E5553',
         'Compound': '',
         'CASH': {
-            'VCUSD': '',
-            'VCEUR': '',
-            'VCCHF': '',
-            'VCINR': ''
+            'VCUSD': '0x2643ea32A3c231327556739C2a88C1eA943A90A9',
+            'VCEUR': '0x8D7365d51D6e2fF6BffEa00FDacdd96f86d147A0',
+            'VCCHF': '0x1b2f81171300f3DCF70F2A3BC90fc307588212fC',
+            'VCINR': '0x515bC2e51B0824759B3A64fD3659CCC5c8E35D96'
         },
         'BOND': {
-            'VBUSD': '',
-            'VBEUR': '',
-            'VCCHF': '',
-            'VBINR': ''
+            'VBUSD': '0x55E7F13020F85bA8855c0639fD384e2CF319E30A',
+            'VBEUR': '0x00A4eF03Dd625F5778e2a17407952444B3A97008',
+            'VCCHF': '0x0f2570339af7896f78a47730386d51d8CBDD8D0F',
+            'VBINR': '0xFe83AD465cD61FE8f82241b23199043f41079109'
         },
     },
     137: { //polygon
