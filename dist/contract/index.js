@@ -270,7 +270,7 @@ class VerifiedContract {
         let reason = "";
         logs.map((log) => {
           if (log.topics.includes(process.env.BICONOMY_REVERT_TOPIC)) {
-            const web3 = new Web3(Provider.defaultProvider());
+            const web3 = new Web3(this.contract.provider);
             reason = web3.utils.hexToAscii(log.data);
           }
         });
@@ -300,7 +300,6 @@ class VerifiedContract {
       //create smart account for signer
       const smartAccount = await this.createSmartAccount(chainId);
       const account = await smartAccount.getAccountAddress();
-      console.log("account: ", account);
       //sanitize arguments to use smartaccount address
       const newArgs = args.map((_arg) => {
         if (
