@@ -4,8 +4,8 @@ const { SecuritiesFactory, contractAddress } = require("../index");
 const { ethers } = require("ethers");
 
 const testSecurityFactoryIssueProduct = async () => {
-  INFURA_API_KEY = "95c1322d7c0e44de9ea77cc9eea18534";
-  SECURITY_HOLDER_MNEMONICS =
+  const INFURA_API_KEY = "95c1322d7c0e44de9ea77cc9eea18534";
+  const SECURITY_HOLDER_MNEMONICS =
     "correct galaxy various swap chair assault blue improve ivory pear infant oak";
   const sender = VerifiedWallet.importWallet(SECURITY_HOLDER_MNEMONICS);
   const signer = sender.setProvider(
