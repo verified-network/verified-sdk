@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: BUSL-1.1
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedContract = exports.DATATYPES = void 0;
 const dotenv_1 = require("dotenv");
 const ethers_1 = require("ethers");
-const web3_1 = require("web3");
+const web3_1 = __importDefault(require("web3"));
 const account_1 = require("@biconomy/account");
 const modules_1 = require("@biconomy/modules");
 const bundler_1 = require("@biconomy/bundler");
@@ -258,7 +261,7 @@ class VerifiedContract {
                 const provider = this.contract.provider;
                 logs.map((log) => {
                     if (log.topics.includes(process.env.BICONOMY_REVERT_TOPIC)) {
-                        const web3 = new web3_1.Web3(provider);
+                        const web3 = new web3_1.default(provider);
                         reason = web3.utils.hexToAscii(log.data);
                     }
                 });

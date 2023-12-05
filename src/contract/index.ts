@@ -4,7 +4,7 @@
 import { config } from "dotenv";
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
-import { Web3 } from "web3";
+import Web3 from "web3";
 import { BiconomySmartAccountV2, DEFAULT_ENTRYPOINT_ADDRESS } from "@biconomy/account";
 import { ECDSAOwnershipValidationModule, DEFAULT_ECDSA_OWNERSHIP_MODULE } from "@biconomy/modules";
 import {IBundler, Bundler } from "@biconomy/bundler";
