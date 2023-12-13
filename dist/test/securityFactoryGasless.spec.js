@@ -33,6 +33,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
             })
                 .catch((err) => {
                 console.error("IssueSecurity failed with error: ", err);
+                assert_1.default.equal(1, 0); //should fail test
             });
         });
         it(`should add Balance(mint 100) security tokens to user's wallet `, async () => {
@@ -46,6 +47,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
             })
                 .catch((err) => {
                 console.error("Mint security failed with error: ", err);
+                assert_1.default.equal(1, 0); //should fail test
             });
         });
         it(`should test sending 1 security token from callers's wallet`, async () => {
@@ -62,6 +64,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
             })
                 .catch((err) => {
                 console.error("Transfer failed with error: ", err);
+                assert_1.default.equal(1, 0); //should fail test
             });
         });
     });
