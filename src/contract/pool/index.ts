@@ -37,7 +37,7 @@ type Funds = {
     toInternalBalance: boolean,
 }
 
-export default class BalancerVault extends VerifiedContract {
+export default class PoolContract extends VerifiedContract {
     
     public contractAddress: string
     
