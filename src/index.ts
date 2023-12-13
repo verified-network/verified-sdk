@@ -14,6 +14,7 @@ import PrimaryIssueManager from './contract/amm/primary';
 import SecondaryIssueManager from './contract/amm/secondary';
 import MarginIssueManager from './contract/amm/margin';
 import Security from './contract/security';
+import BalancerVault from './contract/BalancerVault';
 import SecuritiesFactory from './contract/securitiesfactory';
 import Distribution from './contract/distribution';
 import Client from './contract/client';
@@ -36,6 +37,7 @@ export {
     SecondaryIssueManager,
     MarginIssueManager,
     Security,
+    BalancerVault,
     SecuritiesFactory,
     Distribution,
     Client,

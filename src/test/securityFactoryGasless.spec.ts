@@ -50,6 +50,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
         })
         .catch((err: any) => {
           console.error("IssueSecurity failed with error: ", err);
+          assert.equal(1, 0) //should fail test
         });
     });
 
@@ -72,6 +73,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
       })
       .catch((err: any) => {
         console.error("Mint security failed with error: ", err);
+        assert.equal(1, 0) //should fail test
       });
     })
 
@@ -89,6 +91,7 @@ describe("Polygon Mumbai Testnet Tests", () => {
             })
             .catch((err: any) => {
               console.error("Transfer failed with error: ", err);
+              assert.equal(1, 0) //should fail test
             });
     })
   });
