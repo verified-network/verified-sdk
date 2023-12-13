@@ -1,16 +1,16 @@
 import assert from 'assert';
 import { Provider } from "../utils/index";
 import { VerifiedWallet } from "../wallet/index";
-import { BalancerVault, Security } from "../index";
+import { Pool, Security } from "../index";
 
-describe("Vault Tests on GOERLI", () => {
+describe("Pool/Balancer Vault Tests on GOERLI", () => {
   const INFURA_API_KEY = "e0951a7b82c84a6880f3c6f7bb182e21";        
   const SECURITY_HOLDER_MNEMONICS =
     "correct galaxy various swap chair assault blue improve ivory pear infant oak";
   const sender = VerifiedWallet.importWallet(SECURITY_HOLDER_MNEMONICS);
   const signer = sender.setProvider(Provider.infuraProvider(5, INFURA_API_KEY));
   const vaultAddress = "0xba12222222228d8ba445958a75a0704d566bf2c8";
-    const vaultContract = new BalancerVault(
+    const vaultContract = new Pool(
       signer
     );
   const securityContract = new Security(signer, "0x89b60e2b51D5b604F54786D16b75F4E54594Cde8");
