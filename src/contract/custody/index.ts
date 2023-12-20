@@ -54,6 +54,7 @@ export default class Custody extends VerifiedContract {
 
     public async getCreator(_creator: string, _pin: string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _creator)
+        await this.validateInput(DATATYPES.NUMBER, _pin)
         return this.callContract(FUNCTIONS.GETCREATOR, this.sanitiseInput(DATATYPES.BYTE32, _creator), _pin, options)
     }
 
@@ -76,6 +77,7 @@ export default class Custody extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _id)
         await this.validateInput(DATATYPES.STRING, _participant)
+        await this.validateInput(DATATYPES.NUMBER, _pin)
         return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), _pin, options)
     }
 
@@ -96,6 +98,8 @@ export default class Custody extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _id)
         await this.validateInput(DATATYPES.STRING, _participant)
+        await this.validateInput(DATATYPES.STRING, _tx)
+        await this.validateInput(DATATYPES.NUMBER, _pin)
         return this.callContract(FUNCTIONS.SIGNTRANSACTION, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), _tx, _pin, options)
     }
 
