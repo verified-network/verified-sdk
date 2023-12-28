@@ -8,7 +8,9 @@ import { abi, networks } from '../../abi/payments/Token.json';
 enum FUNCTIONS {
     TRANSFERFROM = 'transferFrom',
     BALANCE = 'balanceOf',
-    GETISSUER = 'getIssuer'
+    GETISSUER = 'getIssuer',
+    REQUESTTRANSACTION = 'requestTransaction',
+    REQUESTTRANSFER = 'requestTransfer'
 }
 
 export default class Token extends VerifiedContract {
@@ -49,6 +51,20 @@ export default class Token extends VerifiedContract {
     */
     public async getIssuer() {
         return this.callContract(FUNCTIONS.GETISSUER)
+    }
+
+    public async requestTransfer(_recieverAddress: string, _tokens: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _recieverAddress)
+        await this.validateInput(DATATYPES.NUMBER, _tokens)
+        return this.callContract(FUNCTIONS.REQUESTTRANSFER, _recieverAddress, _tokens, options)
+    }
+
+    public async requestTransaction(_amount: string, _payer: string, _collateralName: string, _collateralContract: string, options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.NUMBER, _amount)
+        await this.validateInput(DATATYPES.ADDRESS, _payer)
+        await this.validateInput(DATATYPES.STRING, _collateralName)
+        await this.validateInput(DATATYPES.ADDRESS, _collateralContract)        
+        return this.callContract(FUNCTIONS.REQUESTTRANSACTION, _amount, _payer, this.sanitiseInput(DATATYPES.BYTE32, _collateralName), _collateralContract, options)
     }
 
 }

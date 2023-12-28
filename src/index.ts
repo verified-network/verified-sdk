@@ -2,6 +2,7 @@
 
 import { VerifiedWallet } from './wallet';
 import { Provider } from './utils';
+import ERC20 from './contract/erc20';
 import Bond from './contract/bond';
 import Cash from './contract/cash';
 import Factory from './contract/factory';
@@ -24,6 +25,7 @@ import contractAddress from "./contractAddress";
 export {
     VerifiedWallet,
     Provider,
+    ERC20,
     Bond,
     Cash,
     Factory,

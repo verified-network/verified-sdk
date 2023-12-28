@@ -4,11 +4,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.contractAddress = exports.utils = exports.Compound = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.Provider = exports.VerifiedWallet = void 0;
+exports.contractAddress = exports.utils = exports.Compound = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.ERC20 = exports.Provider = exports.VerifiedWallet = void 0;
 const wallet_1 = require("./wallet");
 Object.defineProperty(exports, "VerifiedWallet", { enumerable: true, get: function () { return wallet_1.VerifiedWallet; } });
 const utils_1 = require("./utils");
 Object.defineProperty(exports, "Provider", { enumerable: true, get: function () { return utils_1.Provider; } });
+const erc20_1 = __importDefault(require("./contract/erc20"));
+exports.ERC20 = erc20_1.default;
 const bond_1 = __importDefault(require("./contract/bond"));
 exports.Bond = bond_1.default;
 const cash_1 = __importDefault(require("./contract/cash"));
