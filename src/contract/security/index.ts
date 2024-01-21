@@ -25,7 +25,13 @@ enum FUNCTIONS {
     PAYOUTPRORATA = 'payoutProrata',
     PAYOUT = 'payout',
     PAUSE = 'pause',
-    UNPAUSE = 'unpause'
+    UNPAUSE = 'unpause',
+    WITHDRAWFUNDS = 'withdrawFunds',
+    PUSHFUNDS = 'pushFunds',
+    UPDATEFUNDSRECEIVED = 'updateFundsReceived',
+    WITHDRAWABLEFUNDSOF = 'withdrawableFundsOf',
+    WITHDRAWNFUNDSOF = 'withdrawnFundsOf',
+    ACCUMULATIVEFUNDSOF = 'accumulativeFundsOf'
 }
 
 export default class Security extends VerifiedContract {
@@ -210,6 +216,43 @@ export default class Security extends VerifiedContract {
     public async unpause(       
                         options?: { gasPrice: number, gasLimit: number }): any {
         return this.callContract(FUNCTIONS.UNPAUSE, options)
+    }
+
+    public async withdrawableFundsOf(
+                _holder: string,
+                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _holder)
+        return this.callContract(FUNCTIONS.WITHDRAWABLEFUNDSOF, _holder, options)
+    }
+
+    public async withdrawnFundsOf(
+                _holder: string,
+                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _holder)
+        return this.callContract(FUNCTIONS.WITHDRAWNFUNDSOF, _holder, options)
+    }
+
+    public async accumulativeFundsOf(
+                _holder: string,
+                options?: { gasPrice: number, gasLimit: number }): any {
+        await this.validateInput(DATATYPES.ADDRESS, _holder)
+        return this.callContract(FUNCTIONS.ACCUMULATIVEFUNDSOF, _holder, options)
+    }
+
+    public async withdrawFunds(
+                options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.WITHDRAWFUNDS, options)
+    }
+
+    public async pushFunds(
+                _holder: string,
+                options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.PUSHFUNDS, _holder, options)
+    }
+
+    public async updateFundsReceived(
+                options?: { gasPrice: number, gasLimit: number }): any {
+        return this.callContract(FUNCTIONS.UPDATEFUNDSRECEIVED, options)
     }
     
 }

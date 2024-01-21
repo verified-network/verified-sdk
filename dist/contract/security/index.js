@@ -26,6 +26,12 @@ var FUNCTIONS;
     FUNCTIONS["PAYOUT"] = "payout";
     FUNCTIONS["PAUSE"] = "pause";
     FUNCTIONS["UNPAUSE"] = "unpause";
+    FUNCTIONS["WITHDRAWFUNDS"] = "withdrawFunds";
+    FUNCTIONS["PUSHFUNDS"] = "pushFunds";
+    FUNCTIONS["UPDATEFUNDSRECEIVED"] = "updateFundsReceived";
+    FUNCTIONS["WITHDRAWABLEFUNDSOF"] = "withdrawableFundsOf";
+    FUNCTIONS["WITHDRAWNFUNDSOF"] = "withdrawnFundsOf";
+    FUNCTIONS["ACCUMULATIVEFUNDSOF"] = "accumulativeFundsOf";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Security extends index_1.VerifiedContract {
     constructor(signer, tokenAddress) {
@@ -128,6 +134,27 @@ class Security extends index_1.VerifiedContract {
     }
     async unpause(options) {
         return this.callContract(FUNCTIONS.UNPAUSE, options);
+    }
+    async withdrawableFundsOf(_holder, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _holder);
+        return this.callContract(FUNCTIONS.WITHDRAWABLEFUNDSOF, _holder, options);
+    }
+    async withdrawnFundsOf(_holder, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _holder);
+        return this.callContract(FUNCTIONS.WITHDRAWNFUNDSOF, _holder, options);
+    }
+    async accumulativeFundsOf(_holder, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _holder);
+        return this.callContract(FUNCTIONS.ACCUMULATIVEFUNDSOF, _holder, options);
+    }
+    async withdrawFunds(options) {
+        return this.callContract(FUNCTIONS.WITHDRAWFUNDS, options);
+    }
+    async pushFunds(_holder, options) {
+        return this.callContract(FUNCTIONS.PUSHFUNDS, _holder, options);
+    }
+    async updateFundsReceived(options) {
+        return this.callContract(FUNCTIONS.UPDATEFUNDSRECEIVED, options);
     }
 }
 exports.default = Security;
