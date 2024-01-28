@@ -10,6 +10,7 @@ enum FUNCTIONS {
     CLOSE = 'close',
     OFFERCOLLATERAL = 'offerCollateral',
     SENDCOLLATERAL = 'sendCollateral',
+    GETCOLLATERAL = 'getCollateral',
     ONMATCH = 'onMatch',
     ONTRADE = 'onTrade',
     ONSETTLE = 'onSettle',
@@ -80,6 +81,15 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, amount);
         await this.validateInput(DATATYPES.ADDRESS, security);
         return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, security, options);
+    }
+
+    public async getCollateral( 
+        party: string, 
+        currency: string,
+        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, currency);
+        await this.validateInput(DATATYPES.ADDRESS, party);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, party, currency, options);
     }
 
     public async onMatch( 

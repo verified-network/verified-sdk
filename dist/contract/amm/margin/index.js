@@ -10,6 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["CLOSE"] = "close";
     FUNCTIONS["OFFERCOLLATERAL"] = "offerCollateral";
     FUNCTIONS["SENDCOLLATERAL"] = "sendCollateral";
+    FUNCTIONS["GETCOLLATERAL"] = "getCollateral";
     FUNCTIONS["ONMATCH"] = "onMatch";
     FUNCTIONS["ONTRADE"] = "onTrade";
     FUNCTIONS["ONSETTLE"] = "onSettle";
@@ -49,6 +50,11 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, amount);
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, security, options);
+    }
+    async getCollateral(party, currency, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, party);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, party, currency, options);
     }
     async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, party);
