@@ -307,6 +307,40 @@ const contractAddress = {
             'VBINR': ''
         },
     },
+    11155111: {
+        'Client': '0xeEa4F0C03fAb166Aa20f38A2747469084cB769d0',
+        'Factory': '0x2C437D88B749F304804d9E9441DA0884c96D8299',
+        'Cash': '0x2407B3E99Bb51151d7eBA23106B6b44556187Ca9',
+        'Bond': '0x781eFdf885B0fd8A6e0B0DA285cB0B4C4700f9A0',
+        'Token': '0x192FDC338C6994a61F98F933E885d323728db365',
+        'Oracle': '0x2b087226106D3089975c35AF4B164006B4B231b1',
+        'Rates': '0xf5629A8Cd272CF10f8C299bCa0DfBD0Bb67D2C8d',
+        'Security': '0xBe0ffE30eF6C651E12bfA1de4557C7DB0226E6f6',
+        'SecuritiesFactory': '0x3279b50c98F3A78b6FAEacaBcC0e4746a4c69760',
+        'Vitta': '0x87145164371Ad7851AD3B4D47C9820F95983d8EA',
+        'Liquidity': '0x27006b68b3594EF5Ae04C5457c24F0c7CF1E5553',
+        'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
+        'PrimaryIssuePoolFactory': '0xDA13BC71FEe08FfD523f10458B0e2c2D8427BBD5',
+        'BalancerPrimaryIssueManager': '0x41bB86106CC5156d915052c3a3EFb4be70Ec544E',
+        'SecondaryIssuePoolFactory': '0xe5459436AE26C4fDC77f51c459e9Aa08b5d32064',
+        'BalancerSecondaryIssueManager': '0x1F3C57FE9f47C8417174E989153b2Eff745e980E',
+        'MarginTradingPoolFactory': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
+        'BalancerMarginIssueManager': '0x2f7A7901f1Da78A1bdE75F25A6eB9e591f4140d3',
+        'Custody': '0x7aE9f79067AB4FDc8d41B18f1e6491590ac76f9d',
+        'Compound': '',
+        'CASH': {
+            'VCUSD': '0x5570Ffa8868Ec35cfb0E360d3d720E0232a64AcF',
+            'VCEUR': '0x863c1Eeb0506c18eaA402787e662596a94F31BC1',
+            'VCCHF': '0xf75ec06F3605c9Ee97E2b49e4404F70BA1e83D8F',
+            'VCINR': '0x9d89236dA07112731e1690fd1554B2c065536653'
+        },
+        'BOND': {
+            'VBUSD': '0x3ABee586676F885d57D8f896C42a9c8037E6cbD3',
+            'VBEUR': '0x7C8D807BbB7EBB3DCF77BcA12F1084FBe63929BA',
+            'VCCHF': '0x7ef323fe3991932969E7FF67E4D834F8AFc625dd',
+            'VBINR': '0x12EeE3B37edD087A392D429B0C0dB091138f248F'
+        },
+    },
     'balancerVault': '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
 };
 exports.default = contractAddress;
