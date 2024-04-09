@@ -19,7 +19,7 @@ Default providers are available for networks like: mainnet/homestead, ropsten, s
 const {Provider} = require('@verified-network/verified-sdk');
 const defaultProvider = 'ropsten' // or any other default provider network of your choice.
 Network/chain id(number) can be used in place of network name, for example:
-const defaultProvider = 3 // where number 3 is chain id for ropsten, any other chain id of default provider network can be used
+const defaultProvider = 3 // where number 3 is chain id for ropsten, any other chain id of default provider network can be used.
 let walletWithProvider = wallet.setProvider(
     Provider.defaultProvider(defaultProvider)
 )
@@ -30,7 +30,7 @@ Verified Sdk supports Infura and Alchemy to provide custom providers for any net
 const {Provider} = require('@verified-network/verified-sdk');
 const network = 'ropsten' // or any other network of your choice.
 Network/chain id(number) can be used in place of network name, for example:
-const network = 3 // where number 3 is chain id for ropsten, any other chain id can be used
+const network = 3 // where number 3 is chain id for ropsten, any other chain id can be used.
 //For infura; to get api key and enable networks checout: https://www.infura.io/
 const INFURA_API_KEY = 'your infura api key'
 let walletWithProvider = wallet.setProvider(
@@ -112,7 +112,7 @@ For every transactions/interactions with verified smart contracts, various check
 # Verified Sdk checks for every transaction:
 # Check 1: is Biconomy Paymaster supported for the network/chain the contract is on?
    If yes:
-   # Check 2: is the smart contract called part of smart contracts that supports gasless or Erc 20 gas payments?
+   # Check 2: is the smart contract called part of smart contracts that support gasless or Erc 20 gas payments?
    If yes:
    # Check 3: is the function called parts of functions selected to support gasless or ERC 20 payments?
    If yes: 
