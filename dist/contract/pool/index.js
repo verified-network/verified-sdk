@@ -10,8 +10,8 @@ const Vault_json_1 = require("../../abi/assetmanager/Vault.json");
 const contractAddress_1 = __importDefault(require("../../contractAddress"));
 var FUNCTIONS;
 (function (FUNCTIONS) {
+    FUNCTIONS["SWAP"] = "swap";
     FUNCTIONS["BATCHSWAP"] = "batchSwap";
-    FUNCTIONS["SINGLESWAP"] = "swap";
     FUNCTIONS["GETPOOLTOKENS"] = "getPoolTokens";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class PoolContract extends index_1.VerifiedContract {
@@ -20,73 +20,40 @@ class PoolContract extends index_1.VerifiedContract {
         super(address, JSON.stringify(Vault_json_1.abi), signer);
         this.contractAddress = address;
     }
-    //API below for single and batch swaps, and price and volume data from verified subgraphs for pool
-    /**
-    * API to perform Balancer Batch swap
-    * @params (string _poolId,)
-    * @returns {address[] memory}
-    */
-    async batchSwap(_poolId, _swapType, _limitAmount, _assetIn, _assetOut, _amount, _account, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, _poolId);
-        await this.validateInput(index_1.DATATYPES.STRING, _swapType);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _limitAmount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _account);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetIn);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetOut);
-        const poolTokens = (await this.fetchPoolTokens(_poolId)).response.result[0];
-        const _assetInIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetIn.toLowerCase());
-        const _assetOutIndex = poolTokens.findIndex(address => address.toLowerCase() === _assetOut.toLowerCase());
-        let limitArr = new Array(3).fill(0);
-        limitArr[_assetInIndex] = _limitAmount;
-        // Where are the tokens coming from/going to?
-        const fund_struct = {
-            "sender": _account,
-            "recipient": _account,
-            "fromInternalBalance": false,
-            "toInternalBalance": false
-        };
-        // When should the transaction timeout?
-        const deadline = "999999999999999999";
-        const swap_step_struct = [{
-                poolId: _poolId,
-                assetInIndex: _assetInIndex,
-                assetOutIndex: _assetOutIndex,
-                amount: _amount,
-                userData: '0x'
-            }];
-        const swapKind = _swapType === "Sell" ? 0 : 1;
-        return this.callContract(FUNCTIONS.BATCHSWAP, swapKind, swap_step_struct, poolTokens, fund_struct, limitArr, deadline, options);
+    async swap(_swap, _funds, _limit, _deadline, options) {
+        const { poolId, kind, assetIn, assetOut, amount, userData } = _swap;
+        const { sender, fromInternalBalance, recipient, toInternalBalance } = _funds;
+        await this.validateInput(index_1.DATATYPES.NUMBER, kind);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, assetIn);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, assetOut);
+        await this.validateInput(index_1.DATATYPES.NUMBER, amount);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, sender);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, recipient);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _limit);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _deadline);
+        return this.callContract(FUNCTIONS.SWAP, _swap, _funds, _limit, _deadline, options);
     }
-    async singleSwap(_poolId, _swapType, _assetIn, _assetOut, _limitAmount, _amount, _account, options) {
-        await this.validateInput(index_1.DATATYPES.STRING, _poolId);
-        await this.validateInput(index_1.DATATYPES.STRING, _swapType);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetIn);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _assetOut);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _limitAmount);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, _account);
-        const swapKind = _swapType === "Sell" ? 0 : 1;
-        // Where are the tokens coming from/going to?
-        const fund_struct = {
-            "sender": _account,
-            "recipient": _account,
-            "fromInternalBalance": false,
-            "toInternalBalance": false
-        };
-        // When should the transaction timeout?
-        const deadline = "999999999999999999";
-        const swap_struct = {
-            poolId: _poolId,
-            kind: swapKind,
-            assetIn: _assetIn,
-            assetOut: _assetOut,
-            amount: _amount,
-            userData: '0x'
-        };
-        return this.callContract(FUNCTIONS.SINGLESWAP, swap_struct, fund_struct, _limitAmount, deadline, options);
+    async batchSwap(_kind, _swaps, _assests, _funds, _limits, _deadline, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _kind);
+        _swaps.map(async (swp) => {
+            const { poolId, assetInIndex, assetOutIndex, amount, userData } = swp;
+            await this.validateInput(index_1.DATATYPES.NUMBER, assetInIndex);
+            await this.validateInput(index_1.DATATYPES.NUMBER, assetOutIndex);
+            await this.validateInput(index_1.DATATYPES.NUMBER, amount);
+        });
+        _assests.map(async (asst) => {
+            await this.validateInput(index_1.DATATYPES.ADDRESS, asst);
+        });
+        const { sender, fromInternalBalance, recipient, toInternalBalance } = _funds;
+        await this.validateInput(index_1.DATATYPES.ADDRESS, sender);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, recipient);
+        _limits.map(async (lmt) => {
+            await this.validateInput(index_1.DATATYPES.NUMBER, lmt);
+        });
+        await this.validateInput(index_1.DATATYPES.NUMBER, _deadline);
+        return this.callContract(FUNCTIONS.BATCHSWAP, _kind, _swaps, _assests, _funds, _limits, _deadline, options);
     }
-    async fetchPoolTokens(_poolId, options) {
+    async getPoolTokens(_poolId, options) {
         return this.callContract(FUNCTIONS.GETPOOLTOKENS, _poolId, options);
     }
 }

@@ -44,6 +44,7 @@ class Custody extends index_1.VerifiedContract {
     }
     async getCreator(_creator, _pin, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _pin);
         return this.callContract(FUNCTIONS.GETCREATOR, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _pin, options);
     }
     async addParticipant(_creator, _id, _participant, _shard, options) {
@@ -63,6 +64,7 @@ class Custody extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _pin);
         return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _pin, options);
     }
     async defineQuorum(_creator, _id, _minParticipants, options) {
@@ -80,6 +82,8 @@ class Custody extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
+        await this.validateInput(index_1.DATATYPES.STRING, _tx);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _pin);
         return this.callContract(FUNCTIONS.SIGNTRANSACTION, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _tx, _pin, options);
     }
     async checkQuorum(_creator, _id, _participant, _txid, options) {

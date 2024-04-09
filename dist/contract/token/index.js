@@ -9,6 +9,8 @@ var FUNCTIONS;
     FUNCTIONS["TRANSFERFROM"] = "transferFrom";
     FUNCTIONS["BALANCE"] = "balanceOf";
     FUNCTIONS["GETISSUER"] = "getIssuer";
+    FUNCTIONS["REQUESTTRANSACTION"] = "requestTransaction";
+    FUNCTIONS["REQUESTTRANSFER"] = "requestTransfer";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Token extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
@@ -40,6 +42,18 @@ class Token extends index_1.VerifiedContract {
     */
     async getIssuer() {
         return this.callContract(FUNCTIONS.GETISSUER);
+    }
+    async requestTransfer(_recieverAddress, _tokens, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _recieverAddress);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _tokens);
+        return this.callContract(FUNCTIONS.REQUESTTRANSFER, _recieverAddress, _tokens, options);
+    }
+    async requestTransaction(_amount, _payer, _collateralName, _collateralContract, options) {
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _payer);
+        await this.validateInput(index_1.DATATYPES.STRING, _collateralName);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _collateralContract);
+        return this.callContract(FUNCTIONS.REQUESTTRANSACTION, _amount, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _collateralName), _collateralContract, options);
     }
 }
 exports.default = Token;
