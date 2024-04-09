@@ -50,6 +50,9 @@ let clientContract = new Client(walletWithProvider);
 
 This will create an instance of Client contract and you can access all the functions within the clientContract using this object.
 
+Now you can call a function in clientContract like:
+```clientContract.setAccess("true")``` // to set the access to True/False.
+
 Some contracts requires additional parameters to create their instances, for example:
 ```
 cosnt {SecurityContract, PrimaryIssueManager} = require('@verified-network/verified-sdk');
@@ -62,9 +65,6 @@ const primaryIssueManagerAddress = 'primary issue manager address'
 const primaryIssueManagerplatform = 'primary issue manager platform' //e.g 'balancer'
 let primaryIssueManagerContract = new PrimaryIssueManager(walletWithProvider, primaryIssueManagerAddress, primaryIssueManagerplatform);
 ```
-
-Now you can call a function in clientContract like:
-```clientContract.setAccess("true")``` // to set the access to True/False.
 
 Similarly you can create different Contracts instances available:
 ```
