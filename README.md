@@ -117,9 +117,9 @@ For every transactions/interactions with verified smart contracts, various check
    # Check 3: is the function called parts of functions selected to support gasless or ERC 20 payments?
    If yes: 
    # Check 4: what type of paymaster was set? Gasless or ERC 20
-   If gasless:
-   # Check 5: is the deposited gas enough to pay for transaction?
-   if yes: Transaction is sposored(user does not pay for gas fee)
-   If ERC 20:
-   User pay for transaction using ERC 20 tokens
+       If gasless:
+       # Check 5: is the deposited gas enough to pay for transaction?
+       if yes: Transaction is sposored(user does not pay for gas fee)
+       if ERC 20:
+       # User pay for transaction using ERC 20 tokens
 # If no: User will pay for transaction using native tokens(Eth, Matic e.t.c) 
