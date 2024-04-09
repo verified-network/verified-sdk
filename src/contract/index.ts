@@ -2,6 +2,7 @@
 
 "use strict"
 import { config } from "dotenv";
+config({ path: "../../.env" })
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 import Web3 from "web3";
@@ -13,8 +14,6 @@ import { IPaymaster,
     IHybridPaymaster,
     PaymasterMode,
     SponsorUserOperationDto, } from "@biconomy/paymaster";
-
-config();
 
 enum STATUS {
     SUCCESS,
@@ -155,12 +154,15 @@ export class VerifiedContract {
     private tempOutput(data: any): object {
         const response: { hash: string, result: Array<any> } = { hash: '', result: [] }
         data.forEach(async (element: any) => {
-            if (element.hash !== undefined || element.transactionHash) return response.hash = element.hash || element.transactionHash
-            if (element._isBigNumber) return response.result.push(element.toString())
-            if (utils.isAddress(element)) return response.result.push(element)
+            if (element.hash !== undefined || element.transactionHash) {return response.hash = element.hash || element.transactionHash}
+            else if (element._isBigNumber) {return response.result.push(element.toString())}
+            else if (utils.isAddress(element)) {return response.result.push(element)}
             //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
-            if (utils.isBytesLike(element)) return response.result.push(element)
-            if (typeof element === 'boolean' || (await this.validateInput(DATATYPES.ADDRESS, element))) return response.result.push(element)
+            else if (utils.isBytesLike(element)) {return response.result.push(element)}
+            else if (typeof element === 'boolean') {return response.result.push(element)}
+            else{
+              return response.result.push(element)
+            }
         }); 
         return response
     }
@@ -260,7 +262,7 @@ export class VerifiedContract {
         res.response = {
           hash: transactionDetails.receipt.transactionHash,
           result: [],
-        }; //TODO: update response
+        }; //TODO: update result on response
         res.status = STATUS.SUCCESS;
         res.message = "";
         return res;
