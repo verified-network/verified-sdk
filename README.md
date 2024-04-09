@@ -101,10 +101,10 @@ Where, options = {gasPrice: XXX, gasLimit: YYY}
 2. Create a wallet instance and fund it
 3. Create instances of the Contract that you want to interact with using the above wallet and call their functions.
 
-# Verified Sdk also provides ERC 4337-compliant solution and enable account abstraction using Biconomy Smart Accounts that works with any Paymaster and Bundler service.
-Above statement means that Verified Sdk follows ERC 4337 standard and implement pseudo-transaction object(userOperation) to enable transaction sponsorship allowing smart contract creators to sponsor some set of transactions on smart contract for users when certain functions are called.
+# Verified Sdk also provides ERC 4337-compliant solution and enable account abstraction using Biconomy Smart Accounts.
+Verified Sdk follows ERC 4337 standard and implement pseudo-transaction object(userOperation) to enable transaction sponsorship allowing smart contract creators to sponsor some set of transactions on smart contract for users when certain functions are called and allow multiple transaction to be called in batch
 
-With this unique feature of Verified Sdk creators can pay gas fee for users/entity interaction with smart contract in ERC 20 token or Native tokens(Eth e.t.c) and also enable users/entity interacting with the contract to pay for gas fee using ERC 20 tokens. 
+With this unique feature of Verified Sdk creators can pay gas fee for users/entity interaction with smart contract in ERC 20 token or Native tokens(Eth, Matic e.t.c) and also enable users/entity interacting with the contract to pay for gas fee using ERC 20 tokens. 
 
 # How Verified Sdk Gasless transactions work
 For every transactions/interactions with verified smart contracts, various checks are made to determine if the transaction will be gasless(will be sponsored) or not. For gasless transactions, contract creators have pre deposited certain amount of native tokens(Eth, Matic e.t.c) or ERC 20 tokens(USDC, VUSDC e.t.c) on Biconomy paymaster dashboard to cover gas fees for set of functions on smart contract. 
