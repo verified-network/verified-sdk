@@ -6,13 +6,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedContract = exports.DATATYPES = void 0;
 const dotenv_1 = require("dotenv");
+dotenv_1.config({ path: "../../.env" });
 const ethers_1 = require("ethers");
 const web3_1 = __importDefault(require("web3"));
 const account_1 = require("@biconomy/account");
 const modules_1 = require("@biconomy/modules");
 const bundler_1 = require("@biconomy/bundler");
 const paymaster_1 = require("@biconomy/paymaster");
-dotenv_1.config();
 var STATUS;
 (function (STATUS) {
     STATUS[STATUS["SUCCESS"] = 0] = "SUCCESS";
@@ -143,17 +143,25 @@ class VerifiedContract {
     tempOutput(data) {
         const response = { hash: '', result: [] };
         data.forEach(async (element) => {
-            if (element.hash !== undefined || element.transactionHash)
+            if (element.hash !== undefined || element.transactionHash) {
                 return response.hash = element.hash || element.transactionHash;
-            if (element._isBigNumber)
+            }
+            else if (element._isBigNumber) {
                 return response.result.push(element.toString());
-            if (ethers_1.utils.isAddress(element))
+            }
+            else if (ethers_1.utils.isAddress(element)) {
                 return response.result.push(element);
+            }
             //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
-            if (ethers_1.utils.isBytesLike(element))
+            else if (ethers_1.utils.isBytesLike(element)) {
                 return response.result.push(element);
-            if (typeof element === 'boolean' || (await this.validateInput(DATATYPES.ADDRESS, element)))
+            }
+            else if (typeof element === 'boolean') {
                 return response.result.push(element);
+            }
+            else {
+                return response.result.push(element);
+            }
         });
         return response;
     }
@@ -250,7 +258,7 @@ class VerifiedContract {
                 res.response = {
                     hash: transactionDetails.receipt.transactionHash,
                     result: [],
-                }; //TODO: update response
+                }; //TODO: update result on response
                 res.status = STATUS.SUCCESS;
                 res.message = "";
                 return res;

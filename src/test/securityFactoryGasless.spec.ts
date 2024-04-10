@@ -4,7 +4,7 @@ import { VerifiedWallet } from "../wallet/index";
 import { SecuritiesFactory, Security } from "../index";
 import { ethers } from "ethers";
 
-describe("Polygon Mumbai Testnet Tests", () => {
+describe("Polygon Mumbai Testnet Gassless Tests", () => {
   const INFURA_API_KEY = "e0951a7b82c84a6880f3c6f7bb182e21";        
   const SECURITY_HOLDER_MNEMONICS =
     "correct galaxy various swap chair assault blue improve ivory pear infant oak";

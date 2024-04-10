@@ -2,6 +2,7 @@
 
 "use strict"
 import { config } from "dotenv";
+config({ path: "../../.env" })
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 import Web3 from "web3";
@@ -13,8 +14,7 @@ import { IPaymaster,
     IHybridPaymaster,
     PaymasterMode,
     SponsorUserOperationDto, } from "@biconomy/paymaster";
-
-config();
+import { PaymasterConstants } from "../utils/constants";
 
 enum STATUS {
     SUCCESS,
@@ -155,12 +155,15 @@ export class VerifiedContract {
     private tempOutput(data: any): object {
         const response: { hash: string, result: Array<any> } = { hash: '', result: [] }
         data.forEach(async (element: any) => {
-            if (element.hash !== undefined || element.transactionHash) return response.hash = element.hash || element.transactionHash
-            if (element._isBigNumber) return response.result.push(element.toString())
-            if (utils.isAddress(element)) return response.result.push(element)
+            if (element.hash !== undefined || element.transactionHash) {return response.hash = element.hash || element.transactionHash}
+            else if (element._isBigNumber) {return response.result.push(element.toString())}
+            else if (utils.isAddress(element)) {return response.result.push(element)}
             //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
-            if (utils.isBytesLike(element)) return response.result.push(element)
-            if (typeof element === 'boolean' || (await this.validateInput(DATATYPES.ADDRESS, element))) return response.result.push(element)
+            else if (utils.isBytesLike(element)) {return response.result.push(element)}
+            else if (typeof element === 'boolean') {return response.result.push(element)}
+            else{
+              return response.result.push(element)
+            }
         }); 
         return response
     }
@@ -173,7 +176,7 @@ export class VerifiedContract {
     /** Checks if a contract support gasless transaction */
   supportsGasless(chainId: number) {
     let isSupported = false;
-    const contractPaymasterUrl = process.env[`${chainId}_PAYMASTER_API_KEY`];
+    const contractPaymasterUrl = PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`];
     if (contractPaymasterUrl && contractPaymasterUrl.length > 0)
       isSupported = true;
     return isSupported;
@@ -183,18 +186,16 @@ export class VerifiedContract {
   async createSmartAccount(chainId: number) {
     //create bundler instance
     const bundler: IBundler = new Bundler({
-      bundlerUrl: `${process.env.BUNDLER_URL_FIRST_SECTION}/${chainId}/${process.env.BUNDLER_URL_SECTION_SECTION}`,
+      bundlerUrl: `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${PaymasterConstants.BUNDLER_URL_SECTION_SECTION}`,
       chainId: chainId,
       entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
     });
-    // console.log("bd: ", bundler);
     //create paymaster instance
     const paymaster: IPaymaster = new BiconomyPaymaster({
-      paymasterUrl: `${process.env.GENERAL_PAYMASTER_URL}/${chainId}/${
-        process.env[`${chainId}_PAYMASTER_API_KEY`]
+      paymasterUrl: `${PaymasterConstants.GENERAL_PAYMASTER_URL}/${chainId}/${
+        PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`]
       }`,
     });
-    // console.log("pm: ", paymaster);
     const module = await ECDSAOwnershipValidationModule.create({
       signer: this.signer,
       moduleAddress: DEFAULT_ECDSA_OWNERSHIP_MODULE,
@@ -209,7 +210,6 @@ export class VerifiedContract {
       activeValidationModule: module,
     });
     // console.log("address", await biconomyAccount.getAccountAddress());
-    //return smart account
     return biconomyAccount;
   }
 
@@ -229,10 +229,7 @@ export class VerifiedContract {
        */
       let fn = this.contract[functionName];
       let _res = await fn(...args, ...options);
-      //console.log('_res', _res)
-      //console.log('_res.value.toString()',_res.value.toString())
       let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
-      //console.log('_resp', _resp)
       res.response = this.tempOutput(
         this.convertToArray(utils.deepCopy(_resp))
       );
@@ -260,7 +257,7 @@ export class VerifiedContract {
         res.response = {
           hash: transactionDetails.receipt.transactionHash,
           result: [],
-        }; //TODO: update response
+        }; //TODO: update result on response
         res.status = STATUS.SUCCESS;
         res.message = "";
         return res;
@@ -269,7 +266,7 @@ export class VerifiedContract {
         let reason = "";
         const provider: any = this.contract.provider;
         logs.map((log: any) => {
-          if (log.topics.includes(process.env.BICONOMY_REVERT_TOPIC)) {
+          if (log.topics.includes(PaymasterConstants.BICONOMY_REVERT_TOPIC)) {
             const web3 = new Web3(provider);
             reason = web3.utils.hexToAscii(log.data);
           }
@@ -319,7 +316,14 @@ export class VerifiedContract {
         data: _res.data,
       };
       //build userop transaction
-      let partialUserOp = await smartAccount.buildUserOp([tx1]);
+      let partialUserOp;
+      try {
+        partialUserOp = await smartAccount.buildUserOp([tx1]);
+      } catch (err) {
+        console.log("error while buiding gassless transaction: ",  err)
+        console.log("will use ethers....")
+        return await this.callFunctionWithEthers(functionName, ...args); 
+      }
       //query paymaster for sponsored mode to get neccesary params and update userop
       const biconomyPaymaster = smartAccount.paymaster as IHybridPaymaster<SponsorUserOperationDto>;
       try {
@@ -353,7 +357,7 @@ export class VerifiedContract {
           const feeQuotesResponse =
             await biconomyPaymaster.getPaymasterFeeQuotesOrData(partialUserOp, {
               mode: PaymasterMode.ERC20,
-              tokenList: [process.env[`${chainId}_CASH_TOKEN_ADDRESS`]!],
+              tokenList: [PaymasterConstants[`${chainId}_CASH_TOKEN_ADDRESS`]!],
             });
           // console.log("fq: ", feeQuotesResponse);
           const feeQuotes = feeQuotesResponse.feeQuotes;
