@@ -13,6 +13,7 @@ const account_1 = require("@biconomy/account");
 const modules_1 = require("@biconomy/modules");
 const bundler_1 = require("@biconomy/bundler");
 const paymaster_1 = require("@biconomy/paymaster");
+const constants_1 = require("../utils/constants");
 var STATUS;
 (function (STATUS) {
     STATUS[STATUS["SUCCESS"] = 0] = "SUCCESS";
@@ -175,7 +176,7 @@ class VerifiedContract {
     /** Checks if a contract support gasless transaction */
     supportsGasless(chainId) {
         let isSupported = false;
-        const contractPaymasterUrl = process.env[`${chainId}_PAYMASTER_API_KEY`];
+        const contractPaymasterUrl = constants_1.PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`];
         if (contractPaymasterUrl && contractPaymasterUrl.length > 0)
             isSupported = true;
         return isSupported;
@@ -184,16 +185,14 @@ class VerifiedContract {
     async createSmartAccount(chainId) {
         //create bundler instance
         const bundler = new bundler_1.Bundler({
-            bundlerUrl: `${process.env.BUNDLER_URL_FIRST_SECTION}/${chainId}/${process.env.BUNDLER_URL_SECTION_SECTION}`,
+            bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants.BUNDLER_URL_SECTION_SECTION}`,
             chainId: chainId,
             entryPointAddress: account_1.DEFAULT_ENTRYPOINT_ADDRESS,
         });
-        // console.log("bd: ", bundler);
         //create paymaster instance
         const paymaster = new paymaster_1.BiconomyPaymaster({
-            paymasterUrl: `${process.env.GENERAL_PAYMASTER_URL}/${chainId}/${process.env[`${chainId}_PAYMASTER_API_KEY`]}`,
+            paymasterUrl: `${constants_1.PaymasterConstants.GENERAL_PAYMASTER_URL}/${chainId}/${constants_1.PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`]}`,
         });
-        // console.log("pm: ", paymaster);
         const module = await modules_1.ECDSAOwnershipValidationModule.create({
             signer: this.signer,
             moduleAddress: modules_1.DEFAULT_ECDSA_OWNERSHIP_MODULE,
@@ -208,7 +207,6 @@ class VerifiedContract {
             activeValidationModule: module,
         });
         // console.log("address", await biconomyAccount.getAccountAddress());
-        //return smart account
         return biconomyAccount;
     }
     /** Constructs and call function with ethers.js */
@@ -229,10 +227,7 @@ class VerifiedContract {
              */
             let fn = this.contract[functionName];
             let _res = await fn(...args, ...options);
-            //console.log('_res', _res)
-            //console.log('_res.value.toString()',_res.value.toString())
             let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
-            //console.log('_resp', _resp)
             res.response = this.tempOutput(this.convertToArray(ethers_1.utils.deepCopy(_resp)));
             res.status = STATUS.SUCCESS;
             res.message = "";
@@ -268,7 +263,7 @@ class VerifiedContract {
                 let reason = "";
                 const provider = this.contract.provider;
                 logs.map((log) => {
-                    if (log.topics.includes(process.env.BICONOMY_REVERT_TOPIC)) {
+                    if (log.topics.includes(constants_1.PaymasterConstants.BICONOMY_REVERT_TOPIC)) {
                         const web3 = new web3_1.default(provider);
                         reason = web3.utils.hexToAscii(log.data);
                     }
@@ -318,7 +313,15 @@ class VerifiedContract {
                 data: _res.data,
             };
             //build userop transaction
-            let partialUserOp = await smartAccount.buildUserOp([tx1]);
+            let partialUserOp;
+            try {
+                partialUserOp = await smartAccount.buildUserOp([tx1]);
+            }
+            catch (err) {
+                console.log("error while buiding gassless transaction: ", err);
+                console.log("will use ethers....");
+                return await this.callFunctionWithEthers(functionName, ...args);
+            }
             //query paymaster for sponsored mode to get neccesary params and update userop
             const biconomyPaymaster = smartAccount.paymaster;
             try {
@@ -349,7 +352,7 @@ class VerifiedContract {
                     //get fee quote for network cash token
                     const feeQuotesResponse = await biconomyPaymaster.getPaymasterFeeQuotesOrData(partialUserOp, {
                         mode: paymaster_1.PaymasterMode.ERC20,
-                        tokenList: [process.env[`${chainId}_CASH_TOKEN_ADDRESS`]],
+                        tokenList: [constants_1.PaymasterConstants[`${chainId}_CASH_TOKEN_ADDRESS`]],
                     });
                     // console.log("fq: ", feeQuotesResponse);
                     const feeQuotes = feeQuotesResponse.feeQuotes;
