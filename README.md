@@ -117,6 +117,137 @@ Where, options = {gasPrice: XXX, gasLimit: YYY}
 2. Create a wallet instance and fund it
 3. Create instances of the Contract that you want to interact with using the above wallet and call their functions.
 
+# Common Error(s) with Verified Sdk integration with Dapp
+Due to webpack version > 5 that no longer includes NodeJS polyfills by default, it is causing issues for developers that use React(create-react-app), React-native, Vite with webpack version > 5 to build applications with web3.js, ethers.js, alchemy libraries e.t.c. Many of this libraries and dependencies are used by Verified Sdk.
+
+There are various ways to solve this error, from updating webpack config to babel config e.t.c. and can be overwhelming for developers. Verified Network Team recommend ed using best solutions that are easy to use and beginner friendly.
+
+# How to resolve React error(s) with Verified Sdk integration
+Step 1: Install react-app-rewired
+    with npm:  ```npm install --save-dev react-app-rewired```
+    with yarn:  ```yarn add --dev react-app-rewired```
+    
+Step 2: Install needed dependencies
+    // with npm:  
+```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+    // with yarn: 
+```yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+
+note: the above dependencies are needed dependencies to make verified sdk works, more dependencies can be added to handle any other nodeJs polyfills error.
+
+Step 3: Override create-react-app webpack config file
+In the root folder of your project, create a new file called 'config-overrides.js', and add the following code to it:
+```
+const webpack = require("webpack");
+module.exports = function override(config) {
+  const fallback = config.resolve.fallback || {};
+  Object.assign(fallback, {
+    crypto: require.resolve("crypto-browserify"),
+    stream: require.resolve("stream-browserify"),
+    assert: require.resolve("assert"),
+    http: require.resolve("stream-http"),
+    https: require.resolve("https-browserify"),
+    os: require.resolve("os-browserify"),
+    url: require.resolve("url"),
+    path: require.resolve("path-browserify"),
+    fs: false, //assumed fs module will not be used(to use fs module download dependency to handle it)
+  });
+  config.plugins = (config.plugins || []).concat([
+    new webpack.ProvidePlugin({
+      process: "process/browser",
+      Buffer: ["buffer", "Buffer"],
+    }),
+  ]);
+  config.module.rules = [
+    ...config.module.rules,
+    {
+      test: /\.m?js/,
+      resolve: {
+        fullySpecified: false,
+      },
+    },
+  ]; // rules are optional can be customised to fit your usecase
+  config.resolve.fallback = fallback; 
+  config.ignoreWarnings = [/Failed to parse source map/]; // optional can be customised to fit your usecase
+  return config;
+};
+```
+This 'config-overrides.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
+
+Step 4: Override package.json to use react-app-rewired
+Within the package.json file, replace react-scripts with react-app-rewired scripts for 'start', 'build', 'test'
+```
+"scripts": { 
+  "start": "react-app-rewired start", 
+  "build": "react-app-rewired build", 
+  "test": "react-app-rewired test", 
+  "eject": "react-scripts eject" 
+ },
+```
+note: start changed from "react-scripts start" to "react-app-rewired start", build from "react-scripts build" to "react-app-rewired build" and test from "react-scripts test" to "react-app-rewired test" while eject remains the same.
+
+The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk
+
+# How to resolve Vite error(s) with Verified Sdk integration
+Step 1: install @esbuild-plugins/node-modules-polyfill and rollup-plugin-polyfill-node
+    with npm: ```npm i @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
+    with yarn: ```yarn add @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
+
+Step 2: Install needed dependencies
+    with npm:  
+```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+    with yarn: 
+```yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+
+Step 3: update vite.config.js file
+From the root folder of your project update 'vite.config.js' to resolve missing dependencies
+```
+import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import nodePolyfills from "rollup-plugin-polyfill-node";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  build: {
+    target: ["es2020"], //optional can be customised
+    rollupOptions: {
+      plugins: [nodePolyfills()],
+    },
+  },
+  resolve: {
+    alias: {
+      process: "process/browser",
+      stream: "stream-browserify",
+      zlib: "browserify-zlib",
+      util: "util/",
+      path: "path-browserify",
+      "@": resolve(__dirname, "./src"), //optional
+    },
+  },
+  optimizeDeps: {
+    esbuildOptions: {
+      // Node.js global to browser globalThis
+      define: {
+        global: "globalThis",
+      },
+      supported: {
+        bigint: true, //optional
+      },
+      // Enable esbuild polyfill plugins
+      plugins: [
+        NodeGlobalsPolyfillPlugin({
+          buffer: true,
+          protocolImports: true,
+        }),
+      ],
+    },
+  }
+});
+
+```
+This 'vite.config.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
+
+The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk.
+
 # Verified Sdk also provides ERC 4337-compliant solution and enable account abstraction using Biconomy Smart Accounts.
 
 Verified Sdk follows ERC 4337 standard and implement pseudo-transaction object(userOperation) to enable transaction sponsorship allowing smart contract creators to sponsor some set of transactions on smart contract for users when certain functions are called and allow multiple transaction to be called in batch
