@@ -123,10 +123,11 @@ Due to webpack version > 5 that no longer includes NodeJS polyfills by default, 
 There are various ways to solve this error, from updating webpack config to babel config e.t.c. and can be overwhelming for developers. Verified Network Team recommend ed using best solutions that are easy to use and beginner friendly.
 
 # How to resolve React error(s) with Verified Sdk integration
-// Step 1: Install react-app-rewired
-    // with npm:  ```npm install --save-dev react-app-rewired```
-    // with yarn:  ```yarn add --dev react-app-rewired```
-// Step 2: Install needed dependencies
+Step 1: Install react-app-rewired
+    with npm:  ```npm install --save-dev react-app-rewired```
+    with yarn:  ```yarn add --dev react-app-rewired```
+    
+Step 2: Install needed dependencies
     // with npm:  
 ```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
     // with yarn: 
@@ -134,7 +135,7 @@ There are various ways to solve this error, from updating webpack config to babe
 
 note: the above dependencies are needed dependencies to make verified sdk works, more dependencies can be added to handle any other nodeJs polyfills error.
 
-// Step 3: Override create-react-app webpack config file
+Step 3: Override create-react-app webpack config file
 In the root folder of your project, create a new file called 'config-overrides.js', and add the following code to it:
 ```
 const webpack = require("webpack");
@@ -173,7 +174,7 @@ module.exports = function override(config) {
 ```
 This 'config-overrides.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
 
-// Step 4: Override package.json to use react-app-rewired
+Step 4: Override package.json to use react-app-rewired
 Within the package.json file, replace react-scripts with react-app-rewired scripts for 'start', 'build', 'test'
 ```
 "scripts": { 
@@ -188,19 +189,18 @@ note: start changed from "react-scripts start" to "react-app-rewired start", bui
 The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk
 
 # How to resolve Vite error(s) with Verified Sdk integration
-// Step 1: install @esbuild-plugins/node-modules-polyfill and rollup-plugin-polyfill-node
-// with npm: ```npm i @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
-// with yarn: ```yarn add @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
+Step 1: install @esbuild-plugins/node-modules-polyfill and rollup-plugin-polyfill-node
+    with npm: ```npm i @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
+    with yarn: ```yarn add @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
 
-// Step 2: Install needed dependencies
-    // with npm:  
+Step 2: Install needed dependencies
+    with npm:  
 ```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
-    // with yarn: 
+    with yarn: 
 ```yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
 
-// Step 3: update vite.config.js file
+Step 3: update vite.config.js file
 From the root folder of your project update 'vite.config.js' to resolve missing dependencies
-
 ```
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import nodePolyfills from "rollup-plugin-polyfill-node";
@@ -245,6 +245,8 @@ export default defineConfig({
 
 ```
 This 'vite.config.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
+
+The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk.
 
 # Verified Sdk also provides ERC 4337-compliant solution and enable account abstraction using Biconomy Smart Accounts.
 
