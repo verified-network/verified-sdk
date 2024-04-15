@@ -185,7 +185,7 @@ class VerifiedContract {
     async createSmartAccount(chainId) {
         //create bundler instance
         const bundler = new bundler_1.Bundler({
-            bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants.BUNDLER_URL_SECTION_SECTION}`,
+            bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants[`${chainId}_URL_SECOND_SECTION`]}`,
             chainId: chainId,
             entryPointAddress: account_1.DEFAULT_ENTRYPOINT_ADDRESS,
         });
@@ -243,7 +243,7 @@ class VerifiedContract {
         }
     }
     /** Constructs and call function as userop for biconomy gassless(sponsored/erc20 mode) */
-    async callFunctionAsUserOp(smartAccount, userOp) {
+    async callFunctionAsUserOp(smartAccount, userOp, functionName, ...args) {
         //send userops transaction and construct transaction response
         let res = {};
         try {
@@ -272,12 +272,13 @@ class VerifiedContract {
             }
         }
         catch (err) {
-            console.log(err);
-            res.status = STATUS.ERROR;
-            res.reason = err.reason;
-            res.message = err.message;
-            res.code = err.code;
-            return res;
+            console.error("gasless transaction failed with error: ", err);
+            console.log("will use ethers....");
+            // res.status = STATUS.ERROR;
+            // res.reason = err.reason;
+            // res.message = err.message;
+            // res.code = err.code;
+            return await this.callFunctionWithEthers(functionName, ...args);
         }
     }
     async callContract(functionName, ...args) {
@@ -342,7 +343,7 @@ class VerifiedContract {
                             paymasterAndDataResponse.preVerificationGas;
                     }
                 }
-                return await this.callFunctionAsUserOp(smartAccount, partialUserOp);
+                return await this.callFunctionAsUserOp(smartAccount, partialUserOp, functionName, ...args);
             }
             catch (err) {
                 console.log("sponsored failed will try erc20");
@@ -383,7 +384,7 @@ class VerifiedContract {
                     const _paymasterAndDataWithLimits = await biconomyPaymaster.getPaymasterAndData(finalUserOp, paymasterServiceData);
                     finalUserOp.paymasterAndData =
                         _paymasterAndDataWithLimits.paymasterAndData;
-                    return await this.callFunctionAsUserOp(smartAccount, finalUserOp);
+                    return await this.callFunctionAsUserOp(smartAccount, finalUserOp, functionName, ...args);
                 }
                 catch (_err) {
                     //if erc20 mode didn't work use ethers.js

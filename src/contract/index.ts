@@ -186,7 +186,7 @@ export class VerifiedContract {
   async createSmartAccount(chainId: number) {
     //create bundler instance
     const bundler: IBundler = new Bundler({
-      bundlerUrl: `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${PaymasterConstants.BUNDLER_URL_SECTION_SECTION}`,
+      bundlerUrl: `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${PaymasterConstants[`${chainId}_URL_SECOND_SECTION`]}`,
       chainId: chainId,
       entryPointAddress: DEFAULT_ENTRYPOINT_ADDRESS,
     });
