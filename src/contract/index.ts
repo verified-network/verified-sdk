@@ -247,7 +247,7 @@ export class VerifiedContract {
   }
 
   /** Constructs and call function as userop for biconomy gassless(sponsored/erc20 mode) */
-  async callFunctionAsUserOp(smartAccount: any, userOp: any) {
+  async callFunctionAsUserOp(smartAccount: any, userOp: any, functionName: string, ...args: any) {
     //send userops transaction and construct transaction response
     let res = <SCResponse>{};
     try {
@@ -274,12 +274,13 @@ export class VerifiedContract {
         throw Error(`execution reverted: ${reason}`);
       }
     } catch (err: any) {
-      console.log(err);
-      res.status = STATUS.ERROR;
-      res.reason = err.reason;
-      res.message = err.message;
-      res.code = err.code;
-      return res;
+      console.error("gasless transaction failed with error: ", err);
+      console.log("will use ethers....")
+      // res.status = STATUS.ERROR;
+      // res.reason = err.reason;
+      // res.message = err.message;
+      // res.code = err.code;
+      return await this.callFunctionWithEthers(functionName, ...args)
     }
   }
 
@@ -347,7 +348,7 @@ export class VerifiedContract {
               paymasterAndDataResponse.preVerificationGas;
           }
         }
-        return await this.callFunctionAsUserOp(smartAccount, partialUserOp);
+        return await this.callFunctionAsUserOp(smartAccount, partialUserOp, functionName, ...args);
       } catch (err) {
         console.log("sponsored failed will try erc20");
         //if userop can't be sponsored use ERC20 mode
@@ -401,7 +402,7 @@ export class VerifiedContract {
             );
           finalUserOp.paymasterAndData =
             _paymasterAndDataWithLimits.paymasterAndData;
-          return await this.callFunctionAsUserOp(smartAccount, finalUserOp);
+          return await this.callFunctionAsUserOp(smartAccount, finalUserOp, functionName, ...args);
         } catch (_err) {
           //if erc20 mode didn't work use ethers.js
           console.log("both sponsored and erc20 failed will use ethers: ");
