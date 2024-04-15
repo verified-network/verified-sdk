@@ -24,9 +24,9 @@ Default providers are available for networks like: mainnet/homestead, ropsten, s
 
 ```
 const {Provider} = require('@verified-network/verified-sdk');
-const defaultProvider = 'ropsten' // or any other default provider network of your choice.
+const defaultProvider = 'sepolia' // or any other default provider network of your choice.
 Network/chain id(number) can be used in place of network name, for example:
-const defaultProvider = 3 // where number 3 is chain id for ropsten, any other chain id of default provider network can be used.
+const defaultProvider = 11155111 // where number 11155111 is chain id for sepolia, any other chain id of default provider network can be used.
 let walletWithProvider = wallet.setProvider(
     Provider.defaultProvider(defaultProvider)
 )
@@ -38,9 +38,9 @@ Verified Sdk supports Infura and Alchemy to provide custom providers for any net
 
 ```
 const {Provider} = require('@verified-network/verified-sdk');
-const network = 'ropsten' // or any other network of your choice.
+const network = 'sepolia' // or any other network of your choice.
 Network/chain id(number) can be used in place of network name, for example:
-const network = 3 // where number 3 is chain id for ropsten, any other chain id can be used.
+const network = 11155111 // where number 11155111 is chain id for sepolia, any other chain id can be used.
 //For infura; to get api key and enable networks checout: https://www.infura.io/
 const INFURA_API_KEY = 'your infura api key'
 let walletWithProvider = wallet.setProvider(
@@ -118,25 +118,28 @@ Where, options = {gasPrice: XXX, gasLimit: YYY}
 3. Create instances of the Contract that you want to interact with using the above wallet and call their functions.
 
 # Common Error(s) with Verified Sdk integration with Dapp
+
 Due to webpack version > 5 that no longer includes NodeJS polyfills by default, it is causing issues for developers that use React(create-react-app), React-native, Vite with webpack version > 5 to build applications with web3.js, ethers.js, alchemy libraries e.t.c. Many of this libraries and dependencies are used by Verified Sdk.
 
 There are various ways to solve this error, from updating webpack config to babel config e.t.c. and can be overwhelming for developers. Verified Network Team recommend ed using best solutions that are easy to use and beginner friendly.
 
 # How to resolve React error(s) with Verified Sdk integration
+
 Step 1: Install react-app-rewired
-    with npm:  ```npm install --save-dev react-app-rewired```
-    with yarn:  ```yarn add --dev react-app-rewired```
-    
+with npm: `npm install --save-dev react-app-rewired`
+with yarn: `yarn add --dev react-app-rewired`
+
 Step 2: Install needed dependencies
-    // with npm:  
-```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
-    // with yarn: 
-```yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+// with npm:  
+`npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process`
+// with yarn:
+`yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process`
 
 note: the above dependencies are needed dependencies to make verified sdk works, more dependencies can be added to handle any other nodeJs polyfills error.
 
 Step 3: Override create-react-app webpack config file
 In the root folder of your project, create a new file called 'config-overrides.js', and add the following code to it:
+
 ```
 const webpack = require("webpack");
 module.exports = function override(config) {
@@ -167,40 +170,45 @@ module.exports = function override(config) {
       },
     },
   ]; // rules are optional can be customised to fit your usecase
-  config.resolve.fallback = fallback; 
+  config.resolve.fallback = fallback;
   config.ignoreWarnings = [/Failed to parse source map/]; // optional can be customised to fit your usecase
   return config;
 };
 ```
+
 This 'config-overrides.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
 
 Step 4: Override package.json to use react-app-rewired
 Within the package.json file, replace react-scripts with react-app-rewired scripts for 'start', 'build', 'test'
+
 ```
-"scripts": { 
-  "start": "react-app-rewired start", 
-  "build": "react-app-rewired build", 
-  "test": "react-app-rewired test", 
-  "eject": "react-scripts eject" 
+"scripts": {
+  "start": "react-app-rewired start",
+  "build": "react-app-rewired build",
+  "test": "react-app-rewired test",
+  "eject": "react-scripts eject"
  },
 ```
+
 note: start changed from "react-scripts start" to "react-app-rewired start", build from "react-scripts build" to "react-app-rewired build" and test from "react-scripts test" to "react-app-rewired test" while eject remains the same.
 
 The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk
 
 # How to resolve Vite error(s) with Verified Sdk integration
+
 Step 1: install @esbuild-plugins/node-modules-polyfill and rollup-plugin-polyfill-node
-    with npm: ```npm i @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
-    with yarn: ```yarn add @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node```
+with npm: `npm i @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node`
+with yarn: `yarn add @esbuild-plugins/node-modules-polyfill rollup-plugin-polyfill-node`
 
 Step 2: Install needed dependencies
-    with npm:  
-```npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
-    with yarn: 
-```yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process```
+with npm:  
+`npm install --save-dev crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process`
+with yarn:
+`yarn add crypto-browserify stream-browserify assert stream-http https-browserify os-browserify url buffer process`
 
 Step 3: update vite.config.js file
 From the root folder of your project update 'vite.config.js' to resolve missing dependencies
+
 ```
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
 import nodePolyfills from "rollup-plugin-polyfill-node";
@@ -244,6 +252,7 @@ export default defineConfig({
 });
 
 ```
+
 This 'vite.config.js' code snippet is telling webpack how to resolve the missing dependencies that are needed to support web3, ethers libraries and wallet providers in the browser/server side.
 
 The polyfill node core module error should be fixed any missing NodeJS polyfills should be included in your app, and your app should work well with Verified Sdk.
