@@ -1,11 +1,8 @@
 // SPDX-License-Identifier: BUSL-1.1
 
 "use strict"
-import { config } from "dotenv";
-config({ path: "../../.env" })
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
-import Web3 from "web3";
 import { BiconomySmartAccountV2, DEFAULT_ENTRYPOINT_ADDRESS } from "@biconomy/account";
 import { ECDSAOwnershipValidationModule, DEFAULT_ECDSA_OWNERSHIP_MODULE } from "@biconomy/modules";
 import {IBundler, Bundler } from "@biconomy/bundler";
@@ -264,11 +261,13 @@ export class VerifiedContract {
       } else {
         const logs = transactionDetails.receipt.logs;
         let reason = "";
-        const provider: any = this.contract.provider;
         logs.map((log: any) => {
           if (log.topics.includes(PaymasterConstants.BICONOMY_REVERT_TOPIC)) {
-            const web3 = new Web3(provider);
-            reason = web3.utils.hexToAscii(log.data);
+            try {
+              reason = utils.formatBytes32String(log.data)
+            } catch (err) {
+              reason = reason;
+            }
           }
         });
         throw Error(`execution reverted: ${reason}`);
