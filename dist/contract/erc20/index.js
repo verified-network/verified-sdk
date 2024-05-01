@@ -10,6 +10,7 @@ var FUNCTIONS;
     FUNCTIONS["SYMBOL"] = "symbol";
     FUNCTIONS["TOTALSUPPLY"] = "totalSupply";
     FUNCTIONS["BALANCE"] = "balanceOf";
+    FUNCTIONS["DECIMALS"] = "decimals";
     FUNCTIONS["TRANSFER"] = "transfer";
     FUNCTIONS["APPROVE"] = "approve";
     FUNCTIONS["ALLOWANCE"] = "allowance";
@@ -28,6 +29,9 @@ class ERC20 extends index_1.VerifiedContract {
     }
     async symbol() {
         return this.callContract(FUNCTIONS.SYMBOL);
+    }
+    async decimals() {
+        return this.callContract(FUNCTIONS.DECIMALS);
     }
     async totalSupply() {
         return this.callContract(FUNCTIONS.TOTALSUPPLY);
