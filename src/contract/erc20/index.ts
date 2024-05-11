@@ -10,6 +10,7 @@ enum FUNCTIONS {
     SYMBOL = 'symbol',
     TOTALSUPPLY = 'totalSupply',
     BALANCE = 'balanceOf',
+    DECIMALS = 'decimals',
     TRANSFER = 'transfer',
     APPROVE = 'approve',
     ALLOWANCE = 'allowance',
@@ -36,6 +37,10 @@ export default class ERC20 extends VerifiedContract {
 
     public async symbol() {
         return this.callContract(FUNCTIONS.SYMBOL)
+    }
+
+    public async decimals() {
+        return this.callContract(FUNCTIONS.DECIMALS)
     }
 
     public async totalSupply() {
