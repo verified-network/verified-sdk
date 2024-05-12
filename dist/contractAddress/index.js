@@ -205,7 +205,8 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    10: {
+    //Base
+    8453: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -239,7 +240,8 @@ const contractAddress = {
             'VBINR': ''
         },
     },
-    56: {
+    //Base Sepolia
+    84532: {
         'Client': '',
         'Factory': '',
         'Cash': '',
@@ -258,7 +260,7 @@ const contractAddress = {
         'BalancerSecondaryIssueManager': '',
         'MarginTradingPoolFactory': '',
         'BalancerMarginIssueManager': '',
-        'Custody': '',
+        'Custody': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
         'Compound': '',
         'CASH': {
             'VCUSD': '',
