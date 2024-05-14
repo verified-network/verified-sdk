@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedContract = exports.DATATYPES = void 0;
 const ethers_1 = require("ethers");
 const account_1 = require("@biconomy/account");
-const modules_1 = require("@biconomy/modules");
-const bundler_1 = require("@biconomy/bundler");
 const paymaster_1 = require("@biconomy/paymaster");
 const constants_1 = require("../utils/constants");
 var STATUS;
@@ -170,38 +168,21 @@ class VerifiedContract {
     /** Checks if a contract support gasless transaction */
     supportsGasless(chainId) {
         let isSupported = false;
-        const contractPaymasterUrl = constants_1.PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`];
-        if (contractPaymasterUrl && contractPaymasterUrl.length > 0)
+        if (constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
             isSupported = true;
         return isSupported;
     }
     /** Creates Biconomy smart account */
     async createSmartAccount(chainId) {
-        //create bundler instance
-        const bundler = new bundler_1.Bundler({
-            bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants[`${chainId}_URL_SECOND_SECTION`]}`,
-            chainId: chainId,
-            entryPointAddress: account_1.DEFAULT_ENTRYPOINT_ADDRESS,
+        // Create Biconomy Smart Account instance
+        const signer = this.signer;
+        const smartAccount = await account_1.createSmartAccountClient({
+            signer,
+            biconomyPaymasterApiKey: constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"],
+            bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]}`,
         });
-        //create paymaster instance
-        const paymaster = new paymaster_1.BiconomyPaymaster({
-            paymasterUrl: `${constants_1.PaymasterConstants.GENERAL_PAYMASTER_URL}/${chainId}/${constants_1.PaymasterConstants[`${chainId}_PAYMASTER_API_KEY`]}`,
-        });
-        const module = await modules_1.ECDSAOwnershipValidationModule.create({
-            signer: this.signer,
-            moduleAddress: modules_1.DEFAULT_ECDSA_OWNERSHIP_MODULE,
-        });
-        //create biconomy smart account
-        let biconomyAccount = await account_1.BiconomySmartAccountV2.create({
-            chainId: chainId,
-            bundler: bundler,
-            paymaster: paymaster,
-            entryPointAddress: account_1.DEFAULT_ENTRYPOINT_ADDRESS,
-            defaultValidationModule: module,
-            activeValidationModule: module,
-        });
-        // console.log("address", await biconomyAccount.getAccountAddress());
-        return biconomyAccount;
+        // console.log("smart account address", await smartAccount.getAccountAddress());
+        return smartAccount;
     }
     /** Constructs and call function with ethers.js */
     async callFunctionWithEthers(functionName, ...args) {
@@ -237,35 +218,47 @@ class VerifiedContract {
         }
     }
     /** Constructs and call function as userop for biconomy gassless(sponsored/erc20 mode) */
-    async callFunctionAsUserOp(smartAccount, userOp, functionName, ...args) {
+    async callFunctionAsUserOp(smartAccount, tx, functionName, paymentToken, ...args) {
         //send userops transaction and construct transaction response
         let res = {};
         try {
-            const userOpResponse = await smartAccount.sendUserOp(userOp);
-            const transactionDetails = await userOpResponse.wait();
-            if (transactionDetails.success === "true") {
-                res.response = {
-                    hash: transactionDetails.receipt.transactionHash,
-                    result: [],
-                }; //TODO: update result on response
+            const userOpResponse = await smartAccount.sendTransaction(tx, {
+                paymasterServiceData: { mode: paymaster_1.PaymasterMode.SPONSORED },
+            });
+            const { transactionHash } = await userOpResponse.waitForTxHash();
+            console.log("Gassless Transaction Hash", transactionHash);
+            const userOpReceipt = await userOpResponse.wait();
+            if (userOpReceipt.success == 'true') {
                 res.status = STATUS.SUCCESS;
+                res.response = {
+                    hash: transactionHash,
+                    result: userOpReceipt.receipt.result || userOpReceipt.receipt.response || userOpReceipt.receipt,
+                }; //TODO: update result on response
                 res.message = "";
                 return res;
             }
             else {
-                const logs = transactionDetails.receipt.logs;
-                let reason = "";
-                logs.map((log) => {
-                    if (log.topics.includes(constants_1.PaymasterConstants.BICONOMY_REVERT_TOPIC)) {
-                        try {
-                            reason = ethers_1.utils.formatBytes32String(log.data);
-                        }
-                        catch (err) {
-                            reason = reason;
-                        }
-                    }
+                console.log("Gassless failed will try ERC20...");
+                const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
+                    paymasterServiceData: { mode: paymaster_1.PaymasterMode.ERC20, preferredToken: paymentToken, },
                 });
-                throw Error(`execution reverted: ${reason}`);
+                const { ERC20transactionHash } = await ERC20userOpResponse.waitForTxHash();
+                console.log("ERC20 Transaction Hash", ERC20transactionHash);
+                const userOpReceipt = await ERC20userOpResponse.wait();
+                if (userOpReceipt.success == 'true') {
+                    res.status = STATUS.SUCCESS;
+                    res.response = {
+                        hash: ERC20transactionHash,
+                        result: ERC20userOpResponse.receipt.result || ERC20userOpResponse.receipt.response || ERC20userOpResponse.receipt,
+                    }; //TODO: update result on response 
+                    res.message = "";
+                    return res;
+                }
+                else {
+                    console.error("ERC20 failed");
+                    console.log("will use ethers....");
+                    return await this.callFunctionWithEthers(functionName, ...args);
+                }
             }
         }
         catch (err) {
@@ -310,85 +303,8 @@ class VerifiedContract {
                 to: this.contract.address,
                 data: _res.data,
             };
-            //build userop transaction
-            let partialUserOp;
-            try {
-                partialUserOp = await smartAccount.buildUserOp([tx1]);
-            }
-            catch (err) {
-                console.log("error while buiding gassless transaction: ", err);
-                console.log("will use ethers....");
-                return await this.callFunctionWithEthers(functionName, ...args);
-            }
-            //query paymaster for sponsored mode to get neccesary params and update userop
-            const biconomyPaymaster = smartAccount.paymaster;
-            try {
-                const paymasterAndDataResponse = await biconomyPaymaster.getPaymasterAndData(partialUserOp, {
-                    mode: paymaster_1.PaymasterMode.SPONSORED,
-                });
-                // console.log("pmR: ", paymasterAndDataResponse);
-                if (paymasterAndDataResponse) {
-                    partialUserOp.paymasterAndData =
-                        paymasterAndDataResponse.paymasterAndData;
-                    if (paymasterAndDataResponse.callGasLimit &&
-                        paymasterAndDataResponse.verificationGasLimit &&
-                        paymasterAndDataResponse.preVerificationGas) {
-                        partialUserOp.callGasLimit = paymasterAndDataResponse.callGasLimit;
-                        partialUserOp.verificationGasLimit =
-                            paymasterAndDataResponse.verificationGasLimit;
-                        partialUserOp.preVerificationGas =
-                            paymasterAndDataResponse.preVerificationGas;
-                    }
-                }
-                return await this.callFunctionAsUserOp(smartAccount, partialUserOp, functionName, ...args);
-            }
-            catch (err) {
-                console.log("sponsored failed will try erc20");
-                //if userop can't be sponsored use ERC20 mode
-                try {
-                    let finalUserOp = partialUserOp;
-                    //get fee quote for network cash token
-                    const feeQuotesResponse = await biconomyPaymaster.getPaymasterFeeQuotesOrData(partialUserOp, {
-                        mode: paymaster_1.PaymasterMode.ERC20,
-                        tokenList: [constants_1.PaymasterConstants[`${chainId}_CASH_TOKEN_ADDRESS`]],
-                    });
-                    // console.log("fq: ", feeQuotesResponse);
-                    const feeQuotes = feeQuotesResponse.feeQuotes;
-                    const spender = feeQuotesResponse.tokenPaymasterAddress || "";
-                    const tokenFeeQuotes = feeQuotes[0];
-                    finalUserOp = await smartAccount.buildTokenPaymasterUserOp(partialUserOp, {
-                        feeQuote: tokenFeeQuotes,
-                        spender: spender,
-                        maxApproval: false,
-                    });
-                    let paymasterServiceData = {
-                        mode: paymaster_1.PaymasterMode.ERC20,
-                        feeTokenAddress: tokenFeeQuotes.tokenAddress,
-                        calculateGasLimits: true,
-                    };
-                    const paymasterAndDataWithLimits = await biconomyPaymaster.getPaymasterAndData(finalUserOp, paymasterServiceData);
-                    finalUserOp.paymasterAndData =
-                        paymasterAndDataWithLimits.paymasterAndData;
-                    if (paymasterAndDataWithLimits.callGasLimit &&
-                        paymasterAndDataWithLimits.verificationGasLimit &&
-                        paymasterAndDataWithLimits.preVerificationGas) {
-                        finalUserOp.callGasLimit = paymasterAndDataWithLimits.callGasLimit;
-                        finalUserOp.verificationGasLimit =
-                            paymasterAndDataWithLimits.verificationGasLimit;
-                        finalUserOp.preVerificationGas =
-                            paymasterAndDataWithLimits.preVerificationGas;
-                    }
-                    const _paymasterAndDataWithLimits = await biconomyPaymaster.getPaymasterAndData(finalUserOp, paymasterServiceData);
-                    finalUserOp.paymasterAndData =
-                        _paymasterAndDataWithLimits.paymasterAndData;
-                    return await this.callFunctionAsUserOp(smartAccount, finalUserOp, functionName, ...args);
-                }
-                catch (_err) {
-                    //if erc20 mode didn't work use ethers.js
-                    console.log("both sponsored and erc20 failed will use ethers: ");
-                    return await this.callFunctionWithEthers(functionName, ...args);
-                }
-            }
+            const paymentToken = constants_1.PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] || "";
+            return await this.callFunctionAsUserOp(smartAccount, tx1, functionName, paymentToken, ...args);
         }
         else {
             //call contract through normal ether.js
