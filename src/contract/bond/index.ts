@@ -71,7 +71,7 @@ export default class Bond extends VerifiedContract {
     * @param ()
     * @returns address[] memory
     */
-    public async getBonds() {
+    public async getBonds(): any {
         return this.callContract(FUNCTIONS.GETBONDS)
     }
     

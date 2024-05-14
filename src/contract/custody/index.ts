@@ -41,7 +41,7 @@ export default class Custody extends VerifiedContract {
         return this.callContract(FUNCTIONS.CREATEVAULT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, options)
     }
 
-    public async getVaults() {
+    public async getVaults(): any {
         return this.callContract(FUNCTIONS.GETVAULTS)
     }
 

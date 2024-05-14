@@ -49,7 +49,7 @@ export default class Token extends VerifiedContract {
 
     /* Get address of issuer of token
     */
-    public async getIssuer() {
+    public async getIssuer(): any {
         return this.callContract(FUNCTIONS.GETISSUER)
     }
 

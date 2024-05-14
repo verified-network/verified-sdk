@@ -4,7 +4,6 @@
 import { ethers, utils, ContractInterface, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 import { createSmartAccountClient } from "@biconomy/account";
-import {PaymasterMode,} from "@biconomy/paymaster";
 import { PaymasterConstants } from "../utils/constants";
 
 enum STATUS {
@@ -167,7 +166,7 @@ export class VerifiedContract {
     /** Checks if a contract support gasless transaction */
   supportsGasless(chainId: number) {
     let isSupported = false;
-    if (PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
+    if (PaymasterConstants[`${chainId}`] &&  PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
       isSupported = true;
     return isSupported;
   }
@@ -224,7 +223,7 @@ export class VerifiedContract {
     let res = <SCResponse>{};
     try {
       const userOpResponse = await smartAccount.sendTransaction(tx, {
-        paymasterServiceData: {mode: PaymasterMode.SPONSORED},
+        paymasterServiceData: {mode: "SPONSORED"},
       });
       const { transactionHash } = await userOpResponse.waitForTxHash();
       console.log("Gassless Transaction Hash", transactionHash);
@@ -240,7 +239,7 @@ export class VerifiedContract {
       }else{
           console.log("Gassless failed will try ERC20...")
           const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
-            paymasterServiceData: {mode: PaymasterMode.ERC20, preferredToken: paymentToken,},
+            paymasterServiceData: {mode: "ERC20", preferredToken: paymentToken,},
           });
           const { ERC20transactionHash } = await ERC20userOpResponse.waitForTxHash();
           console.log("ERC20 Transaction Hash", ERC20transactionHash);

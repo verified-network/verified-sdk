@@ -49,7 +49,7 @@ export default class SecuritiesFactory extends VerifiedContract {
      * @param
      * @returns returns array of addresses
      */
-     public async getIssues() {
+     public async getIssues(): any {
         return this.callContract(FUNCTIONS.GETISSUES)
     }
 

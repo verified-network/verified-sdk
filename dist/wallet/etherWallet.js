@@ -16,7 +16,7 @@ class EtherWallet extends ethers_1.ethers.Wallet {
         return hdnode_1.HDNode.fromMnemonic(mnemonic).derivePath(path);
     }
     setMnemonics(srcMnemonic) {
-        properties_1.defineReadOnly(this, "_mnemonic", () => ({
+        (0, properties_1.defineReadOnly)(this, "_mnemonic", () => ({
             phrase: srcMnemonic.phrase,
             path: srcMnemonic.path || hdnode_1.defaultPath,
             locale: srcMnemonic.locale || "en"

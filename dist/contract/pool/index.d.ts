@@ -1,6 +1,6 @@
 import { VerifiedContract } from '../index';
 import { VerifiedWallet } from "../../../wallet";
-declare type SingleSwap = {
+type SingleSwap = {
     poolId: string;
     kind: string;
     assetIn: string;
@@ -8,14 +8,14 @@ declare type SingleSwap = {
     amount: string;
     userData: string;
 };
-declare type Swap = {
+type Swap = {
     poolId: string;
     assetInIndex: string;
     assetOutIndex: string;
     amount: string;
     userData: string;
 };
-declare type Funds = {
+type Funds = {
     sender: string;
     fromInternalBalance: boolean;
     recipient: string;

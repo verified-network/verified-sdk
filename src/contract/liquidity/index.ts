@@ -88,7 +88,7 @@ export default class LiquidityContract extends VerifiedContract {
      * Returns list of supported liquidity tokens (eg, VITTA, USDC, DAI)
      * @returns array of struct of tokens 
      */
-    public async getSupportedTokens(){
+    public async getSupportedTokens(): any{
         return this.callContract(FUNCTIONS.GETSUPPORTEDTOKENS);
     }
 
@@ -116,14 +116,14 @@ export default class LiquidityContract extends VerifiedContract {
     /**
         Fetches investors in VITTA
      */
-    public async getInvestors(){
+    public async getInvestors(): any{
         return this.callContract(FUNCTIONS.GETINVESTORS)
     }
     
     /**
         Fetches registered platforms
      */
-    public async getPlatforms(){
+    public async getPlatforms(): any{
         return this.callContract(FUNCTIONS.GETPLATFORMS)
     }
 

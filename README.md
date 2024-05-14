@@ -14,6 +14,25 @@ let mnemonics = await VerifiedWallet.generateMnemonics()
 let wallet = await VerifiedWallet.importWallet(menmonics)
 ```
 
+# Using existing wallet
+
+1. Using existing Wallet mnemonics
+
+```
+const {VerifiedWallet} = require('@verified-network/verified-sdk');
+const mnemonics = 'input your wallet mnemonics'
+let wallet = await VerifiedWallet.importWallet(menmonics)
+```
+
+2. Using existing wallet private key
+
+```
+const {VerifiedWallet} = require('@verified-network/verified-sdk');
+const privateKey = 'input your wallet private key'
+const provider = 'ethers.js provider' //Check provider subtopic below to learn more
+let wallet = new VerifiedWallet(privatekey, provider)
+```
+
 # setProvider
 
 Provider can be set for wallet using 2 options:
