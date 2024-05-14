@@ -48,11 +48,11 @@ export default class Rates extends VerifiedContract {
         return this.callContract(FUNCTIONS.GETFEE, this.sanitiseInput(DATATYPES.BYTE32, _feeType), options)
     }
 
-    public async getFeeToSetter(){
+    public async getFeeToSetter():  any{
         return this.callContract(FUNCTIONS.GETFEETOSETTER)
     }
 
-    public async getCustodian(){
+    public async getCustodian(): any{
         return this.callContract(FUNCTIONS.GETCUSTODIAN)
     }
 

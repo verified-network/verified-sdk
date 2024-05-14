@@ -13,7 +13,7 @@ var LogLevel;
     LogLevel["WARNING"] = "WARNING";
     LogLevel["ERROR"] = "ERROR";
     LogLevel["OFF"] = "OFF";
-})(LogLevel = exports.LogLevel || (exports.LogLevel = {}));
+})(LogLevel || (exports.LogLevel = LogLevel = {}));
 var ErrorCode;
 (function (ErrorCode) {
     ///////////////////
@@ -80,7 +80,7 @@ var ErrorCode;
     // The gas limit could not be estimated
     //   - transaction: the transaction passed to estimateGas
     ErrorCode["UNPREDICTABLE_GAS_LIMIT"] = "UNPREDICTABLE_GAS_LIMIT";
-})(ErrorCode = exports.ErrorCode || (exports.ErrorCode = {}));
+})(ErrorCode || (exports.ErrorCode = ErrorCode = {}));
 ;
 class Logger {
     constructor(version) {

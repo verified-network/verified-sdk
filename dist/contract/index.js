@@ -4,7 +4,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.VerifiedContract = exports.DATATYPES = void 0;
 const ethers_1 = require("ethers");
 const account_1 = require("@biconomy/account");
-const paymaster_1 = require("@biconomy/paymaster");
 const constants_1 = require("../utils/constants");
 var STATUS;
 (function (STATUS) {
@@ -20,7 +19,7 @@ var DATATYPES;
     DATATYPES["BYTE32"] = "byte32";
     DATATYPES["BYTE16"] = "byte16";
     DATATYPES["BIGNUMBER"] = "bignumber";
-})(DATATYPES = exports.DATATYPES || (exports.DATATYPES = {}));
+})(DATATYPES || (exports.DATATYPES = DATATYPES = {}));
 class VerifiedContract {
     constructor(address, abi, signer) {
         this.signer = signer;
@@ -168,7 +167,7 @@ class VerifiedContract {
     /** Checks if a contract support gasless transaction */
     supportsGasless(chainId) {
         let isSupported = false;
-        if (constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
+        if (constants_1.PaymasterConstants[`${chainId}`] && constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
             isSupported = true;
         return isSupported;
     }
@@ -176,7 +175,7 @@ class VerifiedContract {
     async createSmartAccount(chainId) {
         // Create Biconomy Smart Account instance
         const signer = this.signer;
-        const smartAccount = await account_1.createSmartAccountClient({
+        const smartAccount = await (0, account_1.createSmartAccountClient)({
             signer,
             biconomyPaymasterApiKey: constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"],
             bundlerUrl: `${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]}`,
@@ -223,7 +222,7 @@ class VerifiedContract {
         let res = {};
         try {
             const userOpResponse = await smartAccount.sendTransaction(tx, {
-                paymasterServiceData: { mode: paymaster_1.PaymasterMode.SPONSORED },
+                paymasterServiceData: { mode: "SPONSORED" },
             });
             const { transactionHash } = await userOpResponse.waitForTxHash();
             console.log("Gassless Transaction Hash", transactionHash);
@@ -240,7 +239,7 @@ class VerifiedContract {
             else {
                 console.log("Gassless failed will try ERC20...");
                 const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
-                    paymasterServiceData: { mode: paymaster_1.PaymasterMode.ERC20, preferredToken: paymentToken, },
+                    paymasterServiceData: { mode: "ERC20", preferredToken: paymentToken, },
                 });
                 const { ERC20transactionHash } = await ERC20userOpResponse.waitForTxHash();
                 console.log("ERC20 Transaction Hash", ERC20transactionHash);

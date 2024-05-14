@@ -42,11 +42,11 @@ export default class Factory extends VerifiedContract {
      * @param
      * @returns returns number of tokens
      */
-    public async getTokenCount() {
+    public async getTokenCount(): any {
         return this.callContract(FUNCTIONS.GETTOKENCOUNT)
     }
 
-    public async getOracles() {
+    public async getOracles(): any {
         return this.callContract(FUNCTIONS.GETORACLES)
     }
 

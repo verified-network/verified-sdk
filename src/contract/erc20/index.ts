@@ -31,19 +31,19 @@ export default class ERC20 extends VerifiedContract {
         this.contractAddress = address
     }
 
-    public async name() {
+    public async name(): any {
         return this.callContract(FUNCTIONS.NAME)
     }
 
-    public async symbol() {
+    public async symbol(): any {
         return this.callContract(FUNCTIONS.SYMBOL)
     }
 
-    public async decimals() {
+    public async decimals(): any {
         return this.callContract(FUNCTIONS.DECIMALS)
     }
 
-    public async totalSupply() {
+    public async totalSupply(): any {
         return this.callContract(FUNCTIONS.TOTALSUPPLY)
     }
 
