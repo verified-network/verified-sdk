@@ -26,6 +26,14 @@ class VerifiedContract {
         this.abiInterface = new ethers_1.utils.Interface(abi);
         this.contract = new ethers_1.ethers.Contract(address, this.abiInterface, signer);
     }
+    isReadFunction(functionName, ...args) {
+        const functionFragment = this.abiInterface.getFunction(functionName);
+        if (!functionFragment) {
+            throw new Error(`Function ${functionName} not found in ABI`);
+        }
+        return (functionFragment.stateMutability === 'view' ||
+            functionFragment.stateMutability === 'pure');
+    }
     async validateInput(type, data) {
         let error = '';
         let status = true;
@@ -272,6 +280,11 @@ class VerifiedContract {
     }
     async callContract(functionName, ...args) {
         const chainId = await this.signer.getChainId();
+        // Check if the function is a write function
+        if (this.isReadFunction(functionName)) {
+            console.log("read function will use ethers");
+            return await this.callFunctionWithEthers(functionName, ...args);
+        }
         if (this.supportsGasless(chainId)) {
             console.log("gassless supported will use userop");
             //call contract through userop for gasless transaction

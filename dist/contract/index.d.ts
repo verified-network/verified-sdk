@@ -25,6 +25,7 @@ export declare class VerifiedContract {
     private contract;
     private abiInterface;
     constructor(address: string, abi: string, signer: VerifiedWallet | Signer);
+    private isReadFunction;
     protected validateInput(type: DATATYPES, data: any): Promise<boolean>;
     protected sanitiseInput(type: DATATYPES, data: any): any;
     protected sanitiseOutput(type: DATATYPES, data: any): any;
