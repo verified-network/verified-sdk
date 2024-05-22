@@ -31,13 +31,24 @@ export class VerifiedContract {
 
     private signer: VerifiedWallet | Signer;
     private contract: ethers.Contract;
-    private abiInterface: ContractInterface;
+    private abiInterface: utils.Interface;
 
     constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
         this.signer = signer;
         this.abiInterface = new utils.Interface(abi)
         this.contract = new ethers.Contract(address, this.abiInterface, signer);
     }
+
+    private isReadFunction(functionName: string, ...args: any): boolean {
+      const functionFragment = this.abiInterface.getFunction(functionName);
+      if (!functionFragment) {
+          throw new Error(`Function ${functionName} not found in ABI`);
+      }
+      return (
+          functionFragment.stateMutability === 'view' ||
+          functionFragment.stateMutability === 'pure'
+      );
+  }
 
     protected async validateInput(type: DATATYPES, data: any) {
         let error: string = '';
@@ -271,6 +282,12 @@ export class VerifiedContract {
 
   async callContract(functionName: string, ...args: any) {
     const chainId = await this.signer.getChainId();
+    // Check if the function is a write function
+    if (this.isReadFunction(functionName)) {
+      console.log("read function will use ethers");
+      return await this.callFunctionWithEthers(functionName, ...args);
+    }  
+
     if (this.supportsGasless(chainId)) {
       console.log("gassless supported will use userop");
       //call contract through userop for gasless transaction
@@ -303,7 +320,8 @@ export class VerifiedContract {
       };
       const paymentToken = PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] || "";
       return await this.callFunctionAsUserOp(smartAccount, tx1, functionName, paymentToken, ...args)
-    } else {
+    }
+     else {
       //call contract through normal ether.js
       console.log("gassless not supported will use ethers");
       return await this.callFunctionWithEthers(functionName, ...args);
