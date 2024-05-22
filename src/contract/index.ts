@@ -270,6 +270,11 @@ export class VerifiedContract {
   }
 
   async callContract(functionName: string, ...args: any) {
+    const isReadFunction = this.isReadFunction(functionName);
+    if(isReadFunction){
+      //call read fucntion with ethers
+      return await this.callFunctionWithEthers(functionName,...args);
+    }
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       console.log("gassless supported will use userop");
@@ -319,5 +324,9 @@ export class VerifiedContract {
             res.message = '';
             callback(res)
         })
+    }
+     private isReadFunction(functionName: string): boolean {
+        // Assuming that read functions start with "get"
+        return functionName.startsWith("get");
     }
 }
