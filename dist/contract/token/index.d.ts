@@ -28,4 +28,24 @@ export default class Token extends VerifiedContract {
         gasPrice: number;
         gasLimit: number;
     }): any;
+    name(): any;
+    symbol(): any;
+    decimals(): any;
+    totalSupply(): any;
+    approve(_spender: string, _amount: string, options?: {
+        gasPrice: number;
+        gasLimit: number;
+    }): any;
+    allowance(_owner: string, _spender: string, options?: {
+        gasPrice: number;
+        gasLimit: number;
+    }): any;
+    increaseAllowance(_spender: string, _addedValue: string, options?: {
+        gasPrice: number;
+        gasLimit: number;
+    }): any;
+    decreaseAllowance(_spender: string, _subtractedValue: string, options?: {
+        gasPrice: number;
+        gasLimit: number;
+    }): any;
 }
