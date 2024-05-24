@@ -8,9 +8,18 @@ var FUNCTIONS;
 (function (FUNCTIONS) {
     FUNCTIONS["TRANSFERFROM"] = "transferFrom";
     FUNCTIONS["BALANCE"] = "balanceOf";
+    FUNCTIONS["NAME"] = "name";
+    FUNCTIONS["DECIMALS"] = "decimals";
     FUNCTIONS["GETISSUER"] = "getIssuer";
     FUNCTIONS["REQUESTTRANSACTION"] = "requestTransaction";
     FUNCTIONS["REQUESTTRANSFER"] = "requestTransfer";
+    FUNCTIONS["SYMBOL"] = "symbol";
+    FUNCTIONS["TOTALSUPPLY"] = "totalSupply";
+    FUNCTIONS["TRANSFER"] = "transfer";
+    FUNCTIONS["APPROVE"] = "approve";
+    FUNCTIONS["ALLOWANCE"] = "allowance";
+    FUNCTIONS["INCREASEALLOWANCE"] = "increaseAllowance";
+    FUNCTIONS["DECREASEALLOWANCE"] = "decreaseAllowance";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class Token extends index_1.VerifiedContract {
     constructor(signer, bondCurrencyAddress) {
@@ -54,6 +63,38 @@ class Token extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _collateralName);
         await this.validateInput(index_1.DATATYPES.ADDRESS, _collateralContract);
         return this.callContract(FUNCTIONS.REQUESTTRANSACTION, _amount, _payer, this.sanitiseInput(index_1.DATATYPES.BYTE32, _collateralName), _collateralContract, options);
+    }
+    async name() {
+        return this.callContract(FUNCTIONS.NAME);
+    }
+    async symbol() {
+        return this.callContract(FUNCTIONS.SYMBOL);
+    }
+    async decimals() {
+        return this.callContract(FUNCTIONS.DECIMALS);
+    }
+    async totalSupply() {
+        return this.callContract(FUNCTIONS.TOTALSUPPLY);
+    }
+    async approve(_spender, _amount, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _amount);
+        return this.callContract(FUNCTIONS.APPROVE, _spender, _amount, options);
+    }
+    async allowance(_owner, _spender, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _owner);
+        return this.callContract(FUNCTIONS.ALLOWANCE, _owner, _spender, options);
+    }
+    async increaseAllowance(_spender, _addedValue, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _addedValue);
+        return this.callContract(FUNCTIONS.INCREASEALLOWANCE, _spender, _addedValue, options);
+    }
+    async decreaseAllowance(_spender, _subtractedValue, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, _spender);
+        await this.validateInput(index_1.DATATYPES.NUMBER, _subtractedValue);
+        return this.callContract(FUNCTIONS.DECREASEALLOWANCE, _spender, _subtractedValue, options);
     }
 }
 exports.default = Token;

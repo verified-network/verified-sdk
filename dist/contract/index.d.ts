@@ -29,6 +29,12 @@ export declare class VerifiedContract {
     protected sanitiseInput(type: DATATYPES, data: any): any;
     protected sanitiseOutput(type: DATATYPES, data: any): any;
     /**
+     * gets a function state mutability to differenciate between read and write functions
+     * @param functionName
+     * @returns true or false
+     */
+    private isReadFunction;
+    /**
      * Parses output to standard response
      * @param data
      * @returns

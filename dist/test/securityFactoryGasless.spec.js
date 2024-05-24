@@ -1,7 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const assert_1 = tslib_1.__importDefault(require("assert"));
+const assert_1 = __importDefault(require("assert"));
 const index_1 = require("../utils/index");
 const index_2 = require("../wallet/index");
 const index_3 = require("../index");

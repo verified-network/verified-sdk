@@ -31,7 +31,7 @@ export class VerifiedContract {
 
     private signer: VerifiedWallet | Signer;
     private contract: ethers.Contract;
-    private abiInterface: ContractInterface;
+    private abiInterface: utils.Interface;
 
     constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
         this.signer = signer;
@@ -138,6 +138,22 @@ export class VerifiedContract {
     }
 
     /**
+     * gets a function state mutability to differenciate between read and write functions
+     * @param functionName 
+     * @returns true or false
+     */
+    private isReadFunction(functionName: string): boolean {
+      const functionFragment = this.abiInterface.getFunction(functionName);
+      if (!functionFragment) {
+          throw new Error(`Function ${functionName} not found in ABI`);
+      }
+      return (
+          functionFragment.stateMutability === 'view' ||
+          functionFragment.stateMutability === 'pure'
+      );
+    }
+
+    /**
      * Parses output to standard response
      * @param data 
      * @returns 
@@ -184,6 +200,7 @@ export class VerifiedContract {
     return smartAccount;
   }
 
+  
   /** Constructs and call function with ethers.js */
   async callFunctionWithEthers(functionName: string, ...args: any) {
     let res = <SCResponse>{};
@@ -270,6 +287,11 @@ export class VerifiedContract {
   }
 
   async callContract(functionName: string, ...args: any) {
+    // Check if the function is a read function
+    if (this.isReadFunction(functionName)) {
+      console.log("read function will use ethers");
+      return await this.callFunctionWithEthers(functionName, ...args);
+    }
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       console.log("gassless supported will use userop");

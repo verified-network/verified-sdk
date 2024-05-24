@@ -128,6 +128,19 @@ class VerifiedContract {
         }
     }
     /**
+     * gets a function state mutability to differenciate between read and write functions
+     * @param functionName
+     * @returns true or false
+     */
+    isReadFunction(functionName) {
+        const functionFragment = this.abiInterface.getFunction(functionName);
+        if (!functionFragment) {
+            throw new Error(`Function ${functionName} not found in ABI`);
+        }
+        return (functionFragment.stateMutability === 'view' ||
+            functionFragment.stateMutability === 'pure');
+    }
+    /**
      * Parses output to standard response
      * @param data
      * @returns
@@ -271,6 +284,11 @@ class VerifiedContract {
         }
     }
     async callContract(functionName, ...args) {
+        // Check if the function is a read function
+        if (this.isReadFunction(functionName)) {
+            console.log("read function will use ethers");
+            return await this.callFunctionWithEthers(functionName, ...args);
+        }
         const chainId = await this.signer.getChainId();
         if (this.supportsGasless(chainId)) {
             console.log("gassless supported will use userop");

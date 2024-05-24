@@ -12,8 +12,8 @@ describe("Test to check new tempOutout fix on sepolia chain(11155111)", () => {
   const liquidityContractAddress = "0x27006b68b3594EF5Ae04C5457c24F0c7CF1E5553";
   const primaryManagerAddress = "0x41bB86106CC5156d915052c3a3EFb4be70Ec544E";
   const currencyOffered = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" //sepolia(11155111) USDC
-  //test using getSupportedTokens on liquidity contract and getOffered on primaryIssueManager contract due to dapp error
-  
+
+ // test using getSupportedTokens on liquidity contract and getOffered on primaryIssueManager contract due to dapp error
   describe("getSupportedTokens Test", () => {
     const liquidityContract = new Liquidity(
         signer,
