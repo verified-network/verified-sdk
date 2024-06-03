@@ -241,12 +241,12 @@ const contractAddress: Object = {
     //Base Sepolia
     84532: {
         'Client': '',
-        'Factory': '',        
-        'Cash': '',
-        'Bond': '',
-        'Token': '',
-        'Oracle': '',
-        'Rates': '',
+        'Factory': '0x1021A1474dC1630E5781B1676Def04fF7f11Cc0b',        
+        'Cash': '0x15323E84AFF1dDFfcE321F05D75c5dB4b4491e9F',
+        'Bond': '0x4464fF4e174CABeC48901d0B990C7fD47e0A5d1B',
+        'Token': '0xE18a3Fcad231BA549aA488Fa984BDaEb0F6B30e5',
+        'Oracle': '0x3DBAa50441669fDdd9100a9f4703F8B53ca991F7',
+        'Rates': '0x127C7ef8D3b60Dd3bE78cDB3b349D1a9cf4368bD',
         'Security': '',
         'SecuritiesFactory': '',
         'Vitta': '',
@@ -258,19 +258,19 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '',
         'MarginTradingPoolFactory': '',
         'BalancerMarginIssueManager' : '',
-        'Custody': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
+        'Custody': '0x8365A76099629CDd6B28c3D85862A220504C0b46',
         'Compound': '',
         'CASH': {
-            'VCUSD': '',
-            'VCEUR': '',
-            'VCCHF': '',
-            'VCINR': ''
+            'VCUSD': '0x1C751BA898D01789af51A9022b7A6f45836a5d6c',
+            'VCEUR': '0xF0736Fa9490C45b5dF5129A461fAA1362795A4c0',
+            'VCCHF': '0x1D2D161C36958a71855413b09d60fd537742BD39',
+            'VCINR': '0x4D602f59d2680c9eB99438a4F707954F46b58e83'
         },
         'BOND': {
-            'VBUSD': '',
-            'VBEUR': '',
-            'VCCHF': '',
-            'VBINR': ''
+            'VBUSD': '0xD84fEeb3232A8578F83A1e64b5F3C0E440676368',
+            'VBEUR': '0x4A37E3Cd9563Dc3685a963AD565cC72117eFF0Dd',
+            'VCCHF': '0x32ecC3e013f300DE51F0Bd3b91441188d8893c21',
+            'VBINR': '0xA1A42bD9eB738Cac2b21e9421cB49e8364Ce697E'
         },
     },
     100: { //gnosis
