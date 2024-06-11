@@ -1,5 +1,5 @@
 import { VerifiedContract } from '../index';
-import { VerifiedWallet } from "../../../wallet";
+import { VerifiedWallet } from "../../wallet";
 export default class Client extends VerifiedContract {
     contractAddress: string;
     constructor(signer: VerifiedWallet, contractNetworkAddress: string);

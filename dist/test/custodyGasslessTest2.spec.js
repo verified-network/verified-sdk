@@ -12,7 +12,6 @@ describe("Sepolia(11155111) Custody Gassless Tests", () => {
     const newWallet = index_2.VerifiedWallet.createWallet();
     const provider = index_1.Provider.infuraProvider(11155111, INFURA_API_KEY);
     const signer = newWallet.setProvider(provider);
-
     describe("Tests some functions on custody contract", () => {
         const custodyAddress = "0x7aE9f79067AB4FDc8d41B18f1e6491590ac76f9d";
         const custodyContract = new index_3.Custody(signer, custodyAddress);
