@@ -323,11 +323,11 @@ const contractAddress = {
         'Liquidity': '0x27006b68b3594EF5Ae04C5457c24F0c7CF1E5553',
         'Distribution': '0x5c3171AFEC854f8B6FD138ee9533629ABd8A5365',
         'PrimaryIssuePoolFactory': '0xDA13BC71FEe08FfD523f10458B0e2c2D8427BBD5',
-        'BalancerPrimaryIssueManager': '0x41bB86106CC5156d915052c3a3EFb4be70Ec544E',
+        'BalancerPrimaryIssueManager': '0x5209fc3f8f5A28E9a77bfd18056d8B8429397600',
         'SecondaryIssuePoolFactory': '0xde763208aB2279435D0e6AA4297d25164873Fe82',
         'BalancerSecondaryIssueManager': '0x32464AC66668824E6d1261472F085045354B2CBa',
         'MarginTradingPoolFactory': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
-        'BalancerMarginIssueManager': '0x2f7A7901f1Da78A1bdE75F25A6eB9e591f4140d3',
+        'BalancerMarginIssueManager': '0x13c9C292d99fD6fA3e68741B574EBD5aCb4772B6',
         'Custody': '0x7aE9f79067AB4FDc8d41B18f1e6491590ac76f9d',
         'Compound': '',
         'CASH': {
