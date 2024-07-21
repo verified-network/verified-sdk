@@ -152,16 +152,22 @@ export default class MarginIssueManager extends VerifiedContract {
     public async onSettle( 
         security: string, 
         currency: string,
-        financing:string, 
-        dividend:string, 
-        commissions: string,
+        financingBid:string, 
+        financingOffer:string, 
+        dividendBid:string,
+        dividendOffer:string, 
+        swapLong: string,
+        swapShort: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
-        await this.validateInput(DATATYPES.NUMBER, financing);
-        await this.validateInput(DATATYPES.NUMBER, dividend);
-        await this.validateInput(DATATYPES.NUMBER, commissions);
-        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financing, dividend, commissions, options);
+        await this.validateInput(DATATYPES.NUMBER, financingBid);
+        await this.validateInput(DATATYPES.NUMBER, financingOffer);
+        await this.validateInput(DATATYPES.NUMBER, dividendBid);
+        await this.validateInput(DATATYPES.NUMBER, dividendOffer);
+        await this.validateInput(DATATYPES.NUMBER, swapLong);
+        await this.validateInput(DATATYPES.NUMBER, swapShort);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options);
     }
 
     public async withdraw( 
