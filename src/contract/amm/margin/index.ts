@@ -158,6 +158,7 @@ export default class MarginIssueManager extends VerifiedContract {
         dividendOffer:string, 
         swapLong: string,
         swapShort: string,
+        settlementTime: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -167,7 +168,8 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, dividendOffer);
         await this.validateInput(DATATYPES.NUMBER, swapLong);
         await this.validateInput(DATATYPES.NUMBER, swapShort);
-        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options);
+        await this.validateInput(DATATYPES.NUMBER, settlementTime);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, settlementTime, options);
     }
 
     public async withdraw( 

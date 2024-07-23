@@ -94,7 +94,7 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(DATATYPES.NUMBER, settlementTime);
         return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options);
     }*/
-    async onSettle(security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options) {
+    async onSettle(security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, settlementTime, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.NUMBER, financingBid);
@@ -103,7 +103,8 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, dividendOffer);
         await this.validateInput(index_1.DATATYPES.NUMBER, swapLong);
         await this.validateInput(index_1.DATATYPES.NUMBER, swapShort);
-        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options);
+        await this.validateInput(index_1.DATATYPES.NUMBER, settlementTime);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, settlementTime, options);
     }
     async withdraw(security, currency, amount, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);

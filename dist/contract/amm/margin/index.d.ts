@@ -31,7 +31,7 @@ export default class MarginIssueManager extends VerifiedContract {
         gasPrice: any;
         gasLimit: any;
     }): any;
-    onSettle(security: string, currency: string, financingBid: string, financingOffer: string, dividendBid: string, dividendOffer: string, swapLong: string, swapShort: string, options?: {
+    onSettle(security: string, currency: string, financingBid: string, financingOffer: string, dividendBid: string, dividendOffer: string, swapLong: string, swapShort: string, settlementTime: string, options?: {
         gasPrice: any;
         gasLimit: any;
     }): any;
