@@ -84,12 +84,12 @@ export default class MarginIssueManager extends VerifiedContract {
     }
 
     public async getCollateral( 
-        party: string, 
+        poolId: string, 
         currency: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, currency);
-        await this.validateInput(DATATYPES.ADDRESS, party);
-        return this.callContract(FUNCTIONS.GETCOLLATERAL, party, currency, options);
+        await this.validateInput(DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(DATATYPES.BYTE32, poolId), currency, options);
     }
 
     public async onMatch( 
@@ -130,7 +130,7 @@ export default class MarginIssueManager extends VerifiedContract {
         return this.callContract(FUNCTIONS.ONTRADE, ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options);
     }
 
-    public async onSettle( 
+    /*public async onSettle( 
         security: string, 
         currency: string,
         financingPerSec:string, 
@@ -147,15 +147,38 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.BOOLEAN, payout);
         await this.validateInput(DATATYPES.NUMBER, settlementTime);
         return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options);
+    }*/
+
+    public async onSettle( 
+        security: string, 
+        currency: string,
+        financingBid:string, 
+        financingOffer:string, 
+        dividendBid:string,
+        dividendOffer:string, 
+        swapLong: string,
+        swapShort: string,
+        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        await this.validateInput(DATATYPES.ADDRESS, currency);
+        await this.validateInput(DATATYPES.NUMBER, financingBid);
+        await this.validateInput(DATATYPES.NUMBER, financingOffer);
+        await this.validateInput(DATATYPES.NUMBER, dividendBid);
+        await this.validateInput(DATATYPES.NUMBER, dividendOffer);
+        await this.validateInput(DATATYPES.NUMBER, swapLong);
+        await this.validateInput(DATATYPES.NUMBER, swapShort);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options);
     }
 
     public async withdraw( 
         security: string, 
         currency: string,
+        amount: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
         await this.validateInput(DATATYPES.ADDRESS, currency);
-        return this.callContract(FUNCTIONS.WITHDRAW, security, currency, options);
+        await this.validateInput(DATATYPES.NUMBER, amount);
+        return this.callContract(FUNCTIONS.WITHDRAW, security, currency, amount, options);
     }
 
 }

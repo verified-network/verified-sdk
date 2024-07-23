@@ -51,10 +51,10 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         return this.callContract(FUNCTIONS.SENDCOLLATERAL, currency, amount, security, options);
     }
-    async getCollateral(party, currency, options) {
+    async getCollateral(poolId, currency, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, party);
-        return this.callContract(FUNCTIONS.GETCOLLATERAL, party, currency, options);
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), currency, options);
     }
     async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, party);
@@ -76,20 +76,40 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.NUMBER, executionTime);
         return this.callContract(FUNCTIONS.ONTRADE, ref, cref, security, securityTraded, currency, currencyTraded, executionTime, options);
     }
-    async onSettle(security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options) {
-        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
-        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
-        await this.validateInput(index_1.DATATYPES.NUMBER, financingPerSec);
-        await this.validateInput(index_1.DATATYPES.BOOLEAN, charge);
-        await this.validateInput(index_1.DATATYPES.NUMBER, dividendPerSec);
-        await this.validateInput(index_1.DATATYPES.BOOLEAN, payout);
-        await this.validateInput(index_1.DATATYPES.NUMBER, settlementTime);
+    /*public async onSettle(
+        security: string,
+        currency: string,
+        financingPerSec:string,
+        charge: string,
+        dividendPerSec:string,
+        payout: string,
+        settlementTime:string,
+        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.ADDRESS, security);
+        await this.validateInput(DATATYPES.ADDRESS, currency);
+        await this.validateInput(DATATYPES.NUMBER, financingPerSec);
+        await this.validateInput(DATATYPES.BOOLEAN, charge);
+        await this.validateInput(DATATYPES.NUMBER, dividendPerSec);
+        await this.validateInput(DATATYPES.BOOLEAN, payout);
+        await this.validateInput(DATATYPES.NUMBER, settlementTime);
         return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingPerSec, charge, dividendPerSec, payout, settlementTime, options);
-    }
-    async withdraw(security, currency, options) {
+    }*/
+    async onSettle(security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, security);
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
-        return this.callContract(FUNCTIONS.WITHDRAW, security, currency, options);
+        await this.validateInput(index_1.DATATYPES.NUMBER, financingBid);
+        await this.validateInput(index_1.DATATYPES.NUMBER, financingOffer);
+        await this.validateInput(index_1.DATATYPES.NUMBER, dividendBid);
+        await this.validateInput(index_1.DATATYPES.NUMBER, dividendOffer);
+        await this.validateInput(index_1.DATATYPES.NUMBER, swapLong);
+        await this.validateInput(index_1.DATATYPES.NUMBER, swapShort);
+        return this.callContract(FUNCTIONS.ONSETTLE, security, currency, financingBid, financingOffer, dividendBid, dividendOffer, swapLong, swapShort, options);
+    }
+    async withdraw(security, currency, amount, options) {
+        await this.validateInput(index_1.DATATYPES.ADDRESS, security);
+        await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
+        await this.validateInput(index_1.DATATYPES.NUMBER, amount);
+        return this.callContract(FUNCTIONS.WITHDRAW, security, currency, amount, options);
     }
 }
 exports.default = MarginIssueManager;

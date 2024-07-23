@@ -19,7 +19,7 @@ export default class MarginIssueManager extends VerifiedContract {
         gasPrice: any;
         gasLimit: any;
     }): any;
-    getCollateral(party: string, currency: string, options?: {
+    getCollateral(poolId: string, currency: string, options?: {
         gasPrice: any;
         gasLimit: any;
     }): any;
@@ -31,11 +31,11 @@ export default class MarginIssueManager extends VerifiedContract {
         gasPrice: any;
         gasLimit: any;
     }): any;
-    onSettle(security: string, currency: string, financingPerSec: string, charge: string, dividendPerSec: string, payout: string, settlementTime: string, options?: {
+    onSettle(security: string, currency: string, financingBid: string, financingOffer: string, dividendBid: string, dividendOffer: string, swapLong: string, swapShort: string, options?: {
         gasPrice: any;
         gasLimit: any;
     }): any;
-    withdraw(security: string, currency: string, options?: {
+    withdraw(security: string, currency: string, amount: string, options?: {
         gasPrice: any;
         gasLimit: any;
     }): any;
