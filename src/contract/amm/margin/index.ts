@@ -14,7 +14,8 @@ enum FUNCTIONS {
     ONMATCH = 'onMatch',
     ONTRADE = 'onTrade',
     ONSETTLE = 'onSettle',
-    WITHDRAW = 'withdraw'
+    WITHDRAW = 'withdraw',
+    GETPOOL = 'getPool'
 }
 
 export default class MarginIssueManager extends VerifiedContract {
@@ -90,6 +91,13 @@ export default class MarginIssueManager extends VerifiedContract {
         await this.validateInput(DATATYPES.ADDRESS, currency);
         await this.validateInput(DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(DATATYPES.BYTE32, poolId), currency, options);
+    }
+
+    public async getPool( 
+        poolId: string, 
+        options?: { gasPrice, gasLimit }): any {
+        await this.validateInput(DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(DATATYPES.BYTE32, poolId), options);
     }
 
     public async onMatch( 

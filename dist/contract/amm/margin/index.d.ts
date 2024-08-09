@@ -23,6 +23,10 @@ export default class MarginIssueManager extends VerifiedContract {
         gasPrice: any;
         gasLimit: any;
     }): any;
+    getPool(poolId: string, options?: {
+        gasPrice: any;
+        gasLimit: any;
+    }): any;
     onMatch(party: string, counterparty: string, orderRef: string, security: string, securityTraded: string, currency: string, cashTraded: string, options?: {
         gasPrice: any;
         gasLimit: any;

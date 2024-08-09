@@ -15,6 +15,7 @@ var FUNCTIONS;
     FUNCTIONS["ONTRADE"] = "onTrade";
     FUNCTIONS["ONSETTLE"] = "onSettle";
     FUNCTIONS["WITHDRAW"] = "withdraw";
+    FUNCTIONS["GETPOOL"] = "getPool";
 })(FUNCTIONS || (FUNCTIONS = {}));
 class MarginIssueManager extends index_1.VerifiedContract {
     constructor(signer, contractNetworkAddress) {
@@ -55,6 +56,10 @@ class MarginIssueManager extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.ADDRESS, currency);
         await this.validateInput(index_1.DATATYPES.STRING, poolId);
         return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), currency, options);
+    }
+    async getPool(poolId, options) {
+        await this.validateInput(index_1.DATATYPES.STRING, poolId);
+        return this.callContract(FUNCTIONS.GETCOLLATERAL, this.sanitiseInput(index_1.DATATYPES.BYTE32, poolId), options);
     }
     async onMatch(party, counterparty, orderRef, security, securityTraded, currency, cashTraded, options) {
         await this.validateInput(index_1.DATATYPES.ADDRESS, party);
