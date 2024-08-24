@@ -23,6 +23,10 @@ export default class MarginIssueManager extends VerifiedContract {
         gasPrice: any;
         gasLimit: any;
     }): any;
+    getUserCollateral(party: string, currency: string, options?: {
+        gasPrice: any;
+        gasLimit: any;
+    }): any;
     getPool(poolId: string, options?: {
         gasPrice: any;
         gasLimit: any;
