@@ -306,16 +306,18 @@ class VerifiedContract {
             const account = await smartAccount.getAccountAddress();
             const signerAddress = await this.signer.getAddress();
             //sanitize arguments to use smartaccount address
-            const newArgs = args.map((_arg) => {
-                if (typeof _arg === "string" &&
-                    _arg.toLowerCase() === signerAddress.toLowerCase()) {
-                    _arg = account;
-                }
-                return _arg;
-            });
+            /*const newArgs = args.map((_arg: any) => {
+              if (
+                typeof _arg === "string" &&
+                _arg.toLowerCase() === signerAddress.toLowerCase()
+              ) {
+                _arg = account;
+              }
+              return _arg;
+            });*/
             //construct calldata for function
             let fn = this.contract.populateTransaction[functionName];
-            let _res = await fn(...newArgs);
+            let _res = await fn(...args);
             const tx1 = {
                 to: this.contract.address,
                 data: _res.data,
