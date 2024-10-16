@@ -260,7 +260,7 @@ const contractAddress = {
         'BalancerSecondaryIssueManager': '',
         'MarginTradingPoolFactory': '',
         'BalancerMarginIssueManager': '',
-        'Custody': '0x5640812D73f0D3d820832BFb53ed6fC4a9383283',
+        'Custody': '0xaE539F980dB256AbCCdfC1F30a0F39355B1E1FC8',
         'Compound': '0x146144772fF3fF3124beF9730a4c6F5D15efe931',
         'CASH': {
             'VCUSD': '0x1C751BA898D01789af51A9022b7A6f45836a5d6c',
@@ -329,7 +329,7 @@ const contractAddress = {
         'MarginTradingPoolFactory': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
         'BalancerMarginIssueManager': '0x5592FAE805138ea75c67363eD9609E6529d1Ed9A',
         'Custody': '0x7aE9f79067AB4FDc8d41B18f1e6491590ac76f9d',
-        'Compound': '0x569cb45EB0836b8595cC4269c4D1e91c8668D266',
+        'Compound': '0x8c364b06741C9fE045E0e510A39BCbAf7445D8fD',
         'CASH': {
             'VCUSD': '0xC824FCCfe6545c42B609cF6aD6219748A306D83a',
             'VCEUR': '',

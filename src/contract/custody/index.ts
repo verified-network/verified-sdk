@@ -73,12 +73,13 @@ export default class Custody extends VerifiedContract {
         return this.callContract(FUNCTIONS.REMOVEPARTICIPANT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), options)
     }
 
-    public async confirmParticipant(_creator: string, _id: string, _participant: string, _pin:string, options?: { gasPrice: number, gasLimit: number }): any {
+    public async confirmParticipant(_creator: string, _id: string, _participant: string, _pin:string, _confirmation:string, options?: { gasPrice: number, gasLimit: number }): any {
         await this.validateInput(DATATYPES.STRING, _creator)
         await this.validateInput(DATATYPES.STRING, _id)
         await this.validateInput(DATATYPES.STRING, _participant)
-        await this.validateInput(DATATYPES.NUMBER, _pin)
-        return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), _pin, options)
+        await this.validateInput(DATATYPES.STRING, _pin)
+        await this.validateInput(DATATYPES.BOOLEAN, _confirmation)
+        return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), _pin, _confirmation, options)
     }
 
     public async defineQuorum(_creator: string, _id: string, _minParticipants:string, options?: { gasPrice: number, gasLimit: number }): any {
@@ -99,7 +100,7 @@ export default class Custody extends VerifiedContract {
         await this.validateInput(DATATYPES.STRING, _id)
         await this.validateInput(DATATYPES.STRING, _participant)
         await this.validateInput(DATATYPES.STRING, _tx)
-        await this.validateInput(DATATYPES.NUMBER, _pin)
+        await this.validateInput(DATATYPES.STRING, _pin)
         return this.callContract(FUNCTIONS.SIGNTRANSACTION, this.sanitiseInput(DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(DATATYPES.BYTE32, _participant), _tx, _pin, options)
     }
 
