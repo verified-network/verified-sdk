@@ -260,7 +260,7 @@ const contractAddress = {
         'BalancerSecondaryIssueManager': '',
         'MarginTradingPoolFactory': '',
         'BalancerMarginIssueManager': '',
-        'Custody': '0x69C61a08b46fdd75D6f000CCf2b85618AC7011a5',
+        'Custody': '0xd942BF5772Ccd05B0a0a2a29D060bFA82FF4a031',
         'Compound': '0x146144772fF3fF3124beF9730a4c6F5D15efe931',
         'CASH': {
             'VCUSD': '0x1C751BA898D01789af51A9022b7A6f45836a5d6c',
