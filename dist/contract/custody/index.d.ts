@@ -24,7 +24,7 @@ export default class Custody extends VerifiedContract {
         gasPrice: number;
         gasLimit: number;
     }): any;
-    confirmParticipant(_creator: string, _id: string, _participant: string, _pin: string, options?: {
+    confirmParticipant(_creator: string, _id: string, _participant: string, _pin: string, _confirmation: string, options?: {
         gasPrice: number;
         gasLimit: number;
     }): any;

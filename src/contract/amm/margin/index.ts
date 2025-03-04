@@ -58,9 +58,11 @@ export default class MarginIssueManager extends VerifiedContract {
 
     public async close( 
         security: string, 
+        currency: string,
         options?: { gasPrice, gasLimit }): any {
         await this.validateInput(DATATYPES.ADDRESS, security);
-        return this.callContract(FUNCTIONS.CLOSE, security, options);
+        await this.validateInput(DATATYPES.ADDRESS, currency);
+        return this.callContract(FUNCTIONS.CLOSE, security, currency, options);
     }
 
     public async offerCollateral( 

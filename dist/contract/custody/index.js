@@ -60,12 +60,13 @@ class Custody extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
         return this.callContract(FUNCTIONS.REMOVEPARTICIPANT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), options);
     }
-    async confirmParticipant(_creator, _id, _participant, _pin, options) {
+    async confirmParticipant(_creator, _id, _participant, _pin, _confirmation, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _pin);
-        return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _pin, options);
+        await this.validateInput(index_1.DATATYPES.STRING, _pin);
+        await this.validateInput(index_1.DATATYPES.BOOLEAN, _confirmation);
+        return this.callContract(FUNCTIONS.CONFIRMPARTICIPANT, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _pin, _confirmation, options);
     }
     async defineQuorum(_creator, _id, _minParticipants, options) {
         await this.validateInput(index_1.DATATYPES.STRING, _creator);
@@ -83,7 +84,7 @@ class Custody extends index_1.VerifiedContract {
         await this.validateInput(index_1.DATATYPES.STRING, _id);
         await this.validateInput(index_1.DATATYPES.STRING, _participant);
         await this.validateInput(index_1.DATATYPES.STRING, _tx);
-        await this.validateInput(index_1.DATATYPES.NUMBER, _pin);
+        await this.validateInput(index_1.DATATYPES.STRING, _pin);
         return this.callContract(FUNCTIONS.SIGNTRANSACTION, this.sanitiseInput(index_1.DATATYPES.BYTE32, _creator), _id, this.sanitiseInput(index_1.DATATYPES.BYTE32, _participant), _tx, _pin, options);
     }
     async checkQuorum(_creator, _id, _participant, _txid, options) {
