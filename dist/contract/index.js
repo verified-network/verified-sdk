@@ -27,7 +27,7 @@ class VerifiedContract {
         this.contract = new ethers_1.ethers.Contract(address, this.abiInterface, signer);
     }
     async validateInput(type, data) {
-        let error = '';
+        let error = "";
         let status = true;
         switch (type) {
             case DATATYPES.ADDRESS:
@@ -38,7 +38,7 @@ class VerifiedContract {
                 break;
             case DATATYPES.NUMBER:
                 if (data !== Number(data))
-                    error = 'Invalid numerical value';
+                    error = "Invalid numerical value";
                 else
                     status = false;
                 break;
@@ -50,8 +50,10 @@ class VerifiedContract {
                     status = false;
                 break;
             case DATATYPES.STRING:
-                if ((typeof data === 'string' || data instanceof String || Object.prototype.toString.call(data) === '[object String]'))
-                    error = 'Invalid string value';
+                if (typeof data === "string" ||
+                    data instanceof String ||
+                    Object.prototype.toString.call(data) === "[object String]")
+                    error = "Invalid string value";
                 else
                     status = false;
                 break;
@@ -88,8 +90,10 @@ class VerifiedContract {
                      */
                     return ethers_1.utils.parseUnits(data);
                 case DATATYPES.BOOLEAN:
-                    const arr = [true, false, "true", "false", 'TRUE', 'FALSE'];
-                    return arr.indexOf(data) !== -1 ? true : new Error("Invalid Boolean value");
+                    const arr = [true, false, "true", "false", "TRUE", "FALSE"];
+                    return arr.indexOf(data) !== -1
+                        ? true
+                        : new Error("Invalid Boolean value");
                 default:
                     return data;
             }
@@ -137,8 +141,8 @@ class VerifiedContract {
         if (!functionFragment) {
             throw new Error(`Function ${functionName} not found in ABI`);
         }
-        return (functionFragment.stateMutability === 'view' ||
-            functionFragment.stateMutability === 'pure');
+        return (functionFragment.stateMutability === "view" ||
+            functionFragment.stateMutability === "pure");
     }
     /**
      * Parses output to standard response
@@ -146,10 +150,13 @@ class VerifiedContract {
      * @returns
      */
     tempOutput(data) {
-        const response = { hash: '', result: [] };
+        const response = {
+            hash: "",
+            result: [],
+        };
         data.forEach(async (element) => {
             if (element.hash !== undefined || element.transactionHash) {
-                return response.hash = element.hash || element.transactionHash;
+                return (response.hash = element.hash || element.transactionHash);
             }
             else if (element._isBigNumber) {
                 return response.result.push(element.toString());
@@ -161,7 +168,7 @@ class VerifiedContract {
             else if (ethers_1.utils.isBytesLike(element)) {
                 return response.result.push(element);
             }
-            else if (typeof element === 'boolean') {
+            else if (typeof element === "boolean") {
                 return response.result.push(element);
             }
             else {
@@ -180,7 +187,9 @@ class VerifiedContract {
     /** Checks if a contract support gasless transaction */
     supportsGasless(chainId) {
         let isSupported = false;
-        if (constants_1.PaymasterConstants[`${chainId}`] && constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
+        if (constants_1.PaymasterConstants[`${chainId}`] &&
+            constants_1.PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] &&
+            constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
             isSupported = true;
         return isSupported;
     }
@@ -195,6 +204,31 @@ class VerifiedContract {
         });
         // console.log("smart account address", await smartAccount.getAccountAddress());
         return smartAccount;
+    }
+    async fetchUserOpReceipt(userOpHash) {
+        var _a;
+        try {
+            const chainId = await this.signer.getChainId();
+            const requestData = {
+                jsonrpc: "2.0",
+                method: "eth_getUserOperationReceipt",
+                id: Date.now(),
+                params: [userOpHash],
+            };
+            const response = await fetch(`${constants_1.PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${constants_1.PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(requestData),
+            });
+            const data = await response.json();
+            return (_a = data === null || data === void 0 ? void 0 : data.result) === null || _a === void 0 ? void 0 : _a.receipt;
+        }
+        catch (err) {
+            console.error("Error trying to fetch gassless receipt", (err === null || err === void 0 ? void 0 : err.message) || err);
+            return { failed: true };
+        }
     }
     /** Constructs and call function with ethers.js */
     async callFunctionWithEthers(functionName, ...args) {
@@ -231,6 +265,7 @@ class VerifiedContract {
     }
     /** Constructs and call function as userop for biconomy gassless(sponsored/erc20 mode) */
     async callFunctionAsUserOp(smartAccount, tx, functionName, paymentToken, ...args) {
+        var _a, _b, _c;
         //send userops transaction and construct transaction response
         let res = {};
         try {
@@ -240,11 +275,13 @@ class VerifiedContract {
             const { transactionHash } = await userOpResponse.waitForTxHash();
             console.log("Gassless Transaction Hash", transactionHash);
             const userOpReceipt = await userOpResponse.wait();
-            if (userOpReceipt.success == 'true') {
+            if (userOpReceipt.success == "true") {
                 res.status = STATUS.SUCCESS;
                 res.response = {
-                    hash: transactionHash,
-                    result: userOpReceipt.receipt.result || userOpReceipt.receipt.response || userOpReceipt.receipt,
+                    hash: (userOpReceipt === null || userOpReceipt === void 0 ? void 0 : userOpReceipt.transactionHash) || transactionHash,
+                    result: userOpReceipt.receipt.result ||
+                        userOpReceipt.receipt.response ||
+                        userOpReceipt.receipt,
                 }; //TODO: update result on response
                 res.message = "";
                 return res;
@@ -252,17 +289,19 @@ class VerifiedContract {
             else {
                 console.log("Gassless failed will try ERC20...");
                 const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
-                    paymasterServiceData: { mode: "ERC20", preferredToken: paymentToken, },
+                    paymasterServiceData: { mode: "ERC20", preferredToken: paymentToken },
                 });
                 const { ERC20transactionHash } = await ERC20userOpResponse.waitForTxHash();
                 console.log("ERC20 Transaction Hash", ERC20transactionHash);
                 const userOpReceipt = await ERC20userOpResponse.wait();
-                if (userOpReceipt.success == 'true') {
+                if (userOpReceipt.success == "true") {
                     res.status = STATUS.SUCCESS;
                     res.response = {
-                        hash: ERC20transactionHash,
-                        result: ERC20userOpResponse.receipt.result || ERC20userOpResponse.receipt.response || ERC20userOpResponse.receipt,
-                    }; //TODO: update result on response 
+                        hash: (userOpReceipt === null || userOpReceipt === void 0 ? void 0 : userOpReceipt.transactionHash) || ERC20transactionHash,
+                        result: ERC20userOpResponse.receipt.result ||
+                            ERC20userOpResponse.receipt.response ||
+                            ERC20userOpResponse.receipt,
+                    }; //TODO: update result on response
                     res.message = "";
                     return res;
                 }
@@ -274,13 +313,47 @@ class VerifiedContract {
             }
         }
         catch (err) {
-            console.error("gasless transaction failed with error: ", err);
-            console.log("will use ethers....");
-            // res.status = STATUS.ERROR;
-            // res.reason = err.reason;
-            // res.message = err.message;
-            // res.code = err.code;
-            return await this.callFunctionWithEthers(functionName, ...args);
+            if ((_a = err === null || err === void 0 ? void 0 : err.message) === null || _a === void 0 ? void 0 : _a.includes("Try getting the receipt manually using eth_getUserOperationReceipt rpc method on bundler")) {
+                //extract hash from message due to difference in hash???
+                const messageArray = (_b = err === null || err === void 0 ? void 0 : err.message) === null || _b === void 0 ? void 0 : _b.split(" ");
+                const txHash = (_c = messageArray === null || messageArray === void 0 ? void 0 : messageArray.find((msg) => msg === null || msg === void 0 ? void 0 : msg.startsWith("0x"))) === null || _c === void 0 ? void 0 : _c.replace(".", "");
+                //wait up to max round to fetch receipt ???
+                if (txHash) {
+                    for (let i = 0; i < Number(constants_1.PaymasterConstants.MAX_WAITING_ROUND); i++) {
+                        await new Promise((resolve) => {
+                            setTimeout(resolve, 6000); //1 minute delay per round
+                        });
+                        console.log("Gassless timeout exceeded, fetching receipt for round: ", i + 1, "out of ", Number(constants_1.PaymasterConstants.MAX_WAITING_ROUND));
+                        return await this.fetchUserOpReceipt(txHash).then(async (_res) => {
+                            if (_res && !(_res === null || _res === void 0 ? void 0 : _res.failed)) {
+                                //if receipt received stop and configure return
+                                res.status = STATUS.SUCCESS;
+                                res.response = {
+                                    hash: (_res === null || _res === void 0 ? void 0 : _res.transactionHash) || txHash,
+                                    result: _res,
+                                }; //TODO: update result on response
+                                res.message = "";
+                                return res;
+                            }
+                            else if (_res && (_res === null || _res === void 0 ? void 0 : _res.failed)) {
+                                //if receipt failed stop and use ethers
+                                console.log("will use ethers....");
+                                return await this.callFunctionWithEthers(functionName, ...args);
+                            }
+                        });
+                    }
+                }
+                else {
+                    console.error("gasless transaction failed with error: ", "No TX-hash from error message.");
+                    console.log("will use ethers....");
+                    return await this.callFunctionWithEthers(functionName, ...args);
+                }
+            }
+            else {
+                console.error("gasless transaction failed with error: ", err);
+                console.log("will use ethers....");
+                return await this.callFunctionWithEthers(functionName, ...args);
+            }
         }
     }
     async callContract(functionName, ...args) {
@@ -337,7 +410,7 @@ class VerifiedContract {
             const dataToBeFormatted = data.splice(0, data.length - 1);
             res.response = this.tempOutput(ethers_1.utils.deepCopy(dataToBeFormatted));
             res.status = STATUS.SUCCESS;
-            res.message = '';
+            res.message = "";
             callback(res);
         });
     }

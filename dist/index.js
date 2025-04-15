@@ -1,10 +1,10 @@
 "use strict";
-// SPDX-License-Identifier: BUSL-1.1
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.contractAddress = exports.utils = exports.Compound = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.ERC20 = exports.Provider = exports.VerifiedWallet = void 0;
+exports.PaymasterConstants = exports.contractAddress = exports.utils = exports.Compound = exports.Client = exports.Distribution = exports.SecuritiesFactory = exports.Security = exports.MarginIssueManager = exports.SecondaryIssueManager = exports.PrimaryIssueManager = exports.Rates = exports.Liquidity = exports.Custody = exports.Pool = exports.Token = exports.Factory = exports.Cash = exports.Bond = exports.ERC20 = exports.Provider = exports.VerifiedWallet = void 0;
+// SPDX-License-Identifier: BUSL-1.1
 const wallet_1 = require("./wallet");
 Object.defineProperty(exports, "VerifiedWallet", { enumerable: true, get: function () { return wallet_1.VerifiedWallet; } });
 const utils_1 = require("./utils");
@@ -47,3 +47,5 @@ const ethers_1 = require("ethers");
 Object.defineProperty(exports, "utils", { enumerable: true, get: function () { return ethers_1.utils; } });
 const contractAddress_1 = __importDefault(require("./contractAddress"));
 exports.contractAddress = contractAddress_1.default;
+const constants_1 = require("./utils/constants");
+Object.defineProperty(exports, "PaymasterConstants", { enumerable: true, get: function () { return constants_1.PaymasterConstants; } });
