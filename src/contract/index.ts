@@ -1,188 +1,205 @@
 // SPDX-License-Identifier: BUSL-1.1
 
-"use strict"
-import { ethers, utils, ContractInterface, Signer } from "ethers";
+"use strict";
+import { ethers, utils, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 import { createSmartAccountClient } from "@biconomy/account";
 import { PaymasterConstants } from "../utils/constants";
 
 enum STATUS {
-    SUCCESS,
-    ERROR
+  SUCCESS,
+  ERROR,
 }
 interface SCResponse {
-    response: object;
-    status: STATUS;
-    message: string;
-    reason: string;
-    code: number
+  response: object;
+  status: STATUS;
+  message: string;
+  reason: string;
+  code: number;
 }
 
 export enum DATATYPES {
-    NUMBER = 'number',
-    STRING = 'string',
-    ADDRESS = 'address',
-    BOOLEAN = 'boolean',
-    BYTE32 = 'byte32',
-    BYTE16 = 'byte16',
-    BIGNUMBER = 'bignumber'
+  NUMBER = "number",
+  STRING = "string",
+  ADDRESS = "address",
+  BOOLEAN = "boolean",
+  BYTE32 = "byte32",
+  BYTE16 = "byte16",
+  BIGNUMBER = "bignumber",
 }
 export class VerifiedContract {
+  private signer: VerifiedWallet | Signer;
+  private contract: ethers.Contract;
+  private abiInterface: utils.Interface;
 
-    private signer: VerifiedWallet | Signer;
-    private contract: ethers.Contract;
-    private abiInterface: utils.Interface;
+  constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
+    this.signer = signer;
+    this.abiInterface = new utils.Interface(abi);
+    this.contract = new ethers.Contract(address, this.abiInterface, signer);
+  }
 
-    constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
-        this.signer = signer;
-        this.abiInterface = new utils.Interface(abi)
-        this.contract = new ethers.Contract(address, this.abiInterface, signer);
+  protected async validateInput(type: DATATYPES, data: any) {
+    let error: string = "";
+    let status: boolean = true;
+
+    switch (type) {
+      case DATATYPES.ADDRESS:
+        if (utils.isAddress(data)) error = "Invalid address value";
+        else status = false;
+        break;
+      case DATATYPES.NUMBER:
+        if (data !== Number(data)) error = "Invalid numerical value";
+        else status = false;
+        break;
+      case DATATYPES.BOOLEAN:
+        // const arr = [true, false, "true", "false"]
+        if (typeof data === "boolean") error = "Invalid boolean value";
+        else status = false;
+        break;
+      case DATATYPES.STRING:
+        if (
+          typeof data === "string" ||
+          data instanceof String ||
+          Object.prototype.toString.call(data) === "[object String]"
+        )
+          error = "Invalid string value";
+        else status = false;
+        break;
     }
+    if (!status) throw TypeError(error);
+    return status;
+  }
 
-    protected async validateInput(type: DATATYPES, data: any) {
-        let error: string = '';
-        let status: boolean = true;
-
-        switch (type) {
-            case DATATYPES.ADDRESS:
-                if (utils.isAddress(data)) error = "Invalid address value"
-                else status = false
-                break;
-            case DATATYPES.NUMBER:
-                if (data !== Number(data)) error = 'Invalid numerical value'
-                else status = false
-                break;
-            case DATATYPES.BOOLEAN:
-                // const arr = [true, false, "true", "false"]
-                if (typeof data === "boolean") error = "Invalid boolean value"
-                else status = false
-                break;
-            case DATATYPES.STRING:
-                if ((typeof data === 'string' || data instanceof String || Object.prototype.toString.call(data) === '[object String]')) error = 'Invalid string value'
-                else status = false
-                break;
-        }
-        if (!status) throw TypeError(error);
-        return status
-    }
-
-
-    protected sanitiseInput(type: DATATYPES, data: any) {
-        try {
-            switch (type) {
-                case DATATYPES.BYTE32:
-                    /**
-                     * Returns a bytes32 string representation of text. 
-                     * If the length of text exceeds 31 bytes, it will throw an error.
-                     * @params (text)
-                     * @returns ⇒ string
-                     */
-                    return utils.formatBytes32String(data)
-                case DATATYPES.BYTE16:
-                    /**
-                     * Returns a bytes16 string representation of text. 
-                     * If the length of text exceeds 31 bytes, it will throw an error.
-                     * @params (text)
-                     * @returns ⇒ string
-                     */
-                    return utils.formatBytes32String(data).slice(16)
-                case DATATYPES.NUMBER:
-                    /**
-                     * Returns a BigNumber representation of value, parsed with unit digits 
-                     * (if it is a number) or from the unit specified (if a string).
-                     * @param ( value [ , unit = "ether" ] ) 
-                     * @returns ⇒ BigNumber
-                     */
-                    return utils.parseUnits(data)
-                case DATATYPES.BOOLEAN:
-                    const arr = [true, false, "true", "false", 'TRUE', 'FALSE']
-                    return arr.indexOf(data) !== -1 ? true : new Error("Invalid Boolean value");
-                default:
-                    return data
-            }
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    protected sanitiseOutput(type: DATATYPES, data: any) {
-        switch (type) {
-            case DATATYPES.BYTE32:
-                const len = data.length
-                let finalData = data
-                if (len == 34) finalData = `${data}00000000000000000000000000000000`
-                /**
-                 * Returns the decoded string represented by the Bytes32 encoded data.
-                 * @params (aBytesLike)
-                 * @returns  string
-                 */
-                return utils.parseBytes32String(finalData)
-            case DATATYPES.NUMBER:
-                /**
-                 * Returns a string representation of value formatted with unit 
-                 * digits (if it is a number) or to the unit specified (if a string).
-                 * @params ( value [ , unit = "ether" ] )
-                 * @returns ⇒ string
-                 */
-                return utils.formatUnits(data)
-
-            case DATATYPES.BIGNUMBER:
-
-                return data.toString()
-            case DATATYPES.STRING:
-                return utils.toUtf8String(data)
-
-            default:
-                return data
-        }
-    }
-
-    /**
-     * gets a function state mutability to differenciate between read and write functions
-     * @param functionName 
-     * @returns true or false
-     */
-    private isReadFunction(functionName: string): boolean {
-      const functionFragment = this.abiInterface.getFunction(functionName);
-      if (!functionFragment) {
-          throw new Error(`Function ${functionName} not found in ABI`);
+  protected sanitiseInput(type: DATATYPES, data: any) {
+    try {
+      switch (type) {
+        case DATATYPES.BYTE32:
+          /**
+           * Returns a bytes32 string representation of text.
+           * If the length of text exceeds 31 bytes, it will throw an error.
+           * @params (text)
+           * @returns ⇒ string
+           */
+          return utils.formatBytes32String(data);
+        case DATATYPES.BYTE16:
+          /**
+           * Returns a bytes16 string representation of text.
+           * If the length of text exceeds 31 bytes, it will throw an error.
+           * @params (text)
+           * @returns ⇒ string
+           */
+          return utils.formatBytes32String(data).slice(16);
+        case DATATYPES.NUMBER:
+          /**
+           * Returns a BigNumber representation of value, parsed with unit digits
+           * (if it is a number) or from the unit specified (if a string).
+           * @param ( value [ , unit = "ether" ] )
+           * @returns ⇒ BigNumber
+           */
+          return utils.parseUnits(data);
+        case DATATYPES.BOOLEAN:
+          const arr = [true, false, "true", "false", "TRUE", "FALSE"];
+          return arr.indexOf(data) !== -1
+            ? true
+            : new Error("Invalid Boolean value");
+        default:
+          return data;
       }
-      return (
-          functionFragment.stateMutability === 'view' ||
-          functionFragment.stateMutability === 'pure'
-      );
+    } catch (error) {
+      console.error(error);
     }
+  }
 
-    /**
-     * Parses output to standard response
-     * @param data 
-     * @returns 
-     */
-    private tempOutput(data: any): object {
-        const response: { hash: string, result: Array<any> } = { hash: '', result: [] }
-        data.forEach(async (element: any) => {
-            if (element.hash !== undefined || element.transactionHash) {return response.hash = element.hash || element.transactionHash}
-            else if (element._isBigNumber) {return response.result.push(element.toString())}
-            else if (utils.isAddress(element)) {return response.result.push(element)}
-            //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
-            else if (utils.isBytesLike(element)) {return response.result.push(element)}
-            else if (typeof element === 'boolean') {return response.result.push(element)}
-            else{
-              return response.result.push(element)
-            }
-        }); 
-        return response
-    }
-    /** Converts any datatype to array */
-    private convertToArray(data: any) {
-        if (Array.isArray(data)) return data
-        else return [data]
-    }
+  protected sanitiseOutput(type: DATATYPES, data: any) {
+    switch (type) {
+      case DATATYPES.BYTE32:
+        const len = data.length;
+        let finalData = data;
+        if (len == 34) finalData = `${data}00000000000000000000000000000000`;
+        /**
+         * Returns the decoded string represented by the Bytes32 encoded data.
+         * @params (aBytesLike)
+         * @returns  string
+         */
+        return utils.parseBytes32String(finalData);
+      case DATATYPES.NUMBER:
+        /**
+         * Returns a string representation of value formatted with unit
+         * digits (if it is a number) or to the unit specified (if a string).
+         * @params ( value [ , unit = "ether" ] )
+         * @returns ⇒ string
+         */
+        return utils.formatUnits(data);
 
-    /** Checks if a contract support gasless transaction */
+      case DATATYPES.BIGNUMBER:
+        return data.toString();
+      case DATATYPES.STRING:
+        return utils.toUtf8String(data);
+
+      default:
+        return data;
+    }
+  }
+
+  /**
+   * gets a function state mutability to differenciate between read and write functions
+   * @param functionName
+   * @returns true or false
+   */
+  private isReadFunction(functionName: string): boolean {
+    const functionFragment = this.abiInterface.getFunction(functionName);
+    if (!functionFragment) {
+      throw new Error(`Function ${functionName} not found in ABI`);
+    }
+    return (
+      functionFragment.stateMutability === "view" ||
+      functionFragment.stateMutability === "pure"
+    );
+  }
+
+  /**
+   * Parses output to standard response
+   * @param data
+   * @returns
+   */
+  private tempOutput(data: any): object {
+    const response: { hash: string; result: Array<any> } = {
+      hash: "",
+      result: [],
+    };
+    data.forEach(async (element: any) => {
+      if (element.hash !== undefined || element.transactionHash) {
+        return (response.hash = element.hash || element.transactionHash);
+      } else if (element._isBigNumber) {
+        return response.result.push(element.toString());
+      } else if (utils.isAddress(element)) {
+        return response.result.push(element);
+      }
+      //if (utils.isBytesLike(element)) return response.result.push(this.sanitiseOutput(DATATYPES.BYTE32, element))
+      else if (utils.isBytesLike(element)) {
+        return response.result.push(element);
+      } else if (typeof element === "boolean") {
+        return response.result.push(element);
+      } else {
+        return response.result.push(element);
+      }
+    });
+    return response;
+  }
+  /** Converts any datatype to array */
+  private convertToArray(data: any) {
+    if (Array.isArray(data)) return data;
+    else return [data];
+  }
+
+  /** Checks if a contract support gasless transaction */
   supportsGasless(chainId: number) {
     let isSupported = false;
-    if (PaymasterConstants[`${chainId}`] &&  PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] && PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"])
+    if (
+      PaymasterConstants[`${chainId}`] &&
+      PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] &&
+      PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
+    )
       isSupported = true;
     return isSupported;
   }
@@ -190,17 +207,52 @@ export class VerifiedContract {
   /** Creates Biconomy smart account */
   async createSmartAccount(chainId: number) {
     // Create Biconomy Smart Account instance
-    const signer   = this.signer;
+    const signer = this.signer;
     const smartAccount = await createSmartAccountClient({
       signer,
-      biconomyPaymasterApiKey: PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"],
-      bundlerUrl: `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]}`,
+      biconomyPaymasterApiKey:
+        PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"],
+      bundlerUrl: `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${
+        PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
+      }`,
     });
     // console.log("smart account address", await smartAccount.getAccountAddress());
     return smartAccount;
   }
 
-  
+  async fetchUserOpReceipt(userOpHash: string) {
+    try {
+      const chainId = await this.signer.getChainId();
+      const requestData = {
+        jsonrpc: "2.0",
+        method: "eth_getUserOperationReceipt",
+        id: Date.now(),
+        params: [userOpHash],
+      };
+      const response = await fetch(
+        `${PaymasterConstants.BUNDLER_URL_FIRST_SECTION}/${chainId}/${
+          PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
+        }`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestData),
+        }
+      );
+      const data = await response.json();
+
+      return data?.result?.receipt;
+    } catch (err: any) {
+      console.error(
+        "Error trying to fetch gassless receipt",
+        err?.message || err
+      );
+      return { failed: true };
+    }
+  }
+
   /** Constructs and call function with ethers.js */
   async callFunctionWithEthers(functionName: string, ...args: any) {
     let res = <SCResponse>{};
@@ -235,54 +287,124 @@ export class VerifiedContract {
   }
 
   /** Constructs and call function as userop for biconomy gassless(sponsored/erc20 mode) */
-  async callFunctionAsUserOp(smartAccount: any, tx: any, functionName: string,  paymentToken: string, ...args: any ) {
+  async callFunctionAsUserOp(
+    smartAccount: any,
+    tx: any,
+    functionName: string,
+    paymentToken: string,
+    ...args: any
+  ) {
     //send userops transaction and construct transaction response
     let res = <SCResponse>{};
     try {
       const userOpResponse = await smartAccount.sendTransaction(tx, {
-        paymasterServiceData: {mode: "SPONSORED"},
+        paymasterServiceData: { mode: "SPONSORED" },
       });
       const { transactionHash } = await userOpResponse.waitForTxHash();
       console.log("Gassless Transaction Hash", transactionHash);
-      const userOpReceipt  = await userOpResponse.wait();
-      if(userOpReceipt.success == 'true') { 
+      const userOpReceipt = await userOpResponse.wait();
+      if (userOpReceipt.success == "true") {
         res.status = STATUS.SUCCESS;
         res.response = {
-          hash: transactionHash,
-          result: userOpReceipt.receipt.result || userOpReceipt.receipt.response  || userOpReceipt.receipt,
+          hash: userOpReceipt?.transactionHash || transactionHash,
+          result:
+            userOpReceipt.receipt.result ||
+            userOpReceipt.receipt.response ||
+            userOpReceipt.receipt,
         }; //TODO: update result on response
         res.message = "";
         return res;
-      }else{
-          console.log("Gassless failed will try ERC20...")
-          const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
-            paymasterServiceData: {mode: "ERC20", preferredToken: paymentToken,},
-          });
-          const { ERC20transactionHash } = await ERC20userOpResponse.waitForTxHash();
-          console.log("ERC20 Transaction Hash", ERC20transactionHash);
-          const userOpReceipt  = await ERC20userOpResponse.wait();
-          if(userOpReceipt.success == 'true') { 
-            res.status = STATUS.SUCCESS;
-            res.response = {
-              hash: ERC20transactionHash,
-              result: ERC20userOpResponse.receipt.result || ERC20userOpResponse.receipt.response  || ERC20userOpResponse.receipt,
-            }; //TODO: update result on response 
-            res.message = "";
-            return res;
-          }else{
-            console.error("ERC20 failed");
-            console.log("will use ethers....")
-            return await this.callFunctionWithEthers(functionName, ...args)
-          }
+      } else {
+        console.log("Gassless failed will try ERC20...");
+        const ERC20userOpResponse = await smartAccount.sendTransaction(tx, {
+          paymasterServiceData: { mode: "ERC20", preferredToken: paymentToken },
+        });
+        const { ERC20transactionHash } =
+          await ERC20userOpResponse.waitForTxHash();
+        console.log("ERC20 Transaction Hash", ERC20transactionHash);
+        const userOpReceipt = await ERC20userOpResponse.wait();
+        if (userOpReceipt.success == "true") {
+          res.status = STATUS.SUCCESS;
+          res.response = {
+            hash: userOpReceipt?.transactionHash || ERC20transactionHash,
+            result:
+              ERC20userOpResponse.receipt.result ||
+              ERC20userOpResponse.receipt.response ||
+              ERC20userOpResponse.receipt,
+          }; //TODO: update result on response
+          res.message = "";
+          return res;
+        } else {
+          console.error("ERC20 failed");
+          console.log("will use ethers....");
+          return await this.callFunctionWithEthers(functionName, ...args);
+        }
       }
     } catch (err: any) {
-      console.error("gasless transaction failed with error: ", err);
-      console.log("will use ethers....")
-      // res.status = STATUS.ERROR;
-      // res.reason = err.reason;
-      // res.message = err.message;
-      // res.code = err.code;
-      return await this.callFunctionWithEthers(functionName, ...args)
+      if (
+        err?.message?.includes(
+          "Try getting the receipt manually using eth_getUserOperationReceipt rpc method on bundler"
+        )
+      ) {
+        //extract hash from message due to difference in hash???
+        const messageArray = err?.message?.split(" ");
+        const txHash = messageArray
+          ?.find((msg: string) => msg?.startsWith("0x"))
+          ?.replace(".", "");
+        //wait up to max round to fetch receipt ???
+        if (txHash) {
+          for (
+            let i = 0;
+            i < Number(PaymasterConstants.MAX_WAITING_ROUND);
+            i++
+          ) {
+            await new Promise((resolve) => {
+              setTimeout(resolve, 6000); //1 minute delay per round
+            });
+            console.log(
+              "Gassless timeout exceeded, fetching receipt for round: ",
+              i + 1,
+              "out of ",
+              Number(PaymasterConstants.MAX_WAITING_ROUND)
+            );
+            return await this.fetchUserOpReceipt(txHash).then(async (_res) => {
+              if (_res && !_res?.failed && _res?.status == "0x1") {
+                //if receipt received stop and configure return
+                res.status = STATUS.SUCCESS;
+                res.response = {
+                  hash: _res?.transactionHash || txHash,
+                  result: _res,
+                }; //TODO: update result on response
+                res.message = "";
+                return res;
+              } else if (_res && !_res?.failed && _res?.status != "0x1") {
+                //if transaction failed
+                console.error(
+                  "gasless transaction failed with error: ",
+                  "False receipt status"
+                );
+                console.log("will use ethers....");
+                return await this.callFunctionWithEthers(functionName, ...args);
+              } else if (_res && _res?.failed) {
+                //if receipt failed stop and use ethers
+                console.log("will use ethers....");
+                return await this.callFunctionWithEthers(functionName, ...args);
+              }
+            });
+          }
+        } else {
+          console.error(
+            "gasless transaction failed with error: ",
+            "No TX-hash from error message."
+          );
+          console.log("will use ethers....");
+          return await this.callFunctionWithEthers(functionName, ...args);
+        }
+      } else {
+        console.error("gasless transaction failed with error: ", err);
+        console.log("will use ethers....");
+        return await this.callFunctionWithEthers(functionName, ...args);
+      }
     }
   }
 
@@ -323,8 +445,15 @@ export class VerifiedContract {
         to: this.contract.address,
         data: _res.data,
       };
-      const paymentToken = PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] || "";
-      return await this.callFunctionAsUserOp(smartAccount, tx1, functionName, paymentToken, ...args)
+      const paymentToken =
+        PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] || "";
+      return await this.callFunctionAsUserOp(
+        smartAccount,
+        tx1,
+        functionName,
+        paymentToken,
+        ...args
+      );
     } else {
       //call contract through normal ether.js
       console.log("gassless not supported will use ethers");
@@ -332,14 +461,14 @@ export class VerifiedContract {
     }
   }
 
-    protected getEvent(eventName: string, callback: any) {
-        let res = <SCResponse>{};
-        this.contract.once(eventName, (...data) => {
-            const dataToBeFormatted = data.splice(0, data.length - 1)
-            res.response = this.tempOutput(utils.deepCopy(dataToBeFormatted))
-            res.status = STATUS.SUCCESS;
-            res.message = '';
-            callback(res)
-        })
-    }
+  protected getEvent(eventName: string, callback: any) {
+    let res = <SCResponse>{};
+    this.contract.once(eventName, (...data: any) => {
+      const dataToBeFormatted = data.splice(0, data.length - 1);
+      res.response = this.tempOutput(utils.deepCopy(dataToBeFormatted));
+      res.status = STATUS.SUCCESS;
+      res.message = "";
+      callback(res);
+    });
+  }
 }
