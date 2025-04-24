@@ -353,45 +353,76 @@ export class VerifiedContract {
           ?.replace(".", "");
         //wait up to max round to fetch receipt ???
         if (txHash) {
+          // for (
+          //   let i = 0;
+          //   i < Number(PaymasterConstants.MAX_WAITING_ROUND);
+          //   i++
+          // ) {
+          //   await new Promise((resolve) => {
+          //     setTimeout(resolve, 6000); //1 minute delay per round
+          //   });
+          //   console.log(
+          //     "Gassless timeout exceeded, fetching receipt for round: ",
+          //     i + 1,
+          //     "out of ",
+          //     Number(PaymasterConstants.MAX_WAITING_ROUND)
+          //   );
+          //   return await this.fetchUserOpReceipt(txHash).then(async (_res) => {
+          //     if (_res && !_res?.failed) {
+          //       //if receipt received stop and configure return
+          //       res.status = STATUS.SUCCESS;
+          //       res.response = {
+          //         hash: _res?.transactionHash || txHash,
+          //         result: _res,
+          //       }; //TODO: update result on response
+          //       res.message = "";
+          //       return res;
+          //     } else if (_res && _res?.failed) {
+          //       //if receipt failed stop and use ethers
+          //       console.log("will use ethers....");
+          //       return await this.callFunctionWithEthers(functionName, ...args);
+          //     }
+          //   });
+          // }
           for (
             let i = 0;
             i < Number(PaymasterConstants.MAX_WAITING_ROUND);
             i++
           ) {
-            await new Promise((resolve) => {
-              setTimeout(resolve, 6000); //1 minute delay per round
-            });
+            await new Promise((resolve) => setTimeout(resolve, 6000)); // 6 second delay
+
             console.log(
-              "Gassless timeout exceeded, fetching receipt for round: ",
+              "Gassless timeout exceeded, fetching receipt for round:",
               i + 1,
-              "out of ",
+              "out of",
               Number(PaymasterConstants.MAX_WAITING_ROUND)
             );
-            return await this.fetchUserOpReceipt(txHash).then(async (_res) => {
-              if (_res && !_res?.failed && _res?.status == "0x1") {
-                //if receipt received stop and configure return
-                res.status = STATUS.SUCCESS;
-                res.response = {
-                  hash: _res?.transactionHash || txHash,
-                  result: _res,
-                }; //TODO: update result on response
-                res.message = "";
-                return res;
-              } else if (_res && !_res?.failed && _res?.status != "0x1") {
-                //if transaction failed
-                console.error(
-                  "gasless transaction failed with error: ",
-                  "False receipt status"
-                );
-                console.log("will use ethers....");
-                return await this.callFunctionWithEthers(functionName, ...args);
-              } else if (_res && _res?.failed) {
-                //if receipt failed stop and use ethers
-                console.log("will use ethers....");
-                return await this.callFunctionWithEthers(functionName, ...args);
-              }
-            });
+
+            const _res = await this.fetchUserOpReceipt(txHash);
+
+            if (_res && !_res?.failed && _res?.status === "0x1") {
+              res.status = STATUS.SUCCESS;
+              res.response = {
+                hash: _res?.transactionHash || txHash,
+                result: _res,
+              };
+              res.message = "";
+              break; // Exit the loop
+            } else if (_res && !_res?.failed && _res?.status !== "0x1") {
+              res.status = STATUS.ERROR;
+              res.response = {
+                hash: _res?.transactionHash || txHash,
+                result: _res,
+              };
+              res.message = _res?.reason || _res?.message || "";
+              break; // Exit the loop
+            } else if (_res && _res?.failed) {
+              console.log("will use ethers....");
+              return await this.callFunctionWithEthers(functionName, ...args);
+            }
           }
+
+          return res;
         } else {
           console.error(
             "gasless transaction failed with error: ",
