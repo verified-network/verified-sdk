@@ -125,7 +125,7 @@ It has the logic to validate the Input, Sanitise the Input and Output, call the 
 All the contracts trigger smart contract calls and go through the callContract function.
 
 Optionally, all the contractCalls take in an additional parameter:
-`options?: { gasPrice: number, gasLimit: number }`
+`options?: { gasPrice?: number, gasLimit?: number, paymentToken?: string }`
 You can configure the gasPrice and gasLimit using this parameter as the last parameter to the contractCall function.
 Example: `this.callContract(FUNCTIONS.GETORDERS, originator, options)`
 Where, options = {gasPrice: XXX, gasLimit: YYY}

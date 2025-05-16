@@ -5,6 +5,19 @@ import { ethers, utils, Signer } from "ethers";
 import { VerifiedWallet } from "../wallet";
 import { createSmartAccountClient } from "@biconomy/account";
 import { PaymasterConstants } from "../utils/constants";
+import {
+  createMeeClient,
+  toMultichainNexusAccount,
+} from "@biconomy/abstractjs";
+import {
+  baseSepolia,
+  mainnet,
+  sepolia,
+  gnosis,
+  base,
+  polygon,
+} from "viem/chains";
+import { http } from "viem";
 
 enum STATUS {
   SUCCESS,
@@ -27,6 +40,13 @@ export enum DATATYPES {
   BYTE16 = "byte16",
   BIGNUMBER = "bignumber",
 }
+
+export type Options = {
+  gasPrice?: number;
+  gasLimit?: number;
+  paymentToken?: string;
+};
+
 export class VerifiedContract {
   private signer: VerifiedWallet | Signer;
   private contract: ethers.Contract;
@@ -432,10 +452,100 @@ export class VerifiedContract {
           return await this.callFunctionWithEthers(functionName, ...args);
         }
       } else {
-        console.error("gasless transaction failed with error: ", err);
+        console.error(
+          "gasless transaction failed with error: ",
+          err?.message || err
+        );
         console.log("will use ethers....");
         return await this.callFunctionWithEthers(functionName, ...args);
       }
+    }
+  }
+
+  /** Constructs and call function using MEE client that allows gas payment in ERC20 tokens */
+  async callFunctionWithMEEClient(
+    nexusAccount: any,
+    chainId: number,
+    tx: any,
+    paymentToken: `0x${string}`
+  ) {
+    let res = <SCResponse>{};
+    let txHash = "";
+    try {
+      const meeClient = await createMeeClient({
+        account: nexusAccount,
+      });
+
+      const transactionInstruction = await nexusAccount.build({
+        type: "default",
+        data: {
+          chainId,
+          calls: [tx],
+        },
+      });
+
+      // Execute the transaction using USDC on the smart account for gas
+      const { hash } = await meeClient.execute({
+        // Specify USDC as the token to use for gas payment
+        feeToken: {
+          chainId,
+          address: paymentToken,
+        },
+        // The transaction to execute
+        instructions: [transactionInstruction],
+      });
+
+      txHash = hash;
+
+      console.log(`MEE transaction hash: ${hash}`);
+
+      // Wait for transaction to complete
+      const receipt = await meeClient.waitForSupertransactionReceipt({ hash });
+
+      if (receipt?.receipts?.length > 1) {
+        //at least 2 receipts
+        const txReceipt = receipt?.receipts[receipt?.receipts?.length - 1];
+        if (txReceipt?.status === "success") {
+          res.status = STATUS.SUCCESS;
+          res.response = {
+            hash: txReceipt?.transactionHash,
+            result: txReceipt,
+          }; //TODO: update result on response
+          res.message = "";
+        } else {
+          res.status = STATUS.ERROR;
+          res.response = {
+            hash: txReceipt?.transactionHash,
+            result: txReceipt,
+          }; //TODO: update result on response
+          res.message = "";
+        }
+        return res;
+      } else {
+        console.error(
+          "Mee client transaction failed with error: ",
+          "Receipts lesser than one."
+        );
+        res.status = STATUS.ERROR;
+        res.response = {
+          hash: receipt?.receipts[0]?.transactionHash,
+          result: receipt?.receipts[0],
+        }; //TODO: update result on response
+        res.message = "";
+        return res;
+      }
+    } catch (err: any) {
+      console.error(
+        "Erc20 payment transaction failed with error: ",
+        err?.message || err
+      );
+      res.status = STATUS.ERROR;
+      res.response = {
+        hash: txHash,
+        result: {},
+      }; //TODO: update result on response
+      res.message = "";
+      return res;
     }
   }
 
@@ -447,28 +557,28 @@ export class VerifiedContract {
     }
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
-      console.log("gassless supported will use userop");
+      console.log("gassless supported will use userop or mee client");
       //call contract through userop for gasless transaction
       let options = [];
       const totalArguments = args.length;
+      const optionsRaw = args.splice(-1);
       //reduce args to exclude options
-      if (totalArguments > 1) options = args.splice(-1);
+      if (totalArguments > 1) options = optionsRaw;
       //console.log('options before', options);
       if (options == 0) options[0] = {};
       //create smart account for signer
       const smartAccount = await this.createSmartAccount(chainId);
       const account = await smartAccount.getAccountAddress();
-      const signerAddress = await this.signer.getAddress();
-      //sanitize arguments to use smartaccount address
-      /*const newArgs = args.map((_arg: any) => {
-        if (
-          typeof _arg === "string" &&
-          _arg.toLowerCase() === signerAddress.toLowerCase()
-        ) {
-          _arg = account;
-        }
-        return _arg;
-      });*/
+      // console.log("smart account address: ", account);
+      const _signer: any = this.signer;
+      const nexusAccount = await toMultichainNexusAccount({
+        chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
+        transports: [http(), http(), http(), http(), http(), http()],
+        signer: _signer,
+      });
+      const meeAddress = nexusAccount.addressOn(chainId);
+      // console.log("nexus account address: ", meeAddress);
+      // const signerAddress = await this.signer.getAddress();
       //construct calldata for function
       let fn = this.contract.populateTransaction[functionName];
       let _res = await fn(...args);
@@ -476,20 +586,114 @@ export class VerifiedContract {
         to: this.contract.address,
         data: _res.data,
       };
-      const paymentToken =
-        PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] || "";
-      return await this.callFunctionAsUserOp(
-        smartAccount,
-        tx1,
-        functionName,
-        paymentToken,
-        ...args
-      );
+      if (optionsRaw[0]?.paymentToken) {
+        console.log(
+          "Using Mee client with paymentToken of: ",
+          optionsRaw[0]?.paymentToken
+        );
+        return await this.callFunctionWithMEEClient(
+          nexusAccount,
+          chainId,
+          tx1,
+          optionsRaw[0]?.paymentToken
+        );
+      } else {
+        console.log("Using Userop since no payment token...");
+        const paymentToken =
+          options[0]?.paymentToken ||
+          PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] ||
+          "";
+        return await this.callFunctionAsUserOp(
+          smartAccount,
+          tx1,
+          functionName,
+          paymentToken,
+          ...args
+        );
+      }
     } else {
       //call contract through normal ether.js
       console.log("gassless not supported will use ethers");
       return await this.callFunctionWithEthers(functionName, ...args);
     }
+  }
+
+  async getQuote(
+    paymentTokenAddress: string,
+    functionName: string,
+    args: any[]
+  ) {
+    const chainId = await this.signer.getChainId();
+    if (this.supportsGasless(chainId)) {
+      const _signer: any = this.signer;
+      const nexusAccount = await toMultichainNexusAccount({
+        chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
+        transports: [http(), http(), http(), http(), http(), http()],
+        signer: _signer,
+      });
+
+      if (paymentTokenAddress) {
+        //construct calldata for function
+        try {
+          let fn = this.contract.populateTransaction[functionName];
+          let _res = await fn(...args);
+          const tx1: any = {
+            to: this.contract.address,
+            data: _res.data,
+          };
+          const meeClient = await createMeeClient({
+            account: nexusAccount,
+          });
+
+          const transactionInstruction = await nexusAccount.build({
+            type: "default",
+            data: {
+              chainId,
+              calls: [tx1],
+            },
+          });
+
+          const tkAddress: any = paymentTokenAddress;
+
+          const quote = await meeClient.getQuote({
+            instructions: [transactionInstruction],
+            feeToken: { address: tkAddress, chainId },
+          });
+          return {
+            tokenAddress: paymentTokenAddress,
+            amount: quote?.paymentInfo.tokenAmount,
+            amountInWei: quote?.paymentInfo.tokenWeiAmount,
+            amouuntValue: quote?.paymentInfo.tokenValue,
+            chainId,
+            functionName,
+          };
+        } catch (err: any) {
+          if (err?.message?.includes("fn is not a function")) {
+            throw new Error(
+              `Function ${functionName} not found in contract's ABI`
+            );
+          } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
+            throw new TypeError(`Invalid arguments type`);
+          }
+          return {
+            tokenAddress: "",
+            amount: "0",
+            amountInWei: "0",
+            amouuntValue: "0",
+            chainId,
+            functionName,
+          };
+        }
+      }
+    }
+    return {
+      tokenAddress: "",
+      amount: "0",
+      amountInWei: "0",
+      amouuntValue: "0",
+      chainId,
+      functionName,
+    };
   }
 
   protected getEvent(eventName: string, callback: any) {
