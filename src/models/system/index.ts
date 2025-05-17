@@ -1,21 +1,20 @@
 // SPDX-License-Identifier: BUSL-1.1
 
 interface CreateHolder {
-    _holderName: string
-    _accountHolder: string
+  _holderName: string;
+  _accountHolder: string;
 }
 
 interface GetAccountHolder {
-    _accountCreatorAddress: string
+  _accountCreatorAddress: string;
 }
 
 interface GetAccountLedger {
-    _accountHolderAddress: string
+  _accountHolderAddress: string;
 }
-
 
 interface GetLedgerAccount {
-    _accountLedgerAddress: string
+  _accountLedgerAddress: string;
 }
 
-export { CreateHolder, GetAccountHolder, GetAccountLedger, GetLedgerAccount }
+export { CreateHolder, GetAccountHolder, GetAccountLedger, GetLedgerAccount };

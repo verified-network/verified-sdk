@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 // @ts-nocheck
 
-import { VerifiedContract, DATATYPES } from "../index";
+import { VerifiedContract, DATATYPES, Options } from "../index";
 import { VerifiedWallet } from "../../../wallet";
 import { abi, networks } from "../../abi/securities/Security.json";
 
@@ -45,10 +45,25 @@ export default class Security extends VerifiedContract {
     this.contractAddress = address;
   }
 
+  public async _getMeeQuote(
+    paymentTokenAddress: string,
+    functionName: string,
+    args: any[]
+  ): Promise<{
+    tokenAddress: string;
+    amount: string;
+    amountInWei: string;
+    amouuntValue: string;
+    chainId: number;
+    functionName: string;
+  }> {
+    return await this.getQuote(paymentTokenAddress, functionName, args);
+  }
+
   public async whiteList(
     _spender: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -58,7 +73,7 @@ export default class Security extends VerifiedContract {
   public async transfer(
     _recipient: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -68,7 +83,7 @@ export default class Security extends VerifiedContract {
   public async approve(
     _spender: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -79,7 +94,7 @@ export default class Security extends VerifiedContract {
     _spender: string,
     _recipient: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
@@ -96,7 +111,7 @@ export default class Security extends VerifiedContract {
   public async increaseAllowance(
     _spender: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -111,7 +126,7 @@ export default class Security extends VerifiedContract {
   public async decreaseAllowance(
     _spender: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -126,47 +141,34 @@ export default class Security extends VerifiedContract {
   public async freeze(
     _holder: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     await this.validateInput(DATATYPES.NUMBER, _amount);
     return this.callContract(FUNCTIONS.FREEZE, _holder, _amount, options);
   }
 
-  public async unfreeze(
-    _holder: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async unfreeze(_holder: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     return this.callContract(FUNCTIONS.UNFREEZE, _holder, options);
   }
 
-  public async frozen(
-    _account: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async frozen(_account: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     return this.callContract(FUNCTIONS.FROZEN, _account, options);
   }
 
-  public async burn(
-    _holder: string,
-    _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async burn(_holder: string, _amount: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     await this.validateInput(DATATYPES.NUMBER, _amount);
     return this.callContract(FUNCTIONS.BURN, _holder, _amount, options);
   }
 
-  public async burnAll(options?: { gasPrice: number; gasLimit: number }): any {
+  public async burnAll(options?: Options): any {
     return this.callContract(FUNCTIONS.BURNALL, options);
   }
 
-  public async schedule(
-    _time: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async schedule(_time: string, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     return this.callContract(FUNCTIONS.SCHEDULE, _time, options);
   }
@@ -174,17 +176,14 @@ export default class Security extends VerifiedContract {
   public async reschedule(
     _oldtime: string,
     _newtime: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _oldtime);
     await this.validateInput(DATATYPES.NUMBER, _newtime);
     return this.callContract(FUNCTIONS.RESCHEDULE, _oldtime, _newtime, options);
   }
 
-  public async unschedule(
-    _time: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async unschedule(_time: string, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     return this.callContract(FUNCTIONS.UNSCHEDULE, _time, options);
   }
@@ -193,7 +192,7 @@ export default class Security extends VerifiedContract {
     _time: string,
     _votes: string,
     _ipfslink: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.BOOLEAN, _votes);
@@ -207,10 +206,7 @@ export default class Security extends VerifiedContract {
     );
   }
 
-  public async countVotes(
-    _time: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async countVotes(_time: string, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     return this.callContract(FUNCTIONS.COUNTVOTES, _time, options);
   }
@@ -220,7 +216,7 @@ export default class Security extends VerifiedContract {
     _wallet: string,
     _token: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.ADDRESS, _wallet);
@@ -242,7 +238,7 @@ export default class Security extends VerifiedContract {
     _wallet: string,
     _token: string,
     _amount: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.ADDRESS, _holder);
@@ -260,56 +256,38 @@ export default class Security extends VerifiedContract {
     );
   }
 
-  public async pause(options?: { gasPrice: number; gasLimit: number }): any {
+  public async pause(options?: Options): any {
     return this.callContract(FUNCTIONS.PAUSE, options);
   }
 
-  public async unpause(options?: { gasPrice: number; gasLimit: number }): any {
+  public async unpause(options?: Options): any {
     return this.callContract(FUNCTIONS.UNPAUSE, options);
   }
 
-  public async withdrawableFundsOf(
-    _holder: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async withdrawableFundsOf(_holder: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     return this.callContract(FUNCTIONS.WITHDRAWABLEFUNDSOF, _holder, options);
   }
 
-  public async withdrawnFundsOf(
-    _holder: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async withdrawnFundsOf(_holder: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     return this.callContract(FUNCTIONS.WITHDRAWNFUNDSOF, _holder, options);
   }
 
-  public async accumulativeFundsOf(
-    _holder: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async accumulativeFundsOf(_holder: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     return this.callContract(FUNCTIONS.ACCUMULATIVEFUNDSOF, _holder, options);
   }
 
-  public async withdrawFunds(options?: {
-    gasPrice: number;
-    gasLimit: number;
-  }): any {
+  public async withdrawFunds(options?: Options): any {
     return this.callContract(FUNCTIONS.WITHDRAWFUNDS, options);
   }
 
-  public async pushFunds(
-    _holder: string,
-    options?: { gasPrice: number; gasLimit: number }
-  ): any {
+  public async pushFunds(_holder: string, options?: Options): any {
     return this.callContract(FUNCTIONS.PUSHFUNDS, _holder, options);
   }
 
-  public async updateFundsReceived(options?: {
-    gasPrice: number;
-    gasLimit: number;
-  }): any {
+  public async updateFundsReceived(options?: Options): any {
     return this.callContract(FUNCTIONS.UPDATEFUNDSRECEIVED, options);
   }
 
@@ -317,7 +295,7 @@ export default class Security extends VerifiedContract {
     _time: string,
 
     _ballot: string,
-    options?: { gasPrice: number; gasLimit: number }
+    options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.BOOLEAN, _ballot);

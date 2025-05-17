@@ -10,6 +10,7 @@ export const PaymasterConstants: any = {
     PAYMASTER_API_KEY: "BuFP2-5w-.5b3daf3a-d044-4dda-819c-4c4d8431df88",
     BUNDLER_API_KEY: "nJPK7B3ru.dd7f7861-190d-41bd-af80-6877f74b8f44",
     RPC_URL: "https://rpc.sepolia.org",
+    PAYMENT_TOKEN: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
   },
   //polgon  mainnet
   137: {
