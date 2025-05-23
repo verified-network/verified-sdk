@@ -484,14 +484,12 @@ export class VerifiedContract {
         },
       });
 
-      // Execute the transaction using USDC on the smart account for gas
+      // Execute the transaction using passed paymentToken
       const { hash } = await meeClient.execute({
-        // Specify USDC as the token to use for gas payment
         feeToken: {
           chainId,
           address: paymentToken,
         },
-        // The transaction to execute
         instructions: [transactionInstruction],
       });
 
@@ -570,14 +568,6 @@ export class VerifiedContract {
       const smartAccount = await this.createSmartAccount(chainId);
       const account = await smartAccount.getAccountAddress();
       // console.log("smart account address: ", account);
-      const _signer: any = this.signer;
-      const nexusAccount = await toMultichainNexusAccount({
-        chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
-        transports: [http(), http(), http(), http(), http(), http()],
-        signer: _signer,
-      });
-      const meeAddress = nexusAccount.addressOn(chainId);
-      // console.log("nexus account address: ", meeAddress);
       // const signerAddress = await this.signer.getAddress();
       //construct calldata for function
       let fn = this.contract.populateTransaction[functionName];
@@ -591,6 +581,15 @@ export class VerifiedContract {
           "Using Mee client with paymentToken of: ",
           optionsRaw[0]?.paymentToken
         );
+        const _signer: any = this.signer;
+
+        const nexusAccount = await toMultichainNexusAccount({
+          chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
+          transports: [http(), http(), http(), http(), http(), http()],
+          signer: _signer,
+        });
+        const meeAddress = nexusAccount.addressOn(chainId);
+        // console.log("nexus account address: ", meeAddress);
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
@@ -675,14 +674,7 @@ export class VerifiedContract {
           } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
             throw new TypeError(`Invalid arguments type`);
           }
-          return {
-            tokenAddress: "",
-            amount: "0",
-            amountInWei: "0",
-            amouuntValue: "0",
-            chainId,
-            functionName,
-          };
+          throw new Error(err?.message || "getQuote failed.");
         }
       }
     }
