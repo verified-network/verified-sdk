@@ -21,6 +21,9 @@ enum FUNCTIONS {
   NEWPARTICIPANT = "NewParticipant",
   NEWTRANSACTION = "NewTransaction",
   SIGNATURE = "SignTransaction",
+  SNAPSHOT = 'snapshotBalance',
+  CALCULATEAVERAGEBALANCE = 'calculateAverageBalance',
+  COLLECTCUSTODYFEE = 'collectCustodyFee'
 }
 
 export default class Custody extends VerifiedContract {
@@ -255,6 +258,54 @@ export default class Custody extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, _creator),
       _id,
       _txid,
+      options
+    );
+  }
+
+  public async snapshotBalance(
+    _user: string,
+    _token: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _user);
+    await this.validateInput(DATATYPES.STRING, _token);
+    return this.callContract(
+      FUNCTIONS.SNAPSHOT,
+      this.sanitiseInput(DATATYPES.BYTE32, _user),
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
+      options
+    );
+  }
+
+  public async calculateAverageBalance(
+    _user: string,
+    _token: string,
+    _fromTime: string,
+    _toTime: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _user);
+    await this.validateInput(DATATYPES.STRING, _token);
+    await this.validateInput(DATATYPES.NUMBER, _fromTime);
+    await this.validateInput(DATATYPES.NUMBER, _toTime);
+    return this.callContract(
+      FUNCTIONS.CALCULATEAVERAGEBALANCE,
+      this.sanitiseInput(DATATYPES.BYTE32, _user),
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
+      _fromTime,
+      _toTime,
+      options
+    );
+  }
+
+  public async collectCustodyFee(
+    _token: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _token);
+    return this.callContract(
+      FUNCTIONS.COLLECTCUSTODYFEE,
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
       options
     );
   }
