@@ -7,6 +7,7 @@ import { abi, networks } from "../../abi/custody/Vault.json";
 
 enum FUNCTIONS {
   CREATEVAULT = "createVault",
+  RESETPIN = 'resetPin',
   GETVAULTS = "getVaults",
   TRANSFERVAULT = "transferVault",
   GETCREATOR = "getCreator",
@@ -14,6 +15,7 @@ enum FUNCTIONS {
   REMOVEPARTICIPANT = "removeParticipant",
   CONFIRMPARTICIPANT = "confirmParticipant",
   DEFINEQUORUM = "defineQuorum",
+  GETQUORUM = "getQuorum",
   PROMPTSIGNATURES = "promptSignatures",
   SIGNTRANSACTION = "signTransaction",
   CHECKQUORUM = "checkQuorum",
@@ -62,6 +64,24 @@ export default class Custody extends VerifiedContract {
       FUNCTIONS.CREATEVAULT,
       this.sanitiseInput(DATATYPES.BYTE32, _creator),
       _id,
+      options
+    );
+  }
+
+  public async resetPin(
+    _creator: string,
+    _id: string,
+    _new: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
+    await this.validateInput(DATATYPES.STRING, _new);
+    return this.callContract(
+      FUNCTIONS.RESETPIN,
+      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _id,
+      _new,
       options
     );
   }
@@ -180,6 +200,21 @@ export default class Custody extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, _creator),
       _id,
       _minParticipants,
+      options
+    );
+  }
+
+  public async getQuorum(
+    _creator: string,
+    _id: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
+    return this.callContract(
+      FUNCTIONS.GETQUORUM,
+      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _id,
       options
     );
   }
