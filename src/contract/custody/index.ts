@@ -7,6 +7,7 @@ import { abi, networks } from "../../abi/custody/Vault.json";
 
 enum FUNCTIONS {
   CREATEVAULT = "createVault",
+  RESETPIN = 'resetPin',
   GETVAULTS = "getVaults",
   TRANSFERVAULT = "transferVault",
   GETCREATOR = "getCreator",
@@ -14,6 +15,7 @@ enum FUNCTIONS {
   REMOVEPARTICIPANT = "removeParticipant",
   CONFIRMPARTICIPANT = "confirmParticipant",
   DEFINEQUORUM = "defineQuorum",
+  GETQUORUM = "getQuorum",
   PROMPTSIGNATURES = "promptSignatures",
   SIGNTRANSACTION = "signTransaction",
   CHECKQUORUM = "checkQuorum",
@@ -21,6 +23,9 @@ enum FUNCTIONS {
   NEWPARTICIPANT = "NewParticipant",
   NEWTRANSACTION = "NewTransaction",
   SIGNATURE = "SignTransaction",
+  SNAPSHOT = 'snapshotBalance',
+  CALCULATEAVERAGEBALANCE = 'calculateAverageBalance',
+  COLLECTCUSTODYFEE = 'collectCustodyFee'
 }
 
 export default class Custody extends VerifiedContract {
@@ -59,6 +64,24 @@ export default class Custody extends VerifiedContract {
       FUNCTIONS.CREATEVAULT,
       this.sanitiseInput(DATATYPES.BYTE32, _creator),
       _id,
+      options
+    );
+  }
+
+  public async resetPin(
+    _creator: string,
+    _id: string,
+    _new: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
+    await this.validateInput(DATATYPES.STRING, _new);
+    return this.callContract(
+      FUNCTIONS.RESETPIN,
+      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _id,
+      _new,
       options
     );
   }
@@ -181,6 +204,21 @@ export default class Custody extends VerifiedContract {
     );
   }
 
+  public async getQuorum(
+    _creator: string,
+    _id: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
+    return this.callContract(
+      FUNCTIONS.GETQUORUM,
+      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _id,
+      options
+    );
+  }
+
   public async promptSignatures(
     _creator: string,
     _id: string,
@@ -255,6 +293,54 @@ export default class Custody extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, _creator),
       _id,
       _txid,
+      options
+    );
+  }
+
+  public async snapshotBalance(
+    _user: string,
+    _token: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _user);
+    await this.validateInput(DATATYPES.STRING, _token);
+    return this.callContract(
+      FUNCTIONS.SNAPSHOT,
+      this.sanitiseInput(DATATYPES.BYTE32, _user),
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
+      options
+    );
+  }
+
+  public async calculateAverageBalance(
+    _user: string,
+    _token: string,
+    _fromTime: string,
+    _toTime: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _user);
+    await this.validateInput(DATATYPES.STRING, _token);
+    await this.validateInput(DATATYPES.NUMBER, _fromTime);
+    await this.validateInput(DATATYPES.NUMBER, _toTime);
+    return this.callContract(
+      FUNCTIONS.CALCULATEAVERAGEBALANCE,
+      this.sanitiseInput(DATATYPES.BYTE32, _user),
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
+      _fromTime,
+      _toTime,
+      options
+    );
+  }
+
+  public async collectCustodyFee(
+    _token: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.STRING, _token);
+    return this.callContract(
+      FUNCTIONS.COLLECTCUSTODYFEE,
+      this.sanitiseInput(DATATYPES.BYTE32, _token),
       options
     );
   }
