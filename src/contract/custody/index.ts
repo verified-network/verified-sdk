@@ -7,7 +7,7 @@ import { abi, networks } from "../../abi/custody/Vault.json";
 
 enum FUNCTIONS {
   CREATEVAULT = "createVault",
-  RESETPIN = 'resetPin',
+  RESETPIN = "resetPin",
   GETVAULTS = "getVaults",
   TRANSFERVAULT = "transferVault",
   GETCREATOR = "getCreator",
@@ -23,9 +23,11 @@ enum FUNCTIONS {
   NEWPARTICIPANT = "NewParticipant",
   NEWTRANSACTION = "NewTransaction",
   SIGNATURE = "SignTransaction",
-  SNAPSHOT = 'snapshotBalance',
-  CALCULATEAVERAGEBALANCE = 'calculateAverageBalance',
-  COLLECTCUSTODYFEE = 'collectCustodyFee'
+  SNAPSHOT = "snapshotBalance",
+  CALCULATEAVERAGEBALANCE = "calculateAverageBalance",
+  COLLECTCUSTODYFEE = "collectCustodyFee",
+  SETDISTRIBUTOR = "setDistributor",
+  SETCUSTODYFEE = "setCustodyFee",
 }
 
 export default class Custody extends VerifiedContract {
@@ -302,14 +304,9 @@ export default class Custody extends VerifiedContract {
     _token: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _user);
-    await this.validateInput(DATATYPES.STRING, _token);
-    return this.callContract(
-      FUNCTIONS.SNAPSHOT,
-      this.sanitiseInput(DATATYPES.BYTE32, _user),
-      this.sanitiseInput(DATATYPES.BYTE32, _token),
-      options
-    );
+    await this.validateInput(DATATYPES.ADDRESS, _user);
+    await this.validateInput(DATATYPES.ADDRESS, _token);
+    return this.callContract(FUNCTIONS.SNAPSHOT, _user, _token, options);
   }
 
   public async calculateAverageBalance(
@@ -319,30 +316,33 @@ export default class Custody extends VerifiedContract {
     _toTime: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _user);
-    await this.validateInput(DATATYPES.STRING, _token);
+    await this.validateInput(DATATYPES.ADDRESS, _user);
+    await this.validateInput(DATATYPES.ADDRESS, _token);
     await this.validateInput(DATATYPES.NUMBER, _fromTime);
     await this.validateInput(DATATYPES.NUMBER, _toTime);
     return this.callContract(
       FUNCTIONS.CALCULATEAVERAGEBALANCE,
-      this.sanitiseInput(DATATYPES.BYTE32, _user),
-      this.sanitiseInput(DATATYPES.BYTE32, _token),
+      _user,
+      _token,
       _fromTime,
       _toTime,
       options
     );
   }
 
-  public async collectCustodyFee(
-    _token: string,
-    options?: Options
-  ): any {
-    await this.validateInput(DATATYPES.STRING, _token);
-    return this.callContract(
-      FUNCTIONS.COLLECTCUSTODYFEE,
-      this.sanitiseInput(DATATYPES.BYTE32, _token),
-      options
-    );
+  public async collectCustodyFee(_token: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _token);
+    return this.callContract(FUNCTIONS.COLLECTCUSTODYFEE, _token, options);
+  }
+
+  public async setDistributor(_nominee: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _nominee);
+    return this.callContract(FUNCTIONS.SETDISTRIBUTOR, _nominee, options);
+  }
+
+  public async setCustodyFee(_fee: string, options?: Options): any {
+    await this.validateInput(DATATYPES.NUMBER, _fee);
+    return this.callContract(FUNCTIONS.SETCUSTODYFEE, _fee, options);
   }
 
   public notifyNewParticipant(callback: any): object {
