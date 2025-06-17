@@ -326,7 +326,7 @@ const contractAddress: Object = {
         'BalancerSecondaryIssueManager' : '0xE3e3e9b8c0c292eD3756C7A1037322738de6B7FC',
         'MarginTradingPoolFactory': '0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c',
         'BalancerMarginIssueManager' : '0x095a3075De6950530F6053C97dB06cc74E78E11e',
-        'Custody': '0x260A6Afc5a200b721D643CbeBD16d83833F4E0BB',
+        'Custody': '0x503a5Aa132784d9F6c254f6a1fb0dB492dE043a8',
         'Compound': '0x8c364b06741C9fE045E0e510A39BCbAf7445D8fD',
         'CASH': {
             'VCUSD': '0xC824FCCfe6545c42B609cF6aD6219748A306D83a',

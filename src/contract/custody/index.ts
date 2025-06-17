@@ -300,29 +300,34 @@ export default class Custody extends VerifiedContract {
   }
 
   public async snapshotBalance(
-    _user: string,
+    _creator: string,
+    _id: string,
     _token: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.ADDRESS, _user);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.ADDRESS, _token);
-    return this.callContract(FUNCTIONS.SNAPSHOT, _user, _token, options);
+    return this.callContract(FUNCTIONS.SNAPSHOT, _creator, _id, _token, options);
   }
 
   public async calculateAverageBalance(
-    _user: string,
+    _creator: string,
+    _id: string,
     _token: string,
     _fromTime: string,
     _toTime: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.ADDRESS, _user);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
+    await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.ADDRESS, _token);
     await this.validateInput(DATATYPES.NUMBER, _fromTime);
     await this.validateInput(DATATYPES.NUMBER, _toTime);
     return this.callContract(
       FUNCTIONS.CALCULATEAVERAGEBALANCE,
-      _user,
+      _creator,
+      _id,
       _token,
       _fromTime,
       _toTime,
