@@ -60,14 +60,9 @@ export default class Custody extends VerifiedContract {
     _id: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    return this.callContract(
-      FUNCTIONS.CREATEVAULT,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
-      _id,
-      options
-    );
+    return this.callContract(FUNCTIONS.CREATEVAULT, _creator, _id, options);
   }
 
   public async resetPin(
@@ -76,16 +71,10 @@ export default class Custody extends VerifiedContract {
     _new: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.STRING, _new);
-    return this.callContract(
-      FUNCTIONS.RESETPIN,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
-      _id,
-      _new,
-      options
-    );
+    return this.callContract(FUNCTIONS.RESETPIN, _creator, _id, _new, options);
   }
 
   public async getVaults(): any {
@@ -98,12 +87,12 @@ export default class Custody extends VerifiedContract {
     _transferee: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.ADDRESS, _transferee);
     return this.callContract(
       FUNCTIONS.TRANSFERVAULT,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
       _transferee,
       options
@@ -115,14 +104,9 @@ export default class Custody extends VerifiedContract {
     _pin: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
-    await this.validateInput(DATATYPES.NUMBER, _pin);
-    return this.callContract(
-      FUNCTIONS.GETCREATOR,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
-      _pin,
-      options
-    );
+    await this.validateInput(DATATYPES.BYTE32, _creator);
+    await this.validateInput(DATATYPES.STRING, _pin);
+    return this.callContract(FUNCTIONS.GETCREATOR, _creator, _pin, options);
   }
 
   public async addParticipant(
@@ -132,15 +116,15 @@ export default class Custody extends VerifiedContract {
     _shard: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    await this.validateInput(DATATYPES.STRING, _participant);
+    await this.validateInput(DATATYPES.BYTE32, _participant);
     await this.validateInput(DATATYPES.STRING, _shard);
     return this.callContract(
       FUNCTIONS.ADDPARTICIPANT,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
-      this.sanitiseInput(DATATYPES.BYTE32, _participant),
+      _participant,
       _shard,
       options
     );
@@ -152,14 +136,14 @@ export default class Custody extends VerifiedContract {
     _participant: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    await this.validateInput(DATATYPES.STRING, _participant);
+    await this.validateInput(DATATYPES.BYTE32, _participant);
     return this.callContract(
       FUNCTIONS.REMOVEPARTICIPANT,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
-      this.sanitiseInput(DATATYPES.BYTE32, _participant),
+      _participant,
       options
     );
   }
@@ -172,16 +156,16 @@ export default class Custody extends VerifiedContract {
     _confirmation: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    await this.validateInput(DATATYPES.STRING, _participant);
+    await this.validateInput(DATATYPES.BYTE32, _participant);
     await this.validateInput(DATATYPES.STRING, _pin);
     await this.validateInput(DATATYPES.BOOLEAN, _confirmation);
     return this.callContract(
       FUNCTIONS.CONFIRMPARTICIPANT,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
-      this.sanitiseInput(DATATYPES.BYTE32, _participant),
+      _participant,
       _pin,
       _confirmation,
       options
@@ -194,12 +178,12 @@ export default class Custody extends VerifiedContract {
     _minParticipants: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.NUMBER, _minParticipants);
     return this.callContract(
       FUNCTIONS.DEFINEQUORUM,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
       _minParticipants,
       options
@@ -211,14 +195,9 @@ export default class Custody extends VerifiedContract {
     _id: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    return this.callContract(
-      FUNCTIONS.GETQUORUM,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
-      _id,
-      options
-    );
+    return this.callContract(FUNCTIONS.GETQUORUM, _creator, _id, options);
   }
 
   public async promptSignatures(
@@ -226,11 +205,11 @@ export default class Custody extends VerifiedContract {
     _id: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     return this.callContract(
       FUNCTIONS.PROMPTSIGNATURES,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
       options
     );
@@ -244,16 +223,16 @@ export default class Custody extends VerifiedContract {
     _pin: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    await this.validateInput(DATATYPES.STRING, _participant);
+    await this.validateInput(DATATYPES.BYTE32, _participant);
     await this.validateInput(DATATYPES.STRING, _tx);
     await this.validateInput(DATATYPES.STRING, _pin);
     return this.callContract(
       FUNCTIONS.SIGNTRANSACTION,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
-      this.sanitiseInput(DATATYPES.BYTE32, _participant),
+      _participant,
       _tx,
       _pin,
       options
@@ -267,15 +246,15 @@ export default class Custody extends VerifiedContract {
     _txid: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
-    await this.validateInput(DATATYPES.STRING, _participant);
+    await this.validateInput(DATATYPES.BYTE32, _participant);
     await this.validateInput(DATATYPES.STRING, _txid);
     return this.callContract(
       FUNCTIONS.CHECKQUORUM,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
-      this.sanitiseInput(DATATYPES.BYTE32, _participant),
+      _participant,
       _txid,
       options
     );
@@ -287,12 +266,12 @@ export default class Custody extends VerifiedContract {
     _txid: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.STRING, _creator);
+    await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.STRING, _txid);
     return this.callContract(
       FUNCTIONS.GETSHARDS,
-      this.sanitiseInput(DATATYPES.BYTE32, _creator),
+      _creator,
       _id,
       _txid,
       options
@@ -308,7 +287,13 @@ export default class Custody extends VerifiedContract {
     await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.STRING, _id);
     await this.validateInput(DATATYPES.ADDRESS, _token);
-    return this.callContract(FUNCTIONS.SNAPSHOT, _creator, _id, _token, options);
+    return this.callContract(
+      FUNCTIONS.SNAPSHOT,
+      _creator,
+      _id,
+      _token,
+      options
+    );
   }
 
   public async calculateAverageBalance(
