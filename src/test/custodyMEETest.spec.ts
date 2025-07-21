@@ -3,6 +3,8 @@
 // import { VerifiedWallet } from "../wallet/index";
 // import { Custody, ERC20 } from "../index";
 
+import { ethers } from "ethers";
+
 // describe("Base Sepolia() Custody MEE ERC20 Gas Payment Tests", () => {
 //   const newWallet = new VerifiedWallet(
 //     "0xdcae180d539f8144535e4ed23903cdd338caaede740145b3e606ad007e1aeb9f"
@@ -15,7 +17,7 @@
 //     const custodyContract = new Custody(signer, custodyAddress);
 //     it("it should create vault", async () => {
 //       const createVaultRes = await custodyContract.createVault(
-//         Date.now().toString(),
+//    ethers.utils.formatBytes32String(Date.now().toString())
 //         Date.now().toString(),
 //         {
 //           paymentToken: "0x036CbD53842c5426634e7929541eC2318f3dCF7e", // USDC
