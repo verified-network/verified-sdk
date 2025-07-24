@@ -1,6 +1,6 @@
 //Todo: add more network paymaster details for gasless
 export const PaymasterConstants: any = {
-  MAX_WAITING_ROUND: 3, //number of rounds gassless transactions will wait to fetch receipt. Note: each round is 1 minute, so 3 for example is 3 minutes
+  MAX_WAITING_ROUND: 10, //number of rounds gassless transactions will wait to fetch receipt. Note: each round is 6 seconds, so 10 for example is 1 minute
   BUNDLER_URL_FIRST_SECTION: "https://bundler.biconomy.io/api/v2",
   GENERAL_PAYMASTER_URL: "https://paymaster.biconomy.io/api/v1",
   BICONOMY_REVERT_TOPIC:

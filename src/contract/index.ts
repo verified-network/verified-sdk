@@ -236,7 +236,6 @@ export class VerifiedContract {
         PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
       }`,
     });
-    // console.log("smart account address", await smartAccount.getAccountAddress());
     return smartAccount;
   }
 
