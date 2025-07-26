@@ -309,12 +309,12 @@ const contractAddress: Object = {
     },
     11155111: { //sepolia
         'Client': '0xB72629Bb4d031F1C755AFfA123AAA28E81EfdA9A',
-        'Factory': '0xbCB4474430E019F661C50F3C53DF0F9fC0d807Af',        
-        'Cash': '0x4c6cbAAe9ea3a6B3e4C41be783C276D0510c6Fc4',
-        'Bond': '0x7008aE1175E9D8027FeDf29bA6A4DDEBdD37bF19',
-        'Token': '0x2eD16fAe5637304afC3a9a26909F6f7503de4B68',
-        'Oracle': '0xa6fe084c74fF11A3bcD91e9c2115C730c294C0F7',
-        'Rates': '0x9E3A77Fa67e0D6d49d5F07D0a3175dbA2300F5fc',
+        'Factory': '0x358643DA31fdE65b15839EeC0C72f3dacD07EBeD',        
+        'Cash': '0xA565F2e350dC3972c3C1779DE1d9EB4EF45baaBA',
+        'Bond': '0xA357BaE12300992087560fd62c0638A91cD453C2',
+        'Token': '0x58D7648C9d55567b5D1C37A3176D487539e9B8Be',
+        'Oracle': '0xF6ebB33E758eC36A2D3065F4633131DFF8307A07',
+        'Rates': '0xfC63cBB9aC6F6de3cAfbb1df7430339f3989fe14',
         'Security': '0xa1c552a33FB9e391d0F50A6407385c55cd22d596',
         'SecuritiesFactory': '0x7CaB6AA90fD672F6ddBd0B92c0a5428b53ebA414',
         'Vitta': '0x87145164371Ad7851AD3B4D47C9820F95983d8EA',
@@ -329,16 +329,16 @@ const contractAddress: Object = {
         'Custody': '0x1F97Bd2c4D3b42a87B225dd7990F4a13f1CF8760',
         'Compound': '0x8c364b06741C9fE045E0e510A39BCbAf7445D8fD',
         'CASH': {
-            'VCUSD': '0xC824FCCfe6545c42B609cF6aD6219748A306D83a',
-            'VCEUR': '',
-            'VCCHF': '',
-            'VCINR': ''
+            'VCUSD': '0xFe55A419F0fc951d1924FB5eA456c94483BdDd82',
+            'VCEUR': '0xcdb1c23277C9C150E7D4201d854c558AAe986256',
+            'VCCHF': '0x666BE39Fb2D6965885DAA97422B286B7ec222488',
+            'VCINR': '0xeEd2B863F2Ac3BB4884701F0fD0F18f9bAD7819B'
         },
         'BOND': {
-            'VBUSD': '0x251Fd310CEe3fFdf0B0Eb3eb280CfFbB2Da5bAcc',
-            'VBEUR': '',
-            'VCCHF': '',
-            'VBINR': ''
+            'VBUSD': '0xa8B77cF42e649Ae4BC3B5E2286b275E1A771054A',
+            'VBEUR': '0x860E90968FB712e391d14e32d2462CB7C9D158cb',
+            'VCCHF': '0x144Fb05846C4B1c2a85A92A918b29FAb4719a184',
+            'VBINR': '0x4C49fe7f77aF2818beb2F3E02fE85B8ACB8Df243'
         },
     },
     'balancerVault': '0xBA12222222228d8Ba445958a75a0704d566BF2C8'
