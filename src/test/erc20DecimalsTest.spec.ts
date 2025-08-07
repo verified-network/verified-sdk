@@ -4,7 +4,7 @@
 // import { ERC20 } from "../index";
 
 // describe("Test to check decimals function just added on ERC20", () => {
-//   const INFURA_API_KEY = "e0951a7b82c84a6880f3c6f7bb182e21";        
+//   const INFURA_API_KEY = "e0951a7b82c84a6880f3c6f7bb182e21";
 //   const SIGNER_MNEMONICS =
 //     "correct galaxy various swap chair assault blue improve ivory pear infant oak";
 //   const sender = VerifiedWallet.importWallet(SIGNER_MNEMONICS);

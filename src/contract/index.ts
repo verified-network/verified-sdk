@@ -583,8 +583,8 @@ export class VerifiedContract {
         const _signer: any = this.signer;
 
         const nexusAccount = await toMultichainNexusAccount({
-          chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
-          transports: [http(), http(), http(), http(), http(), http()],
+          chains: [base, mainnet, gnosis, polygon],
+          transports: [http(), http(), http(), http()],
           signer: _signer,
         });
         const meeAddress = nexusAccount.addressOn(chainId);
@@ -625,8 +625,8 @@ export class VerifiedContract {
     if (this.supportsGasless(chainId)) {
       const _signer: any = this.signer;
       const nexusAccount = await toMultichainNexusAccount({
-        chains: [base, mainnet, sepolia, gnosis, baseSepolia, polygon],
-        transports: [http(), http(), http(), http(), http(), http()],
+        chains: [base, mainnet, gnosis, polygon],
+        transports: [http(), http(), http(), http()],
         signer: _signer,
       });
 
