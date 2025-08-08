@@ -52,7 +52,7 @@ export default class Client extends VerifiedContract {
     return await this.getQuote(paymentTokenAddress, functionName, args);
   }
 
-  public setSigner(_address: string, options?: Options): any {
+  public async setSigner(_address: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _address);
     return this.callContract(FUNCTIONS.SETSIGNER, _address, options);
   }
