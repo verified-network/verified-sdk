@@ -291,12 +291,7 @@ export default class Security extends VerifiedContract {
     return this.callContract(FUNCTIONS.UPDATEFUNDSRECEIVED, options);
   }
 
-  public async vote(
-    _time: string,
-
-    _ballot: string,
-    options?: Options
-  ): any {
+  public async vote(_time: string, _ballot: string, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.BOOLEAN, _ballot);
     return this.callContract(FUNCTIONS.VOTE, _time, _ballot, options);
