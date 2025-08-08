@@ -10,6 +10,7 @@ enum FUNCTIONS {
   SWAP = "swap",
   BATCHSWAP = "batchSwap",
   GETPOOLTOKENS = "getPoolTokens",
+  GETPOOL = "getPool",
 }
 
 type SingleSwap = {
@@ -129,6 +130,12 @@ export default class PoolContract extends VerifiedContract {
   }
 
   public async getPoolTokens(_poolId: string, options?: Options): any {
+    await this.validateInput(DATATYPES.BYTE32, _poolId);
     return this.callContract(FUNCTIONS.GETPOOLTOKENS, _poolId, options);
+  }
+
+  public async getPool(_poolId: string, options?: Options): any {
+    await this.validateInput(DATATYPES.BYTE32, _poolId);
+    return this.callContract(FUNCTIONS.GETPOOL, _poolId, options);
   }
 }
