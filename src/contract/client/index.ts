@@ -37,10 +37,6 @@ export default class Client extends VerifiedContract {
     this.contractAddress = address;
   }
 
-  public setSigner(_address: string): any {
-    return this.callContract(FUNCTIONS.SETSIGNER, _address);
-  }
-
   public async _getMeeQuote(
     paymentTokenAddress: string,
     functionName: string,
@@ -54,6 +50,11 @@ export default class Client extends VerifiedContract {
     functionName: string;
   }> {
     return await this.getQuote(paymentTokenAddress, functionName, args);
+  }
+
+  public setSigner(_address: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _address);
+    return this.callContract(FUNCTIONS.SETSIGNER, _address, options);
   }
 
   /**

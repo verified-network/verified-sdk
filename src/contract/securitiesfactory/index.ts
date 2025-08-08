@@ -184,11 +184,10 @@ export default class SecuritiesFactory extends VerifiedContract {
 
   public async restrictCountry(
     _security: string,
-    _countries: string,
+    _countries: any,
     options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _security);
-    await this.validateInput(DATATYPES.STRING, _countries);
     return this.callContract(
       FUNCTIONS.RESTRICTCOUNTRY,
       _security,
