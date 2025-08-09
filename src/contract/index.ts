@@ -705,13 +705,13 @@ export class VerifiedContract {
             };
           } catch (err: any) {
             if (err?.message?.includes("fn is not a function")) {
-              throw new Error(
+              console.error(
                 `Function ${functionName} not found in contract's ABI`
               );
             } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
-              throw new TypeError(`Invalid arguments type`);
+              console.error(`Invalid arguments type`);
             }
-            throw new Error(err?.message || "getQuote failed.");
+            console.error(err?.message || "getQuote failed.");
           }
         }
       }
