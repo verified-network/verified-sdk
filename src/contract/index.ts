@@ -438,6 +438,14 @@ export class VerifiedContract {
             } else if (_res && _res?.failed) {
               console.log("will use ethers....");
               return await this.callFunctionWithEthers(functionName, ...args);
+            } else {
+              //no receipt found?? don't call with ethers transaction may get mined???
+              res.status = STATUS.ERROR; //create additional status to mark this???
+              res.response = {
+                hash: txHash,
+                result: [],
+              };
+              res.message = "Transaction Pending.";
             }
           }
 
@@ -520,7 +528,7 @@ export class VerifiedContract {
         return res;
       } else {
         console.error(
-          "Mee client transaction failed with error: ",
+          "MEE client transaction failed with error: ",
           "Receipts lesser than one."
         );
         res.status = STATUS.ERROR;
@@ -533,7 +541,7 @@ export class VerifiedContract {
       }
     } catch (err: any) {
       console.error(
-        "Erc20 payment transaction failed with error: ",
+        "MEE client transaction failed with error: ",
         err?.message || err
       );
       res.status = STATUS.ERROR;
@@ -581,10 +589,31 @@ export class VerifiedContract {
           optionsRaw[0]?.paymentToken
         );
         const _signer: any = this.signer;
-
+        const chainToUse = [
+          base,
+          mainnet,
+          gnosis,
+          polygon,
+          sepolia,
+          baseSepolia,
+        ].find((nt) => Number(nt?.id) === Number(chainId));
+        if (!chainToUse) {
+          throw new Error(
+            `Chaind id: ${chainId} not supported on Verified Sdk. Supported chain ids are: ${[
+              base,
+              mainnet,
+              gnosis,
+              polygon,
+              sepolia,
+              baseSepolia,
+            ]
+              ?.map((nt) => nt?.id)
+              ?.join(", ")}`
+          );
+        }
         const nexusAccount = await toMultichainNexusAccount({
-          chains: [base, mainnet, gnosis, polygon],
-          transports: [http(), http(), http(), http()],
+          chains: [chainToUse!],
+          transports: [http()],
           signer: _signer,
         });
         const meeAddress = nexusAccount.addressOn(chainId);
@@ -624,56 +653,66 @@ export class VerifiedContract {
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       const _signer: any = this.signer;
-      const nexusAccount = await toMultichainNexusAccount({
-        chains: [base, mainnet, gnosis, polygon],
-        transports: [http(), http(), http(), http()],
-        signer: _signer,
-      });
+      const chainToUse = [
+        base,
+        mainnet,
+        gnosis,
+        polygon,
+        sepolia,
+        baseSepolia,
+      ].find((nt) => Number(nt?.id) === Number(chainId));
+      if (chainToUse) {
+        const nexusAccount = await toMultichainNexusAccount({
+          chains: [chainToUse],
+          transports: [http()],
+          signer: _signer,
+        });
 
-      if (paymentTokenAddress) {
-        //construct calldata for function
-        try {
-          let fn = this.contract.populateTransaction[functionName];
-          let _res = await fn(...args);
-          const tx1: any = {
-            to: this.contract.address,
-            data: _res.data,
-          };
-          const meeClient = await createMeeClient({
-            account: nexusAccount,
-          });
+        if (paymentTokenAddress) {
+          //construct calldata for function
+          try {
+            let fn = this.contract.populateTransaction[functionName];
+            let _res = await fn(...args);
+            const tx1: any = {
+              to: this.contract.address,
+              data: _res.data,
+            };
+            const meeClient = await createMeeClient({
+              account: nexusAccount,
+            });
 
-          const transactionInstruction = await nexusAccount.build({
-            type: "default",
-            data: {
+            const transactionInstruction = await nexusAccount.build({
+              type: "default",
+              data: {
+                chainId,
+                calls: [tx1],
+              },
+            });
+
+            const tkAddress: any = paymentTokenAddress;
+
+            const quote = await meeClient.getQuote({
+              instructions: [transactionInstruction],
+              feeToken: { address: tkAddress, chainId },
+            });
+            return {
+              tokenAddress: paymentTokenAddress,
+              amount: quote?.paymentInfo.tokenAmount,
+              amountInWei: quote?.paymentInfo.tokenWeiAmount,
+              amouuntValue: quote?.paymentInfo.tokenValue,
               chainId,
-              calls: [tx1],
-            },
-          });
-
-          const tkAddress: any = paymentTokenAddress;
-
-          const quote = await meeClient.getQuote({
-            instructions: [transactionInstruction],
-            feeToken: { address: tkAddress, chainId },
-          });
-          return {
-            tokenAddress: paymentTokenAddress,
-            amount: quote?.paymentInfo.tokenAmount,
-            amountInWei: quote?.paymentInfo.tokenWeiAmount,
-            amouuntValue: quote?.paymentInfo.tokenValue,
-            chainId,
-            functionName,
-          };
-        } catch (err: any) {
-          if (err?.message?.includes("fn is not a function")) {
-            throw new Error(
-              `Function ${functionName} not found in contract's ABI`
-            );
-          } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
-            throw new TypeError(`Invalid arguments type`);
+              functionName,
+            };
+          } catch (err: any) {
+            if (err?.message?.includes("fn is not a function")) {
+              throw new Error(
+                `Function ${functionName} not found in contract's ABI`
+              );
+            } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
+              throw new TypeError(`Invalid arguments type`);
+            }
+            throw new Error(err?.message || "getQuote failed.");
           }
-          throw new Error(err?.message || "getQuote failed.");
         }
       }
     }

@@ -190,7 +190,7 @@ export default class Security extends VerifiedContract {
 
   public async createResolution(
     _time: string,
-    _votes: string,
+    _votes: boolean,
     _ipfslink: string,
     options?: Options
   ): any {
@@ -291,9 +291,29 @@ export default class Security extends VerifiedContract {
     return this.callContract(FUNCTIONS.UPDATEFUNDSRECEIVED, options);
   }
 
-  public async vote(_time: string, _ballot: string, options?: Options): any {
+  public async vote(_time: string, _ballot: boolean, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.BOOLEAN, _ballot);
     return this.callContract(FUNCTIONS.VOTE, _time, _ballot, options);
+  }
+
+  public async scheduleSnapshot(_time: string, options?: Options): any {
+    await this.validateInput(DATATYPES.NUMBER, _time);
+    return this.callContract(FUNCTIONS.SCHEDULE, _time, options);
+  }
+
+  public async rescheduleSnapshot(
+    old_time: string,
+    new_time: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.NUMBER, old_time);
+    await this.validateInput(DATATYPES.NUMBER, new_time);
+    return this.callContract(FUNCTIONS.RESCHEDULE, old_time, new_time, options);
+  }
+
+  public async unscheduleSnapshot(_time: string, options?: Options): any {
+    await this.validateInput(DATATYPES.NUMBER, _time);
+    return this.callContract(FUNCTIONS.UNSCHEDULE, _time, options);
   }
 }
