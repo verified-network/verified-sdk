@@ -3,6 +3,7 @@ export const PaymasterConstants: any = {
   MAX_WAITING_ROUND: 10, //number of rounds gassless transactions will wait to fetch receipt. Note: each round is 6 seconds, so 10 for example is 1 minute
   BUNDLER_URL_FIRST_SECTION: "https://bundler.biconomy.io/api/v2",
   GENERAL_PAYMASTER_URL: "https://paymaster.biconomy.io/api/v1",
+  MEE_API_KEY: "mee_XGE8XYuTujTdkB4sohJMHv",
   BICONOMY_REVERT_TOPIC:
     "0x1c4fada7374c0a9ee8841fc38afe82932dc0f8e69012e927f061a8bae611a201",
   //ethereum sepolia
