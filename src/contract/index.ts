@@ -480,7 +480,7 @@ export class VerifiedContract {
     _apiKey?: string
   ) {
     let res = <SCResponse>{};
-    let txHash = "";
+    let txHash: any = "";
     try {
       const meeClient = await createMeeClient({
         account: nexusAccount,
@@ -502,7 +502,6 @@ export class VerifiedContract {
           address: paymentToken,
         },
         instructions: [transactionInstruction],
-        upperBoundTimestamp: Date.now() + 3600, //1hour ???
       });
 
       txHash = hash;
@@ -545,17 +544,93 @@ export class VerifiedContract {
         return res;
       }
     } catch (err: any) {
-      console.error(
-        "MEE client transaction failed with error: ",
-        err?.message || err
-      );
-      res.status = STATUS.ERROR;
-      res.response = {
-        hash: txHash,
-        result: {},
-      }; //TODO: update result on response
-      res.message = "";
-      return res;
+      if (
+        txHash?.length > 0 &&
+        err?.message
+          ?.toLowerCase()
+          .includes("execution deadline limit exceeded")
+      ) {
+        console.warn(
+          "MEE client transaction deadline exceeded, will fetch receipt manually..."
+        );
+        const meeClient = await createMeeClient({
+          account: nexusAccount,
+          apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
+        });
+
+        for (let i = 0; i < Number(PaymasterConstants.MAX_WAITING_ROUND); i++) {
+          try {
+            await new Promise((resolve) => setTimeout(resolve, 6000)); // 6 second delay
+
+            console.log(
+              "MEE deadline exceeded, fetching receipt for round:",
+              i + 1,
+              "out of",
+              Number(PaymasterConstants.MAX_WAITING_ROUND)
+            );
+
+            const receipt = await meeClient.waitForSupertransactionReceipt({
+              hash: txHash,
+            });
+
+            if (receipt?.receipts?.length > 1) {
+              //at least 2 receipts
+              const txReceipt =
+                receipt?.receipts[receipt?.receipts?.length - 1];
+              if (txReceipt?.status === "success") {
+                res.status = STATUS.SUCCESS;
+                res.response = {
+                  hash: txReceipt?.transactionHash,
+                  result: txReceipt,
+                }; //TODO: update result on response
+                res.message = "";
+                break; // Exit the loop
+              } else {
+                res.status = STATUS.ERROR;
+                res.response = {
+                  hash: txReceipt?.transactionHash,
+                  result: txReceipt,
+                }; //TODO: update result on response
+                res.message = "";
+                break; // Exit the loop
+              }
+            } else {
+              console.error(
+                "MEE client transaction failed with error: ",
+                "Receipts lesser than one."
+              );
+              res.status = STATUS.ERROR;
+              res.response = {
+                hash: receipt?.receipts[0]?.transactionHash,
+                result: receipt?.receipts[0],
+              }; //TODO: update result on response
+              res.message = "";
+              return res;
+            }
+          } catch (_err: any) {
+            if (
+              _err?.message
+                ?.toLowerCase()
+                .includes("execution deadline limit exceeded")
+            ) {
+              continue;
+            } else {
+              break;
+            }
+          }
+        }
+
+        return res;
+      } else {
+        console.error("MEE client transaction failed with error: ", err);
+        res.status = STATUS.ERROR;
+        res.response = {
+          hash: txHash,
+          result: {},
+        }; //TODO: update result on response
+        res.message = "";
+        return res;
+      }
     }
   }
 
@@ -666,7 +741,6 @@ export class VerifiedContract {
     rpc?: string,
     _apiKey?: string
   ) {
-    console.log(paymentTokenAddress, functionName, args, rpc, _apiKey);
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       const _signer: any = this.signer;
