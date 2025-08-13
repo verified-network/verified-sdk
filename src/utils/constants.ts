@@ -29,14 +29,13 @@ export const PaymasterConstants: any = {
   1: {
     PAYMASTER_API_KEY: "ap7LOqALI.bf68e672-47ce-40f8-8b62-ea508dcf5852",
     BUNDLER_API_KEY: "dewj402.wh1289hU-7E49-85b-af80-t6XmQ4yJs",
-    RPC_URL:
-      "https://eth-mainnet.g.alchemy.com/v2/82hkNrfu6ZZ8Wms2vr1U331ml3FtS7AZ",
+    RPC_URL: "https://eth-mainnet.public.blastapi.io",
   },
   //base mainnet
   8453: {
     PAYMASTER_API_KEY: "glRQsmuYh.5d9372ab-5063-4ecd-ac63-643fef624a73",
     BUNDLER_API_KEY: "dewj402.wh1289hU-7E49-85b-af80-t6XmQ4yJs",
-    RPC_URL: "https://mainnet.base.org",
+    RPC_URL: "https://base-mainnet.public.blastapi.io",
   },
   //gnosis
   100: {
