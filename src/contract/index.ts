@@ -481,6 +481,7 @@ export class VerifiedContract {
     try {
       const meeClient = await createMeeClient({
         account: nexusAccount,
+        apiKey: PaymasterConstants.MEE_API_KEY,
       });
 
       const transactionInstruction = await nexusAccount.build({
@@ -640,7 +641,7 @@ export class VerifiedContract {
       }
     } else {
       //call contract through normal ether.js
-      console.log("gassless not supported will use ethers");
+      console.log("gassless not supported will use ethers...");
       return await this.callFunctionWithEthers(functionName, ...args);
     }
   }
@@ -677,8 +678,10 @@ export class VerifiedContract {
               to: this.contract.address,
               data: _res.data,
             };
+
             const meeClient = await createMeeClient({
               account: nexusAccount,
+              apiKey: PaymasterConstants.MEE_API_KEY,
             });
 
             const transactionInstruction = await nexusAccount.build({
