@@ -43,7 +43,9 @@ export default class Custody extends VerifiedContract {
   public async _getMeeQuote(
     paymentTokenAddress: string,
     functionName: string,
-    args: any[]
+    args: any[],
+    apiKey?: string,
+    rpcUrl?: string
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -52,7 +54,13 @@ export default class Custody extends VerifiedContract {
     chainId: number;
     functionName: string;
   }> {
-    return await this.getQuote(paymentTokenAddress, functionName, args);
+    return await this.getQuote(
+      paymentTokenAddress,
+      functionName,
+      args,
+      rpcUrl,
+      apiKey
+    );
   }
 
   public async createVault(

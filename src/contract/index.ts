@@ -45,6 +45,8 @@ export type Options = {
   gasPrice?: number;
   gasLimit?: number;
   paymentToken?: string;
+  apiKey?: string;
+  rpcUrl?: string;
 };
 
 export class VerifiedContract {
@@ -474,14 +476,15 @@ export class VerifiedContract {
     nexusAccount: any,
     chainId: number,
     tx: any,
-    paymentToken: `0x${string}`
+    paymentToken: `0x${string}`,
+    _apiKey?: string
   ) {
     let res = <SCResponse>{};
     let txHash = "";
     try {
       const meeClient = await createMeeClient({
         account: nexusAccount,
-        apiKey: PaymasterConstants.MEE_API_KEY,
+        apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
       });
 
       const transactionInstruction = await nexusAccount.build({
@@ -612,9 +615,17 @@ export class VerifiedContract {
               ?.join(", ")}`
           );
         }
+        const prov: any = this.signer.provider;
+        const rpcUrl = prov?.connection?.url;
         const nexusAccount = await toMultichainNexusAccount({
           chains: [chainToUse!],
-          transports: [http()],
+          transports: [
+            http(
+              rpcUrl ||
+                optionsRaw[0]?.rpcUrl ||
+                PaymasterConstants[Number(chainId)]?.RPC_URL
+            ),
+          ],
           signer: _signer,
         });
         const meeAddress = nexusAccount.addressOn(chainId);
@@ -623,7 +634,8 @@ export class VerifiedContract {
           nexusAccount,
           chainId,
           tx1,
-          optionsRaw[0]?.paymentToken
+          optionsRaw[0]?.paymentToken,
+          optionsRaw[0]?.apiKey
         );
       } else {
         console.log("Using Userop since no payment token...");
@@ -649,7 +661,9 @@ export class VerifiedContract {
   async getQuote(
     paymentTokenAddress: string,
     functionName: string,
-    args: any[]
+    args: any[],
+    rpc?: string,
+    _apiKey?: string
   ) {
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
@@ -663,9 +677,13 @@ export class VerifiedContract {
         baseSepolia,
       ].find((nt) => Number(nt?.id) === Number(chainId));
       if (chainToUse) {
+        const prov: any = this.signer.provider;
+        const rpcUrl = prov.connection?.url;
         const nexusAccount = await toMultichainNexusAccount({
           chains: [chainToUse],
-          transports: [http()],
+          transports: [
+            http(rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL),
+          ],
           signer: _signer,
         });
 
@@ -681,7 +699,7 @@ export class VerifiedContract {
 
             const meeClient = await createMeeClient({
               account: nexusAccount,
-              apiKey: PaymasterConstants.MEE_API_KEY,
+              apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
             });
 
             const transactionInstruction = await nexusAccount.build({

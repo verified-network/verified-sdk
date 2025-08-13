@@ -40,7 +40,9 @@ export default class Client extends VerifiedContract {
   public async _getMeeQuote(
     paymentTokenAddress: string,
     functionName: string,
-    args: any[]
+    args: any[],
+    apiKey?: string,
+    rpcUrl?: string
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -49,7 +51,13 @@ export default class Client extends VerifiedContract {
     chainId: number;
     functionName: string;
   }> {
-    return await this.getQuote(paymentTokenAddress, functionName, args);
+    return await this.getQuote(
+      paymentTokenAddress,
+      functionName,
+      args,
+      rpcUrl,
+      apiKey
+    );
   }
 
   public async setSigner(_address: string, options?: Options): any {
