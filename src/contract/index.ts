@@ -502,6 +502,7 @@ export class VerifiedContract {
           address: paymentToken,
         },
         instructions: [transactionInstruction],
+        upperBoundTimestamp: Date.now() + 3600, //1hour ???
       });
 
       txHash = hash;
@@ -665,6 +666,7 @@ export class VerifiedContract {
     rpc?: string,
     _apiKey?: string
   ) {
+    console.log(paymentTokenAddress, functionName, args, rpc, _apiKey);
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       const _signer: any = this.signer;
@@ -716,6 +718,8 @@ export class VerifiedContract {
               instructions: [transactionInstruction],
               feeToken: { address: tkAddress, chainId },
             });
+
+            // console.log("cont quote: ", quote);
             return {
               tokenAddress: paymentTokenAddress,
               amount: quote?.paymentInfo.tokenAmount,
