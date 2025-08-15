@@ -7,6 +7,7 @@ import { createSmartAccountClient } from "@biconomy/account";
 import { PaymasterConstants } from "../utils/constants";
 import {
   createMeeClient,
+  getExplorerTxLink,
   toMultichainNexusAccount,
 } from "@biconomy/abstractjs";
 import {
@@ -481,6 +482,7 @@ export class VerifiedContract {
   ) {
     let res = <SCResponse>{};
     let txHash: any = "";
+    let recp: any;
     try {
       const meeClient = await createMeeClient({
         account: nexusAccount,
@@ -495,6 +497,8 @@ export class VerifiedContract {
         },
       });
 
+      const nowInSec = Math.floor(Date.now() / 1000);
+
       // Execute the transaction using passed paymentToken
       const { hash } = await meeClient.execute({
         feeToken: {
@@ -502,8 +506,9 @@ export class VerifiedContract {
           address: paymentToken,
         },
         instructions: [transactionInstruction],
-      });
 
+        upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
+      });
       txHash = hash;
 
       console.log(`MEE transaction hash: ${hash}`);
@@ -544,93 +549,14 @@ export class VerifiedContract {
         return res;
       }
     } catch (err: any) {
-      if (
-        txHash?.length > 0 &&
-        err?.message
-          ?.toLowerCase()
-          .includes("execution deadline limit exceeded")
-      ) {
-        console.warn(
-          "MEE client transaction deadline exceeded, will fetch receipt manually..."
-        );
-        const meeClient = await createMeeClient({
-          account: nexusAccount,
-          apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
-        });
-
-        for (let i = 0; i < Number(PaymasterConstants.MAX_WAITING_ROUND); i++) {
-          try {
-            await new Promise((resolve) => setTimeout(resolve, 6000)); // 6 second delay
-
-            console.log(
-              "MEE deadline exceeded, fetching receipt for round:",
-              i + 1,
-              "out of",
-              Number(PaymasterConstants.MAX_WAITING_ROUND)
-            );
-
-            const receipt = await meeClient.waitForSupertransactionReceipt({
-              hash: txHash,
-            });
-
-            if (receipt?.receipts?.length > 1) {
-              //at least 2 receipts
-              const txReceipt =
-                receipt?.receipts[receipt?.receipts?.length - 1];
-              if (txReceipt?.status === "success") {
-                res.status = STATUS.SUCCESS;
-                res.response = {
-                  hash: txReceipt?.transactionHash,
-                  result: txReceipt,
-                }; //TODO: update result on response
-                res.message = "";
-                break; // Exit the loop
-              } else {
-                res.status = STATUS.ERROR;
-                res.response = {
-                  hash: txReceipt?.transactionHash,
-                  result: txReceipt,
-                }; //TODO: update result on response
-                res.message = "";
-                break; // Exit the loop
-              }
-            } else {
-              console.error(
-                "MEE client transaction failed with error: ",
-                "Receipts lesser than one."
-              );
-              res.status = STATUS.ERROR;
-              res.response = {
-                hash: receipt?.receipts[0]?.transactionHash,
-                result: receipt?.receipts[0],
-              }; //TODO: update result on response
-              res.message = "";
-              return res;
-            }
-          } catch (_err: any) {
-            if (
-              _err?.message
-                ?.toLowerCase()
-                .includes("execution deadline limit exceeded")
-            ) {
-              continue;
-            } else {
-              break;
-            }
-          }
-        }
-
-        return res;
-      } else {
-        console.error("MEE client transaction failed with error: ", err);
-        res.status = STATUS.ERROR;
-        res.response = {
-          hash: txHash,
-          result: {},
-        }; //TODO: update result on response
-        res.message = "";
-        return res;
-      }
+      console.error("MEE client transaction failed with error: ", err?.message);
+      res.status = STATUS.ERROR;
+      res.response = {
+        hash: txHash,
+        result: {},
+      }; //TODO: update result on response
+      res.message = "";
+      return res;
     }
   }
 
