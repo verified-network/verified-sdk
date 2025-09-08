@@ -28,6 +28,7 @@ enum FUNCTIONS {
   COLLECTCUSTODYFEE = "collectCustodyFee",
   SETDISTRIBUTOR = "setDistributor",
   SETCUSTODYFEE = "setCustodyFee",
+  CLEANTX = "cleanTx"
 }
 
 export default class Custody extends VerifiedContract {
@@ -218,6 +219,21 @@ export default class Custody extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, _txid);
     return this.callContract(
       FUNCTIONS.GETSHARDS,
+      _creator,
+      _txid,
+      options
+    );
+  }
+
+  public async cleanTx(
+    _creator: string,
+    _txid: string,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.BYTE32, _creator);
+    await this.validateInput(DATATYPES.STRING, _txid);
+    return this.callContract(
+      FUNCTIONS.CLEANTX,
       _creator,
       _txid,
       options
