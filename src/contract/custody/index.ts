@@ -258,14 +258,10 @@ export default class Custody extends VerifiedContract {
   public async calculateAverageBalance(
     _creator: string,
     _token: string,
-    _fromTime: string,
-    _toTime: string,
     options?: Options
   ): any {
     await this.validateInput(DATATYPES.BYTE32, _creator);
     await this.validateInput(DATATYPES.ADDRESS, _token);
-    await this.validateInput(DATATYPES.NUMBER, _fromTime);
-    await this.validateInput(DATATYPES.NUMBER, _toTime);
     return this.callContract(
       FUNCTIONS.CALCULATEAVERAGEBALANCE,
       _creator,
