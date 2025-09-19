@@ -27,8 +27,7 @@ enum FUNCTIONS {
   CALCULATEAVERAGEBALANCE = "calculateAverageBalance",
   COLLECTCUSTODYFEE = "collectCustodyFee",
   SETDISTRIBUTOR = "setDistributor",
-  SETCUSTODYFEE = "setCustodyFee",
-  CLEANTX = "cleanTx"
+  SETCUSTODYFEE = "setCustodyFee"
 }
 
 export default class Custody extends VerifiedContract {
@@ -225,17 +224,14 @@ export default class Custody extends VerifiedContract {
     );
   }
 
-  public async cleanTx(
+  public async getCreator(
     _creator: string,
-    _txid: string,
     options?: Options
   ): any {
     await this.validateInput(DATATYPES.BYTE32, _creator);
-    await this.validateInput(DATATYPES.STRING, _txid);
     return this.callContract(
-      FUNCTIONS.CLEANTX,
+      FUNCTIONS.GETCREATOR,
       _creator,
-      _txid,
       options
     );
   }
