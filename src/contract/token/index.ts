@@ -20,6 +20,7 @@ enum FUNCTIONS {
   ALLOWANCE = "allowance",
   INCREASEALLOWANCE = "increaseAllowance",
   DECREASEALLOWANCE = "decreaseAllowance",
+  ALLOW = "allow"
 }
 
 export default class Token extends VerifiedContract {
@@ -195,4 +196,23 @@ export default class Token extends VerifiedContract {
       options
     );
   }
+
+  public async allow(
+    _protocol: string,
+    _manager: string,
+    _isAllowed: boolean,
+    options?: Options
+  ): any {
+    await this.validateInput(DATATYPES.ADDRESS, _protocol);
+    await this.validateInput(DATATYPES.ADDRESS, _manager);
+    await this.validateInput(DATATYPES.BOOLEAN, _isAllowed);
+    return this.callContract(
+      FUNCTIONS.ALLOW,
+      _protocol,
+      _manager,
+      _isAllowed,
+      options
+    );
+  }
+
 }
