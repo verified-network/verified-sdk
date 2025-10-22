@@ -631,7 +631,7 @@ export class VerifiedContract {
           signer: _signer,
         });
         const meeAddress = nexusAccount.addressOn(chainId);
-        // console.log("nexus account address: ", meeAddress);
+        console.log("nexus account address: ", meeAddress);
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
