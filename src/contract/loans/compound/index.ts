@@ -51,7 +51,7 @@ export default class Compound extends VerifiedContract {
     );
   }
 
-  public setSigner(_address: string, options?: Options): any {
+  public async setSigner(_address: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _address);
     return this.callContract(FUNCTIONS.SETSIGNER, _address, options);
   }
