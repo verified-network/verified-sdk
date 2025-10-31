@@ -66,18 +66,21 @@ export default class Bond extends VerifiedContract {
   public async requestIssue(
     _amount: string,
     _payer: string,
+    _payee: string,
     _currency: string,
     _cashContract: string,
     options?: Options
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _amount);
     await this.validateInput(DATATYPES.ADDRESS, _payer);
+    await this.validateInput(DATATYPES.ADDRESS, _payee);
     await this.validateInput(DATATYPES.STRING, _currency);
     await this.validateInput(DATATYPES.ADDRESS, _cashContract);
     return this.callContract(
       FUNCTIONS.REQUESTISSUE,
       _amount,
       _payer,
+      _payee,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
       _cashContract,
       options
