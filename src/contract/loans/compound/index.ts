@@ -58,32 +58,47 @@ export default class Compound extends VerifiedContract {
 
   /**
    * Submits new RWA to Compound
-   * @params (address asset, address bond, uint256 apy, string memory issuingDocs, uint256 frequency, address factory)
+   * @params submitNewRWA(
+        address asset,
+        address collateral,
+        address bond,
+        uint256 apy,
+        string memory issuingDocs,
+        uint256 frequency,
+        uint256 faceValue,
+        address factory
+    )
    * @returns
    */
 
   public async submitNewRWA(
     asset: string,
+    collateral: string,
     bond: string,
     apy: string,
     issuingDocs: string,
     frequency: string,
+    faceValue: string,
     factory: string,
     options?: Options
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, asset);
+    await this.validateInput(DATATYPES.ADDRESS, collateral);
     await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.NUMBER, apy);
     await this.validateInput(DATATYPES.STRING, issuingDocs);
+    await this.validateInput(DATATYPES.NUMBER, frequency);
     await this.validateInput(DATATYPES.NUMBER, faceValue);
     await this.validateInput(DATATYPES.ADDRESS, factory);
     return this.callContract(
       FUNCTIONS.SUBMITNEWRWA,
       asset,
+      collateral,
       bond,
       apy,
       issuingDocs,
       frequency,
+      faceValue,
       factory,
       options
     );
@@ -114,32 +129,28 @@ export default class Compound extends VerifiedContract {
 
   /**
    * Borrows from Compound
-   * @params (address asset, uint256 amount)
+   * @params (address bond)
    * @returns
    */
-  public async borrowBase(asset: string, options?: Options): any {
-    await this.validateInput(DATATYPES.ADDRESS, asset);
-    return this.callContract(FUNCTIONS.BORROWBASE, asset, options);
+  public async borrowBase(bond: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, bond);
+    return this.callContract(FUNCTIONS.BORROWBASE, bond, options);
   }
 
   /**
    * Repays to Compound
-   * @params (address asset, uint256 amount)
+   * @params (address bond, uint256 amount)
    * @returns
    */
-  public async repayBase(
-    asset: string,
-    amount: string,
-    options?: Options
-  ): any {
-    await this.validateInput(DATATYPES.ADDRESS, asset);
+  public async repayBase(bond: string, amount: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.NUMBER, amount);
-    return this.callContract(FUNCTIONS.REPAYBASE, asset, amount, options);
+    return this.callContract(FUNCTIONS.REPAYBASE, bond, amount, options);
   }
 
   /**
    * Withdraws collateral
-   * @params (address bond, address issuer, address factory)
+   * @params (address bond, address issuer)
    * @returns
    */
   public async withdrawCollateral(
@@ -150,28 +161,21 @@ export default class Compound extends VerifiedContract {
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.ADDRESS, issuer);
-    await this.validateInput(DATATYPES.ADDRESS, factory);
     return this.callContract(
       FUNCTIONS.WITHDRAWCOLLATERAL,
       bond,
       issuer,
-      factory,
       options
     );
   }
 
   public async repayLenders(
-    asset: string,
+    bond: string,
     collateral: string,
     options?: Options
   ): any {
-    await this.validateInput(DATATYPES.ADDRESS, asset);
+    await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.ADDRESS, collateral);
-    return this.callContract(
-      FUNCTIONS.REPAYLENDERS,
-      asset,
-      collateral,
-      options
-    );
+    return this.callContract(FUNCTIONS.REPAYLENDERS, bond, collateral, options);
   }
 }
