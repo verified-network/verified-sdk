@@ -47,7 +47,8 @@ export default class LiquidityContract extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -61,7 +62,8 @@ export default class LiquidityContract extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -74,7 +76,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async createSupply(
     _cap: string,
     _limit: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _cap);
     await this.validateInput(DATATYPES.NUMBER, _limit);
@@ -88,7 +90,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async supportTokens(
     _tokens: string,
     _name: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _tokens);
     await this.validateInput(DATATYPES.STRING, _name);
@@ -128,7 +130,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async registerPlatform(
     _platform: string,
     _name: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.STRING, _name);
@@ -136,7 +138,7 @@ export default class LiquidityContract extends VerifiedContract {
       FUNCTIONS.REGISTERPLATFORM,
       _platform,
       this.sanitiseInput(DATATYPES.BYTE32, _name),
-      options
+      options,
     );
   }
 
@@ -173,7 +175,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async getInvestment(
     _investor: string,
     _token: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _investor);
     await this.validateInput(DATATYPES.ADDRESS, _token);
@@ -181,7 +183,7 @@ export default class LiquidityContract extends VerifiedContract {
       FUNCTIONS.GETINVESTMENT,
       _investor,
       _token,
-      options
+      options,
     );
   }
 
@@ -197,7 +199,7 @@ export default class LiquidityContract extends VerifiedContract {
     _token: string,
     _tokenAmount: string,
     _LPToIssue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _investor);
     await this.validateInput(DATATYPES.ADDRESS, _token);
@@ -209,7 +211,7 @@ export default class LiquidityContract extends VerifiedContract {
       _token,
       _tokenAmount,
       _LPToIssue,
-      options
+      options,
     );
   }
 
@@ -239,7 +241,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async payOut(
     _distribution: string,
     _platform: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _distribution);
     await this.validateInput(DATATYPES.ADDRESS, _platform);
@@ -247,7 +249,7 @@ export default class LiquidityContract extends VerifiedContract {
       FUNCTIONS.PAYOUT,
       _distribution,
       _platform,
-      options
+      options,
     );
   }
 
@@ -261,7 +263,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async addManager(
     _platform: string,
     _manager: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -269,7 +271,7 @@ export default class LiquidityContract extends VerifiedContract {
       FUNCTIONS.ADDMANAGER,
       _platform,
       _manager,
-      options
+      options,
     );
   }
 
@@ -283,7 +285,7 @@ export default class LiquidityContract extends VerifiedContract {
   public async removeManager(
     _platform: string,
     _manager: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -291,7 +293,7 @@ export default class LiquidityContract extends VerifiedContract {
       FUNCTIONS.REMOVEMANAGER,
       _platform,
       _manager,
-      options
+      options,
     );
   }
 
@@ -317,13 +319,13 @@ export default class LiquidityContract extends VerifiedContract {
      */
   public async getPlatformPerformance(
     _platform: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     return this.callContract(
       FUNCTIONS.GETPLATFORMPERFORMANCE,
       _platform,
-      options
+      options,
     );
   }
 
@@ -339,7 +341,7 @@ export default class LiquidityContract extends VerifiedContract {
     _platform: string,
     _token: string,
     _manager: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _token);
@@ -349,7 +351,7 @@ export default class LiquidityContract extends VerifiedContract {
       _platform,
       _token,
       _manager,
-      options
+      options,
     );
   }
 
@@ -367,7 +369,7 @@ export default class LiquidityContract extends VerifiedContract {
     _liquidity: string,
     _token: string,
     _tokenAmount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -381,7 +383,7 @@ export default class LiquidityContract extends VerifiedContract {
       _liquidity,
       _token,
       _tokenAmount,
-      options
+      options,
     );
   }
 

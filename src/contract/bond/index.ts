@@ -45,7 +45,8 @@ export default class Bond extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -59,7 +60,8 @@ export default class Bond extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -69,7 +71,7 @@ export default class Bond extends VerifiedContract {
     _payee: string,
     _currency: string,
     _cashContract: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _amount);
     await this.validateInput(DATATYPES.ADDRESS, _payer);
@@ -83,7 +85,7 @@ export default class Bond extends VerifiedContract {
       _payee,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
       _cashContract,
-      options
+      options,
     );
   }
 
@@ -92,7 +94,7 @@ export default class Bond extends VerifiedContract {
     _payer: string,
     _currency: string,
     _cashContract: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _amount);
     await this.validateInput(DATATYPES.ADDRESS, _payer);
@@ -104,7 +106,7 @@ export default class Bond extends VerifiedContract {
       _payer,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
       _cashContract,
-      options
+      options,
     );
   }
 
@@ -113,7 +115,7 @@ export default class Bond extends VerifiedContract {
     _payer: string,
     _currency: string,
     _tokenContract: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _amount);
     await this.validateInput(DATATYPES.ADDRESS, _payer);
@@ -125,7 +127,7 @@ export default class Bond extends VerifiedContract {
       _payer,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
       _tokenContract,
-      options
+      options,
     );
   }
 
@@ -147,7 +149,7 @@ export default class Bond extends VerifiedContract {
   public async getBondIssues(
     _issuer: string,
     _bond: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _issuer);
     await this.validateInput(DATATYPES.ADDRESS, _bond);
@@ -163,7 +165,7 @@ export default class Bond extends VerifiedContract {
   public async getBondPurchases(
     _issuer: string,
     _bond: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _issuer);
     await this.validateInput(DATATYPES.ADDRESS, _bond);
@@ -171,7 +173,7 @@ export default class Bond extends VerifiedContract {
       FUNCTIONS.GETBONDPURCHASES,
       _issuer,
       _bond,
-      options
+      options,
     );
   }
 
@@ -199,7 +201,7 @@ export default class Bond extends VerifiedContract {
   public async transfer(
     _recipient: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -209,7 +211,7 @@ export default class Bond extends VerifiedContract {
   public async approve(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -219,7 +221,7 @@ export default class Bond extends VerifiedContract {
   public async allowance(
     _owner: string,
     _spender: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.ADDRESS, _owner);
@@ -229,7 +231,7 @@ export default class Bond extends VerifiedContract {
   public async increaseAllowance(
     _spender: string,
     _addedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _addedValue);
@@ -237,14 +239,14 @@ export default class Bond extends VerifiedContract {
       FUNCTIONS.INCREASEALLOWANCE,
       _spender,
       _addedValue,
-      options
+      options,
     );
   }
 
   public async decreaseAllowance(
     _spender: string,
     _subtractedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _subtractedValue);
@@ -252,7 +254,7 @@ export default class Bond extends VerifiedContract {
       FUNCTIONS.DECREASEALLOWANCE,
       _spender,
       _subtractedValue,
-      options
+      options,
     );
   }
 
