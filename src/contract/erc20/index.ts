@@ -34,7 +34,8 @@ export default class ERC20 extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -48,7 +49,8 @@ export default class ERC20 extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -76,7 +78,7 @@ export default class ERC20 extends VerifiedContract {
   public async transfer(
     _recipient: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -86,7 +88,7 @@ export default class ERC20 extends VerifiedContract {
   public async approve(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -96,7 +98,7 @@ export default class ERC20 extends VerifiedContract {
   public async allowance(
     _owner: string,
     _spender: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.ADDRESS, _owner);
@@ -106,7 +108,7 @@ export default class ERC20 extends VerifiedContract {
   public async increaseAllowance(
     _spender: string,
     _addedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _addedValue);
@@ -114,14 +116,14 @@ export default class ERC20 extends VerifiedContract {
       FUNCTIONS.INCREASEALLOWANCE,
       _spender,
       _addedValue,
-      options
+      options,
     );
   }
 
   public async decreaseAllowance(
     _spender: string,
     _subtractedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _subtractedValue);
@@ -129,7 +131,7 @@ export default class ERC20 extends VerifiedContract {
       FUNCTIONS.DECREASEALLOWANCE,
       _spender,
       _subtractedValue,
-      options
+      options,
     );
   }
 
@@ -137,7 +139,7 @@ export default class ERC20 extends VerifiedContract {
     _senderAddress: string,
     _recieverAddress: string,
     _tokens: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _senderAddress);
     await this.validateInput(DATATYPES.ADDRESS, _recieverAddress);
@@ -147,7 +149,7 @@ export default class ERC20 extends VerifiedContract {
       _senderAddress,
       _recieverAddress,
       _tokens,
-      options
+      options,
     );
   }
 }

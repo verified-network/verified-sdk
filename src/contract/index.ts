@@ -18,7 +18,11 @@ import {
   base,
   polygon,
 } from "viem/chains";
-import { http } from "viem";
+import { http, zeroAddress } from "viem";
+import {
+  createMultiChainNexusAccount,
+  createNexusAccount,
+} from "../lib/biconomyRNFix";
 
 enum STATUS {
   SUCCESS,
@@ -48,6 +52,7 @@ export type Options = {
   paymentToken?: string;
   apiKey?: string;
   rpcUrl?: string;
+  isReactNative?: boolean;
 };
 
 export class VerifiedContract {
@@ -261,7 +266,7 @@ export class VerifiedContract {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(requestData),
-        }
+        },
       );
       const data = await response.json();
 
@@ -269,7 +274,7 @@ export class VerifiedContract {
     } catch (err: any) {
       console.error(
         "Error trying to fetch gassless receipt",
-        err?.message || err
+        err?.message || err,
       );
       return { failed: true };
     }
@@ -293,7 +298,7 @@ export class VerifiedContract {
       let _res = await fn(...args, ...options);
       let _resp = _res.wait !== undefined ? await _res.wait(_res) : _res;
       res.response = this.tempOutput(
-        this.convertToArray(utils.deepCopy(_resp))
+        this.convertToArray(utils.deepCopy(_resp)),
       );
       res.status = STATUS.SUCCESS;
       res.message = "";
@@ -365,7 +370,7 @@ export class VerifiedContract {
     } catch (err: any) {
       if (
         err?.message?.includes(
-          "Try getting the receipt manually using eth_getUserOperationReceipt rpc method on bundler"
+          "Try getting the receipt manually using eth_getUserOperationReceipt rpc method on bundler",
         )
       ) {
         //extract hash from message due to difference in hash???
@@ -417,7 +422,7 @@ export class VerifiedContract {
               "Gassless timeout exceeded, fetching receipt for round:",
               i + 1,
               "out of",
-              Number(PaymasterConstants.MAX_WAITING_ROUND)
+              Number(PaymasterConstants.MAX_WAITING_ROUND),
             );
 
             const _res = await this.fetchUserOpReceipt(txHash);
@@ -456,7 +461,7 @@ export class VerifiedContract {
         } else {
           console.error(
             "gasless transaction failed with error: ",
-            "No TX-hash from error message."
+            "No TX-hash from error message.",
           );
           console.log("will use ethers....");
           return await this.callFunctionWithEthers(functionName, ...args);
@@ -464,7 +469,7 @@ export class VerifiedContract {
       } else {
         console.error(
           "gasless transaction failed with error: ",
-          err?.message || err
+          err?.message || err,
         );
         console.log("will use ethers....");
         return await this.callFunctionWithEthers(functionName, ...args);
@@ -478,7 +483,7 @@ export class VerifiedContract {
     chainId: number,
     tx: any,
     paymentToken: `0x${string}`,
-    _apiKey?: string
+    _apiKey?: string,
   ) {
     let res = <SCResponse>{};
     let txHash: any = "";
@@ -488,6 +493,8 @@ export class VerifiedContract {
         account: nexusAccount,
         apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
       });
+
+      console.log("meeClient created....");
 
       const transactionInstruction = await nexusAccount.build({
         type: "default",
@@ -516,8 +523,12 @@ export class VerifiedContract {
       // Wait for transaction to complete
       const receipt = await meeClient.waitForSupertransactionReceipt({ hash });
 
-      if (receipt?.receipts?.length > 1) {
-        //at least 2 receipts
+      // console.log("receipts: ", receipt);
+
+      // console.log("receipt: ", receipt?.receipts);
+
+      if (receipt?.receipts?.length > 0) {
+        //always pick last receipt????
         const txReceipt = receipt?.receipts[receipt?.receipts?.length - 1];
         if (txReceipt?.status === "success") {
           res.status = STATUS.SUCCESS;
@@ -538,7 +549,7 @@ export class VerifiedContract {
       } else {
         console.error(
           "MEE client transaction failed with error: ",
-          "Receipts lesser than one."
+          "Invalid receipts length",
         );
         res.status = STATUS.ERROR;
         res.response = {
@@ -592,7 +603,7 @@ export class VerifiedContract {
       if (optionsRaw[0]?.paymentToken) {
         console.log(
           "Using Mee client with paymentToken of: ",
-          optionsRaw[0]?.paymentToken
+          optionsRaw[0]?.paymentToken,
         );
         const _signer: any = this.signer;
         const chainToUse = [
@@ -614,30 +625,47 @@ export class VerifiedContract {
               baseSepolia,
             ]
               ?.map((nt) => nt?.id)
-              ?.join(", ")}`
+              ?.join(", ")}`,
           );
         }
         const prov: any = this.signer.provider;
         const rpcUrl = prov?.connection?.url;
-        const nexusAccount = await toMultichainNexusAccount({
-          chains: [chainToUse!],
-          transports: [
-            http(
-              rpcUrl ||
-                optionsRaw[0]?.rpcUrl ||
-                PaymasterConstants[Number(chainId)]?.RPC_URL
-            ),
-          ],
-          signer: _signer,
-        });
+        let nexusAccount: any;
+        if (optionsRaw[0]?.isReactNative) {
+          nexusAccount = await createMultiChainNexusAccount({
+            chains: [chainToUse!],
+            transports: [
+              http(
+                rpcUrl ||
+                  optionsRaw[0]?.rpcUrl ||
+                  PaymasterConstants[Number(chainId)]?.RPC_URL,
+              ),
+            ],
+            signer: _signer,
+          });
+        } else {
+          nexusAccount = await toMultichainNexusAccount({
+            chains: [chainToUse!],
+            transports: [
+              http(
+                rpcUrl ||
+                  optionsRaw[0]?.rpcUrl ||
+                  PaymasterConstants[Number(chainId)]?.RPC_URL,
+              ),
+            ],
+            signer: _signer,
+          });
+        }
+
         const meeAddress = nexusAccount.addressOn(chainId);
+
         // console.log("nexus account address: ", meeAddress);
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
           tx1,
           optionsRaw[0]?.paymentToken,
-          optionsRaw[0]?.apiKey
+          optionsRaw[0]?.apiKey,
         );
       } else {
         console.log("Using Userop since no payment token...");
@@ -650,7 +678,7 @@ export class VerifiedContract {
           tx1,
           functionName,
           paymentToken,
-          ...args
+          ...args,
         );
       }
     } else {
@@ -665,7 +693,8 @@ export class VerifiedContract {
     functionName: string,
     args: any[],
     rpc?: string,
-    _apiKey?: string
+    _apiKey?: string,
+    isReactNative?: boolean,
   ) {
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
@@ -681,13 +710,35 @@ export class VerifiedContract {
       if (chainToUse) {
         const prov: any = this.signer.provider;
         const rpcUrl = prov.connection?.url;
-        const nexusAccount = await toMultichainNexusAccount({
-          chains: [chainToUse],
-          transports: [
-            http(rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL),
-          ],
-          signer: _signer,
-        });
+        let nexusAccount: any;
+        if (isReactNative) {
+          nexusAccount = await createMultiChainNexusAccount({
+            chains: [chainToUse],
+            transports: [
+              http(
+                rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL,
+              ),
+            ],
+            signer: _signer,
+          });
+        } else {
+          nexusAccount = await toMultichainNexusAccount({
+            chains: [chainToUse],
+            transports: [
+              http(
+                rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL,
+              ),
+            ],
+            signer: _signer,
+          });
+        }
+        // const nexusAccount = await toMultichainNexusAccount({
+        //   chains: [chainToUse],
+        //   transports: [
+        //     http(rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL),
+        //   ],
+        //   signer: _signer,
+        // });
 
         if (paymentTokenAddress) {
           //construct calldata for function
@@ -731,7 +782,7 @@ export class VerifiedContract {
           } catch (err: any) {
             if (err?.message?.includes("fn is not a function")) {
               console.error(
-                `Function ${functionName} not found in contract's ABI`
+                `Function ${functionName} not found in contract's ABI`,
               );
             } else if (err?.message?.includes("code=INVALID_ARGUMENT")) {
               console.error(`Invalid arguments type`);

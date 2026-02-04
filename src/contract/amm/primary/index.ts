@@ -27,7 +27,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
   constructor(
     signer: VerifiedWallet,
     platformAddress: string,
-    platform: string
+    platform: string,
   ) {
     const address = platformAddress;
     if (platform == "balancer")
@@ -43,7 +43,8 @@ export default class PrimaryIssueManager extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -57,7 +58,8 @@ export default class PrimaryIssueManager extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -70,7 +72,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     min: string,
     issuer: string,
     docs: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, owned);
     await this.validateInput(DATATYPES.ADDRESS, tomatch);
@@ -90,7 +92,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
       min,
       issuer,
       docs,
-      options
+      options,
     );
   }
 
@@ -108,7 +110,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     offered: string,
     tomatch: string,
     ordersize: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, owner);
     await this.validateInput(DATATYPES.ADDRESS, offered);
@@ -120,7 +122,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
       offered,
       tomatch,
       ordersize,
-      options
+      options,
     );
   }
 
@@ -129,7 +131,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     offered: string,
     tomatch: string,
     swapfee: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, owner);
     await this.validateInput(DATATYPES.ADDRESS, offered);
@@ -141,7 +143,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
       offered,
       tomatch,
       swapfee,
-      options
+      options,
     );
   }
 
@@ -166,7 +168,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
   public async getOfferMade(
     offered: string,
     tomatch: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, offered);
     await this.validateInput(DATATYPES.ADDRESS, tomatch);
@@ -194,7 +196,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     return this.callContract(
       FUNCTIONS.GETLIQUIDITYPROVIDERS,
       security,
-      options
+      options,
     );
   }
 
@@ -202,7 +204,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     security: string,
     cutoffTime: string,
     issuer: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, issuer);
@@ -212,7 +214,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
       security,
       cutoffTime,
       issuer,
-      options
+      options,
     );
   }
 
@@ -231,7 +233,7 @@ export default class PrimaryIssueManager extends VerifiedContract {
     investor: string,
     amnt: string,
     asset: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, investor);
     await this.validateInput(DATATYPES.ADDRESS, asset);
@@ -243,14 +245,14 @@ export default class PrimaryIssueManager extends VerifiedContract {
       investor,
       amnt,
       asset,
-      options
+      options,
     );
   }
 
   public async reject(
     poolid: string,
     investor: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, investor);
     await this.validateInput(DATATYPES.STRING, poolid);

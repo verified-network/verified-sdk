@@ -37,7 +37,8 @@ export default class MarginIssueManager extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -51,7 +52,8 @@ export default class MarginIssueManager extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -66,7 +68,7 @@ export default class MarginIssueManager extends VerifiedContract {
     margin: string,
     collateral: string,
     tradeFee: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.STRING, securityType);
@@ -90,14 +92,14 @@ export default class MarginIssueManager extends VerifiedContract {
       margin,
       collateral,
       tradeFee,
-      options
+      options,
     );
   }
 
   public async close(
     security: string,
     currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -108,7 +110,7 @@ export default class MarginIssueManager extends VerifiedContract {
     currency: string,
     amount: string,
     security: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, currency);
     await this.validateInput(DATATYPES.NUMBER, amount);
@@ -118,7 +120,7 @@ export default class MarginIssueManager extends VerifiedContract {
       currency,
       amount,
       security,
-      options
+      options,
     );
   }
 
@@ -126,7 +128,7 @@ export default class MarginIssueManager extends VerifiedContract {
     currency: string,
     amount: string,
     security: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, currency);
     await this.validateInput(DATATYPES.NUMBER, amount);
@@ -136,14 +138,14 @@ export default class MarginIssueManager extends VerifiedContract {
       currency,
       amount,
       security,
-      options
+      options,
     );
   }
 
   public async getCollateral(
     poolId: string,
     currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, currency);
     await this.validateInput(DATATYPES.STRING, poolId);
@@ -151,14 +153,14 @@ export default class MarginIssueManager extends VerifiedContract {
       FUNCTIONS.GETCOLLATERAL,
       this.sanitiseInput(DATATYPES.BYTE32, poolId),
       currency,
-      options
+      options,
     );
   }
 
   public async getUserCollateral(
     party: string,
     currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, currency);
     await this.validateInput(DATATYPES.ADDRESS, party);
@@ -166,7 +168,7 @@ export default class MarginIssueManager extends VerifiedContract {
       FUNCTIONS.GETUSERCOLLATERAL,
       party,
       currency,
-      options
+      options,
     );
   }
 
@@ -175,7 +177,7 @@ export default class MarginIssueManager extends VerifiedContract {
     return this.callContract(
       FUNCTIONS.GETCOLLATERAL,
       this.sanitiseInput(DATATYPES.BYTE32, poolId),
-      options
+      options,
     );
   }
 
@@ -187,7 +189,7 @@ export default class MarginIssueManager extends VerifiedContract {
     securityTraded: string,
     currency: string,
     cashTraded: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, party);
     await this.validateInput(DATATYPES.ADDRESS, counterparty);
@@ -205,7 +207,7 @@ export default class MarginIssueManager extends VerifiedContract {
       securityTraded,
       currency,
       cashTraded,
-      options
+      options,
     );
   }
 
@@ -217,7 +219,7 @@ export default class MarginIssueManager extends VerifiedContract {
     currency: string,
     currencyTraded: string,
     executionTime: string,
-    options?: Options
+    options?: Options,
   ): any {
     //await this.validateInput(DATATYPES.STRING, ref);
     //await this.validateInput(DATATYPES.STRING, cref);
@@ -235,7 +237,7 @@ export default class MarginIssueManager extends VerifiedContract {
       currency,
       currencyTraded,
       executionTime,
-      options
+      options,
     );
   }
 
@@ -268,7 +270,7 @@ export default class MarginIssueManager extends VerifiedContract {
     swapLong: string,
     swapShort: string,
     settlementTime: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -290,7 +292,7 @@ export default class MarginIssueManager extends VerifiedContract {
       swapLong,
       swapShort,
       settlementTime,
-      options
+      options,
     );
   }
 
@@ -298,7 +300,7 @@ export default class MarginIssueManager extends VerifiedContract {
     security: string,
     currency: string,
     amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -308,7 +310,7 @@ export default class MarginIssueManager extends VerifiedContract {
       security,
       currency,
       amount,
-      options
+      options,
     );
   }
 }

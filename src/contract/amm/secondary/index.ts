@@ -35,7 +35,8 @@ export default class SecondaryIssueManager extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -49,7 +50,8 @@ export default class SecondaryIssueManager extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -60,7 +62,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
     securityAmount: string,
     minOrderSize: string,
     currencyAmount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -76,7 +78,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
       securityAmount,
       minOrderSize,
       currencyAmount,
-      options
+      options,
     );
   }
 
@@ -84,7 +86,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
     security: string,
     currency: string,
     swapfee: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, currency);
@@ -94,14 +96,14 @@ export default class SecondaryIssueManager extends VerifiedContract {
       security,
       currency,
       swapfee,
-      options
+      options,
     );
   }
 
   public async getSettlementRequests(
     dpid: string,
     poolid: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, dpid);
     await this.validateInput(DATATYPES.STRING, poolid);
@@ -109,7 +111,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
       FUNCTIONS.GETSETTLEMENTREQUESTS,
       this.sanitiseInput(DATATYPES.BYTE32, dpid),
       poolid,
-      options
+      options,
     );
   }
 
@@ -121,7 +123,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
   public async setSettlementStatus(
     ref: string,
     status: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, ref);
     await this.validateInput(DATATYPES.STRING, status);
@@ -129,7 +131,7 @@ export default class SecondaryIssueManager extends VerifiedContract {
       FUNCTIONS.SETSETTLEMENTSTATUS,
       ref,
       this.sanitiseInput(DATATYPES.BYTE32, status),
-      options
+      options,
     );
   }
 
