@@ -4,6 +4,9 @@ export const PaymasterConstants: any = {
   BUNDLER_URL_FIRST_SECTION: "https://bundler.biconomy.io/api/v2",
   GENERAL_PAYMASTER_URL: "https://paymaster.biconomy.io/api/v1",
   MEE_API_KEY: "mee_XGE8XYuTujTdkB4sohJMHv",
+  MEE_API_KEY_STAGING: "mee_3ZhZhHx3hmKrBQxacr283dHt",
+  MEE_URL_STAGING: "https://staging-network.biconomy.io/v1",
+  TEST_CHAINS: [11155111, 84532],
   BICONOMY_REVERT_TOPIC:
     "0x1c4fada7374c0a9ee8841fc38afe82932dc0f8e69012e927f061a8bae611a201",
   //ethereum sepolia

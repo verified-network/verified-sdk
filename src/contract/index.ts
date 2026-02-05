@@ -489,12 +489,16 @@ export class VerifiedContract {
     let txHash: any = "";
     let recp: any;
     try {
-      const meeClient = await createMeeClient({
-        account: nexusAccount,
-        apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
-      });
-
-      console.log("meeClient created....");
+      const meeClient = PaymasterConstants.TEST_CHAINS?.includes(chainId)
+        ? await createMeeClient({
+            account: nexusAccount,
+            url: PaymasterConstants.MEE_URL_STAGING,
+            apiKey: PaymasterConstants.MEE_API_KEY_STAGING,
+          })
+        : await createMeeClient({
+            account: nexusAccount,
+            apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
+          });
 
       const transactionInstruction = await nexusAccount.build({
         type: "default",
@@ -750,10 +754,16 @@ export class VerifiedContract {
               data: _res.data,
             };
 
-            const meeClient = await createMeeClient({
-              account: nexusAccount,
-              apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
-            });
+            const meeClient = PaymasterConstants.TEST_CHAINS?.includes(chainId)
+              ? await createMeeClient({
+                  account: nexusAccount,
+                  url: PaymasterConstants.MEE_URL_STAGING,
+                  apiKey: PaymasterConstants.MEE_API_KEY_STAGING,
+                })
+              : await createMeeClient({
+                  account: nexusAccount,
+                  apiKey: _apiKey || PaymasterConstants.MEE_API_KEY,
+                });
 
             const transactionInstruction = await nexusAccount.build({
               type: "default",
