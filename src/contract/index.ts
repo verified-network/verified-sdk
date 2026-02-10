@@ -8,6 +8,8 @@ import { PaymasterConstants } from "../utils/constants";
 import {
   createMeeClient,
   getExplorerTxLink,
+  getMEEVersion,
+  MEEVersion,
   toMultichainNexusAccount,
 } from "@biconomy/abstractjs";
 import {
@@ -508,7 +510,28 @@ export class VerifiedContract {
         },
       });
 
+      const quote = await meeClient.getQuote({
+        instructions: [transactionInstruction],
+        feeToken: { address: paymentToken, chainId },
+        simulation: {
+          simulate: true,
+        },
+      });
+
       const nowInSec = Math.floor(Date.now() / 1000);
+
+      const transactionInstructionFinal = await nexusAccount.build({
+        type: "default",
+        data: {
+          chainId,
+          calls: [
+            {
+              ...tx,
+              gasLimit: quote?.userOps[quote?.userOps?.length - 1]?.maxGasLimit,
+            },
+          ],
+        },
+      });
 
       // Execute the transaction using passed paymentToken
       const { hash } = await meeClient.execute({
@@ -516,7 +539,7 @@ export class VerifiedContract {
           chainId,
           address: paymentToken,
         },
-        instructions: [transactionInstruction],
+        instructions: [transactionInstructionFinal],
 
         upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
       });
@@ -649,15 +672,18 @@ export class VerifiedContract {
           });
         } else {
           nexusAccount = await toMultichainNexusAccount({
-            chains: [chainToUse!],
-            transports: [
-              http(
-                rpcUrl ||
-                  optionsRaw[0]?.rpcUrl ||
-                  PaymasterConstants[Number(chainId)]?.RPC_URL,
-              ),
-            ],
             signer: _signer,
+            chainConfigurations: [
+              {
+                chain: chainToUse!,
+                transport: http(
+                  rpcUrl ||
+                    optionsRaw[0]?.rpcUrl ||
+                    PaymasterConstants[Number(chainId)]?.RPC_URL,
+                ),
+                version: getMEEVersion(MEEVersion.V2_0_0),
+              },
+            ],
           });
         }
 
@@ -711,6 +737,7 @@ export class VerifiedContract {
         sepolia,
         baseSepolia,
       ].find((nt) => Number(nt?.id) === Number(chainId));
+
       if (chainToUse) {
         const prov: any = this.signer.provider;
         const rpcUrl = prov.connection?.url;
@@ -727,15 +754,19 @@ export class VerifiedContract {
           });
         } else {
           nexusAccount = await toMultichainNexusAccount({
-            chains: [chainToUse],
-            transports: [
-              http(
-                rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL,
-              ),
-            ],
             signer: _signer,
+            chainConfigurations: [
+              {
+                chain: chainToUse!,
+                transport: http(
+                  rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL,
+                ),
+                version: getMEEVersion(MEEVersion.V2_1_0),
+              },
+            ],
           });
         }
+
         // const nexusAccount = await toMultichainNexusAccount({
         //   chains: [chainToUse],
         //   transports: [
