@@ -18,6 +18,7 @@ import SecuritiesFactory from "./contract/securitiesfactory";
 import Distribution from "./contract/distribution";
 import Client from "./contract/client";
 import Compound from "./contract/loans/compound";
+import Comet from "./contract/comet";
 import { utils } from "ethers";
 import contractAddress from "./contractAddress";
 import { PaymasterConstants } from "./utils/constants";
@@ -42,6 +43,7 @@ export {
   Distribution,
   Client,
   Compound,
+  Comet,
   utils,
   contractAddress,
   PaymasterConstants,
