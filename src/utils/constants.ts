@@ -7,7 +7,7 @@ export const PaymasterConstants: any = {
   MEE_API_KEY_STAGING: "mee_3Zmc7H6Pbd5wUfUGu27aGzdf", //Biconomy sponsorship enabled staging api key???
   MEE_URL_STAGING: "https://staging-network.biconomy.io/v1",
   TEST_CHAINS: [11155111, 84532],
-  HOSTED_SPONSOR_URL: "", //update to hosted sponsor url
+  HOSTED_SPONSOR_URL: "", //TODO: update to hosted sponsor url
   ADMIN_WALLET_ADDRESS: "0x5DBDA7BE05F68131e260f5A2bC573b24692a5B34", //current admin???
   COMPENSATION_AMOUNT: "0.02", //2 Cents
   BICONOMY_REVERT_TOPIC:
