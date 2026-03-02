@@ -4,7 +4,7 @@ export const PaymasterConstants: any = {
   BUNDLER_URL_FIRST_SECTION: "https://bundler.biconomy.io/api/v2",
   GENERAL_PAYMASTER_URL: "https://paymaster.biconomy.io/api/v1",
   MEE_API_KEY: "mee_XGE8XYuTujTdkB4sohJMHv",
-  MEE_API_KEY_STAGING: "mee_3Zmc7H6Pbd5wUfUGu27aGzdf",
+  MEE_API_KEY_STAGING: "mee_3Zmc7H6Pbd5wUfUGu27aGzdf", //Biconomy sponsorship enabled staging api key???
   MEE_URL_STAGING: "https://staging-network.biconomy.io/v1",
   TEST_CHAINS: [11155111, 84532],
   HOSTED_SPONSOR_URL: "", //update to hosted sponsor url
