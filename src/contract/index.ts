@@ -7,6 +7,10 @@ import { createSmartAccountClient } from "@biconomy/account";
 import { PaymasterConstants } from "../utils/constants";
 import {
   createMeeClient,
+  DEFAULT_MEE_TESTNET_SPONSORSHIP_CHAIN_ID,
+  DEFAULT_MEE_TESTNET_SPONSORSHIP_PAYMASTER_ACCOUNT,
+  DEFAULT_MEE_TESTNET_SPONSORSHIP_TOKEN_ADDRESS,
+  DEFAULT_PATHFINDER_URL,
   getExplorerTxLink,
   getMEEVersion,
   MEEVersion,
@@ -25,6 +29,7 @@ import {
   createMultiChainNexusAccount,
   createNexusAccount,
 } from "../lib/biconomyRNFix";
+import ERC20 from "./erc20";
 
 enum STATUS {
   SUCCESS,
@@ -382,37 +387,6 @@ export class VerifiedContract {
           ?.replace(".", "");
         //wait up to max round to fetch receipt ???
         if (txHash) {
-          // for (
-          //   let i = 0;
-          //   i < Number(PaymasterConstants.MAX_WAITING_ROUND);
-          //   i++
-          // ) {
-          //   await new Promise((resolve) => {
-          //     setTimeout(resolve, 6000); //1 minute delay per round
-          //   });
-          //   console.log(
-          //     "Gassless timeout exceeded, fetching receipt for round: ",
-          //     i + 1,
-          //     "out of ",
-          //     Number(PaymasterConstants.MAX_WAITING_ROUND)
-          //   );
-          //   return await this.fetchUserOpReceipt(txHash).then(async (_res) => {
-          //     if (_res && !_res?.failed) {
-          //       //if receipt received stop and configure return
-          //       res.status = STATUS.SUCCESS;
-          //       res.response = {
-          //         hash: _res?.transactionHash || txHash,
-          //         result: _res,
-          //       }; //TODO: update result on response
-          //       res.message = "";
-          //       return res;
-          //     } else if (_res && _res?.failed) {
-          //       //if receipt failed stop and use ethers
-          //       console.log("will use ethers....");
-          //       return await this.callFunctionWithEthers(functionName, ...args);
-          //     }
-          //   });
-          // }
           for (
             let i = 0;
             i < Number(PaymasterConstants.MAX_WAITING_ROUND);
@@ -484,8 +458,11 @@ export class VerifiedContract {
     nexusAccount: any,
     chainId: number,
     tx: any,
+    functionName: string,
     paymentToken: `0x${string}`,
+    isSponsor?: boolean,
     _apiKey?: string,
+    ...args: any
   ) {
     let res = <SCResponse>{};
     let txHash: any = "";
@@ -510,13 +487,100 @@ export class VerifiedContract {
         },
       });
 
-      const quote = await meeClient.getQuote({
-        instructions: [transactionInstruction],
-        feeToken: { address: paymentToken, chainId },
-        simulation: {
-          simulate: true,
-        },
-      });
+      let transferInstruction, transferTx;
+
+      if (!isSponsor) {
+        const signerAny: any = this.signer;
+        const tokenContract = new ERC20(signerAny, paymentToken);
+        const tokenDecimals = await tokenContract
+          .decimals()
+          .then((res: any) => res?.response?.result[0]);
+        const fn = tokenContract.contract.populateTransaction["transfer"];
+        const amountFmt = ethers.utils.parseUnits(
+          PaymasterConstants.COMPENSATION_AMOUNT,
+          Number(tokenDecimals),
+        );
+
+        const transferArgs: any = [
+          PaymasterConstants.ADMIN_WALLET_ADDRESS,
+          amountFmt?.toString(),
+        ];
+        const transferFunc = await fn(...transferArgs);
+        const _transferTx = {
+          to: paymentToken,
+          data: transferFunc.data,
+        };
+        transferTx = _transferTx;
+        transferInstruction = await nexusAccount.build({
+          type: "default",
+          data: {
+            chainId,
+            calls: [_transferTx],
+          },
+        });
+      }
+
+      const isTestnet = PaymasterConstants.TEST_CHAINS?.includes(chainId);
+      let sponsorInfo;
+
+      if (!isTestnet) {
+        const response = await fetch(
+          "https://network.biconomy.io/v1/sponsorship/info",
+          { method: "GET" },
+        );
+
+        if (!response.ok) {
+          sponsorInfo = {};
+        } else {
+          sponsorInfo = await response.json();
+        }
+      }
+
+      const sponsorUrl: any = isTestnet
+        ? DEFAULT_PATHFINDER_URL
+        : PaymasterConstants.HOSTED_SPONSOR_URL;
+
+      let quote, cmpQuote;
+
+      if (isSponsor) {
+        quote = await meeClient.getQuote({
+          instructions: [transactionInstruction],
+          sponsorship: true,
+          sponsorshipOptions: {
+            url: sponsorUrl,
+            gasTank: {
+              address: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_PAYMASTER_ACCOUNT
+                : sponsorInfo[chainId?.toString()]?.account,
+              token: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_TOKEN_ADDRESS
+                : sponsorInfo[chainId?.toString()]?.token,
+              chainId: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_CHAIN_ID
+                : Number(chainId),
+            },
+          },
+          simulation: {
+            simulate: true,
+          },
+        });
+      } else {
+        cmpQuote = await meeClient.getQuote({
+          instructions: [transferInstruction],
+          feeToken: { address: paymentToken, chainId },
+          simulation: {
+            simulate: true,
+          },
+        });
+
+        quote = await meeClient.getQuote({
+          instructions: [transactionInstruction],
+          feeToken: { address: paymentToken, chainId },
+          simulation: {
+            simulate: true,
+          },
+        });
+      }
 
       const nowInSec = Math.floor(Date.now() / 1000);
 
@@ -533,26 +597,121 @@ export class VerifiedContract {
         },
       });
 
+      let transferInstructionFinal;
+
+      if (!isSponsor) {
+        transferInstructionFinal = await nexusAccount.build({
+          type: "default",
+          data: {
+            chainId,
+            calls: [
+              {
+                ...transferTx,
+                gasLimit:
+                  cmpQuote?.userOps[cmpQuote?.userOps?.length - 1]?.maxGasLimit, //use gaslLimit for transfer???
+              },
+            ],
+          },
+        });
+      }
+
       // Execute the transaction using passed paymentToken
-      const { hash } = await meeClient.execute({
-        feeToken: {
-          chainId,
-          address: paymentToken,
-        },
-        instructions: [transactionInstructionFinal],
 
-        upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
-      });
-      txHash = hash;
+      let _txHash: any;
 
-      console.log(`MEE transaction hash: ${hash}`);
+      if (isSponsor) {
+        const { hash } = await meeClient.execute({
+          sponsorship: true,
+          sponsorshipOptions: {
+            url: sponsorUrl,
+            gasTank: {
+              address: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_PAYMASTER_ACCOUNT
+                : sponsorInfo[chainId?.toString()]?.account,
+              token: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_TOKEN_ADDRESS
+                : sponsorInfo[chainId?.toString()]?.token,
+              chainId: isTestnet
+                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_CHAIN_ID
+                : Number(chainId),
+            },
+          },
+          instructions: [transactionInstructionFinal],
+
+          upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
+        });
+        _txHash = hash;
+      } else {
+        //handle it seperately as batch kept failing???
+        const { hash: cmpHash } = await meeClient.execute({
+          feeToken: {
+            chainId,
+            address: paymentToken,
+          },
+          instructions: [transferInstructionFinal], //take conpensation first???
+
+          upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
+        });
+
+        // console.log("Compensation tx MEE hash: ", cmpHash);
+
+        const cmpReceipt = await meeClient.waitForSupertransactionReceipt({
+          hash: cmpHash,
+        });
+
+        if (cmpReceipt?.receipts?.length > 0) {
+          //always pick last receipt????
+          const txReceipt =
+            cmpReceipt?.receipts[cmpReceipt?.receipts?.length - 1];
+          if (txReceipt?.status === "success") {
+            // console.log(
+            //   "Compensation tx successful will move to regular transaction...",
+            // );
+            const { hash } = await meeClient.execute({
+              feeToken: {
+                chainId,
+                address: paymentToken,
+              },
+              instructions: [transactionInstructionFinal],
+
+              upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
+            });
+            _txHash = hash;
+          } else {
+            res.status = STATUS.ERROR;
+            res.response = {
+              hash: txReceipt?.transactionHash,
+              result: txReceipt,
+            }; //TODO: update result on response
+            res.message = "";
+            return res;
+          }
+        } else {
+          console.error(
+            "MEE client transaction failed with error: ",
+            "Invalid receipts length",
+          );
+          res.status = STATUS.ERROR;
+          res.response = {
+            hash: cmpReceipt?.receipts[0]?.transactionHash,
+            result: cmpReceipt?.receipts[0],
+          }; //TODO: update result on response
+          res.message = "";
+          return res;
+        }
+      }
+      txHash = _txHash;
+
+      console.log(`MEE transaction hash: ${_txHash}`);
 
       // Wait for transaction to complete
-      const receipt = await meeClient.waitForSupertransactionReceipt({ hash });
+      const receipt = await meeClient.waitForSupertransactionReceipt({
+        hash: _txHash,
+      });
 
       // console.log("receipts: ", receipt);
 
-      // console.log("receipt: ", receipt?.receipts);
+      // console.log("receiptsss...: ", receipt?.receipts);
 
       if (receipt?.receipts?.length > 0) {
         //always pick last receipt????
@@ -565,12 +724,17 @@ export class VerifiedContract {
           }; //TODO: update result on response
           res.message = "";
         } else {
-          res.status = STATUS.ERROR;
-          res.response = {
-            hash: txReceipt?.transactionHash,
-            result: txReceipt,
-          }; //TODO: update result on response
-          res.message = "";
+          if (isSponsor) {
+            console.log("Will use ethers...");
+            return await this.callFunctionWithEthers(functionName, ...args);
+          } else {
+            res.status = STATUS.ERROR;
+            res.response = {
+              hash: txReceipt?.transactionHash,
+              result: txReceipt,
+            }; //TODO: update result on response
+            res.message = "";
+          }
         }
         return res;
       } else {
@@ -578,23 +742,33 @@ export class VerifiedContract {
           "MEE client transaction failed with error: ",
           "Invalid receipts length",
         );
+        if (isSponsor) {
+          console.log("Will use ethers...");
+          return await this.callFunctionWithEthers(functionName, ...args);
+        } else {
+          res.status = STATUS.ERROR;
+          res.response = {
+            hash: receipt?.receipts[0]?.transactionHash,
+            result: receipt?.receipts[0],
+          }; //TODO: update result on response
+          res.message = "";
+          return res;
+        }
+      }
+    } catch (err: any) {
+      console.error("MEE client transaction failed with error: ", err?.message);
+      if (isSponsor) {
+        console.log("Will use ethers...");
+        return await this.callFunctionWithEthers(functionName, ...args);
+      } else {
         res.status = STATUS.ERROR;
         res.response = {
-          hash: receipt?.receipts[0]?.transactionHash,
-          result: receipt?.receipts[0],
+          hash: txHash,
+          result: {},
         }; //TODO: update result on response
         res.message = "";
         return res;
       }
-    } catch (err: any) {
-      console.error("MEE client transaction failed with error: ", err?.message);
-      res.status = STATUS.ERROR;
-      res.response = {
-        hash: txHash,
-        result: {},
-      }; //TODO: update result on response
-      res.message = "";
-      return res;
     }
   }
 
@@ -606,7 +780,9 @@ export class VerifiedContract {
     }
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
-      console.log("gassless supported will use userop or mee client");
+      console.log(
+        "gassless supported will use mee gas sponsorship or erc20 payment",
+      );
       //call contract through userop for gasless transaction
       let options = [];
       const totalArguments = args.length;
@@ -615,99 +791,95 @@ export class VerifiedContract {
       if (totalArguments > 1) options = optionsRaw;
       //console.log('options before', options);
       if (options == 0) options[0] = {};
-      //create smart account for signer
-      const smartAccount = await this.createSmartAccount(chainId);
-      const account = await smartAccount.getAccountAddress();
-      // console.log("smart account address: ", account);
-      // const signerAddress = await this.signer.getAddress();
-      //construct calldata for function
       let fn = this.contract.populateTransaction[functionName];
       let _res = await fn(...args);
       const tx1 = {
         to: this.contract.address,
         data: _res.data,
       };
-      if (optionsRaw[0]?.paymentToken) {
-        console.log(
-          "Using Mee client with paymentToken of: ",
-          optionsRaw[0]?.paymentToken,
+      const _signer: any = this.signer;
+      const chainToUse = [
+        base,
+        mainnet,
+        gnosis,
+        polygon,
+        sepolia,
+        baseSepolia,
+      ].find((nt) => Number(nt?.id) === Number(chainId));
+      if (!chainToUse) {
+        throw new Error(
+          `Chaind id: ${chainId} not supported on Verified Sdk. Supported chain ids are: ${[
+            base,
+            mainnet,
+            gnosis,
+            polygon,
+            sepolia,
+            baseSepolia,
+          ]
+            ?.map((nt) => nt?.id)
+            ?.join(", ")}`,
         );
-        const _signer: any = this.signer;
-        const chainToUse = [
-          base,
-          mainnet,
-          gnosis,
-          polygon,
-          sepolia,
-          baseSepolia,
-        ].find((nt) => Number(nt?.id) === Number(chainId));
-        if (!chainToUse) {
-          throw new Error(
-            `Chaind id: ${chainId} not supported on Verified Sdk. Supported chain ids are: ${[
-              base,
-              mainnet,
-              gnosis,
-              polygon,
-              sepolia,
-              baseSepolia,
-            ]
-              ?.map((nt) => nt?.id)
-              ?.join(", ")}`,
-          );
-        }
-        const prov: any = this.signer.provider;
-        const rpcUrl = prov?.connection?.url;
-        let nexusAccount: any;
-        if (optionsRaw[0]?.isReactNative) {
-          nexusAccount = await createMultiChainNexusAccount({
-            chains: [chainToUse!],
-            transports: [
-              http(
+      }
+      const prov: any = this.signer.provider;
+      const rpcUrl = prov?.connection?.url;
+      let nexusAccount: any;
+      if (optionsRaw[0]?.isReactNative) {
+        nexusAccount = await createMultiChainNexusAccount({
+          chains: [chainToUse!],
+          transports: [
+            http(
+              rpcUrl ||
+                optionsRaw[0]?.rpcUrl ||
+                PaymasterConstants[Number(chainId)]?.RPC_URL,
+            ),
+          ],
+          signer: _signer,
+        });
+      } else {
+        nexusAccount = await toMultichainNexusAccount({
+          signer: _signer,
+          chainConfigurations: [
+            {
+              chain: chainToUse!,
+              transport: http(
                 rpcUrl ||
                   optionsRaw[0]?.rpcUrl ||
                   PaymasterConstants[Number(chainId)]?.RPC_URL,
               ),
-            ],
-            signer: _signer,
-          });
-        } else {
-          nexusAccount = await toMultichainNexusAccount({
-            signer: _signer,
-            chainConfigurations: [
-              {
-                chain: chainToUse!,
-                transport: http(
-                  rpcUrl ||
-                    optionsRaw[0]?.rpcUrl ||
-                    PaymasterConstants[Number(chainId)]?.RPC_URL,
-                ),
-                version: getMEEVersion(MEEVersion.V2_0_0),
-              },
-            ],
-          });
-        }
+              version: getMEEVersion(MEEVersion.V2_0_0),
+            },
+          ],
+        });
+      }
+      // const meeAddress = nexusAccount.addressOn(chainId);
 
-        const meeAddress = nexusAccount.addressOn(chainId);
+      if (optionsRaw[0]?.paymentToken) {
+        console.log(
+          "Using Mee erc20 payment with paymentToken of: ",
+          optionsRaw[0]?.paymentToken,
+        );
 
         // console.log("nexus account address: ", meeAddress);
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
           tx1,
+          functionName,
           optionsRaw[0]?.paymentToken,
+          false,
           optionsRaw[0]?.apiKey,
+          ...args,
         );
       } else {
-        console.log("Using Userop since no payment token...");
-        const paymentToken =
-          options[0]?.paymentToken ||
-          PaymasterConstants[`${chainId}`]["PAYMENT_TOKEN"] ||
-          "";
-        return await this.callFunctionAsUserOp(
-          smartAccount,
+        console.log("Using mee gas sponsorship since no payment token...");
+        return await this.callFunctionWithMEEClient(
+          nexusAccount,
+          chainId,
           tx1,
           functionName,
-          paymentToken,
+          optionsRaw[0]?.paymentToken,
+          true,
+          optionsRaw[0]?.apiKey,
           ...args,
         );
       }
@@ -767,14 +939,6 @@ export class VerifiedContract {
           });
         }
 
-        // const nexusAccount = await toMultichainNexusAccount({
-        //   chains: [chainToUse],
-        //   transports: [
-        //     http(rpcUrl || rpc || PaymasterConstants[Number(chainId)]?.RPC_URL),
-        //   ],
-        //   signer: _signer,
-        // });
-
         if (paymentTokenAddress) {
           //construct calldata for function
           try {
@@ -804,24 +968,87 @@ export class VerifiedContract {
               },
             });
 
+            const signerAny: any = this.signer;
+            const tokenContract = new ERC20(signerAny, paymentTokenAddress);
+            const tokenDecimals = await tokenContract
+              .decimals()
+              .then((res: any) => res?.response?.result[0]);
+            const fnTransfer =
+              tokenContract.contract.populateTransaction["transfer"];
+            const amountFmt = ethers.utils.parseUnits(
+              PaymasterConstants.COMPENSATION_AMOUNT,
+              Number(tokenDecimals),
+            );
+            const transferArgs: any = [
+              PaymasterConstants.ADMIN_WALLET_ADDRESS,
+              amountFmt?.toString(),
+            ];
+            const transferFunc = await fnTransfer(...transferArgs);
+            const transferTx = {
+              to: paymentTokenAddress,
+              data: transferFunc.data,
+            };
+            const transferInstruction = await nexusAccount.build({
+              type: "default",
+              data: {
+                chainId,
+                calls: [transferTx],
+              },
+            });
+
             const tkAddress: any = paymentTokenAddress;
+
+            const cmpQuote = await meeClient.getQuote({
+              instructions: [transferInstruction],
+              feeToken: { address: tkAddress, chainId },
+            });
 
             const quote = await meeClient.getQuote({
               instructions: [transactionInstruction],
               feeToken: { address: tkAddress, chainId },
             });
 
-            // console.log("cont quote: ", quote);
+            const cmpQuoteDt = {
+              tokenAddress: paymentTokenAddress,
+              amount: (
+                Number(cmpQuote?.paymentInfo.tokenAmount) +
+                Number(PaymasterConstants.COMPENSATION_AMOUNT)
+              )?.toString(),
+              amountInWei: (
+                Number(cmpQuote?.paymentInfo.tokenWeiAmount) + Number(amountFmt)
+              )?.toString(),
+              amountValue: (
+                Number(cmpQuote?.paymentInfo.tokenValue) +
+                (Number(cmpQuote?.paymentInfo.tokenAmount) /
+                  Number(cmpQuote?.paymentInfo.tokenValue)) *
+                  Number(PaymasterConstants.COMPENSATION_AMOUNT)
+              )?.toString(),
+              chainId,
+              functionName: "transfer",
+            };
+
             return {
               tokenAddress: paymentTokenAddress,
-              amount: quote?.paymentInfo.tokenAmount,
-              amountInWei: quote?.paymentInfo.tokenWeiAmount,
-              amouuntValue: quote?.paymentInfo.tokenValue,
+              amount: (
+                Number(quote?.paymentInfo.tokenAmount) +
+                Number(cmpQuoteDt?.amount)
+              )?.toString(),
+              amountInWei: (
+                Number(quote?.paymentInfo.tokenWeiAmount) +
+                Number(cmpQuoteDt?.amountInWei)
+              )?.toString(),
+              amountValue: (
+                Number(quote?.paymentInfo.tokenValue) +
+                Number(cmpQuoteDt?.amountValue)
+              )?.toString(),
               chainId,
               functionName,
             };
           } catch (err: any) {
-            if (err?.message?.includes("fn is not a function")) {
+            if (
+              err?.message?.includes("fn is not a function") ||
+              err?.message?.includes("fnTransfer is not a function")
+            ) {
               console.error(
                 `Function ${functionName} not found in contract's ABI`,
               );

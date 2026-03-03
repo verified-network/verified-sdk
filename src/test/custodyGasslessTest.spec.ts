@@ -1,8 +1,5 @@
 // import assert from "assert";
-// import { Provider } from "../utils/index";
-// import { VerifiedWallet } from "../wallet/index";
 // import { Custody, ERC20 } from "../index";
-// import { ethers } from "ethers";
 
 // describe("Sepolia(11155111) Custody Tests", async () => {
 //   const INFURA_API_KEY = "e0951a7b82c84a6880f3c6f7bb182e21";
