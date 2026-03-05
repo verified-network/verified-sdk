@@ -23,13 +23,15 @@ import {
   gnosis,
   base,
   polygon,
+  arbitrum,
+  arbitrumSepolia,
 } from "viem/chains";
-import { http, zeroAddress } from "viem";
+import { http, toFunctionSelector, zeroAddress } from "viem";
 import {
   createMultiChainNexusAccount,
   createNexusAccount,
 } from "../lib/biconomyRNFix";
-import ERC20 from "./erc20";
+import ERC20ABI from "../abi/payments/ERC20.json";
 
 enum STATUS {
   SUCCESS,
@@ -66,10 +68,12 @@ export class VerifiedContract {
   private signer: VerifiedWallet | Signer;
   private contract: ethers.Contract;
   private abiInterface: utils.Interface;
+  private abiRaw: any;
 
   constructor(address: string, abi: string, signer: VerifiedWallet | Signer) {
     this.signer = signer;
     this.abiInterface = new utils.Interface(abi);
+    this.abiRaw = JSON.parse(abi);
     this.contract = new ethers.Contract(address, this.abiInterface, signer);
   }
 
@@ -457,6 +461,7 @@ export class VerifiedContract {
   async callFunctionWithMEEClient(
     nexusAccount: any,
     chainId: number,
+    rpc: string,
     tx: any,
     functionName: string,
     paymentToken: `0x${string}`,
@@ -491,11 +496,14 @@ export class VerifiedContract {
 
       if (!isSponsor) {
         const signerAny: any = this.signer;
-        const tokenContract = new ERC20(signerAny, paymentToken);
-        const tokenDecimals = await tokenContract
-          .decimals()
-          .then((res: any) => res?.response?.result[0]);
-        const fn = tokenContract.contract.populateTransaction["transfer"];
+        const tokenContract = new ethers.Contract(
+          paymentToken,
+          new utils.Interface(ERC20ABI?.abi),
+          signerAny,
+        );
+        const tokenDecimals = await tokenContract.decimals();
+
+        const fn = tokenContract.populateTransaction["transfer"];
         const amountFmt = ethers.utils.parseUnits(
           PaymasterConstants.COMPENSATION_AMOUNT,
           Number(tokenDecimals),
@@ -523,7 +531,8 @@ export class VerifiedContract {
       const isTestnet = PaymasterConstants.TEST_CHAINS?.includes(chainId);
       let sponsorInfo;
 
-      if (!isTestnet) {
+      //Use constant gas tanks instead of fetching from server to reduce tx time???
+      if (isSponsor) {
         const response = await fetch(
           "https://network.biconomy.io/v1/sponsorship/info",
           { method: "GET" },
@@ -536,9 +545,7 @@ export class VerifiedContract {
         }
       }
 
-      const sponsorUrl: any = isTestnet
-        ? DEFAULT_PATHFINDER_URL
-        : PaymasterConstants.HOSTED_SPONSOR_URL;
+      const sponsorUrl: any = PaymasterConstants.HOSTED_SPONSOR_URL;
 
       let quote, cmpQuote;
 
@@ -548,16 +555,16 @@ export class VerifiedContract {
           sponsorship: true,
           sponsorshipOptions: {
             url: sponsorUrl,
+            customHeaders: {
+              "cnt-tx": JSON.stringify(tx),
+              "cnt-chainid": chainId?.toString(),
+              "cnt-rpc": rpc,
+              "cnt-isquote": "true",
+            },
             gasTank: {
-              address: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_PAYMASTER_ACCOUNT
-                : sponsorInfo[chainId?.toString()]?.account,
-              token: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_TOKEN_ADDRESS
-                : sponsorInfo[chainId?.toString()]?.token,
-              chainId: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_CHAIN_ID
-                : Number(chainId),
+              address: sponsorInfo[isTestnet ? "84532" : "8453"]?.account,
+              token: sponsorInfo[isTestnet ? "84532" : "8453"]?.token,
+              chainId: sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId,
             },
           },
           simulation: {
@@ -620,27 +627,32 @@ export class VerifiedContract {
       let _txHash: any;
 
       if (isSponsor) {
-        const { hash } = await meeClient.execute({
-          sponsorship: true,
-          sponsorshipOptions: {
-            url: sponsorUrl,
-            gasTank: {
-              address: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_PAYMASTER_ACCOUNT
-                : sponsorInfo[chainId?.toString()]?.account,
-              token: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_TOKEN_ADDRESS
-                : sponsorInfo[chainId?.toString()]?.token,
-              chainId: isTestnet
-                ? DEFAULT_MEE_TESTNET_SPONSORSHIP_CHAIN_ID
-                : Number(chainId),
+        let res;
+        const response = await fetch(
+          `${sponsorUrl}/sponsorship/sign/${sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId}/${sponsorInfo[isTestnet ? "84532" : "8453"]?.account}`,
+          {
+            method: "POST",
+            headers: {
+              "cnt-tx": JSON.stringify({
+                ...tx,
+                gasLimit:
+                  quote?.userOps[quote?.userOps?.length - 1]?.maxGasLimit,
+              }),
+              "cnt-chainid": chainId?.toString(),
+              "cnt-rpc": rpc,
+              "cnt-isquote": "false",
             },
+            body: null,
           },
-          instructions: [transactionInstructionFinal],
+        );
 
-          upperBoundTimestamp: nowInSec + 299, //highest is 5 minutes???
-        });
-        _txHash = hash;
+        if (!response.ok) {
+          res = { hash: "" };
+        } else {
+          res = await response.json();
+        }
+
+        _txHash = res?.hash;
       } else {
         //handle it seperately as batch kept failing???
         const { hash: cmpHash } = await meeClient.execute({
@@ -783,16 +795,21 @@ export class VerifiedContract {
       console.log(
         "gassless supported will use mee gas sponsorship or erc20 payment",
       );
+
       //call contract through userop for gasless transaction
       let options = [];
       const totalArguments = args.length;
       const optionsRaw = args.splice(-1);
       //reduce args to exclude options
       if (totalArguments > 1) options = optionsRaw;
+
       //console.log('options before', options);
       if (options == 0) options[0] = {};
+
       let fn = this.contract.populateTransaction[functionName];
+
       let _res = await fn(...args);
+
       const tx1 = {
         to: this.contract.address,
         data: _res.data,
@@ -805,6 +822,8 @@ export class VerifiedContract {
         polygon,
         sepolia,
         baseSepolia,
+        arbitrum,
+        arbitrumSepolia,
       ].find((nt) => Number(nt?.id) === Number(chainId));
       if (!chainToUse) {
         throw new Error(
@@ -815,6 +834,8 @@ export class VerifiedContract {
             polygon,
             sepolia,
             baseSepolia,
+            arbitrum,
+            arbitrumSepolia,
           ]
             ?.map((nt) => nt?.id)
             ?.join(", ")}`,
@@ -823,6 +844,7 @@ export class VerifiedContract {
       const prov: any = this.signer.provider;
       const rpcUrl = prov?.connection?.url;
       let nexusAccount: any;
+
       if (optionsRaw[0]?.isReactNative) {
         nexusAccount = await createMultiChainNexusAccount({
           chains: [chainToUse!],
@@ -863,6 +885,9 @@ export class VerifiedContract {
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
+          rpcUrl ||
+            optionsRaw[0]?.rpcUrl ||
+            PaymasterConstants[Number(chainId)]?.RPC_URL,
           tx1,
           functionName,
           optionsRaw[0]?.paymentToken,
@@ -875,6 +900,9 @@ export class VerifiedContract {
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
+          rpcUrl ||
+            optionsRaw[0]?.rpcUrl ||
+            PaymasterConstants[Number(chainId)]?.RPC_URL,
           tx1,
           functionName,
           optionsRaw[0]?.paymentToken,
@@ -908,6 +936,8 @@ export class VerifiedContract {
         polygon,
         sepolia,
         baseSepolia,
+        arbitrum,
+        arbitrumSepolia,
       ].find((nt) => Number(nt?.id) === Number(chainId));
 
       if (chainToUse) {
@@ -969,12 +999,14 @@ export class VerifiedContract {
             });
 
             const signerAny: any = this.signer;
-            const tokenContract = new ERC20(signerAny, paymentTokenAddress);
-            const tokenDecimals = await tokenContract
-              .decimals()
-              .then((res: any) => res?.response?.result[0]);
-            const fnTransfer =
-              tokenContract.contract.populateTransaction["transfer"];
+            const tokenContract = new ethers.Contract(
+              paymentTokenAddress,
+              new utils.Interface(ERC20ABI?.abi),
+              signerAny,
+            );
+            const tokenDecimals = await tokenContract.decimals();
+
+            const fnTransfer = tokenContract.populateTransaction["transfer"];
             const amountFmt = ethers.utils.parseUnits(
               PaymasterConstants.COMPENSATION_AMOUNT,
               Number(tokenDecimals),
