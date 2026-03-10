@@ -551,28 +551,26 @@ export class VerifiedContract {
       let quote, cmpQuote;
 
       if (isSponsor) {
-        quote = await meeClient.getQuote({
-          instructions: [transactionInstruction],
-          sponsorship: true,
-          sponsorshipOptions: {
-            url: sponsorUrl,
-            customHeaders: {
+        const response = await fetch(
+          `${sponsorUrl}/sponsorship/sign/${sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId}/${sponsorInfo[isTestnet ? "84532" : "8453"]?.account}`,
+          {
+            method: "POST",
+            headers: {
               "cnt-tx": JSON.stringify(tx),
               "cnt-chainid": chainId?.toString(),
               "cnt-rpc": rpc,
               "cnt-isquote": "true",
               "cnt-pk": signerPk!,
             },
-            gasTank: {
-              address: sponsorInfo[isTestnet ? "84532" : "8453"]?.account,
-              token: sponsorInfo[isTestnet ? "84532" : "8453"]?.token,
-              chainId: sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId,
-            },
+            body: null,
           },
-          simulation: {
-            simulate: true,
-          },
-        });
+        );
+
+        if (!response.ok) {
+          quote = null;
+        } else {
+          quote = await response.json();
+        }
       } else {
         cmpQuote = await meeClient.getQuote({
           instructions: [transferInstruction],
