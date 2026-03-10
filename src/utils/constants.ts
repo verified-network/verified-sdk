@@ -1,6 +1,6 @@
 //Todo: add more network paymaster details for gasless
 export const PaymasterConstants: any = {
-  MEE_API_KEY: "mee_G5SSkmZYg9kiGksxJwFT9x",
+  MEE_API_KEY: "mee_G5SSkmZYg9kiGksxJwFT9x", //Non sponsored key from dashboard
   MEE_API_KEY_STAGING: "mee_3Zmc7H6Pbd5wUfUGu27aGzdf", //Biconomy sponsorship enabled staging api key???
   MEE_URL_STAGING: "https://staging-network.biconomy.io/v1",
   TEST_CHAINS: [11155111, 84532, 421614],
