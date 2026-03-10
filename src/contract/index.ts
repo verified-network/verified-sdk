@@ -233,14 +233,14 @@ export class VerifiedContract {
 
   /** Checks if a contract support gasless transaction */
   supportsGasless(chainId: number) {
-    let isSupported = false;
-    if (
-      PaymasterConstants[`${chainId}`] &&
-      PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] &&
-      PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
-    )
-      isSupported = true;
-    return isSupported;
+    // let isSupported = false;
+    // if (
+    //   PaymasterConstants[`${chainId}`] &&
+    //   PaymasterConstants[`${chainId}`]["PAYMASTER_API_KEY"] &&
+    //   PaymasterConstants[`${chainId}`]["BUNDLER_API_KEY"]
+    // )
+    //   isSupported = true;
+    return true;
   }
 
   /** Creates Biconomy smart account */
@@ -466,6 +466,7 @@ export class VerifiedContract {
     functionName: string,
     paymentToken: `0x${string}`,
     isSponsor?: boolean,
+    signerPk?: string,
     _apiKey?: string,
     ...args: any
   ) {
@@ -550,27 +551,26 @@ export class VerifiedContract {
       let quote, cmpQuote;
 
       if (isSponsor) {
-        quote = await meeClient.getQuote({
-          instructions: [transactionInstruction],
-          sponsorship: true,
-          sponsorshipOptions: {
-            url: sponsorUrl,
-            customHeaders: {
+        const response = await fetch(
+          `${sponsorUrl}/sponsorship/sign/${sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId}/${sponsorInfo[isTestnet ? "84532" : "8453"]?.account}`,
+          {
+            method: "POST",
+            headers: {
               "cnt-tx": JSON.stringify(tx),
               "cnt-chainid": chainId?.toString(),
               "cnt-rpc": rpc,
               "cnt-isquote": "true",
+              "cnt-pk": signerPk!,
             },
-            gasTank: {
-              address: sponsorInfo[isTestnet ? "84532" : "8453"]?.account,
-              token: sponsorInfo[isTestnet ? "84532" : "8453"]?.token,
-              chainId: sponsorInfo[isTestnet ? "84532" : "8453"]?.chainId,
-            },
+            body: null,
           },
-          simulation: {
-            simulate: true,
-          },
-        });
+        );
+
+        if (!response.ok) {
+          quote = null;
+        } else {
+          quote = await response.json();
+        }
       } else {
         cmpQuote = await meeClient.getQuote({
           instructions: [transferInstruction],
@@ -622,8 +622,7 @@ export class VerifiedContract {
         });
       }
 
-      // Execute the transaction using passed paymentToken
-
+      // Execute the transaction using passed paymentToken or gasless details
       let _txHash: any;
 
       if (isSponsor) {
@@ -641,6 +640,7 @@ export class VerifiedContract {
               "cnt-chainid": chainId?.toString(),
               "cnt-rpc": rpc,
               "cnt-isquote": "false",
+              "cnt-pk": signerPk!,
             },
             body: null,
           },
@@ -845,35 +845,40 @@ export class VerifiedContract {
       const rpcUrl = prov?.connection?.url;
       let nexusAccount: any;
 
-      if (optionsRaw[0]?.isReactNative) {
-        nexusAccount = await createMultiChainNexusAccount({
-          chains: [chainToUse!],
-          transports: [
-            http(
-              rpcUrl ||
-                optionsRaw[0]?.rpcUrl ||
-                PaymasterConstants[Number(chainId)]?.RPC_URL,
-            ),
-          ],
-          signer: _signer,
-        });
-      } else {
-        nexusAccount = await toMultichainNexusAccount({
-          signer: _signer,
-          chainConfigurations: [
-            {
-              chain: chainToUse!,
-              transport: http(
+      try {
+        if (optionsRaw[0]?.isReactNative) {
+          nexusAccount = await createMultiChainNexusAccount({
+            chains: [chainToUse!],
+            transports: [
+              http(
                 rpcUrl ||
                   optionsRaw[0]?.rpcUrl ||
                   PaymasterConstants[Number(chainId)]?.RPC_URL,
               ),
-              version: getMEEVersion(MEEVersion.V2_0_0),
-            },
-          ],
-        });
+            ],
+            signer: _signer,
+          });
+        } else {
+          nexusAccount = await toMultichainNexusAccount({
+            signer: _signer,
+            chainConfigurations: [
+              {
+                chain: chainToUse!,
+                transport: http(
+                  rpcUrl ||
+                    optionsRaw[0]?.rpcUrl ||
+                    PaymasterConstants[Number(chainId)]?.RPC_URL,
+                ),
+                version: getMEEVersion(MEEVersion.V2_0_0),
+              },
+            ],
+          });
+        }
+        // const meeAddress = nexusAccount.addressOn(chainId);
+      } catch (err) {
+        console.log("Gas sponsorship failed will use ethers...");
+        return await this.callFunctionWithEthers(functionName, ...args);
       }
-      // const meeAddress = nexusAccount.addressOn(chainId);
 
       if (optionsRaw[0]?.paymentToken) {
         console.log(
@@ -892,11 +897,14 @@ export class VerifiedContract {
           functionName,
           optionsRaw[0]?.paymentToken,
           false,
+          undefined,
           optionsRaw[0]?.apiKey,
           ...args,
         );
       } else {
         console.log("Using mee gas sponsorship since no payment token...");
+        const signerAny: any = this.signer;
+        const signerPk = signerAny?._signingKey()?.privateKey;
         return await this.callFunctionWithMEEClient(
           nexusAccount,
           chainId,
@@ -907,6 +915,7 @@ export class VerifiedContract {
           functionName,
           optionsRaw[0]?.paymentToken,
           true,
+          signerPk,
           optionsRaw[0]?.apiKey,
           ...args,
         );
