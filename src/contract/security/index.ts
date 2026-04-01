@@ -50,7 +50,8 @@ export default class Security extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -64,14 +65,15 @@ export default class Security extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
   public async whiteList(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -81,7 +83,7 @@ export default class Security extends VerifiedContract {
   public async transfer(
     _recipient: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -91,7 +93,7 @@ export default class Security extends VerifiedContract {
   public async approve(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -102,7 +104,7 @@ export default class Security extends VerifiedContract {
     _spender: string,
     _recipient: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.ADDRESS, _recipient);
@@ -112,14 +114,14 @@ export default class Security extends VerifiedContract {
       _spender,
       _recipient,
       _amount,
-      options
+      options,
     );
   }
 
   public async increaseAllowance(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -127,14 +129,14 @@ export default class Security extends VerifiedContract {
       FUNCTIONS.INCREASEALLOWANCE,
       _spender,
       _amount,
-      options
+      options,
     );
   }
 
   public async decreaseAllowance(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -142,14 +144,14 @@ export default class Security extends VerifiedContract {
       FUNCTIONS.DECREASEALLOWANCE,
       _spender,
       _amount,
-      options
+      options,
     );
   }
 
   public async freeze(
     _holder: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _holder);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -184,7 +186,7 @@ export default class Security extends VerifiedContract {
   public async reschedule(
     _oldtime: string,
     _newtime: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _oldtime);
     await this.validateInput(DATATYPES.NUMBER, _newtime);
@@ -200,7 +202,7 @@ export default class Security extends VerifiedContract {
     _time: string,
     _votes: boolean,
     _ipfslink: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.BOOLEAN, _votes);
@@ -210,7 +212,7 @@ export default class Security extends VerifiedContract {
       _time,
       _votes,
       _ipfslink,
-      options
+      options,
     );
   }
 
@@ -224,7 +226,7 @@ export default class Security extends VerifiedContract {
     _wallet: string,
     _token: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.ADDRESS, _wallet);
@@ -236,7 +238,7 @@ export default class Security extends VerifiedContract {
       _wallet,
       _token,
       _amount,
-      options
+      options,
     );
   }
 
@@ -246,7 +248,7 @@ export default class Security extends VerifiedContract {
     _wallet: string,
     _token: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _time);
     await this.validateInput(DATATYPES.ADDRESS, _holder);
@@ -260,7 +262,7 @@ export default class Security extends VerifiedContract {
       _wallet,
       _token,
       _amount,
-      options
+      options,
     );
   }
 
@@ -313,7 +315,7 @@ export default class Security extends VerifiedContract {
   public async rescheduleSnapshot(
     old_time: string,
     new_time: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, old_time);
     await this.validateInput(DATATYPES.NUMBER, new_time);

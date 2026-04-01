@@ -38,7 +38,8 @@ export default class SecuritiesFactory extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -52,7 +53,8 @@ export default class SecuritiesFactory extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -95,7 +97,7 @@ export default class SecuritiesFactory extends VerifiedContract {
     _restrictions: string,
     _country: string,
     _qualified: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _security);
     await this.validateInput(DATATYPES.ADDRESS, _currency);
@@ -113,14 +115,14 @@ export default class SecuritiesFactory extends VerifiedContract {
       _restrictions,
       _country,
       _qualified,
-      options
+      options,
     );
   }
 
   public async getSecurityToken(
     security: string,
     issuer: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, security);
     await this.validateInput(DATATYPES.ADDRESS, issuer);
@@ -128,7 +130,7 @@ export default class SecuritiesFactory extends VerifiedContract {
       FUNCTIONS.GETSECURITYTOKEN,
       security,
       issuer,
-      options
+      options,
     );
   }
 
@@ -137,7 +139,7 @@ export default class SecuritiesFactory extends VerifiedContract {
     _transferor: string,
     _transferee: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _security);
     await this.validateInput(DATATYPES.ADDRESS, _transferor);
@@ -149,7 +151,7 @@ export default class SecuritiesFactory extends VerifiedContract {
       _transferor,
       _transferee,
       _amount,
-      options
+      options,
     );
   }
 
@@ -161,7 +163,7 @@ export default class SecuritiesFactory extends VerifiedContract {
     _securityToken: string,
     _issuer: string,
     _custodian: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _securityToken);
     await this.validateInput(DATATYPES.ADDRESS, _issuer);
@@ -171,14 +173,14 @@ export default class SecuritiesFactory extends VerifiedContract {
       _securityToken,
       _issuer,
       _custodian,
-      options
+      options,
     );
   }
 
   public async getCustodian(
     _securityToken: string,
     _issuer: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _securityToken);
     await this.validateInput(DATATYPES.ADDRESS, _issuer);
@@ -186,33 +188,33 @@ export default class SecuritiesFactory extends VerifiedContract {
       FUNCTIONS.GETCUSTODIAN,
       _securityToken,
       _issuer,
-      options
+      options,
     );
   }
 
   public async restrictCountry(
     _security: string,
     _countries: any,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _security);
     return this.callContract(
       FUNCTIONS.RESTRICTCOUNTRY,
       _security,
       _countries,
-      options
+      options,
     );
   }
 
   public async getRestrictedCountries(
     _security: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _security);
     return this.callContract(
       FUNCTIONS.GETRESTRICTEDCOUNTRIES,
       _security,
-      options
+      options,
     );
   }
 

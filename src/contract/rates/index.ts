@@ -29,7 +29,8 @@ export default class Rates extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -43,7 +44,8 @@ export default class Rates extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -51,7 +53,7 @@ export default class Rates extends VerifiedContract {
     _feeTo: string,
     _fee: string,
     _feeType: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _feeTo);
     await this.validateInput(DATATYPES.NUMBER, _fee);
@@ -61,7 +63,7 @@ export default class Rates extends VerifiedContract {
       _feeTo,
       _fee,
       this.sanitiseInput(DATATYPES.BYTE32, _feeType),
-      options
+      options,
     );
   }
 
@@ -80,7 +82,7 @@ export default class Rates extends VerifiedContract {
     return this.callContract(
       FUNCTIONS.GETFEE,
       this.sanitiseInput(DATATYPES.BYTE32, _feeType),
-      options
+      options,
     );
   }
 

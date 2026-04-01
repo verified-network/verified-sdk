@@ -40,7 +40,8 @@ export default class Factory extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -54,7 +55,8 @@ export default class Factory extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -102,7 +104,7 @@ export default class Factory extends VerifiedContract {
   public async getTokenByNameType(
     tokenName: string,
     tokenType: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, tokenName);
     await this.validateInput(DATATYPES.STRING, tokenType);
@@ -110,14 +112,14 @@ export default class Factory extends VerifiedContract {
       FUNCTIONS.GETTOKENBYNAMETYPE,
       this.sanitiseInput(DATATYPES.BYTE32, tokenName),
       this.sanitiseInput(DATATYPES.BYTE32, tokenType),
-      options
+      options,
     );
   }
 
   public async getIssuer(
     tokenName: string,
     tokenType: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, tokenName);
     await this.validateInput(DATATYPES.STRING, tokenType);
@@ -125,7 +127,7 @@ export default class Factory extends VerifiedContract {
       FUNCTIONS.GETISSUER,
       this.sanitiseInput(DATATYPES.BYTE32, tokenName),
       this.sanitiseInput(DATATYPES.BYTE32, tokenType),
-      options
+      options,
     );
   }
 
@@ -134,7 +136,7 @@ export default class Factory extends VerifiedContract {
     return this.callContract(
       FUNCTIONS.GETADDRESSTYPE,
       this.sanitiseInput(DATATYPES.BYTE32, tokenName),
-      options
+      options,
     );
   }
 
@@ -160,7 +162,7 @@ export default class Factory extends VerifiedContract {
     _url: string,
     _fromCurrency: string,
     _toCurrency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _url);
     await this.validateInput(DATATYPES.STRING, _fromCurrency);
@@ -170,7 +172,7 @@ export default class Factory extends VerifiedContract {
       _url,
       this.sanitiseInput(DATATYPES.BYTE32, _fromCurrency),
       this.sanitiseInput(DATATYPES.BYTE32, _toCurrency),
-      options
+      options,
     );
   }
 
@@ -181,7 +183,7 @@ export default class Factory extends VerifiedContract {
   public async supportTokens(
     _currency: string,
     _address: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _currency);
     await this.validateInput(DATATYPES.ADDRESS, _address);
@@ -189,14 +191,14 @@ export default class Factory extends VerifiedContract {
       FUNCTIONS.SUPPORTTOKENS,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
       _address,
-      options
+      options,
     );
   }
 
   public async setBondTerm(
     bondToken: string,
     term: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, bondToken);
     await this.validateInput(DATATYPES.NUMBER, term);

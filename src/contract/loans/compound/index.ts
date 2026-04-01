@@ -33,7 +33,8 @@ export default class Compound extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -47,7 +48,8 @@ export default class Compound extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -80,7 +82,7 @@ export default class Compound extends VerifiedContract {
     frequency: string,
     faceValue: string,
     factory: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, asset);
     await this.validateInput(DATATYPES.ADDRESS, collateral);
@@ -100,7 +102,7 @@ export default class Compound extends VerifiedContract {
       frequency,
       faceValue,
       factory,
-      options
+      options,
     );
   }
 
@@ -113,7 +115,7 @@ export default class Compound extends VerifiedContract {
     bond: string,
     issuer: string,
     factory: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.ADDRESS, issuer);
@@ -123,7 +125,7 @@ export default class Compound extends VerifiedContract {
       bond,
       issuer,
       factory,
-      options
+      options,
     );
   }
 
@@ -157,7 +159,7 @@ export default class Compound extends VerifiedContract {
     bond: string,
     issuer: string,
     factory: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.ADDRESS, issuer);
@@ -165,14 +167,14 @@ export default class Compound extends VerifiedContract {
       FUNCTIONS.WITHDRAWCOLLATERAL,
       bond,
       issuer,
-      options
+      options,
     );
   }
 
   public async repayLenders(
     bond: string,
     collateral: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, bond);
     await this.validateInput(DATATYPES.ADDRESS, collateral);

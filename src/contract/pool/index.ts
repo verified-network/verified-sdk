@@ -52,7 +52,8 @@ export default class PoolContract extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -66,7 +67,8 @@ export default class PoolContract extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -75,7 +77,7 @@ export default class PoolContract extends VerifiedContract {
     _funds: Funds,
     _limit: string,
     _deadline: string,
-    options?: Options
+    options?: Options,
   ): any {
     const { poolId, kind, assetIn, assetOut, amount, userData } = _swap;
     const { sender, fromInternalBalance, recipient, toInternalBalance } =
@@ -94,7 +96,7 @@ export default class PoolContract extends VerifiedContract {
       _funds,
       _limit,
       _deadline,
-      options
+      options,
     );
   }
 
@@ -105,7 +107,7 @@ export default class PoolContract extends VerifiedContract {
     _funds: Funds,
     _limits: string[],
     _deadline: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _kind);
     _swaps.map(async (swp) => {
@@ -133,7 +135,7 @@ export default class PoolContract extends VerifiedContract {
       _funds,
       _limits,
       _deadline,
-      options
+      options,
     );
   }
 

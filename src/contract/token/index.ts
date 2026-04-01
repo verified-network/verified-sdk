@@ -20,7 +20,7 @@ enum FUNCTIONS {
   ALLOWANCE = "allowance",
   INCREASEALLOWANCE = "increaseAllowance",
   DECREASEALLOWANCE = "decreaseAllowance",
-  ALLOW = "allow"
+  ALLOW = "allow",
 }
 
 export default class Token extends VerifiedContract {
@@ -38,7 +38,8 @@ export default class Token extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -52,7 +53,8 @@ export default class Token extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -68,7 +70,7 @@ export default class Token extends VerifiedContract {
     _senderAddress: string,
     _recieverAddress: string,
     _tokens: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _senderAddress);
     await this.validateInput(DATATYPES.ADDRESS, _recieverAddress);
@@ -78,7 +80,7 @@ export default class Token extends VerifiedContract {
       _senderAddress,
       _recieverAddress,
       _tokens,
-      options
+      options,
     );
   }
 
@@ -98,7 +100,7 @@ export default class Token extends VerifiedContract {
   public async requestTransfer(
     _recieverAddress: string,
     _tokens: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _recieverAddress);
     await this.validateInput(DATATYPES.NUMBER, _tokens);
@@ -106,7 +108,7 @@ export default class Token extends VerifiedContract {
       FUNCTIONS.REQUESTTRANSFER,
       _recieverAddress,
       _tokens,
-      options
+      options,
     );
   }
 
@@ -115,7 +117,7 @@ export default class Token extends VerifiedContract {
     _payer: string,
     _collateralName: string,
     _collateralContract: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.NUMBER, _amount);
     await this.validateInput(DATATYPES.ADDRESS, _payer);
@@ -127,7 +129,7 @@ export default class Token extends VerifiedContract {
       _payer,
       this.sanitiseInput(DATATYPES.BYTE32, _collateralName),
       _collateralContract,
-      options
+      options,
     );
   }
 
@@ -150,7 +152,7 @@ export default class Token extends VerifiedContract {
   public async approve(
     _spender: string,
     _amount: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _amount);
@@ -160,7 +162,7 @@ export default class Token extends VerifiedContract {
   public async allowance(
     _owner: string,
     _spender: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.ADDRESS, _owner);
@@ -170,7 +172,7 @@ export default class Token extends VerifiedContract {
   public async increaseAllowance(
     _spender: string,
     _addedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _addedValue);
@@ -178,14 +180,14 @@ export default class Token extends VerifiedContract {
       FUNCTIONS.INCREASEALLOWANCE,
       _spender,
       _addedValue,
-      options
+      options,
     );
   }
 
   public async decreaseAllowance(
     _spender: string,
     _subtractedValue: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _spender);
     await this.validateInput(DATATYPES.NUMBER, _subtractedValue);
@@ -193,7 +195,7 @@ export default class Token extends VerifiedContract {
       FUNCTIONS.DECREASEALLOWANCE,
       _spender,
       _subtractedValue,
-      options
+      options,
     );
   }
 
@@ -201,7 +203,7 @@ export default class Token extends VerifiedContract {
     _protocol: string,
     _manager: string,
     _isAllowed: boolean,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _protocol);
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -211,8 +213,7 @@ export default class Token extends VerifiedContract {
       _protocol,
       _manager,
       _isAllowed,
-      options
+      options,
     );
   }
-
 }

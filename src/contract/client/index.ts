@@ -42,7 +42,8 @@ export default class Client extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -56,7 +57,8 @@ export default class Client extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -89,7 +91,7 @@ export default class Client extends VerifiedContract {
     _v: string,
     _r: string,
     _s: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _manager);
     await this.validateInput(DATATYPES.ADDRESS, _submanager);
@@ -105,7 +107,7 @@ export default class Client extends VerifiedContract {
       _v,
       _r,
       _s,
-      options
+      options,
     );
   }
 
@@ -124,7 +126,7 @@ export default class Client extends VerifiedContract {
     _v: string,
     _r: string,
     _s: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _manager);
     await this.validateInput(DATATYPES.ADDRESS, _submanager);
@@ -142,7 +144,7 @@ export default class Client extends VerifiedContract {
       _v,
       _r,
       _s,
-      options
+      options,
     );
   }
 
@@ -153,7 +155,7 @@ export default class Client extends VerifiedContract {
     country: string,
     contact: string,
     status: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, client);
     await this.validateInput(DATATYPES.STRING, name);
@@ -169,7 +171,7 @@ export default class Client extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, country),
       this.sanitiseInput(DATATYPES.BYTE32, contact),
       status,
-      options
+      options,
     );
   }
 
@@ -178,7 +180,7 @@ export default class Client extends VerifiedContract {
     identity: string,
     videokyc: string,
     docs: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, client);
     await this.validateInput(DATATYPES.STRING, identity);
@@ -190,7 +192,7 @@ export default class Client extends VerifiedContract {
       identity,
       videokyc,
       docs,
-      options
+      options,
     );
   }
 
@@ -207,7 +209,7 @@ export default class Client extends VerifiedContract {
   public async setAmlScore(
     _client: string,
     _score: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _client);
     await this.validateInput(DATATYPES.NUMBER, _score);
@@ -217,7 +219,7 @@ export default class Client extends VerifiedContract {
   public async setCreditScore(
     _client: string,
     _score: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _client);
     await this.validateInput(DATATYPES.NUMBER, _score);
@@ -225,7 +227,7 @@ export default class Client extends VerifiedContract {
       FUNCTIONS.SETCREDITSCORE,
       _client,
       _score,
-      options
+      options,
     );
   }
 
@@ -243,7 +245,7 @@ export default class Client extends VerifiedContract {
     _submanager: string,
     _currency: string,
     _accountId: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _submanager);
     await this.validateInput(DATATYPES.STRING, _currency);
@@ -253,7 +255,7 @@ export default class Client extends VerifiedContract {
       _submanager,
       _currency,
       _accountId,
-      options
+      options,
     );
   }
 
@@ -265,7 +267,7 @@ export default class Client extends VerifiedContract {
   public async getManagers(
     _country: string,
     _role: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _country);
     await this.validateInput(DATATYPES.STRING, _role);
@@ -273,14 +275,14 @@ export default class Client extends VerifiedContract {
       FUNCTIONS.GETMANAGERS,
       this.sanitiseInput(DATATYPES.BYTE32, _country),
       this.sanitiseInput(DATATYPES.BYTE32, _role),
-      options
+      options,
     );
   }
 
   public async setCustody(
     _client: string,
     _account: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _client);
     await this.validateInput(DATATYPES.STRING, _account);
@@ -288,7 +290,7 @@ export default class Client extends VerifiedContract {
       FUNCTIONS.SETCUSTODY,
       _client,
       this.sanitiseInput(DATATYPES.BYTE32, _account),
-      options
+      options,
     );
   }
 

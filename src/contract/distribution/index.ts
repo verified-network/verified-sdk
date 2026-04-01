@@ -32,7 +32,8 @@ export default class Distribution extends VerifiedContract {
     functionName: string,
     args: any[],
     apiKey?: string,
-    rpcUrl?: string
+    rpcUrl?: string,
+    isReactNative?: boolean,
   ): Promise<{
     tokenAddress: string;
     amount: string;
@@ -46,7 +47,8 @@ export default class Distribution extends VerifiedContract {
       functionName,
       args,
       rpcUrl,
-      apiKey
+      apiKey,
+      isReactNative,
     );
   }
 
@@ -67,13 +69,13 @@ export default class Distribution extends VerifiedContract {
      */
   public async getPaymentFeeCollected(
     _currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _currency);
     return this.callContract(
       FUNCTIONS.GETPAYMENTFEECOLLECTED,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
-      options
+      options,
     );
   }
 
@@ -86,7 +88,7 @@ export default class Distribution extends VerifiedContract {
     return this.callContract(
       FUNCTIONS.GETLOANFEECOLLECTED,
       this.sanitiseInput(DATATYPES.BYTE32, _currency),
-      options
+      options,
     );
   }
 
@@ -98,7 +100,7 @@ export default class Distribution extends VerifiedContract {
   public async getRevenueShareholders(
     _type: string,
     _currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _type);
     await this.validateInput(DATATYPES.ADDRESS, _currency);
@@ -106,7 +108,7 @@ export default class Distribution extends VerifiedContract {
       FUNCTIONS.GETREVENUESHAREHOLDER,
       this.sanitiseInput(DATATYPES.BYTE32, _type),
       _currency,
-      options
+      options,
     );
   }
 
@@ -120,7 +122,7 @@ export default class Distribution extends VerifiedContract {
     _type: string,
     _shareholder: string,
     _currency: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _type);
     await this.validateInput(DATATYPES.STRING, _shareholder);
@@ -130,14 +132,14 @@ export default class Distribution extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, _type),
       _shareholder,
       _currency,
-      options
+      options,
     );
   }
 
   public async getIssuingFeeCollected(
     _platform: string,
     _token: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _token);
@@ -145,14 +147,14 @@ export default class Distribution extends VerifiedContract {
       FUNCTIONS.GETISSUINGFEECOLLECTED,
       _platform,
       _token,
-      options
+      options,
     );
   }
 
   public async getTradingFeeCollected(
     _platform: string,
     _token: string,
-    options?: Options
+    options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _token);
@@ -160,7 +162,7 @@ export default class Distribution extends VerifiedContract {
       FUNCTIONS.GETTRADINGFEECOLLECTED,
       _platform,
       _token,
-      options
+      options,
     );
   }
 
