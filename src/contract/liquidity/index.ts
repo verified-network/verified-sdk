@@ -71,11 +71,13 @@ export default class LiquidityContract extends VerifiedContract {
   public async supportTokens(
     _tokens: string,
     _name: string,
+    _feed: string,
     options?: Options,
   ): any {
     await this.validateInput(DATATYPES.STRING, _tokens);
     await this.validateInput(DATATYPES.STRING, _name);
-    return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, _name, options);
+    await this.validateInput(DATATYPES.ADDRESS, _feed );
+    return this.callContract(FUNCTIONS.SUPPORTTOKENS, _tokens, _name, _feed, options);
   }
 
   /**
