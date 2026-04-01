@@ -6,7 +6,6 @@ import { VerifiedWallet } from "../../wallet";
 import { abi, networks } from "../../abi/liquidity/Liquidity.json";
 
 enum FUNCTIONS {
-  CREATESUPPLY = "createSupply",
   SUPPORTTOKENS = "supportTokens",
   REMOVETOKEN = "removeToken",
   CHECKSUPPORTFORTOKEN = "checkSupportForToken",
@@ -15,10 +14,7 @@ enum FUNCTIONS {
   BUY = "buy",
   GETINVESTORS = "getInvestors",
   GETINVESTMENT = "getInvestment",
-  ISSUE = "issue",
-  STAKE = "stake",
   WITHDRAW = "withdraw",
-  PAYOUT = "payOut",
   ADDMANAGER = "addManager",
   REMOVEMANAGER = "removeManager",
   GETMANAGERS = "getManagers",
@@ -26,8 +22,8 @@ enum FUNCTIONS {
   GETPLATFORMPERFORMANCE = "getPlatformPerformance",
   GETMANAGERPERFORMANCE = "getManagerPerformance",
   PROVIDELIQUIDITY = "provideLiquidity",
-  BALANCE = "balance",
   NOTIFYISSUE = "RequestIssue",
+  GETNAV = "getNAVPrice"
 }
 
 export default class LiquidityContract extends VerifiedContract {
@@ -67,21 +63,6 @@ export default class LiquidityContract extends VerifiedContract {
     );
   }
 
-  /**
-        Creates supply of the Verified Liquidity token after initial issue with constructor defined parameters
-        @param  _supply total supply of VITTA
-        @param  _cap    investment limit for each investor
-        @param  _limit  time limit for issue close 
-     */
-  public async createSupply(
-    _cap: string,
-    _limit: string,
-    options?: Options,
-  ): any {
-    await this.validateInput(DATATYPES.NUMBER, _cap);
-    await this.validateInput(DATATYPES.NUMBER, _limit);
-    return this.callContract(FUNCTIONS.CREATESUPPLY, _cap, _limit, options);
-  }
 
   /**
         Specifies list of supported tokens that can be invested in the Verified Liquidity token
@@ -104,6 +85,13 @@ export default class LiquidityContract extends VerifiedContract {
   public async checkSupportForToken(_token: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _token);
     return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, _token, options);
+  }
+
+  /**
+        Checks NAV for Verified Liquidity token
+     */
+  public async getNAVPrice(): any {
+    return this.callContract(FUNCTIONS.GETNAV);
   }
 
   /**
@@ -188,69 +176,12 @@ export default class LiquidityContract extends VerifiedContract {
   }
 
   /**
-        Used by Issuers (eg, asset managers) to issue VITTA to investors or refund paid in tokens to investors if investment cap is breached
-        @param  _investor       address of investor
-        @param  _token          address of token invested in VITTA
-        @param  _tokenAmount    amount of token invested in VITTA
-        @param  _LPToIssue      amount of VITTA to issue to investor
-     */
-  public async issue(
-    _investor: string,
-    _token: string,
-    _tokenAmount: string,
-    _LPToIssue: string,
-    options?: Options,
-  ): any {
-    await this.validateInput(DATATYPES.ADDRESS, _investor);
-    await this.validateInput(DATATYPES.ADDRESS, _token);
-    await this.validateInput(DATATYPES.NUMBER, _tokenAmount);
-    await this.validateInput(DATATYPES.NUMBER, _LPToIssue);
-    return this.callContract(
-      FUNCTIONS.ISSUE,
-      _investor,
-      _token,
-      _tokenAmount,
-      _LPToIssue,
-      options,
-    );
-  }
-
-  /**
-        Used by VITTA holder to stake it for providing liquidity for underwriting investments
-        @param  _toStake    amount of VITTA to stake
-     */
-  public async stake(_toStake: string, options?: Options): any {
-    await this.validateInput(DATATYPES.NUMBER, _toStake);
-    return this.callContract(FUNCTIONS.STAKE, _toStake, options);
-  }
-
-  /**
         Used by VITTA holder to withdraw staked liquidity for underwriting investments
         @param  _fromStake    amount of VITTA staked
      */
   public async withdraw(_fromStake: string, options?: Options): any {
     await this.validateInput(DATATYPES.NUMBER, _fromStake);
     return this.callContract(FUNCTIONS.WITHDRAW, _fromStake, options);
-  }
-
-  /**
-        Pay out of income to VITTA Liquidity providers
-        @param  _distribution   amount of VITTA to mint and distribute pro rata to liquidity providers
-        @param  _platform       address of liquidity platform
-     */
-  public async payOut(
-    _distribution: string,
-    _platform: string,
-    options?: Options,
-  ): any {
-    await this.validateInput(DATATYPES.NUMBER, _distribution);
-    await this.validateInput(DATATYPES.ADDRESS, _platform);
-    return this.callContract(
-      FUNCTIONS.PAYOUT,
-      _distribution,
-      _platform,
-      options,
-    );
   }
 
   /**
@@ -368,34 +299,20 @@ export default class LiquidityContract extends VerifiedContract {
     _manager: string,
     _liquidity: string,
     _token: string,
-    _tokenAmount: string,
     options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _platform);
     await this.validateInput(DATATYPES.ADDRESS, _manager);
     await this.validateInput(DATATYPES.NUMBER, _liquidity);
     await this.validateInput(DATATYPES.ADDRESS, _token);
-    await this.validateInput(DATATYPES.NUMBER, _tokenAmount);
     return this.callContract(
       FUNCTIONS.PROVIDELIQUIDITY,
       _platform,
       _manager,
       _liquidity,
       _token,
-      _tokenAmount,
       options,
     );
-  }
-
-  /**
-   * Fetches balance of investor
-   * @param _investor address of investor
-   * @param options
-   * @returns         balance of investor
-   */
-  public async balanceOf(_investor: string, options?: Options): any {
-    await this.validateInput(DATATYPES.ADDRESS, _investor);
-    return this.callContract(FUNCTIONS.BALANCE, _investor, options);
   }
 
   public notifyIssue(callback: any): object {
