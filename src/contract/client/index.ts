@@ -87,10 +87,6 @@ export default class Client extends VerifiedContract {
     _submanager: string,
     _country: string,
     _role: string,
-    _hashedMessage: string,
-    _v: string,
-    _r: string,
-    _s: string,
     options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -103,10 +99,6 @@ export default class Client extends VerifiedContract {
       _submanager,
       this.sanitiseInput(DATATYPES.BYTE32, _country),
       this.sanitiseInput(DATATYPES.BYTE32, _role),
-      _hashedMessage,
-      _v,
-      _r,
-      _s,
       options,
     );
   }
@@ -122,10 +114,6 @@ export default class Client extends VerifiedContract {
     _country: string,
     _role: string,
     _id: string,
-    _hashedMessage: string,
-    _v: string,
-    _r: string,
-    _s: string,
     options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, _manager);
@@ -140,10 +128,6 @@ export default class Client extends VerifiedContract {
       this.sanitiseInput(DATATYPES.BYTE32, _country),
       this.sanitiseInput(DATATYPES.BYTE32, _role),
       this.sanitiseInput(DATATYPES.BYTE32, _id),
-      _hashedMessage,
-      _v,
-      _r,
-      _s,
       options,
     );
   }
