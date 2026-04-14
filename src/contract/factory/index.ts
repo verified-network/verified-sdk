@@ -23,6 +23,7 @@ enum FUNCTIONS {
   TOKENCREATED = "TokenCreated",
   SETBONDTERM = "setBondTerm",
   GETBONDTERM = "getBondTerm",
+  SETCLIENT = "setClientAddress"
 }
 
 export default class Factory extends VerifiedContract {
@@ -92,6 +93,11 @@ export default class Factory extends VerifiedContract {
   public async getNameAndType(_viaAddress: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _viaAddress);
     return this.callContract(FUNCTIONS.GETNAMEANDTYPE, _viaAddress, options);
+  }
+
+  public async setClient(_clientAddress: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _clientAddress);
+    return this.callContract(FUNCTIONS.SETCLIENT, _clientAddress, options);
   }
 
   /*
