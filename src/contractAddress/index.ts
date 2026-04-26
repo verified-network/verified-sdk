@@ -205,15 +205,15 @@ const contractAddress: Object = {
   },
   //Base
   8453: {
-    Client: "0x06abba52d38C75D40Ae677a4aA30500c52A89063",
+    Client: "0x9606706e98D18ee243F44cEce8540f002721f996",
     Factory: "",
     Cash: "",
     Bond: "",
     Token: "",
     Oracle: "",
     Rates: "",
-    Security: "",
-    SecuritiesFactory: "",
+    Security: "0x5bf960c22456116ff77BE323Baf2D6767D2b240a",
+    SecuritiesFactory: "0xCeC02CB2e1c40FEc8D70289827bE24658A581706",
     Vitta: "0x14A6CDf98B542bFc4A815A96C584BFde5f7F1aFc",
     Liquidity: "0x5E6dc0d84E9B66B9814637394345F4975903345D",
     Distribution: "",
