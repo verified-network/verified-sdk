@@ -223,7 +223,7 @@ const contractAddress: Object = {
     BalancerSecondaryIssueManager: "",
     MarginTradingPoolFactory: "0xb864e62CFebd368F4491Fe52A4Fcc22c1c525F1C",
     BalancerMarginIssueManager: "",
-    Custody: "",
+    Custody: "0xcB7282B16E381aA6A63b429170455CeDafBBc71C",
     Compound: "",
     CASH: {
       VCUSD: "",
@@ -325,7 +325,7 @@ const contractAddress: Object = {
     SecondaryIssuePoolFactory: "0x4519148Cc4030c2e3573f1f886ed4071Fa35d62B",
     BalancerSecondaryIssueManager: "0x2EE617cdF5314CE0660F1fEe6d6097c271600e56",
     MarginTradingPoolFactory: "0xB1ae3Fc5B16d3736bf0db20606fB9a10b435392c",
-    BalancerMarginIssueManager: "0x7f7aE11FD62De079E2bB7B684400290657F570F5",
+    BalancerMarginIssueManager: "0xA7Bf49cF2C0f011719953297Ab027da0C88A559a",
     Custody: "0x594DC49A7C2B4b0f279247239cb6F1d943a99e7F",
     Compound: "0x4b3CBDB8FBe5fcdDF796cd42d3749f8AcD53DA73",
     CASH: {

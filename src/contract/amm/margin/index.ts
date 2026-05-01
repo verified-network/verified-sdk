@@ -261,6 +261,7 @@ export default class MarginIssueManager extends VerifiedContract {
     }*/
 
   public async onSettle(
+    orderRef: string,
     security: string,
     currency: string,
     financingBid: string,
@@ -283,6 +284,7 @@ export default class MarginIssueManager extends VerifiedContract {
     await this.validateInput(DATATYPES.NUMBER, settlementTime);
     return this.callContract(
       FUNCTIONS.ONSETTLE,
+      orderRef,
       security,
       currency,
       financingBid,
@@ -297,6 +299,7 @@ export default class MarginIssueManager extends VerifiedContract {
   }
 
   public async withdraw(
+    orderRef: string,
     security: string,
     currency: string,
     amount: string,
@@ -307,6 +310,7 @@ export default class MarginIssueManager extends VerifiedContract {
     await this.validateInput(DATATYPES.NUMBER, amount);
     return this.callContract(
       FUNCTIONS.WITHDRAW,
+      orderRef,
       security,
       currency,
       amount,
