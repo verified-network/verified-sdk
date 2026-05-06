@@ -54,9 +54,9 @@ const contractAddress: Object = {
     BalancerMarginIssueManager: "",
     Custody: "",
     Compound: "",
-    HedgeVault: "0x4746DD1D30F76a16866EcE1774fd2eE025988D4b",
-    Keeper: "0xDD9C034348f619e85e15cbAf0f86d698b8a5b765",
-    HedgeOracle: "0x06abba52d38C75D40Ae677a4aA30500c52A89063",
+    HedgeVault: "0x0B8073eb15178B3F7B1f492d1bBE1AE4fEB3fAcb",
+    Keeper: "0x808462a488291af25dA19D688d9Fb4EBC87EE65a",
+    HedgeOracle: "0xa5d01E8f8Ed7673275c46cEAd24A35993c170293",
     CASH: {
       VCUSD: "",
       VCEUR: "",
