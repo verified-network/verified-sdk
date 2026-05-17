@@ -11,6 +11,7 @@ enum FUNCTIONS {
   CHECKSUPPORTFORTOKEN = "checkSupportForToken",
   GETSUPPORTEDTOKENS = "getSupportedTokens",
   REGISTERPLATFORM = "registerPlatform",
+  SETDISTRIBUTION = "setDistribution",
   BUY = "buy",
   GETINVESTORS = "getInvestors",
   GETINVESTMENT = "getInvestment",
@@ -87,6 +88,15 @@ export default class LiquidityContract extends VerifiedContract {
   public async checkSupportForToken(_token: string, options?: Options): any {
     await this.validateInput(DATATYPES.ADDRESS, _token);
     return this.callContract(FUNCTIONS.CHECKSUPPORTFORTOKEN, _token, options);
+  }
+
+  /**
+        Sets distribution contract to receive distribution of returns from
+        @param  _distributionContract  address of distribution contract
+     */
+  public async setDistribution(_distributionContract: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _distributionContract);
+    return this.callContract(FUNCTIONS.SETDISTRIBUTION, _distributionContract, options);
   }
 
   /**
