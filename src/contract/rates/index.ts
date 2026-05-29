@@ -10,8 +10,10 @@ enum FUNCTIONS {
   GETFEE = "getFee",
   SETFEETOSETTER = "setFeeToSetter",
   SETCUSTODIAN = "setCustodian",
+  SETDISTRIBUTOR = "setDistributor",
   GETFEETOSETTER = "getFeeToSetter",
   GETCUSTODIAN = "getCustodian",
+  GETDISTRIBUTOR = "getDistributor"
 }
 
 export default class Rates extends VerifiedContract {
@@ -77,6 +79,11 @@ export default class Rates extends VerifiedContract {
     return this.callContract(FUNCTIONS.SETCUSTODIAN, _custodian, options);
   }
 
+  public async setDistributor(_distributor: string, options?: Options): any {
+    await this.validateInput(DATATYPES.ADDRESS, _distributor);
+    return this.callContract(FUNCTIONS.SETCUSTODIAN, _distributor, options);
+  }
+
   public async getFee(_feeType: string, options?: Options): any {
     await this.validateInput(DATATYPES.STRING, _feeType);
     return this.callContract(
@@ -92,5 +99,9 @@ export default class Rates extends VerifiedContract {
 
   public async getCustodian(): any {
     return this.callContract(FUNCTIONS.GETCUSTODIAN);
+  }
+
+  public async getDistributor(): any {
+    return this.callContract(FUNCTIONS.GETDISTRIBUTOR);
   }
 }
