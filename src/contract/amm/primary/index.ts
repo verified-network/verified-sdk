@@ -19,6 +19,7 @@ enum FUNCTIONS {
   REJECT = "reject",
   SETTLE = "settle",
   SETISSUINGFEE = "setIssuingFee",
+  RETURNSTAKE = "returnStake"
 }
 
 export default class PrimaryIssueManager extends VerifiedContract {
@@ -263,4 +264,15 @@ export default class PrimaryIssueManager extends VerifiedContract {
     await this.validateInput(DATATYPES.STRING, poolId);
     return this.callContract(FUNCTIONS.SETTLE, poolId, options);
   }
+
+  public async returnStake(
+    amount: string,
+    token: string,
+    options?: Options,
+  ): any {
+    await this.validateInput(DATATYPES.ADDRESS, token);
+    await this.validateInput(DATATYPES.NUMBER, amount);
+    return this.callContract(FUNCTIONS.RETURNSTAKE, amount, token, options);
+  }
+  
 }
