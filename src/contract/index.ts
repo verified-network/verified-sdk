@@ -430,7 +430,7 @@ export class VerifiedContract {
       }
 
       const signerAny: any = this.signer;
-      const signerPk = signerAny?._signingKey()?.privateKey;
+      const signerPk = signerAny?._signingKey?.()?.privateKey;
 
       if (!signerPk) {
         //no pk on signer. Assume it's web wallets and use ethers
@@ -495,7 +495,7 @@ export class VerifiedContract {
       ].find((nt) => Number(nt?.id) === Number(chainId));
 
       const signerAny: any = this.signer;
-      const signerPk = signerAny?._signingKey()?.privateKey;
+      const signerPk = signerAny?._signingKey?.()?.privateKey;
 
       if (chainToUse && paymentTokenAddress && signerPk) {
         try {
