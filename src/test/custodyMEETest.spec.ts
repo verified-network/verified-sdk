@@ -5,25 +5,48 @@
 // import { ethers } from "ethers";
 
 // describe("Base Sepolia() Custody MEE ERC20 Gas Payment Tests", () => {
-//   const newWallet = new VerifiedWallet(
-//     ""
+//   const newWallet = VerifiedWallet.createWallet();
+//   const provider = new Provider(
+//     "https://eth-sepolia.g.alchemy.com/v2/NU7PIV1TOBJUvS8to-3VTQhxoloY3JjT",
 //   );
-//   const provider = new Provider("https://sepolia.base.org");
 //   const signer = newWallet.setProvider(provider);
 
 //   describe("Tests some functions on custody contract", () => {
-//     const custodyAddress = "0xd942BF5772Ccd05B0a0a2a29D060bFA82FF4a031";
+//     const custodyAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
 //     const custodyContract = new Custody(signer, custodyAddress);
 //     it("it should create vault", async () => {
-//       const createVaultRes = await custodyContract.createVault(
-//    ethers.utils.formatBytes32String(Date.now().toString())
-//         Date.now().toString(),
-//         {
-//           paymentToken: "0x036CbD53842c5426634e7929541eC2318f3dCF7e", // USDC
-//         }
+//       const creatorId = ethers.utils.formatBytes32String("qq1aawe@gmail.com");
+//       const createVaultRes = await custodyContract.getQuote(
+//         "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+//         "approve",
+//         ["0x554A8d7Ba257769665115Eac096a54B0Ee1cD44c", "10000"],
 //       );
-//       console.log("result: ", createVaultRes);
-//       assert(createVaultRes.status === 0);
+//       console.log(createVaultRes);
+//       // const confirmVaultRes = await custodyContract.confirmParticipant(
+//       //   creatorId,
+//       //   creatorId,
+//       //   true as any,
+//       // );
+//       // console.log(confirmVaultRes);
+//       // const addVaultRes = await custodyContract.addParticipant(
+//       //   creatorId,
+//       //   creatorId,
+//       //   "qmmm",
+//       // );
+
+//       // console.log(addVaultRes);
+
+//       // const addOtherVaultRes = await custodyContract.addParticipant(
+//       //   creatorId,
+//       //   ethers.utils.formatBytes32String("qq2@gmail.com"),
+//       //   "qmmme",
+//       // );
+
+//       // console.log(addOtherVaultRes);
+
+//       // const quorumVaultRes = await custodyContract.defineQuorum(creatorId, "2");
+
+//       // console.log(quorumVaultRes);
 //     });
 //   });
 // });
