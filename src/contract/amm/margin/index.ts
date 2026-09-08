@@ -268,8 +268,7 @@ export default class MarginIssueManager extends VerifiedContract {
     financingOffer: string,
     dividendBid: string,
     dividendOffer: string,
-    swapLong: string,
-    swapShort: string,
+    pnl: string,
     settlementTime: string,
     options?: Options,
   ): any {
@@ -279,8 +278,7 @@ export default class MarginIssueManager extends VerifiedContract {
     await this.validateInput(DATATYPES.NUMBER, financingOffer);
     await this.validateInput(DATATYPES.NUMBER, dividendBid);
     await this.validateInput(DATATYPES.NUMBER, dividendOffer);
-    await this.validateInput(DATATYPES.NUMBER, swapLong);
-    await this.validateInput(DATATYPES.NUMBER, swapShort);
+    await this.validateInput(DATATYPES.NUMBER, pnl);
     await this.validateInput(DATATYPES.NUMBER, settlementTime);
     return this.callContract(
       FUNCTIONS.ONSETTLE,
@@ -291,8 +289,7 @@ export default class MarginIssueManager extends VerifiedContract {
       financingOffer,
       dividendBid,
       dividendOffer,
-      swapLong,
-      swapShort,
+      pnl,
       settlementTime,
       options,
     );
