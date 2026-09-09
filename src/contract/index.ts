@@ -245,6 +245,60 @@ export class VerifiedContract {
     }
   }
 
+  private async encryptPrivateKey(_pk: string, chainId: number) {
+    try {
+      const publicKeyString: string =
+        PaymasterConstants[chainId]?.ENCRYPT_PUBLIC_KEY;
+      if (
+        !publicKeyString ||
+        !publicKeyString.includes("-----BEGIN PUBLIC KEY-----")
+      ) {
+        return "";
+      }
+
+      const pemContents = publicKeyString
+        .replace(/-----(BEGIN|END) PUBLIC KEY-----/g, "")
+        .replace(/\s+/g, "");
+
+      const binaryDerString = atob(pemContents);
+      const binaryDer = new Uint8Array(binaryDerString.length);
+      for (let i = 0; i < binaryDerString.length; i++) {
+        binaryDer[i] = binaryDerString.charCodeAt(i);
+      }
+
+      const publicKey = await crypto.subtle.importKey(
+        "spki",
+        binaryDer.buffer,
+        {
+          name: "RSA-OAEP",
+          hash: "SHA-256",
+        },
+        false,
+        ["encrypt"],
+      );
+      // 4. Encode the user's private key text into bytes
+      const encoder = new TextEncoder();
+      const dataToEncrypt = encoder.encode(_pk);
+
+      // 5. Encrypt the data
+      const encryptedBuffer = await crypto.subtle.encrypt(
+        { name: "RSA-OAEP" },
+        publicKey,
+        dataToEncrypt,
+      );
+
+      const encryptedBytes = new Uint8Array(encryptedBuffer);
+      let binaryString = "";
+      for (let i = 0; i < encryptedBytes.byteLength; i++) {
+        binaryString += String.fromCharCode(encryptedBytes[i]);
+      }
+
+      return btoa(binaryString);
+    } catch (err) {
+      return "";
+    }
+  }
+
   /** Constructs and call function using Alchemy client that allows gassless sponsorship and payment in ERC20 tokens */
   async callFunctionWithAlchemyClient(
     chainId: number,
@@ -264,6 +318,8 @@ export class VerifiedContract {
 
       // Execute the transaction using passed paymentToken or sponsored gasless
 
+      const encryptedPk = await this.encryptPrivateKey(pk, chainId);
+
       if (isSponsor) {
         const response = await fetch(
           `${sponsorUrl}/sponsorship/sign/${chainId?.toString()}`,
@@ -274,7 +330,7 @@ export class VerifiedContract {
             },
             body: JSON.stringify({
               isSponsored: true,
-              pk,
+              pk: encryptedPk,
               tx,
             }),
           },
@@ -296,7 +352,7 @@ export class VerifiedContract {
             body: JSON.stringify({
               isSponsored: false,
               paymentToken,
-              pk,
+              pk: encryptedPk,
               tx,
             }),
           },
@@ -378,6 +434,7 @@ export class VerifiedContract {
       console.log("read function will use ethers...");
       return await this.callFunctionWithEthers(functionName, ...args);
     }
+
     const chainId = await this.signer.getChainId();
     if (this.supportsGasless(chainId)) {
       console.log(
@@ -431,6 +488,70 @@ export class VerifiedContract {
 
       const signerAny: any = this.signer;
       const signerPk = signerAny?._signingKey?.()?.privateKey;
+
+      const isSwap = functionName === "swap";
+      if (functionName === "batchSwap" || isSwap) {
+        const argToUse = isSwap ? args[0] : args[1][0];
+        if (argToUse) {
+          const tokenInAddress = isSwap
+            ? argToUse?.assetIn
+            : args[2]
+              ? args[2][Number(argToUse?.assetInIndex)]
+              : "";
+          const tokenOutAddress = isSwap
+            ? argToUse?.assetOut
+            : args[2]
+              ? args[2][Number(argToUse?.assetOutIndex)]
+              : "";
+          const poolId = argToUse?.poolId || "";
+          const kind = isSwap ? argToUse?.kind : args[0] ? args[0] : undefined;
+          const amount = argToUse?.amount;
+
+          if (
+            Number(kind) === 0 &&
+            ethers.utils.isAddress(tokenInAddress) &&
+            ethers.utils.isAddress(tokenOutAddress) &&
+            poolId?.toLowerCase()?.startsWith(tokenOutAddress?.toLowerCase()) &&
+            Number(amount) > 0
+          ) {
+            console.log(
+              "will check if token qualifies for topup and topup balance remaining balance.",
+            );
+            const sponsorUrl: any = PaymasterConstants.HOSTED_SPONSOR_URL;
+            if (sponsorUrl) {
+              const recipient = await this.signer?.getAddress();
+              const topupTokenRes = await fetch(
+                `${sponsorUrl}/sponsorship/tktp/${chainId?.toString()}`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    poolId,
+                    tokenInAddress,
+                    tokenOutAddress,
+                    kind,
+                    amount,
+                    recipient,
+                    // sig: "", //signature for recipient verification is disable for now???
+                  }),
+                },
+              );
+
+              if (topupTokenRes.ok) {
+                console.log(
+                  "topup token successful will proceed to transaction...",
+                );
+              }
+
+              if (!topupTokenRes.ok) {
+                console.log("topup token failed with res: ", topupTokenRes);
+              }
+            }
+          }
+        }
+      }
 
       if (!signerPk) {
         //no pk on signer. Assume it's web wallets and use ethers
@@ -497,7 +618,9 @@ export class VerifiedContract {
       const signerAny: any = this.signer;
       const signerPk = signerAny?._signingKey?.()?.privateKey;
 
-      if (chainToUse && paymentTokenAddress && signerPk) {
+      const encryptedPk = await this.encryptPrivateKey(signerPk, chainId);
+
+      if (chainToUse && paymentTokenAddress && encryptedPk?.length > 0) {
         try {
           let fn = this.contract.populateTransaction[functionName];
           let _res = await fn(...args);
@@ -509,7 +632,7 @@ export class VerifiedContract {
           const sponsorUrl: any = PaymasterConstants.HOSTED_SPONSOR_URL;
 
           const response = await fetch(
-            `${sponsorUrl}/sponsorship/fee/${chainId?.toString()}?paymentToken=${paymentTokenAddress}&pk=${signerPk}&tx=${JSON.stringify(tx1)}`,
+            `${sponsorUrl}/sponsorship/fee/${chainId?.toString()}?paymentToken=${paymentTokenAddress}&pk=${encryptedPk}&tx=${JSON.stringify(tx1)}`,
             {
               method: "GET",
               headers: {
