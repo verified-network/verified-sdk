@@ -5,48 +5,51 @@
 // import { ethers } from "ethers";
 
 // describe("Base Sepolia() Custody MEE ERC20 Gas Payment Tests", () => {
-//   const newWallet = VerifiedWallet.createWallet();
-//   const provider = new Provider(
-//     "https://eth-sepolia.g.alchemy.com/v2/NU7PIV1TOBJUvS8to-3VTQhxoloY3JjT",
+//   const newWallet = new VerifiedWallet(
+//     "0x17e793fc23f46545a7f5082cb93dba20ee3e659b7b5373e23b5dae174ff0f8b0",
 //   );
-//   const signer = newWallet.setProvider(provider);
+//   console.log("address: ", newWallet?.address);
+//     // const provider = new Provider(
+//     //   "https://eth-sepolia.g.alchemy.com/v2/NU7PIV1TOBJUvS8to-3VTQhxoloY3JjT",
+//     // );
+//   //   const signer = newWallet.setProvider(provider);
 
-//   describe("Tests some functions on custody contract", () => {
-//     const custodyAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
-//     const custodyContract = new Custody(signer, custodyAddress);
-//     it("it should create vault", async () => {
-//       const creatorId = ethers.utils.formatBytes32String("qq1aawe@gmail.com");
-//       const createVaultRes = await custodyContract.getQuote(
-//         "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
-//         "approve",
-//         ["0x554A8d7Ba257769665115Eac096a54B0Ee1cD44c", "10000"],
-//       );
-//       console.log(createVaultRes);
-//       // const confirmVaultRes = await custodyContract.confirmParticipant(
-//       //   creatorId,
-//       //   creatorId,
-//       //   true as any,
-//       // );
-//       // console.log(confirmVaultRes);
-//       // const addVaultRes = await custodyContract.addParticipant(
-//       //   creatorId,
-//       //   creatorId,
-//       //   "qmmm",
-//       // );
+//   //   describe("Tests some functions on custody contract", () => {
+//   //     const custodyAddress = "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238";
+//   //     const custodyContract = new Custody(signer, custodyAddress);
+//   //     it("it should create vault", async () => {
+//   //       const creatorId = ethers.utils.formatBytes32String("qq1aawe@gmail.com");
+//   //       const createVaultRes = await custodyContract.getQuote(
+//   //         "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238",
+//   //         "approve",
+//   //         ["0x554A8d7Ba257769665115Eac096a54B0Ee1cD44c", "10000"],
+//   //       );
+//   //       console.log(createVaultRes);
+//   //       // const confirmVaultRes = await custodyContract.confirmParticipant(
+//   //       //   creatorId,
+//   //       //   creatorId,
+//   //       //   true as any,
+//   //       // );
+//   //       // console.log(confirmVaultRes);
+//   //       // const addVaultRes = await custodyContract.addParticipant(
+//   //       //   creatorId,
+//   //       //   creatorId,
+//   //       //   "qmmm",
+//   //       // );
 
-//       // console.log(addVaultRes);
+//   //       // console.log(addVaultRes);
 
-//       // const addOtherVaultRes = await custodyContract.addParticipant(
-//       //   creatorId,
-//       //   ethers.utils.formatBytes32String("qq2@gmail.com"),
-//       //   "qmmme",
-//       // );
+//   //       // const addOtherVaultRes = await custodyContract.addParticipant(
+//   //       //   creatorId,
+//   //       //   ethers.utils.formatBytes32String("qq2@gmail.com"),
+//   //       //   "qmmme",
+//   //       // );
 
-//       // console.log(addOtherVaultRes);
+//   //       // console.log(addOtherVaultRes);
 
-//       // const quorumVaultRes = await custodyContract.defineQuorum(creatorId, "2");
+//   //       // const quorumVaultRes = await custodyContract.defineQuorum(creatorId, "2");
 
-//       // console.log(quorumVaultRes);
-//     });
-//   });
+//   //       // console.log(quorumVaultRes);
+//   //     });
+//   //   });
 // });

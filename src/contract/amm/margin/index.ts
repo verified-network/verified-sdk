@@ -189,6 +189,7 @@ export default class MarginIssueManager extends VerifiedContract {
     securityTraded: string,
     currency: string,
     cashTraded: string,
+    fee: string,
     options?: Options,
   ): any {
     await this.validateInput(DATATYPES.ADDRESS, party);
@@ -198,6 +199,7 @@ export default class MarginIssueManager extends VerifiedContract {
     await this.validateInput(DATATYPES.NUMBER, securityTraded);
     await this.validateInput(DATATYPES.ADDRESS, currency);
     await this.validateInput(DATATYPES.NUMBER, cashTraded);
+    await this.validateInput(DATATYPES.NUMBER, fee);
     return this.callContract(
       FUNCTIONS.ONMATCH,
       party,
@@ -207,6 +209,7 @@ export default class MarginIssueManager extends VerifiedContract {
       securityTraded,
       currency,
       cashTraded,
+      fee,
       options,
     );
   }
