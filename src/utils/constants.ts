@@ -48,8 +48,7 @@ wdh+go9TovuYtuY4qEKaDKQBn3q5gHZ+pZYqIFPlLTuHG8zZDaNqlyTSZeQ8owCO
 leNN4XxviP+LDj6YlJV+sUkpR9lmriv1W9i+c7CImHFGAa/TSbC9dhHai6DWJzsk
 SDJE2AvADRcZ6xWijy6XRkRqngQadTy5wUz4tHQvSFAZ+jJnoV+FSxOTrQqrZInC
 rgpNFiwzRnQzzLmwHIfCh2MCAwEAAQ==
------END PUBLIC KEY-----
-`,
+-----END PUBLIC KEY-----`,
   },
   //gnosis
   100: {
