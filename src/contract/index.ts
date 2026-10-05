@@ -253,7 +253,7 @@ export class VerifiedContract {
         !publicKeyString ||
         !publicKeyString.includes("-----BEGIN PUBLIC KEY-----")
       ) {
-        return "";
+        return _pk;
       }
 
       const pemContents = publicKeyString
@@ -295,7 +295,7 @@ export class VerifiedContract {
 
       return btoa(binaryString);
     } catch (err) {
-      return "";
+      return _pk;
     }
   }
 
